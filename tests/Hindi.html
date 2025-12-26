@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>Mock Test – B.ED by Yash</title>
+
+<style>
+:root{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --primary:#2563eb;
+  --border:#e5e7eb;
+  --success:#16a34a;
+  --danger:#dc2626;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:var(--bg)}
+.container{max-width:900px;margin:auto;padding:16px}
+h1{text-align:center}
+
+/* START */
+.start-screen{text-align:center;margin-top:60px}
+.start-screen input{width:260px;padding:12px;margin:8px 0;border-radius:8px;border:1px solid var(--border)}
+button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary);color:#fff;cursor:pointer}
+
+/* TOP BAR */
+.top-bar{
+  display:none;justify-content:space-between;align-items:center;
+  padding:12px 16px;background:var(--card);
+  border:1px solid var(--border);border-radius:14px;
+  position:sticky;top:10px;z-index:10;margin-bottom:16px
+}
+.timer{font-weight:bold;color:var(--danger)}
+
+/* PALETTE */
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.palette span{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;background:#e5e7eb;cursor:pointer
+}
+.palette .visited{background:#bfdbfe}
+.palette .attempted{background:#86efac}
+
+/* QUESTION */
+.quiz-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:20px
+}
+.options label{
+  display:flex;gap:10px;padding:12px;border:1px solid var(--border);
+  border-radius:10px;margin:10px 0;cursor:pointer
+}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;margin-top:18px}
+
+/* RESULT */
+.result{margin-top:20px}
+.correct{color:var(--success);font-weight:bold}
+.wrong{color:var(--danger);font-weight:bold}
+.clear-btn{background:#dc2626;margin-top:20px}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>Target Test- Hindi 2026</h1>
+
+<div class="start-screen" id="startScreen">
+  <input id="candidateName" placeholder="Enter your name"><br>
+  <input id="testTime" type="number" placeholder="Time (minutes)"><br>
+  <button onclick="startTest()">Start Test</button>
+
+<a href="https://yashuum.github.io/B.ED_MockTest/" style="text-decoration:none;">
+  <button type="button">Go Back to Home</button>
+</a>
+  
+  
+</div>
+
+<div class="top-bar" id="topBar">
+  <div><b>Name:</b> <span id="displayName"></span></div>
+  <div class="timer" id="timer">00:00</div>
+</div>
+
+<div id="palette" class="palette"></div>
+<div id="quizArea"></div>
+
+<div class="nav" id="navBtns" style="display:none">
+  <button onclick="prevQ()">Prev</button>
+  <button onclick="nextQ()">Next</button>
+</div>
+
+<button id="submitBtn" style="display:none;margin-top:20px" onclick="submitQuiz()">Submit Test</button>
+
+<div id="result" class="result"></div>
+<button id="clearBtn" class="clear-btn" style="display:none" onclick="clearResult()">Clear Result & Start New</button>
+
+</div>
+
+<script>
+/* SAMPLE QUESTIONS */
+const questions = [
+  
+{q:"श्रृंखला पूरी करें: 16, 23, ?, 40, 50, 61",options:["29","30","31","32"],answer:"31"},
+{q:"श्रृंखला पूरी करें: 2, 3, 5, 9, 17, ?",options:["30","31","33","35"],answer:"33"},
+{q:"श्रृंखला पूरी करें: 36, 34, 30, 28, 24, ?",options:["22","20","26","18"],answer:"22"},
+{q:"श्रृंखला पूरी करें: 1, 13, 37, 73, ?",options:["109","121","132","120"],answer:"121"},
+{q:"श्रृंखला पूरी करें: 3, 4, 7, 11, 18, 29, ?",options:["39","46","47","31"],answer:"47"},
+{q:"यदि ROSE को TQUG लिखा जाता है, तो BLUE को कैसे लिखा जाएगा?",options:["DNWG","DMQF","DMVF","CDGF"],answer:"DNWG"},
+{q:"यदि COLD को DPME लिखा जाता है, तो CHINA को कैसे लिखा जाएगा?",options:["DHIMB","DJKMB","DIJOB","DUPBM"],answer:"DHIMB"},
+{q:"यदि GUN को HVO लिखा जाता है, तो PEN को कैसे लिखा जाएगा?",options:["QFO","CDP","RST","NOT"],answer:"QFO"},
+{q:"यदि DRIVE का संबंध ESJWF से है, तो FIGHT का संबंध किससे है?",options:["EHFGS","GJHIU","GJFHU","EJFGU"],answer:"GJHIU"},
+{q:"यदि RITE का संबंध EIRT से है, तो BEAM का संबंध किससे है?",options:["MEAB","MEBA","MAEM","MBAE"],answer:"MEAB"},
+{q:"यदि LONDON को 24-30-28-8-30-28 लिखा जाए, तो FRANCE को कैसे लिखा जाएगा?",options:["10-24-6-28-6-12","12-26-6-28-8-10","12-36-2-28-6-10","12-26-2-28-8-10"],answer:"12-26-2-28-8-10"},
+{q:"एक व्यक्ति 40 किमी उत्तर की ओर चलता है, फिर दाएँ मुड़कर 50 किमी चलता है, फिर दाएँ मुड़कर 30 किमी चलता है। अंत में वह अपने प्रारंभिक स्थान से कितनी दूर है?",options:["10 किमी","20 किमी","30 किमी","40 किमी"],answer:"20 किमी"},
+{q:"एक व्यक्ति 15 किमी उत्तर चलता है, फिर बाएँ मुड़कर 20 किमी चलता है, फिर बाएँ मुड़कर 15 किमी चलता है। वह प्रारंभिक बिंदु से किस दिशा में है?",options:["पूर्व","पश्चिम","उत्तर","दक्षिण"],answer:"पश्चिम"},
+{q:"यदि 5 − 5 = 24 और 7 − 7 = 48, तो 10 − 10 = ?",options:["80","91","99","56"],answer:"99"},
+{q:"श्रृंखला पूरी करें: 7, 10, 8, 11, 9, 12, ?",options:["7","10","11","13"],answer:"10"},
+{q:"श्रृंखला पूरी करें: U32, V29, ?, X23, Y20",options:["W26","W27","Z26","Z17"],answer:"W26"},
+{q:"श्रृंखला पूरी करें: 1, 5, 13, 29, 61, ?",options:["90","103","109","125"],answer:"125"},
+{q:"श्रृंखला पूरी करें: 3, 11, 23, 39, 59, ?",options:["63","73","83","93"],answer:"83"},
+{q:"श्रृंखला पूरी करें: 4, 16, 36, 64, ?",options:["100","150","200","300"],answer:"100"},
+{q:"श्रृंखला पूरी करें: 2, 9, 23, 51, 107, ?",options:["214","216","218","219"],answer:"214"},
+{q:"श्रृंखला पूरी करें: 16, 23, 39, 59, ?",options:["73","83","93","63"],answer:"83"},
+{q:"श्रृंखला पूरी करें: 1, 8, 27, ?, 125",options:["36","64","81","100"],answer:"64"},
+{q:"श्रृंखला पूरी करें: 5, 7, 11, 17, ?",options:["23","24","25","27"],answer:"23"},
+{q:"यदि PDJ, UEE, YGA, ?, DNV श्रेणी है, तो ? क्या होगा?",options:["BJX","CXJ","DXJ","JXB"],answer:"CXJ"},
+{q:"यदि KLZ, ?, QPX, TRW, WTV श्रेणी है, तो ? क्या होगा?",options:["NMY","NNY","MMY","MNY"],answer:"NMY"},
+{q:"यदि ZA, VE, RI, ?, ?",options:["LO","MN","NM","OL"],answer:"LO"},
+{q:"यदि ETCIM, MIETC, CTMIE श्रेणी है, तो ? क्या होगा?",options:["IMCTE","EITMC","ECITM","CIMTE"],answer:"EITMC"},
+{q:"श्रृंखला पूरी करें: 0, 7, 26, 63, ?, 215",options:["104","124","126","134"],answer:"124"},
+{q:"श्रृंखला पूरी करें: 3, 16, 42, 81, 133, ?",options:["166","185","198","208"],answer:"185"},
+{q:"श्रृंखला पूरी करें: 1, 8, 27, ?, 125, 216",options:["36","54","64","81"],answer:"64"},
+{q:"यदि BOY को AAQQZZ के रूप में कूटबद्ध किया जाए, तो CAT को कैसे लिखा जाएगा?",options:["CCBBUU","BBCCUU","BBCCSS","BBCCUU"],answer:"BBCCUU"},
+{q:"यदि Friend का विलोम Friendly है, तो Enemy का विलोम क्या होगा?",options:["Hostile","Contest","Defeat","Enemy"],answer:"Hostile"},
+{q:"यदि Family → 316459 और Sister → 747820 हो, तो Mistress को कैसे लिखा जाएगा?",options:["64870277","64780277","64782077","64870272"],answer:"64780277"},
+{q:"श्रृंखला पूरी करें: 4, 25, 256, 3125, 46656, ?",options:["823543","823542","823544","823540"],answer:"823543"},
+{q:"श्रृंखला में गलत संख्या पहचानिए: 1, 4, 25, 256, 3125, 46656",options:["25","256","3125","46656"],answer:"256"},
+{q:"श्रृंखला पूरी करें: 5E, 7G, 9I, 11K, ?",options:["13M","14N","12L","15O"],answer:"13M"},
+{q:"श्रृंखला पूरी करें: C2, F5, I11, L17, ?, R31",options:["O23","O25","Q21","Q23"],answer:"O23"},
+{q:"श्रृंखला पूरी करें: E4A, J8E, ?, T16M, Y20Q",options:["N12I","P12I","P10I","N10I"],answer:"P12I"},
+{q:"श्रृंखला में गलत पद पहचानिए: E, G, K, M, P, S",options:["G","K","P","S"],answer:"P"},
+{q:"श्रृंखला में गलत संख्या पहचानिए: 1, 4, 25, 256, 3125, 46656",options:["3125","256","25","46656"],answer:"256"},
+{q:"श्रृंखला पूरी करें: 10, 70, 15, 60, 20, ?",options:["40","45","50","55"],answer:"50"},
+{q:"श्रृंखला पूरी करें: 12, 11, 13, 12, 14, 13, ?",options:["15","12","14","16"],answer:"15"},
+{q:"श्रृंखला पूरी करें: 2, 1, 1/2, 1/4, ?",options:["1/6","1/8","2/8","1/16"],answer:"1/8"},
+{q:"श्रृंखला पूरी करें: JAK, KBL, LCM, MDN, ?",options:["OEP","NEO","MEN","PFQ"],answer:"OEP"},
+{q:"श्रृंखला पूरी करें: CMM, EOO, GQQ, ?, KUU",options:["GRR","GSS","ISS","ITT"],answer:"ISS"},
+{q:"श्रृंखला पूरी करें: BCB, DED, FGF, HIH, ?",options:["JKJ","HJH","IJJ","JHJ"],answer:"JKJ"},
+{q:"यदि 5 − 5 = 24 और 7 − 7 = 48, तो 10 − 10 = ?",options:["80","99","91","56"],answer:"99"},
+{q:"एक व्यक्ति 12 किमी उत्तर की ओर, फिर 15 किमी पूर्व की ओर, फिर 18 किमी दक्षिण की ओर चलता है। प्रारंभिक स्थान से वह कितनी दूरी पर है?",options:["6 किमी","12 किमी","33 किमी","60 किमी"],answer:"6 किमी"},
+{q:"एक व्यक्ति 40 किमी उत्तर, फिर 40 किमी पूर्व, फिर 20 किमी दक्षिण और 20 किमी पश्चिम चलता है। वह प्रारंभिक स्थान से कितनी दूर है?",options:["20 किमी","40 किमी","60 किमी","0 किमी"],answer:"20 किमी"},
+{q:"श्रृंखला पूरी करें: 2, 9, 23, 51, 107, ?",options:["214","216","218","219"],answer:"214"},
+];
+
+
+let currentIndex=0,answers={},visited={};
+let totalSeconds=0,timerInterval,startTime;
+
+/* ---------- START TEST ---------- */
+function startTest(){
+  if(localStorage.getItem("finalResult")){
+    alert("Test already submitted");
+    return;
+  }
+
+  displayName.textContent=candidateName.value;
+  startScreen.style.display="none";
+  topBar.style.display="flex";
+  navBtns.style.display="flex";
+  submitBtn.style.display="block";
+
+  totalSeconds=testTime.value*60;
+  startTime=Date.now();
+  saveProgress();
+  startTimer();
+  renderQuestion();
+}
+
+/* ---------- TIMER ---------- */
+function startTimer(){
+  updateTimer();
+  timerInterval=setInterval(()=>{
+    totalSeconds--;
+    updateTimer();
+    saveProgress();
+    if(totalSeconds<=0)submitQuiz();
+  },1000);
+}
+function updateTimer(){
+  timer.textContent=
+    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
+    String(totalSeconds%60).padStart(2,'0');
+}
+
+/* ---------- QUESTION ---------- */
+function renderQuestion(){
+  visited[currentIndex]=true;
+  const q=questions[currentIndex];
+  quizArea.innerHTML=`
+    <div class="quiz-card">
+      <b>${currentIndex+1}. ${q.q}</b>
+      <div class="options">
+        ${q.options.map(o=>`
+          <label>
+            <input type="radio" name="opt"
+              ${answers[currentIndex]==o?'checked':''}
+              onchange="selectAnswer('${o}')">
+            ${o}
+          </label>
+        `).join("")}
+      </div>
+    </div>`;
+  renderPalette();
+  saveProgress();
+}
+
+function selectAnswer(val){
+  answers[currentIndex]=val;
+  saveProgress();
+  renderPalette();
+}
+
+/* ---------- PALETTE ---------- */
+function renderPalette(){
+  palette.innerHTML="";
+  questions.forEach((_,i)=>{
+    const s=document.createElement("span");
+    s.textContent=i+1;
+    if(visited[i])s.classList.add("visited");
+    if(answers[i])s.classList.add("attempted");
+    s.onclick=()=>{currentIndex=i;renderQuestion()};
+    palette.appendChild(s);
+  });
+}
+
+/* ---------- NAV ---------- */
+function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+
+/* ---------- SAVE IN-PROGRESS ---------- */
+function saveProgress(){
+  localStorage.setItem("inProgress",JSON.stringify({
+    name:displayName.textContent,
+    answers,visited,currentIndex,totalSeconds,startTime
+  }));
+}
+
+/* ---------- SUBMIT ---------- */
+function submitQuiz(){
+  clearInterval(timerInterval);
+  localStorage.removeItem("inProgress");
+
+  let correct=0,attempted=0;
+  let html="<h2>Result</h2>";
+
+  questions.forEach((q,i)=>{
+    if(answers[i])attempted++;
+    if(answers[i]==q.answer)correct++;
+    html+=`
+      <p>${i+1}. ${q.q}<br>
+      Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
+      | Correct: <b>${q.answer}</b></p>`;
+  });
+
+  const timeTaken=Math.floor((Date.now()-startTime)/1000);
+
+  html+=`
+    <hr>
+    Score: ${correct}/${questions.length}<br>
+    Attempted: ${attempted}<br>
+    Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
+    Time Taken: ${Math.floor(timeTaken/60)} min
+  `;
+
+  localStorage.setItem("finalResult",JSON.stringify({
+    name:displayName.textContent,
+    html
+  }));
+
+  quizArea.innerHTML="";
+  navBtns.style.display="none";
+  submitBtn.style.display="none";
+  result.innerHTML=html;
+  clearBtn.style.display="block";
+}
+
+/* ---------- RESTORE ON LOAD ---------- */
+window.onload=function(){
+  const final=localStorage.getItem("finalResult");
+  const progress=localStorage.getItem("inProgress");
+
+  if(final){
+    const d=JSON.parse(final);
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    displayName.textContent=d.name;
+    result.innerHTML=d.html;
+    clearBtn.style.display="block";
+    return;
+  }
+
+  if(progress){
+    const p=JSON.parse(progress);
+    displayName.textContent=p.name;
+    answers=p.answers||{};
+    visited=p.visited||{};
+    currentIndex=p.currentIndex||0;
+    totalSeconds=p.totalSeconds||0;
+    startTime=p.startTime||Date.now();
+
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    navBtns.style.display="flex";
+    submitBtn.style.display="block";
+
+    startTimer();
+    renderQuestion();
+  }
+};
+
+/* ---------- CLEAR ---------- */
+function clearResult(){
+  if(!confirm("Start new test?"))return;
+  localStorage.clear();
+  location.reload();
+}
+</script>
+
+</body>
+</html>
