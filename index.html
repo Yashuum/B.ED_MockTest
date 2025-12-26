@@ -3,109 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Update Coming Soon</title>
+<title>NishuAbhyasi – Dashboard</title>
 
 <style>
+:root{
+  --bg1:#6a11cb;
+  --bg2:#2575fc;
+  --card:#ffffff;
+  --accent:#ff9800;
+  --text:#222;
+}
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family: "Courier New", monospace;
+  font-family:Segoe UI, Arial, sans-serif;
 }
 
 body{
   min-height:100vh;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
   display:flex;
-  align-items:center;
   justify-content:center;
-  background:#0b0b0f;
-  color:#fff;
-  overflow:hidden;
-}
-
-/* CENTER WRAPPER */
-.container{
-  text-align:center;
+  align-items:center;
   padding:20px;
-  max-width:900px;
-  width:100%;
 }
 
-/* GLITCH TITLE */
-.glitch{
-  font-size:clamp(28px,6vw,56px);
-  font-weight:700;
-  position:relative;
-  color:#fff;
+/* MAIN */
+.wrapper{
+  width:100%;
+  max-width:100%;
+} 
+
+/* WELCOME */
+.welcome{
+  background:#fff;
+  border-radius:18px;
+  padding:22px;
+  text-align:center;
   margin-bottom:30px;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
 }
 
-.glitch::before,
-.glitch::after{
-  content:attr(data-text);
-  position:absolute;
-  left:0;
-  width:100%;
-  overflow:hidden;
-  clip:rect(0,0,0,0);
+.welcome .small{
+  font-size:16px;
+  color:#666;
+  margin-bottom:6px;
 }
 
-.glitch::before{
-  color:#ff3d3d;
-  animation:glitchTop 2.5s infinite linear alternate-reverse;
+.welcome .brand{
+  font-size:28px;
+  font-weight:700;
+  color:#222;
 }
 
-.glitch::after{
-  color:#3d9bff;
-  animation:glitchBottom 3s infinite linear alternate-reverse;
+/* DASHBOARD */
+.dashboard{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
 }
 
-@keyframes glitchTop{
-  0%{clip:rect(0,9999px,0,0)}
-  10%{clip:rect(0,9999px,40px,0)}
-  20%{clip:rect(0,9999px,0,0)}
-  100%{clip:rect(0,9999px,50px,0)}
+.column{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
 }
 
-@keyframes glitchBottom{
-  0%{clip:rect(0,9999px,0,0)}
-  15%{clip:rect(30px,9999px,80px,0)}
-  30%{clip:rect(0,9999px,0,0)}
-  100%{clip:rect(60px,9999px,120px,0)}
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  min-height:150px;
 }
 
-/* TYPEWRITER */
-.typewriter{
-  font-size:clamp(14px,3.2vw,20px);
-  line-height:1.8;
-  white-space:pre-line;
-  color:#dcdcdc;
-  min-height:90px;
+.card h3{
+  font-size:18px;
+  margin-bottom:6px;
 }
 
-/* BLINKING CURSOR */
-.cursor{
-  display:inline-block;
-  width:10px;
-  animation:blink 1s infinite;
+.card p{
+  font-size:14px;
+  color:#555;
 }
 
-@keyframes blink{
-  0%,50%,100%{opacity:1}
-  25%,75%{opacity:0}
+.btn{
+  margin-top:14px;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#ff9800,#ff5722);
+  color:#fff;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  text-align:center;
+  text-decoration:none;
+  display:block;
 }
 
-/* SUB FOOTER */
+.btn:hover{opacity:.9}
+
+/* FOOTER */
 .footer{
   margin-top:28px;
+  text-align:center;
   font-size:13px;
-  color:#9a9a9a;
+  color:#fff;
+  opacity:.85;
 }
 
-/* MOBILE OPTIMIZATION */
-@media(max-width:480px){
-  .container{
-    padding:14px;
+/* POPUP BACKDROP */
+.popup-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter:blur(6px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+/* POPUP */
+.popup{
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(14px);
+  border-radius:18px;
+  padding:26px;
+  max-width:420px;
+  width:90%;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .dashboard{
+    grid-template-columns:1fr;
+    gap:24px;
   }
 }
 </style>
@@ -113,36 +154,87 @@ body{
 
 <body>
 
-<div class="container">
-  <div class="glitch" data-text="UPDATE COMING SOON">
-    UPDATE COMING SOON
+<div class="wrapper">
+
+  <div class="welcome">
+    <div class="small">Welcome to</div>
+    <div class="brand">NishuAbhyasi</div>
   </div>
 
-  <div class="typewriter" id="typeText"></div>
-  <span class="cursor">|</span>
+  <div class="dashboard">
+
+    <!-- LEFT COLUMN -->
+    <div class="column">
+
+      <div class="card">
+        <h3>📘 English</h3>
+        <p>Grammar, comprehension and vocabulary practice.</p>
+        <a href="tests/english.html" class="btn">Start Test</a>
+      </div>
+
+      <div class="card">
+        <h3>🧠 Reasoning & Aptitude</h3>
+        <p>Logical reasoning and quantitative aptitude.</p>
+        <a href="tests/reasoning.html" class="btn">Start Test</a>
+      </div>
+
+      <div class="card">
+        <h3>👩‍🏫 Teaching Principles</h3>
+        <p>Pedagogy and teaching methodology questions.</p>
+        <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="column">
+
+      <div class="card">
+        <h3>📝 Hindi</h3>
+        <p>Vyakaran, comprehension and language skills.</p>
+        <a href="tests/hindi.html" class="btn">Start Test</a>
+      </div>
+
+      <div class="card">
+        <h3>🌍 General Awareness</h3>
+        <p>Static GK, current affairs and basics.</p>
+        <a href="tests/General_Awareness.html" class="btn">Start Test</a>
+      </div>
+
+      <div class="card">
+        <h3>💬 Feedback</h3>
+        <p>Share suggestions or report issues.</p>
+        <button class="btn" onclick="openPopup()">Contact Developer</button>
+      </div>
+
+    </div>
+
+  </div>
 
   <div class="footer">
-    NishuAbhyasi • Test Platform
+    © 2025 NishuAbhyasi
+  </div>
+
+</div>
+
+<!-- POPUP -->
+<div class="popup-bg" id="popup" onclick="closePopup()">
+  <div class="popup" onclick="event.stopPropagation()">
+    <h3>Send Your Feedback to Yashwant</h3>
+    <p>This will open your email app</p>
+    <p>
+      <a href="mailto:yashwant@example.com">Open Email App</a>
+    </p>
   </div>
 </div>
 
 <script>
-const text = 
-"Stay tuned, we are working for your test...\n\nKeep practising until then.";
-
-let index = 0;
-const speed = 55; // typing speed (ms)
-const element = document.getElementById("typeText");
-
-function typeEffect(){
-  if(index < text.length){
-    element.textContent += text.charAt(index);
-    index++;
-    setTimeout(typeEffect, speed);
-  }
+function openPopup(){
+  document.getElementById("popup").style.display="flex";
 }
-
-typeEffect();
+function closePopup(){
+  document.getElementById("popup").style.display="none";
+}
 </script>
 
 </body>
