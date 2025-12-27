@@ -36,7 +36,7 @@ body{
   max-width:100%;
 }
 
-/* 🔔 NOTICE BAR */
+/* ===== NOTICE BAR (FINAL STABLE VERSION) ===== */
 .notice-bar{
   background:linear-gradient(135deg,#ff9800,#ff5722);
   color:#fff;
@@ -48,21 +48,22 @@ body{
 }
 
 .notice-track{
-  display:inline-block;
-  white-space:nowrap;
-  animation:scrollNotice 18s linear infinite;
+  display:flex;
+  width:max-content;
+  animation:scrollNotice 22s linear infinite;
 }
 
 .notice-track a{
+  white-space:nowrap;
+  margin-right:80px;
   color:#fff;
   font-weight:600;
   text-decoration:none;
-  margin-right:60px;
 }
 
 @keyframes scrollNotice{
-  from{ transform:translateX(100%); }
-  to{ transform:translateX(-100%); }
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
 }
 
 /* WELCOME */
@@ -185,36 +186,17 @@ body{
 
 <div class="wrapper">
 
-  <!-- 🔔 SCROLLING NOTICE -->
+  <!-- NOTICE BAR -->
   <div class="notice-bar">
-  <div class="notice-track">
-    <a href="tests/all_in_one.html">
-      🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-    </a>
-    <a href="tests/all_in_one.html">
-      🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-    </a>
-    <a href="tests/all_in_one.html">
-      🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-    </a>
-    </a>
-    <a href="tests/all_in_one.html">
-      🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-    </a>
-    </a>
-    <a href="tests/all_in_one.html">
-      🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-    </a>
-    </a>
-    <a href="tests/all_in_one.html">
-      🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-    </a>
-    </a>
-    <a href="tests/all_in_one.html">
-      🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-    </a>
+    <div class="notice-track">
+      <a href="tests/all_in_one.html">
+        🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
+      </a>
+      <a href="tests/all_in_one.html">
+        🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
+      </a>
+    </div>
   </div>
-</div>
 
   <div class="welcome">
     <div class="small">Welcome to</div>
@@ -293,5 +275,3 @@ function closePopup(){
 
 </body>
 </html>
-
-
