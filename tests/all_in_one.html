@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>Mock Test – B.ED by Yash</title>
+
+<style>
+:root{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --primary:#2563eb;
+  --border:#e5e7eb;
+  --success:#16a34a;
+  --danger:#dc2626;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:var(--bg)}
+.container{max-width:900px;margin:auto;padding:16px}
+h1{text-align:center}
+
+/* START */
+.start-screen{text-align:center;margin-top:60px}
+.start-screen input{width:260px;padding:12px;margin:8px 0;border-radius:8px;border:1px solid var(--border)}
+button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary);color:#fff;cursor:pointer}
+
+/* TOP BAR */
+.top-bar{
+  display:none;justify-content:space-between;align-items:center;
+  padding:12px 16px;background:var(--card);
+  border:1px solid var(--border);border-radius:14px;
+  position:sticky;top:10px;z-index:10;margin-bottom:16px
+}
+.timer{font-weight:bold;color:var(--danger)}
+
+/* PALETTE */
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.palette span{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;background:#e5e7eb;cursor:pointer
+}
+.palette .visited{background:#bfdbfe}
+.palette .attempted{background:#86efac}
+
+/* QUESTION */
+.quiz-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:20px
+}
+.options label{
+  display:flex;gap:10px;padding:12px;border:1px solid var(--border);
+  border-radius:10px;margin:10px 0;cursor:pointer
+}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;margin-top:18px}
+
+/* RESULT */
+.result{margin-top:20px}
+.correct{color:var(--success);font-weight:bold}
+.wrong{color:var(--danger);font-weight:bold}
+.clear-btn{background:#dc2626;margin-top:20px}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>Target Test- Hindi 2026</h1>
+
+<div class="start-screen" id="startScreen">
+  <input id="candidateName" placeholder="Enter your name"><br>
+  <input id="testTime" type="number" placeholder="Time (minutes)"><br>
+  <button onclick="startTest()">Start Test</button>
+
+<a href="https://yashuum.github.io/B.ED_MockTest/" style="text-decoration:none;">
+  <button type="button">Go Back to Home</button>
+</a>
+  
+  
+</div>
+
+<div class="top-bar" id="topBar">
+  <div><b>Name:</b> <span id="displayName"></span></div>
+  <div class="timer" id="timer">00:00</div>
+</div>
+
+<div id="palette" class="palette"></div>
+<div id="quizArea"></div>
+
+<div class="nav" id="navBtns" style="display:none">
+  <button onclick="prevQ()">Prev</button>
+  <button onclick="nextQ()">Next</button>
+</div>
+
+<button id="submitBtn" style="display:none;margin-top:20px" onclick="submitQuiz()">Submit Test</button>
+
+<div id="result" class="result"></div>
+<button id="clearBtn" class="clear-btn" style="display:none" onclick="clearResult()">Clear Result & Start New</button>
+
+</div>
+
+<script>
+/* SAMPLE QUESTIONS */
+const questions = [
+ {q:"Time management is an essential skill for students and teachers alike. Proper planning helps in completing tasks on time and reduces stress. When time is managed effectively, individuals can balance academic work, personal life, and extracurricular activities. Poor time management often leads to last-minute pressure and reduced performance.\n\nWho, according to the passage, needs time management skills?",
+ options:["Only students","Only teachers","Students and teachers both","Office workers only"],
+ answer:"C. Students and teachers both"},
+{q:"Time management is an essential skill for students and teachers alike. Proper planning helps in completing tasks on time and reduces stress. When time is managed effectively, individuals can balance academic work, personal life, and extracurricular activities. Poor time management often leads to last-minute pressure and reduced performance.\n\nWhat is one benefit of proper planning mentioned in the passage?",
+ options:["Increases workload","Reduces stress","Creates confusion","Delays completion"],
+ answer:"B. Reduces stress"},
+{q:"Time management is an essential skill for students and teachers alike. Proper planning helps in completing tasks on time and reduces stress. When time is managed effectively, individuals can balance academic work, personal life, and extracurricular activities. Poor time management often leads to last-minute pressure and reduced performance.\n\nWhat happens when time is managed effectively?",
+ options:["Tasks get delayed","Stress increases","Life becomes unbalanced","Different aspects of life are balanced"],
+ answer:"D. Different aspects of life are balanced"},
+{q:"Time management is an essential skill for students and teachers alike. Proper planning helps in completing tasks on time and reduces stress. When time is managed effectively, individuals can balance academic work, personal life, and extracurricular activities. Poor time management often leads to last-minute pressure and reduced performance.\n\nPoor time management leads to:",
+ options:["Better results","Early completion of work","Last-minute pressure and reduced performance","Improved concentration"],
+ answer:"C. Last-minute pressure and reduced performance"},
+{ q:"Time management is an essential skill for students and teachers alike. Proper planning helps in completing tasks on time and reduces stress. When time is managed effectively, individuals can balance academic work, personal life, and extracurricular activities. Poor time management often leads to last-minute pressure and reduced performance.\n\nWhich of the following is NOT mentioned as an area balanced through effective time management?",
+ options:["Academic work","Personal life","Extracurricular activities","Financial activities"],
+ answer:"D. Financial activities"},
+{q:"Education plays a vital role in shaping an individual’s personality and character. It helps people develop critical thinking and decision-making skills. A good education system does not focus only on academic knowledge but also on moral values, discipline, and social responsibility. Teachers play a key role in guiding students and creating a positive learning environment.\n\nWhat is the main idea of the passage?",
+ options:["Education is only about academic success","Teachers are responsible for examinations","Education helps in overall personality development","Moral values are less important in education"],
+ answer:"C. Education helps in overall personality development"},
+{ q:"Education plays a vital role in shaping an individual’s personality and character. It helps people develop critical thinking and decision-making skills. A good education system does not focus only on academic knowledge but also on moral values, discipline, and social responsibility. Teachers play a key role in guiding students and creating a positive learning environment.\n\nAccording to the passage, what is the role of teachers?",
+ options:["To conduct exams only","To focus only on syllabus completion","To guide students and create a positive learning environment","To enforce strict discipline"],
+ answer:"C. To guide students and create a positive learning environment"},
+ {q:"Fill in the blank:\n\nShe ______ already completed her assignment before the deadline.",
+ options:["has","have","had","having"],
+ answer:"C. had"},
+{q:"Fill in the blank:\n\nNeither of the boys ______ present in the class today.",
+ options:["are","were","is","have"],
+ answer:"C. is"},
+{q:"Spot the error:\n\nHe did not knew the answer to the question.",
+ options:["did","not knew","the answer","to the question"],
+ answer:"B. not knew"},
+{q:"Fill in the blank:\n\nThe teacher, along with the students, ______ going to the seminar.",
+ options:["are","were","is","have"],
+ answer:"C. is"},
+{q:"Spot the error:\n\nShe is one of the smartest student in the class.",
+ options:["She is","one of the smartest","student","in the class"],
+ answer:"C. student"},{q:"Choose the correct synonym of the word:\n\n'Brief'",
+ options:["Long","Short","Detailed","Expanded"],
+ answer:"B. Short"},
+{q:"Choose the correct meaning of the idiom:\n\n'To hit the nail on the head'",
+ options:["To miss the point","To do physical work","To say something exactly right","To hit someone"],
+ answer:"C. To say something exactly right"},
+{q:"Choose the correct antonym of the word:\n\n'Ancient'",
+ options:["Old","Historic","Modern","Antique"],
+ answer:"C. Modern"},
+{q:"Choose the correct one-word substitution:\n\n'A person who loves mankind'",
+ options:["Philanthropist","Pessimist","Optimist","Misanthrope"],
+ answer:"A. Philanthropist"},
+{q:"Choose the correct meaning of the idiom:\n\n'Once in a blue moon'",
+ options:["Very frequently","Never","Very rarely","At night"],
+ answer:"C. Very rarely"},
+{q:"Choose the correct synonym of the word:\n\n'Courage'",
+ options:["Fear","Bravery","Weakness","Danger"],
+ answer:"B. Bravery"},
+{q:"Choose the correct meaning of the idiom:\n\n'To burn the midnight oil'",
+ options:["To waste time","To sleep late","To study or work late at night","To light a lamp"],
+ answer:"C. To study or work late at night"},
+{q:"Choose the correct antonym of the word:\n\n'Expand'",
+ options:["Increase","Develop","Enlarge","Contract"],
+ answer:"D. Contract"},
+{q:"Choose the correct one-word substitution:\n\n'A place where books are kept'",
+ options:["Laboratory","Auditorium","Library","Gallery"],
+ answer:"C. Library"},
+{q:"Choose the correct meaning of the idiom:\n\n'At sixes and sevens'",
+ options:["In confusion","Very orderly","Very angry","Very happy"],
+ answer:"A. In confusion"},
+ // Passage 1 - Q1
+{q:"अनुशासन जीवन में सफलता का एक महत्वपूर्ण गुण है। यह व्यक्ति को समय का सही उपयोग करना सिखाता है और उसके व्यवहार में संतुलन लाता है। अनुशासित व्यक्ति अपने लक्ष्य को स्पष्ट रूप से निर्धारित करता है और उन्हें प्राप्त करने के लिए निरंतर प्रयास करता है।\n\nगद्यांश का मुख्य भाव क्या है?",
+ options:["अनुशासन समय की बर्बादी है","अनुशासन से जीवन असंतुलित होता है","अनुशासन सफलता का महत्वपूर्ण गुण है","अनुशासन केवल विद्यार्थियों के लिए है"],
+ answer:"C. अनुशासन सफलता का महत्वपूर्ण गुण है"},
+// Passage 1 - Q2
+{q:"अनुशासन जीवन में सफलता का एक महत्वपूर्ण गुण है। यह व्यक्ति को समय का सही उपयोग करना सिखाता है और उसके व्यवहार में संतुलन लाता है। अनुशासित व्यक्ति अपने लक्ष्य को स्पष्ट रूप से निर्धारित करता है और उन्हें प्राप्त करने के लिए निरंतर प्रयास करता है।\n\nअनुशासित व्यक्ति क्या करता है?",
+ options:["लक्ष्य निर्धारित नहीं करता","केवल सोचता है","लक्ष्य तय कर निरंतर प्रयास करता है","दूसरों पर निर्भर रहता है"],
+ answer:"C. लक्ष्य तय कर निरंतर प्रयास करता है"},
+// Passage 2 - Q1
+{q:"परिश्रम सफलता की कुंजी है। जो व्यक्ति निरंतर मेहनत करता है, वही जीवन में आगे बढ़ता है। कठिनाइयाँ उसे कमजोर नहीं बल्कि और मजबूत बनाती हैं।\n\nगद्यांश का मुख्य संदेश क्या है?",
+ options:["परिश्रम से कठिनाइयाँ बढ़ती हैं","सफलता केवल भाग्य से मिलती है","परिश्रम से सफलता मिलती है","कठिनाइयाँ असफलता लाती हैं"],
+ answer:"C. परिश्रम से सफलता मिलती है"},
+// Passage 2 - Q2
+{q:"परिश्रम सफलता की कुंजी है। जो व्यक्ति निरंतर मेहनत करता है, वही जीवन में आगे बढ़ता है। कठिनाइयाँ उसे कमजोर नहीं बल्कि और मजबूत बनाती हैं।\n\nकठिनाइयाँ व्यक्ति को कैसा बनाती हैं?",
+ options:["कमजोर","डरपोक","मजबूत","असफल"],
+ answer:"C. मजबूत"},
+// Shuffled Non-Passage Questions
+{q:"मुहावरे का सही अर्थ चुनिए:\n\n‘हाथ-पाँव फूलना’",
+ options:["खुश होना","घबराना","आराम करना","थक जाना"],
+ answer:"B. घबराना"},
+{q:"रिक्त स्थान की पूर्ति करें:\n\nविद्या ______ को विनम्र बनाती है।",
+ options:["व्यक्ति","मनुष्य","मन","विद्यार्थी"],
+ answer:"B. मनुष्य"},
+{q:"त्रुटि पहचानें:\n\nराम और श्याम विद्यालय जा रहा है।",
+ options:["राम और श्याम","विद्यालय","जा रहा","है"],
+ answer:"C. जा रहा"},
+{q:"निम्नलिखित में से ‘ज्ञान’ का पर्यायवाची शब्द चुनिए:",
+ options:["अज्ञान","बुद्धि","विद्या","मूर्खता"],
+ answer:"C. विद्या"},
+{q:"एक शब्द में व्यक्त कीजिए:\n\nजो सत्य बोलता हो",
+ options:["ईमानदार","सत्यवादी","धार्मिक","वक्तव्य"],
+ answer:"B. सत्यवादी"},
+{q:"रिक्त स्थान की पूर्ति करें:\n\nवह प्रतिदिन समय पर विद्यालय ______ है।",
+ options:["जाता","जाती","जाते","जाओ"],
+ answer:"A. जाता"},
+{q:"मुहावरे का सही अर्थ चुनिए:\n\n‘दाँत खट्टे करना’",
+ options:["हार मान लेना","मुँह बंद करना","पराजित कर देना","डर जाना"],
+ answer:"C. पराजित कर देना"},
+{q:"त्रुटि पहचानें:\n\nहमें अपने माता-पिता का आदर करनी चाहिए।",
+ options:["हमें","अपने माता-पिता का","आदर","करनी चाहिए"],
+ answer:"D. करनी चाहिए"},
+{q:"निम्नलिखित में से ‘आरंभ’ का विलोम शब्द चुनिए:",
+ options:["प्रारंभ","शुरुआत","समाप्ति","उद्घाटन"],
+ answer:"C. समाप्ति"},
+{q:"रिक्त स्थान की पूर्ति करें:\n\nसच्चा मित्र ______ में साथ देता है।",
+ options:["सुख","दुख","धन","समय"],
+ answer:"B. दुख"},
+{q:"निम्नलिखित में से ‘परिश्रमी’ का पर्यायवाची शब्द चुनिए:",
+ options:["आलसी","मेहनती","कमजोर","निर्भर"],
+ answer:"B. मेहनती"},
+{q:"त्रुटि पहचानें:\n\nमुझे यह पुस्तकें बहुत पसंद है।",
+ options:["मुझे","यह पुस्तकें","बहुत पसंद","है"],
+ answer:"B. यह पुस्तकें"},
+{q:"निम्नलिखित में से ‘असफल’ का विलोम शब्द चुनिए:",
+ options:["विफल","सफल","कमजोर","निष्क्रिय"],
+ answer:"B. सफल"},
+{q:"एक शब्द में व्यक्त कीजिए:\n\nजो दूसरों का भला करता हो",
+ options:["स्वार्थी","परोपकारी","क्रूर","निर्दयी"],
+ answer:"B. परोपकारी"},
+{q:"मुहावरे का सही अर्थ चुनिए:\n\n‘आँखों का तारा होना’",
+ options:["परेशान करना","बहुत प्रिय होना","धोखा देना","नजर लगना"],
+ answer:"B. बहुत प्रिय होना"},
+{q:"रिक्त स्थान की पूर्ति करें:\n\nविद्यार्थियों को अपने ______ का सम्मान करना चाहिए।",
+ options:["गुरु","गुरुजन","गुरुओं","गुरुजी"],
+ answer:"B. गुरुजन"},
+{q:"त्रुटि पहचानें:\n\nवह कल से यहाँ रह रही था।",
+ options:["वह","कल से","यहाँ","रह रही था"],
+ answer:"D. रह रही था"},
+ {q:"एक क्लब में 108 सदस्य हैं। उनमें से दो-तिहाई पुरुष हैं तथा शेष महिलाएँ हैं। 9 (नौ) महिला सदस्यों को छोड़कर शेष सभी सदस्य विवाहित हैं। क्लब में विवाहित महिलाएँ कितनी हैं?",
+ options:["20","24","27","30"],
+ answer:"C. 27"}, // Q50 → (c)
+{q:"एक घड़ी नौ बजकर चौदह मिनट (9 बजकर 14 मिनट) का समय दिखाती है। घड़ी की घंटे वाली सुई तथा मिनट वाली सुई की स्थितियों में एक-दूसरे से अदला-बदली कर दी जाती है। घड़ी द्वारा दिखाया जाने वाला नया समय निम्नलिखित में से किस एक के निकटतम है?",
+ options:["तीन बजने में बारह मिनट","तीन बजने में तेरह मिनट","तीन बजने में चौदह मिनट","तीन बजने में पन्द्रह मिनट"],
+ answer:"D. तीन बजने में पन्द्रह मिनट"}, // Q51 → (d)
+{q:"छः पुस्तकें A, B, C, D, E और F को पार्श्व में एक कतार में रखा जाता है। B, C और E नीले आवरण की हैं और अन्य पुस्तकें लाल आवरण की हैं। केवल D और F नई पुस्तकें हैं और शेष सभी पुरानी हैं। A, C और D कानूनी रिपोर्ट हैं और अन्य गजेटियर हैं। कौन-सी पुस्तक, नई लाल आवरण वाली कानूनी रिपोर्ट है?",
+ options:["A","B","C","D"],
+ answer:"D. D"}, // Q52 → (d)
+{q:"निम्नलिखित में से कौन-सी संख्या 2 व 7 से विभाज्य है?",
+ options:["364","370","302","358"],
+ answer:"A. 364"}, // Q14 → (a)
+{q:"50 छात्रों की एक कक्षा में 18 संगीत लेते हैं, 26 कला तथा 2 न तो कला और न ही संगीत लेते हैं। कक्षा में कितने छात्र न तो संगीत और न ही कला लेते हैं?",
+ options:["6","8","16","24"],
+ answer:"B. 8"}, // Q15 → (b)
+{q:"उस संख्या को चुनिए, जिसे प्रश्नवाचक चिह्न (?) के स्थान पर लिखा जाएगा। 75% of 220 = ? × 15",
+ options:["165","110","11","1"],
+ answer:"C. 11"}, // Q16 → (c)
+{q:"एक कक्षा में 64 छात्र हैं। जिसमें कमल को छोड़कर, अपने सामने शिक्षा की रैंक से 6 स्थान नीचे है (नीचे की ओर), जबकि अमित से 59वीं रैंक पर है। यदि देखा जाए, तो कक्षा में कमल की रैंक क्या होगी?",
+ options:["12वीं","16वीं","25वीं","19वीं"],
+ answer:"A. 12वीं"}, // Q17 → (a)
+{q:"10 छात्रों वाले समूह को उनकी आयु के अनुसार किसी पंक्ति में बैठाया गया है। रोहन, सुरभा से छठे स्थान पर बैठा है और सुरभा, सोहन से बाएँ तीसरे स्थान पर बैठी है। उनके कितने छात्र बैठे हैं?",
+ options:["3","2","4","5"],
+ answer:"A. 3"}, // Q18 → (a)
+{q:"यदि किसी परीक्षा में राम का स्थान ऊपर से सोलहवाँ और नीचे से पन्द्रहवाँ है, तो बताइए कि कक्षा में कितने विद्यार्थी हैं?",
+ options:["30","31","32","33"],
+ answer:"A. 30"}, // Q19 → (a)
+{q:"अक्षरों की एक पंक्ति में, एक अक्षर बाएँ और दाएँ से समान दूरी पर है और दाएँ से 12वें स्थान पर है। पंक्ति में कुल कितने अक्षर हैं?",
+ options:["15","16","17","18"],
+ answer:"B. 16"}, // Q20 → (b) 
+{q:"लड़कों की एक पंक्ति में, राहुल ऊपर से 19वाँ है तथा अजय नीचे से 21वाँ है। वे अपना स्थान आपस में बदल लेते हैं। अजय अब नीचे से 28वाँ हो जाता है। पंक्ति में कुल कितने लड़के हैं?",
+ options:["47","46","45","48"],
+ answer:"B. 46"}, // Q21 → (b)
+{q:"एक पंक्ति में पाँच घर A, B, C, D और E हैं। A, B के दाएँ है और C के बाएँ है। E, A के दाएँ है। B, D के दाएँ है। बताइए कि कौन-सा घर मध्य में है?",
+ options:["E","A","B","D"],
+ answer:"B. A"}, // Q22 → (b)
+{q:"चार मित्र वृत्ताकार बैठकर ताश खेल रहे थे। राम के दाएँ शंकर बैठा था और अरविन्द की बाएँ गोपाल बैठा था। निम्नलिखित में से कौन-से युगल खेल में भागीदार थे?",
+ options:["राम और अरविन्द","गोपाल और शंकर","राम और शंकर","गोपाल और राम"],
+ answer:"D. गोपाल और राम"}, // Q23 → (d)
+{q:"छः दोस्त P, Q, R, S, T और U वृत्ताकार मेज के चारों ओर इस तरह बैठे हैं कि सब मेज के केंद्र की ओर मुख किए हैं। S के दाएँ और दूसरे स्थान पर P बैठा है। T के ठीक दाएँ और Q बैठा है। R और U के बीच में P बैठा है। R के ठीक दाएँ S बैठा है। P और S के बीच में कौन बैठा है?",
+ options:["R","T","U","Q"],
+ answer:"A. R"}, // Q24 → (a)
+{q:"चार मित्र कैरम खेल रहे हैं और कैरम बोर्ड के चारों ओर बैठे हैं। B, C के दाएँ और D, A के दाएँ है। C के बाएँ और कौन है?",
+ options:["B","A","आँकड़े अपर्याप्त","D"],
+ answer:"B. A"}, // Q25 → (b)
+{q:"निर्देश (प्र.सं. 26-29): नीचे दी गई जानकारी को ध्यानपूर्वक पढ़िए। P, Q, R, S, T, V और W एक वृत्त के चारों ओर केंद्र की ओर मुख करके बैठे हैं। R, V के बाएँ तीसरा है जो T के बाएँ दूसरा है। W, P के बाएँ दूसरा है। T और V पास-पास नहीं हैं। S, W का निकटस्थ पड़ोसी है।\n\nR के दाएँ कौन दूसरा है?",
+ options:["T","W","Q","आँकड़े अपर्याप्त"],
+ answer:"C. Q"}, // Q26 → (c)
+{q:"उपरोक्त व्यवस्था के अनुसार, Q के दाएँ कौन तीसरा है?",
+ options:["T","P","R","आँकड़े अपर्याप्त"],
+ answer:"A. T"}, // Q27 → (a)
+{q:"निम्नलिखित में से किस जोड़े में पहला व्यक्ति दूसरे व्यक्ति के एकदम दाएँ को बैठा है?",
+ options:["PR","PT","RW","QV"],
+ answer:"B. PT"}, // Q28 → (b)
+{q:"निम्नलिखित में से कौन-सा जोड़ा R का निकटस्थ पड़ोसी है?",
+ options:["PT","PQ","WT","PW"],
+ answer:"D. PW"}, // Q29 → (d)
+ {q:"‘प्रवाह’ का सम्बन्ध ‘नदी’ से उसी प्रकार है जैसे ‘स्थिर’ का सम्बन्ध है:", options:["धारा से","लहर से","वर्षा से","तालाब से"], answer:"तालाब से"},
+{q:"आहार में नमक का मुख्य उपयोग है:", options:["खाना पकाने की प्रक्रिया को आसान बनाना","स्वाद बढ़ाना","पाचन क्रिया हेतु आवश्यक थोड़ी मात्रा में हाइड्रोक्लोरिक एसिड का उत्पादन करना","पानी में खाद्य कणों की घुलनशीलता को बढ़ाना"], answer:"पाचन क्रिया हेतु आवश्यक थोड़ी मात्रा में हाइड्रोक्लोरिक एसिड का उत्पादन करना"},
+{q:"किस कवक को ‘ग्रीन मोल्ड’ के नाम से जाना जाता है?", options:["एस्परजिलस","सेक्रमोनीस","राइजोफस","पेनिसिलियम"], answer:"पेनिसिलियम"},
+{q:"एल.डी.टी. का उपयोग किस बीमारी के लिए किया जाता है?", options:["क्षय रोग","कुष्ठ रोग","डिफ्थीरिया","पोलियो"], answer:"क्षय रोग"},
+{q:"कौन-सा पदार्थ ‘ब्लैक फूट रोग’ का कारण बन सकता है?", options:["कैडमियम","पारा","आर्सेनिक","तांबा"], answer:"आर्सेनिक"},
+{q:"खगोलीय दूरी की इकाई क्या है?", options:["वेबर","एंगस्ट्रॉम","प्रकाश वर्ष","लक्स"], answer:"प्रकाश वर्ष"},
+{q:"विद्युत स्थिरांक की माप है:", options:["गैर-धात्विक गुण","धात्विक गुण","मूल गुण","इनमें से कोई नहीं"], answer:"धात्विक गुण"},
+{q:"साधारण सूक्ष्मदर्शी में प्रयुक्त लेंस है:", options:["अवतल","उत्तल","बेलनाकार","इनमें से कोई नहीं"], answer:"उत्तल"},
+{q:"मनुष्य में विषाक्त नाइट्रोजनयुक्त अपशिष्ट और अतिरिक्त पानी का उत्सर्जन होता है:", options:["फेफड़ों द्वारा","परिसंचरण द्वारा","मूत्र द्वारा","पसीने द्वारा"], answer:"मूत्र द्वारा"},
+{q:"पहाड़ियों के लिए सार्वभौमिक रूप से स्वीकृत रंग है:", options:["ग्रे","स्नो व्हाइट","गहरा हरा","भूरा"], answer:"गहरा हरा"},
+{q:"बोलोमीटर का उपयोग मापने के लिए किया जाता है:", options:["आवृत्ति","तापमान","वेग","तरंगदैर्ध्य"], answer:"तापमान"},
+{q:"एक जेट इंजन किसके संरक्षण के सिद्धान्त पर कार्य करता है?", options:["द्रव्यमान का","कोणीय वेग","ऊर्जा द्रव्यमान","रेखिक संवेग"], answer:"रेखिक संवेग"},
+{q:"यदि कोई लिफ्ट त्वरण के साथ ऊपर जा रही है, तो वस्तु का आभासी वजन होगा:", options:["वास्तविक वजन से अधिक या कम","वास्तविक वजन के बराबर","वास्तविक वजन से कम","वास्तविक वजन से अधिक"], answer:"वास्तविक वजन से अधिक"},
+{q:"तरल धातु है:", options:["टिन","मैग्नीशियम","पारा","सोडियम"], answer:"पारा"},
+{q:"निम्नलिखित में से कौन-सा प्राथमिक रंग नहीं है?", options:["लाल","नीला","हरा","पीला"], answer:"पीला"},
+{q:"कौन-सी रक्त कोशिकाएँ शरीर की ‘सैनिक’ कहलाती हैं?", options:["डब्ल्यू. बी. सी.","प्लेटलेट्स","आर. बी. सी.","ये सभी"], answer:"डब्ल्यू. बी. सी."},
+{q:"यदि किसी व्यक्ति की रक्त वाहिकाओं की क्रिया कम हो जाती है, तो उसका रक्तचाप:", options:["कम होगा","बढ़ेगा","वही रहेगा","शून्य हो जाएगा"], answer:"बढ़ेगा"},
+{q:"निर्णय लेने का दायरा क्या है?", options:["संगठन","प्रबन्धन","नियंत्रण","प्रशासन"], answer:"प्रबन्धन"},
+{q:"क्या बुद्धिमान माता-पिता के बच्चे हमेशा पढ़ाई में अव्वल आते हैं?", options:["नहीं","हाँ","ईश्वर पर निर्भर","मनोविज्ञान"], answer:"नहीं"},
+  {q:"भारत का संविधान कब लागू हुआ?",
+ options:["15 अगस्त 1947","26 जनवरी 1950","2 अक्टूबर 1950","26 नवंबर 1949"],
+ answer:"B. 26 जनवरी 1950"},
+{q:"बिहार की राजधानी कौन-सी है?",
+ options:["गया","भागलपुर","पटना","मुजफ्फरपुर"],
+ answer:"C. पटना"},
+{q:"भारतीय संविधान का जनक किसे कहा जाता है?",
+ options:["महात्मा गांधी","जवाहरलाल नेहरू","डॉ. भीमराव अंबेडकर","राजेन्द्र प्रसाद"],
+ answer:"C. डॉ. भीमराव अंबेडकर"},
+{q:"भारत का राष्ट्रीय पशु कौन है?",
+ options:["हाथी","शेर","बाघ","घोड़ा"],
+ answer:"C. बाघ"},
+{q:"गंगा नदी का उद्गम स्थल कहाँ है?",
+ options:["हरिद्वार","गंगोत्री","ऋषिकेश","प्रयागराज"],
+ answer:"B. गंगोत्री"},
+{q:"भारत में पंचवर्षीय योजनाओं की शुरुआत किस वर्ष हुई?",
+ options:["1947","1950","1951","1952"],
+ answer:"C. 1951"},
+{q:"संयुक्त राष्ट्र संघ की स्थापना कब हुई?",
+ options:["1942","1945","1947","1950"],
+ answer:"B. 1945"},
+{q:"भारत का राष्ट्रीय खेल कौन-सा है?",
+ options:["क्रिकेट","हॉकी","कबड्डी","फुटबॉल"],
+ answer:"B. हॉकी"},
+{q:"भारत के प्रथम राष्ट्रपति कौन थे?",
+ options:["डॉ. राधाकृष्णन","डॉ. राजेन्द्र प्रसाद","जवाहरलाल नेहरू","डॉ. अंबेडकर"],
+ answer:"B. डॉ. राजेन्द्र प्रसाद"},
+{q:"भारत का सबसे बड़ा राज्य क्षेत्रफल के अनुसार कौन-सा है?",
+ options:["महाराष्ट्र","उत्तर प्रदेश","मध्य प्रदेश","राजस्थान"],
+ answer:"D. राजस्थान"},
+{q:"मानव शरीर में रक्त को शुद्ध करने वाला अंग कौन-सा है?",
+ options:["हृदय","फेफड़े","यकृत","गुर्दे"],
+ answer:"D. गुर्दे"},
+{q:"संविधान की प्रस्तावना में भारत को किस रूप में वर्णित किया गया है?",
+ options:["लोकतांत्रिक","समाजवादी","पंथनिरपेक्ष","उपरोक्त सभी"],
+ answer:"D. उपरोक्त सभी"},
+{q:"बिहार राज्य का गठन कब हुआ?",
+ options:["1912","1935","1947","1956"],
+ answer:"A. 1912"},
+{q:"भारत की संसद के कितने सदन हैं?",
+ options:["एक","दो","तीन","चार"],
+ answer:"B. दो"},
+{q:"पृथ्वी का सबसे निकटतम ग्रह कौन-सा है?",
+ options:["मंगल","बुध","शुक्र","बृहस्पति"],
+ answer:"B. बुध"},
+{q:"हरित क्रांति का संबंध किससे है?",
+ options:["उद्योग","कृषि","शिक्षा","स्वास्थ्य"],
+ answer:"B. कृषि"},
+{q:"भारत का राष्ट्रीय पर्व कौन-सा है?",
+ options:["गणतंत्र दिवस","स्वतंत्रता दिवस","गांधी जयंती","उपरोक्त सभी"],
+ answer:"D. उपरोक्त सभी"},
+{q:"विश्व पर्यावरण दिवस कब मनाया जाता है?",
+ options:["5 जून","22 अप्रैल","1 मई","15 अगस्त"],
+ answer:"A. 5 जून"},
+{q:"भारत में चुनाव आयोग एक ______ संस्था है।",
+ options:["न्यायिक","संवैधानिक","निजी","सहकारी"],
+ answer:"B. संवैधानिक"},
+{q:"मानव शरीर में सबसे बड़ी ग्रंथि कौन-सी है?",
+ options:["अग्न्याशय","यकृत","थायरॉयड","पिट्यूटरी"],
+ answer:"B. यकृत"},
+{q:"बिहार का प्रसिद्ध लोकनृत्य कौन-सा है?",
+ options:["गरबा","भांगड़ा","जट-जटिन","ओडिसी"],
+ answer:"C. जट-जटिन"},
+{q:"भारतीय रिजर्व बैंक की स्थापना कब हुई?",
+ options:["1935","1947","1950","1927"],
+ answer:"A. 1935"},
+{q:"भारत का राष्ट्रीय पक्षी कौन-सा है?",
+ options:["तोता","मोर","कौआ","हंस"],
+ answer:"B. मोर"},
+{q:"जनसंख्या की दृष्टि से भारत का सबसे बड़ा राज्य कौन-सा है?",
+ options:["महाराष्ट्र","बिहार","उत्तर प्रदेश","पश्चिम बंगाल"],
+ answer:"C. उत्तर प्रदेश"},
+{q:"विश्व साक्षरता दिवस कब मनाया जाता है?",
+ options:["5 सितंबर","8 सितंबर","14 नवंबर","21 जून"],
+ answer:"B. 8 सितंबर"},
+ {q:"एक शिक्षक का मुख्य कार्य है:", options:["अपने छात्रों को समझना","अपने विषय में निपुणता","शिक्षण कौशल प्राप्त करना","उपरोक्त सभी"], answer:"उपरोक्त सभी"},
+{q:"बच्चों की गलतियाँ:", options:["बार-बार अभ्यास करने के लिए कहकर तुरंत सुधार देनी चाहिए","अधिगम का एक भाग हैं तथा उनके विचारों में एक अंतर्दृष्टि देती हैं","शिक्षण-अधिगम प्रक्रिया में महत्वहीन हैं","प्रदर्शित करती हैं कि बच्चे कितने लापरवाह हैं"], answer:"अधिगम का एक भाग हैं तथा उनके विचारों में एक अंतर्दृष्टि देती हैं"},
+{q:"अध्यापन की सर्वोत्तम प्रणाली है:", options:["जानकारी प्रदान करना","छात्रों से पुस्तक पढ़ने के लिए कहना","उचित संदर्भ सामग्री का सुझाव देना","चर्चा प्रारम्भ करने के पहले प्रश्न और उसमें भाग लेना"], answer:"चर्चा प्रारम्भ करने के पहले प्रश्न और उसमें भाग लेना"},
+{q:"एक ऐसी वस्तु जिसमें से कोई प्रकाश-किरण गुजर नहीं सकती, कहलाती है:", options:["पारदर्शी","पारगम्य","उत्तल","अपारदर्शी"], answer:"अपारदर्शी"},
+{q:"पर्यावरण अध्ययन पाठ्यक्रम बच्चों की समग्र शिक्षा का कारण बन सकता है, यदि यह है:", options:["एकीकृत","समावेशी","विषयगत","ये सभी"], answer:"ये सभी"},
+{q:"प्रभावी और स्थायी शिक्षा ग्रहण करने के लिए शिक्षक में होना चाहिए:", options:["केवल विषय ज्ञान करने की योग्यता","केवल उत्कृष्ट का अभिप्रेरक स्तर","केवल शिक्षा ग्रहण के अवसर","योग्यता और प्रेरणा का वांछित स्तर"], answer:"योग्यता और प्रेरणा का वांछित स्तर"},
+{q:"कक्षा समावेशन होना चाहिए:", options:["शिक्षक-केन्द्रित","छात्र-केन्द्रित","सामग्री-केन्द्रित","पाठ्यपुस्तक-केन्द्रित"], answer:"छात्र-केन्द्रित"},
+{q:"एक अध्यापक के रूप में कक्षा में आपकी प्रभावी उपस्थिति सुनिश्चित करने के लिए सर्वोत्तम विकल्प है:", options:["सहयोगी संसाधनों का प्रयोग","आत्मात्मक कथन करना","सुस्पष्ट भूमिका का अभिव्यक्तिकरण","प्रभावकारी होना"], answer:"सुस्पष्ट भूमिका का अभिव्यक्तिकरण"},
+{q:"भारत की बड़ी-बड़ी नदियों में जल प्रदूषण का सबसे बड़ा स्रोत क्या है?", options:["असंसाधित मलजल","कृषि सम्बन्धी जल प्रवाह","अतिविकसित लघु उद्योग","धार्मिक रीति-रिवाज"], answer:"असंसाधित मलजल"},
+{q:"निम्नलिखित में से कौन-सा शिक्षण का पूर्व-निर्धारित स्तर नहीं है?", options:["स्मरण","बोध","परावर्तन","विश्लेषण"], answer:"परावर्तन"},
+{q:"बंगाल की खाड़ी का तटवर्ती राज्य/केंद्रशासित प्रदेश है:", options:["ओडिशा","कर्नाटक","केरल","तेलंगाना"], answer:"ओडिशा"},
+{q:"सतत विकास की एक प्रक्रिया है, जहाँ व्यक्ति को करना पड़ता है:", options:["स्व-प्रयास","अभिभावकों का योगदान","शिक्षकों का योगदान","इनमें से कोई नहीं"], answer:"स्व-प्रयास"},
+{q:"यूनेस्को में ‘E’ का अर्थ क्या है?", options:["इकोनॉमिक","एनवायरनमेंट","इंटरनेशनल","एजुकेशनल"], answer:"एजुकेशनल"},
+{q:"समाचार-पत्र एक …… अभिकरण है।", options:["औपचारिक","अनौपचारिक","व्यक्तिगत","इनमें से कोई नहीं"], answer:"अनौपचारिक"},
+{q:"…… विद्यालय को समाज का दर्पण मानते हैं।", options:["आदर्शवादी","प्राकृतिकवादी","प्रयोजनवादी","मानवतावादी"], answer:"मानवतावादी"},
+{q:"‘दर्शन और शिक्षा एक ही सिक्के के दो पहलू हैं’ किसने कहा है?", options:["डेवी","रॉस","एडम्स","सुकरात"], answer:"रॉस"},
+{q:"प्रबंधन का प्रत्यक्ष नियंत्रण होता है:", options:["राज्य निकायों पर","केन्द्र निकायों पर","‘a’ और ‘b’ दोनों","इनमें से कोई नहीं"], answer:"‘a’ और ‘b’ दोनों"},
+{q:"शिक्षण की तकनीक है:", options:["चित्रण","प्रदर्शन","स्पष्टीकरण","ये सभी"], answer:"ये सभी"},
+{q:"शिक्षण-अधिगम के प्रबंधन की प्रक्रिया है:", options:["आयोजन","योजना","निर्णयन","ये सभी"], answer:"ये सभी"},
+{q:"शैक्षिक प्रबंधन का मुख्य दृष्टिकोण है:", options:["सामाजिक न्याय","सामाजिक मांग","मानवशक्ति विकास","ये सभी"], answer:"ये सभी"},
+  {q:"कक्षा में कुछ विद्यार्थी लगातार बातचीत कर रहे हैं और पढ़ाई में बाधा आ रही है। शिक्षक के लिए सबसे उपयुक्त कदम क्या होगा?",
+ options:["पूरी कक्षा को दंड देना","विद्यार्थियों को नजरअंदाज करना","शांतिपूर्वक समझाकर ध्यान आकर्षित करना","कक्षा छोड़ देना"],
+ answer:"C. शांतिपूर्वक समझाकर ध्यान आकर्षित करना"},
+{q:"एक शिक्षक चाहता है कि विद्यार्थी सीखने में रुचि लें। इसके लिए सबसे प्रभावी तरीका क्या है?",
+ options:["केवल पाठ्यपुस्तक पढ़ाना","डर का माहौल बनाना","गतिविधि आधारित शिक्षण अपनाना","अधिक गृहकार्य देना"],
+ answer:"C. गतिविधि आधारित शिक्षण अपनाना"},
+{q:"विद्यालय में सकारात्मक वातावरण बनाने के लिए सबसे आवश्यक तत्व क्या है?",
+ options:["कठोर नियम","अनुशासन और सहयोग","केवल भवन","केवल परीक्षा परिणाम"],
+ answer:"B. अनुशासन और सहयोग"},
+{q:"एक विद्यार्थी बार-बार गलत उत्तर देता है। शिक्षक को क्या करना चाहिए?",
+ options:["उसे शर्मिंदा करना","दंड देना","उत्साहित कर मार्गदर्शन देना","अनदेखा करना"],
+ answer:"C. उत्साहित कर मार्गदर्शन देना"},
+{q:"प्रभावी शिक्षक-विद्यार्थी संबंध का आधार क्या है?",
+ options:["डर","विश्वास","कठोरता","प्रतिस्पर्धा"],
+ answer:"B. विश्वास"},
+{q:"विद्यालय में प्रधानाचार्य की सबसे महत्वपूर्ण भूमिका क्या है?",
+ options:["केवल प्रशासनिक कार्य","केवल पढ़ाना","शैक्षणिक नेतृत्व प्रदान करना","केवल अनुशासन लागू करना"],
+ answer:"C. शैक्षणिक नेतृत्व प्रदान करना"},
+{q:"कक्षा में दो विद्यार्थियों के बीच विवाद हो गया है। शिक्षक को क्या करना चाहिए?",
+ options:["दोनों को निलंबित करना","एक का पक्ष लेना","दोनों की बात सुनकर समाधान करना","मामले को नजरअंदाज करना"],
+ answer:"C. दोनों की बात सुनकर समाधान करना"},
+{q:"सीखने की प्रक्रिया को प्रभावी बनाने के लिए क्या आवश्यक है?",
+ options:["एकतरफा भाषण","सक्रिय सहभागिता","केवल लिखित कार्य","केवल परीक्षा"],
+ answer:"B. सक्रिय सहभागिता"},
+{q:"विद्यालय में सह-पाठ्यक्रम गतिविधियों का मुख्य उद्देश्य क्या है?",
+ options:["समय व्यर्थ करना","केवल मनोरंजन","व्यक्तित्व का सर्वांगीण विकास","अनुशासन कम करना"],
+ answer:"C. व्यक्तित्व का सर्वांगीण विकास"},
+{q:"एक अच्छा कक्षा वातावरण कैसा होना चाहिए?",
+ options:["डर पर आधारित","शांत लेकिन निष्क्रिय","सहयोगात्मक और प्रेरक","केवल अनुशासनात्मक"],
+ answer:"C. सहयोगात्मक और प्रेरक"},
+{q:"कक्षा में प्रभावी संप्रेषण (communication) का अर्थ क्या है?",
+ options:["केवल शिक्षक बोले","केवल विद्यार्थी बोले","दोनों के बीच स्पष्ट संवाद","केवल लिखित निर्देश"],
+ answer:"C. दोनों के बीच स्पष्ट संवाद"},
+{q:"यदि कोई विद्यार्थी पढ़ाई में रुचि नहीं ले रहा है, तो शिक्षक को क्या करना चाहिए?",
+ options:["उसे दंड देना","उसे नजरअंदाज करना","उसकी रुचि के अनुसार तरीका बदलना","अभिभावक को दोष देना"],
+ answer:"C. उसकी रुचि के अनुसार तरीका बदलना"},
+{q:"विद्यालय में मानव संसाधन प्रबंधन का अर्थ क्या है?",
+ options:["केवल भवन प्रबंधन","केवल छात्रों का प्रबंधन","शिक्षक व कर्मचारियों का प्रभावी उपयोग","केवल प्रधानाचार्य का कार्य"],
+ answer:"C. शिक्षक व कर्मचारियों का प्रभावी उपयोग"},
+{q:"अनुशासन बनाए रखने का सबसे अच्छा तरीका क्या है?",
+ options:["डर और दंड","स्पष्ट नियम और समझ","केवल निगरानी","कठोर व्यवहार"],
+ answer:"B. स्पष्ट नियम और समझ"},
+{q:"एक शिक्षक विद्यार्थियों को प्रश्न पूछने के लिए प्रेरित करता है। यह किस प्रकार का वातावरण दर्शाता है?",
+ options:["डरयुक्त","निष्क्रिय","लोकतांत्रिक","अराजक"],
+ answer:"C. लोकतांत्रिक"},
+{q:"सीखने की प्रक्रिया में प्रेरणा (motivation) का क्या प्रभाव होता है?",
+ options:["कोई प्रभाव नहीं","सीखने की गति कम होती है","सीखने की इच्छा बढ़ती है","अनुशासन घटता है"],
+ answer:"C. सीखने की इच्छा बढ़ती है"},
+{q:"विद्यालय में गैर-शिक्षण कर्मचारियों की भूमिका क्या है?",
+ options:["केवल पढ़ाना","केवल अनुशासन","विद्यालय संचालन में सहयोग","केवल प्रशासनिक निर्णय लेना"],
+ answer:"C. विद्यालय संचालन में सहयोग"},
+{q:"यदि कक्षा में अधिकांश विद्यार्थी किसी विषय को नहीं समझ पा रहे हैं, तो शिक्षक को क्या करना चाहिए?",
+ options:["पाठ आगे बढ़ा देना","विद्यार्थियों को दोष देना","शिक्षण विधि बदलना","परीक्षा ले लेना"],
+ answer:"C. शिक्षण विधि बदलना"},
+{q:"एक प्रभावी पाठ योजना का उद्देश्य क्या है?",
+ options:["समय भरना","केवल पाठ पूरा करना","सीखने को व्यवस्थित बनाना","केवल लिखित कार्य देना"],
+ answer:"C. सीखने को व्यवस्थित बनाना"},
+{q:"खेल-कूद गतिविधियों का विद्यालय में क्या महत्व है?",
+ options:["केवल मनोरंजन","समय की बर्बादी","शारीरिक व मानसिक विकास","अनुशासन घटाना"],
+ answer:"C. शारीरिक व मानसिक विकास"},
+{q:"कक्षा में नेतृत्व कौशल विकसित करने का सबसे अच्छा तरीका क्या है?",
+ options:["केवल शिक्षक नेतृत्व करे","विद्यार्थियों को जिम्मेदारी देना","कठोर नियम लागू करना","प्रतिस्पर्धा बढ़ाना"],
+ answer:"B. विद्यार्थियों को जिम्मेदारी देना"},
+{q:"शिक्षक द्वारा सकारात्मक प्रतिक्रिया देने से क्या होता है?",
+ options:["विद्यार्थी घमंडी हो जाते हैं","सीखने में रुचि बढ़ती है","अनुशासन कम होता है","समय नष्ट होता है"],
+ answer:"B. सीखने में रुचि बढ़ती है"},
+{q:"विद्यालय में स्वच्छ और सुरक्षित वातावरण का प्रभाव क्या होता है?",
+ options:["कोई प्रभाव नहीं","विद्यार्थियों में भय","सीखने में सहायक","अनुशासन कम"],
+ answer:"C. सीखने में सहायक"},
+{q:"यदि कोई विद्यार्थी कमजोर है, तो शिक्षक का कर्तव्य क्या है?",
+ options:["उसे नजरअंदाज करना","उसे अलग बैठाना","अतिरिक्त सहायता देना","उसे दंड देना"],
+ answer:"C. अतिरिक्त सहायता देना"},
+{q:"एक आदर्श शिक्षक की सबसे महत्वपूर्ण विशेषता क्या है?",
+ options:["कठोरता","ज्ञान और संवेदनशीलता","डर पैदा करना","केवल अनुशासन"],
+ answer:"B. ज्ञान और संवेदनशीलता"},
+];
+
+
+let currentIndex=0,answers={},visited={};
+let totalSeconds=0,timerInterval,startTime;
+
+/* ---------- START TEST ---------- */
+function startTest(){
+  if(localStorage.getItem("finalResult")){
+    alert("Test already submitted");
+    return;
+  }
+
+  displayName.textContent=candidateName.value;
+  startScreen.style.display="none";
+  topBar.style.display="flex";
+  navBtns.style.display="flex";
+  submitBtn.style.display="block";
+
+  totalSeconds=testTime.value*60;
+  startTime=Date.now();
+  saveProgress();
+  startTimer();
+  renderQuestion();
+}
+
+/* ---------- TIMER ---------- */
+function startTimer(){
+  updateTimer();
+  timerInterval=setInterval(()=>{
+    totalSeconds--;
+    updateTimer();
+    saveProgress();
+    if(totalSeconds<=0)submitQuiz();
+  },1000);
+}
+function updateTimer(){
+  timer.textContent=
+    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
+    String(totalSeconds%60).padStart(2,'0');
+}
+
+/* ---------- QUESTION ---------- */
+function renderQuestion(){
+  visited[currentIndex]=true;
+  const q=questions[currentIndex];
+  quizArea.innerHTML=`
+    <div class="quiz-card">
+      <b>${currentIndex+1}. ${q.q}</b>
+      <div class="options">
+        ${q.options.map(o=>`
+          <label>
+            <input type="radio" name="opt"
+              ${answers[currentIndex]==o?'checked':''}
+              onchange="selectAnswer('${o}')">
+            ${o}
+          </label>
+        `).join("")}
+      </div>
+    </div>`;
+  renderPalette();
+  saveProgress();
+}
+
+function selectAnswer(val){
+  answers[currentIndex]=val;
+  saveProgress();
+  renderPalette();
+}
+
+/* ---------- PALETTE ---------- */
+function renderPalette(){
+  palette.innerHTML="";
+  questions.forEach((_,i)=>{
+    const s=document.createElement("span");
+    s.textContent=i+1;
+    if(visited[i])s.classList.add("visited");
+    if(answers[i])s.classList.add("attempted");
+    s.onclick=()=>{currentIndex=i;renderQuestion()};
+    palette.appendChild(s);
+  });
+}
+
+/* ---------- NAV ---------- */
+function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+
+/* ---------- SAVE IN-PROGRESS ---------- */
+function saveProgress(){
+  localStorage.setItem("inProgress",JSON.stringify({
+    name:displayName.textContent,
+    answers,visited,currentIndex,totalSeconds,startTime
+  }));
+}
+
+/* ---------- SUBMIT ---------- */
+function submitQuiz(){
+  clearInterval(timerInterval);
+  localStorage.removeItem("inProgress");
+
+  let correct=0,attempted=0;
+  let html="<h2>Result</h2>";
+
+  questions.forEach((q,i)=>{
+    if(answers[i])attempted++;
+    if(answers[i]==q.answer)correct++;
+    html+=`
+      <p>${i+1}. ${q.q}<br>
+      Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
+      | Correct: <b>${q.answer}</b></p>`;
+  });
+
+  const timeTaken=Math.floor((Date.now()-startTime)/1000);
+
+  html+=`
+    <hr>
+    Score: ${correct}/${questions.length}<br>
+    Attempted: ${attempted}<br>
+    Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
+    Time Taken: ${Math.floor(timeTaken/60)} min
+  `;
+
+  localStorage.setItem("finalResult",JSON.stringify({
+    name:displayName.textContent,
+    html
+  }));
+
+  quizArea.innerHTML="";
+  navBtns.style.display="none";
+  submitBtn.style.display="none";
+  result.innerHTML=html;
+  clearBtn.style.display="block";
+}
+
+/* ---------- RESTORE ON LOAD ---------- */
+window.onload=function(){
+  const final=localStorage.getItem("finalResult");
+  const progress=localStorage.getItem("inProgress");
+
+  if(final){
+    const d=JSON.parse(final);
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    displayName.textContent=d.name;
+    result.innerHTML=d.html;
+    clearBtn.style.display="block";
+    return;
+  }
+
+  if(progress){
+    const p=JSON.parse(progress);
+    displayName.textContent=p.name;
+    answers=p.answers||{};
+    visited=p.visited||{};
+    currentIndex=p.currentIndex||0;
+    totalSeconds=p.totalSeconds||0;
+    startTime=p.startTime||Date.now();
+
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    navBtns.style.display="flex";
+    submitBtn.style.display="block";
+
+    startTimer();
+    renderQuestion();
+  }
+};
+
+/* ---------- CLEAR ---------- */
+function clearResult(){
+  if(!confirm("Start new test?"))return;
+  localStorage.clear();
+  location.reload();
+}
+</script>
+
+</body>
+</html>
