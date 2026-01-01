@@ -66,6 +66,9 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div class="container">
 
 <h1>Target Test- English 2026</h1>
+  <p id="lastUpdated" style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
+  Last Updated: --
+</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name"><br>
@@ -292,6 +295,13 @@ window.onload=function(){
     navBtns.style.display="flex";
     submitBtn.style.display="block";
 
+    const lu = document.getElementById("lastUpdated");
+if(lu){
+  const d = new Date(document.lastModified);
+  lu.textContent = "Last Updated: " + d.toLocaleString();
+}
+
+    
     startTimer();
     renderQuestion();
   }
@@ -307,6 +317,7 @@ function clearResult(){
 
 </body>
 </html>
+
 
 
 
