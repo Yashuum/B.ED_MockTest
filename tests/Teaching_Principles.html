@@ -66,6 +66,10 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div class="container">
 
 <h1>Target Test- Teaching Principles 2026</h1>
+  <p id="lastUpdated" style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
+  Last Updated: --
+</p>
+
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name"><br>
@@ -302,10 +306,29 @@ function clearResult(){
   localStorage.clear();
   location.reload();
 }
+  document.addEventListener("DOMContentLoaded", function () {
+  const lu = document.getElementById("lastUpdated");
+  if (lu && document.lastModified) {
+    const d = new Date(document.lastModified);
+
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = d.toLocaleString("en-US", { month: "short" });
+    const year = d.getFullYear();
+
+    let hours = d.getHours();
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+
+    lu.textContent = `Last Updated: ${day} ${month}, ${year}, ${hours}:${minutes} ${ampm}`;
+  }
+});
+
 </script>
 
 </body>
 </html>
+
 
 
 
