@@ -295,12 +295,6 @@ window.onload=function(){
     navBtns.style.display="flex";
     submitBtn.style.display="block";
 
-    const lu = document.getElementById("lastUpdated");
-if(lu){
-  const d = new Date(document.lastModified);
-  lu.textContent = "Last Updated: " + d.toLocaleString();
-}
-
     
     startTimer();
     renderQuestion();
@@ -313,10 +307,20 @@ function clearResult(){
   localStorage.clear();
   location.reload();
 }
+  
+  document.addEventListener("DOMContentLoaded", function () {
+  const lu = document.getElementById("lastUpdated");
+  if (lu && document.lastModified) {
+    const d = new Date(document.lastModified);
+    lu.textContent = "Last Updated: " + d.toLocaleString();
+  }
+});
+
 </script>
 
 </body>
 </html>
+
 
 
 
