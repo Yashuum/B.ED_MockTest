@@ -36,7 +36,7 @@ body{
   max-width:100%;
 }
 
-/* ===== NOTICE BAR (FINAL STABLE VERSION) ===== */
+/* ===== NOTICE BAR ===== */
 .notice-bar{
   background:linear-gradient(135deg,#ff9800,#ff5722);
   color:#fff;
@@ -64,6 +64,14 @@ body{
 @keyframes scrollNotice{
   from{ transform:translateX(0); }
   to{ transform:translateX(-50%); }
+}
+
+/* Smaller notice text on phone / tab */
+@media(max-width:768px){
+  .notice-track a{
+    font-size:14px;
+    font-weight:500;
+  }
 }
 
 /* WELCOME */
@@ -115,6 +123,19 @@ body{
 .card h3{
   font-size:18px;
   margin-bottom:6px;
+}
+
+/* 🔔 UPDATED BADGE */
+.badge{
+  display:inline-block;
+  background:#16a34a;
+  color:#fff;
+  font-size:11px;
+  font-weight:600;
+  padding:3px 8px;
+  border-radius:999px;
+  margin-left:8px;
+  vertical-align:middle;
 }
 
 .card p{
@@ -172,7 +193,7 @@ body{
   box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
 
-/* MOBILE */
+/* MOBILE GRID */
 @media(max-width:768px){
   .dashboard{
     grid-template-columns:1fr;
@@ -207,19 +228,19 @@ body{
 
     <div class="column">
       <div class="card">
-        <h3>📘 English</h3>
+        <h3>📘 English <span class="badge">Questions Updated Recently</span></h3>
         <p>Grammar, comprehension and vocabulary practice.</p>
         <a href="tests/English.html" class="btn">Start Test</a>
       </div>
 
       <div class="card">
-        <h3>🧠 Reasoning & Aptitude</h3>
+        <h3>🧠 Reasoning & Aptitude <span class="badge">Questions Updated Recently</span></h3>
         <p>Logical reasoning and quantitative aptitude.</p>
         <a href="tests/reasoning.html" class="btn">Start Test</a>
       </div>
 
       <div class="card">
-        <h3>👩‍🏫 Teaching Principles</h3>
+        <h3>👩‍🏫 Teaching Principles <span class="badge">Questions Updated Recently</span></h3>
         <p>Pedagogy and teaching methodology questions.</p>
         <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
       </div>
@@ -227,13 +248,13 @@ body{
 
     <div class="column">
       <div class="card">
-        <h3>📝 Hindi</h3>
+        <h3>📝 Hindi <span class="badge">Questions Updated Recently</span></h3>
         <p>Vyakaran, comprehension and language skills.</p>
         <a href="tests/Hindi.html" class="btn">Start Test</a>
       </div>
 
       <div class="card">
-        <h3>🌍 General Awareness</h3>
+        <h3>🌍 General Awareness <span class="badge">Questions Updated Recently</span></h3>
         <p>Static GK, current affairs and basics.</p>
         <a href="tests/General_Awareness.html" class="btn">Start Test</a>
       </div>
