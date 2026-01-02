@@ -66,8 +66,9 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div class="container">
 
 <h1>Target Test- Hindi 2026</h1>
-  <p id="lastUpdated" style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: --
+
+<p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
+  Last Updated: 02 Jan, 2026, 14:15 PM
 </p>
 
 
@@ -106,7 +107,6 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <script>
 /* SAMPLE QUESTIONS */
 const questions = [
-
   {q: "रिक्त स्थान की पूर्ति करें:<br><br>पृथ्वी का पर्यायवाची शब्द _____ है।", options: ["रत्नगर्भा", "हिरण्यगर्भा", "वसुमती", "स्वर्णमयी"], answer: "रत्नगर्भा"},
   {q: "सही विलोम शब्द चुनें:<br><br>‘अल्पज्ञ’ (Alpgya)", options: ["सर्वज्ञ", "अभिज्ञ", "अवज्ञा", "कृतज्ञ"], answer: "सर्वज्ञ"},
   {q: "मुहावरे का सही अर्थ चुनें:<br><br>‘आकाश-पाताल एक करना’", options: ["दूर जाना", "कठिन परिश्रम करना", "झूठ बोलना", "उठा-पटक करना"], answer: "कठिन परिश्रम करना"},
@@ -134,7 +134,6 @@ const questions = [
   {q: "समास पहचानिये:<br><br>‘दशानन’ में कौन सा समास है?", options: ["कर्मधारय", "बहुव्रीहि", "द्वंद्व", "द्विगु"], answer: "बहुव्रीहि"},
 ];
 
-
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
@@ -144,13 +143,11 @@ function startTest(){
     alert("Test already submitted");
     return;
   }
-
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
   navBtns.style.display="flex";
   submitBtn.style.display="block";
-
   totalSeconds=testTime.value*60;
   startTime=Date.now();
   saveProgress();
@@ -231,10 +228,8 @@ function saveProgress(){
 function submitQuiz(){
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
-
   let correct=0,attempted=0;
   let html="<h2>Result</h2>";
-
   questions.forEach((q,i)=>{
     if(answers[i])attempted++;
     if(answers[i]==q.answer)correct++;
@@ -243,9 +238,7 @@ function submitQuiz(){
       Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
       | Correct: <b>${q.answer}</b></p>`;
   });
-
   const timeTaken=Math.floor((Date.now()-startTime)/1000);
-
   html+=`
     <hr>
     Score: ${correct}/${questions.length}<br>
@@ -253,12 +246,10 @@ function submitQuiz(){
     Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
     Time Taken: ${Math.floor(timeTaken/60)} min
   `;
-
   localStorage.setItem("finalResult",JSON.stringify({
     name:displayName.textContent,
     html
   }));
-
   quizArea.innerHTML="";
   navBtns.style.display="none";
   submitBtn.style.display="none";
@@ -270,7 +261,6 @@ function submitQuiz(){
 window.onload=function(){
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
-
   if(final){
     const d=JSON.parse(final);
     startScreen.style.display="none";
@@ -280,7 +270,6 @@ window.onload=function(){
     clearBtn.style.display="block";
     return;
   }
-
   if(progress){
     const p=JSON.parse(progress);
     displayName.textContent=p.name;
@@ -289,12 +278,10 @@ window.onload=function(){
     currentIndex=p.currentIndex||0;
     totalSeconds=p.totalSeconds||0;
     startTime=p.startTime||Date.now();
-
     startScreen.style.display="none";
     topBar.style.display="flex";
     navBtns.style.display="flex";
     submitBtn.style.display="block";
-
     startTimer();
     renderQuestion();
   }
@@ -306,33 +293,8 @@ function clearResult(){
   localStorage.clear();
   location.reload();
 }
-
-  document.addEventListener("DOMContentLoaded", function () {
-  const lu = document.getElementById("lastUpdated");
-  if (lu && document.lastModified) {
-    const d = new Date(document.lastModified);
-
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = d.toLocaleString("en-US", { month: "short" });
-    const year = d.getFullYear();
-
-    let hours = d.getHours();
-    const minutes = String(d.getMinutes()).padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-
-    lu.textContent = `Last Updated: ${day} ${month}, ${year}, ${hours}:${minutes} ${ampm}`;
-  }
-});
-
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
 
