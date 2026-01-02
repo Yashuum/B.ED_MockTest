@@ -66,8 +66,9 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div class="container">
 
 <h1>Target Test- General Awareness 2026</h1>
-  <p id="lastUpdated" style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: --
+
+<p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
+  Last Updated: 01 Jan, 2026, 13:41 
 </p>
 
 
@@ -106,9 +107,8 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <script>
 /* SAMPLE QUESTIONS */
 const questions = [
-
   {q: "आकाश का नीला रंग किस कारण से दिखाई देता है?<br><br>Why does the sky appear blue?", options: ["प्रकाश का परावर्तन", "प्रकाश का अपवर्तन", "प्रकाश का प्रकीर्णन", "प्रकाश का विवर्तन"], answer: "प्रकाश का प्रकीर्णन"},
-  {q: "मानव शरीर की सबसे बड़ी ग्रंथि (Gland) कौन सी है?<br><br>Which is the largest gland in the human body?", options: ["थायराइड", "पीयूष ग्रंथि", "यकृत (Liver)", "अग्न्याशय"], answer: "यकृत (Liver)"},
+  {q: "मानव शरीर की सबसे बड़ी ग्रंथि (Gland) कौन सी है?<br><br>Which is the largest gland in the human body?", options: ["थायराइड", "पीयूष ग्रंथि", "यकृत (Liver)", "अग्न्याशय"], answer: "यकृत (Liver)"},
   {q: "विद्युत धारा (Electric Current) का SI मात्रक क्या है?", options: ["वोल्ट", "ओम", "वाट", "एम्पीयर"], answer: "एम्पीयर"},
   {q: "लोहे पर जंग लगना किसका उदाहरण है?<br><br>Rusting of iron is an example of:", options: ["ऑक्सीकरण (Oxidation)", "अवकरण (Reduction)", "बहुलीकरण", "जस्ताकरण"], answer: "ऑक्सीकरण (Oxidation)"},
   {q: "कार्य (Work) का मात्रक क्या है?", options: ["जूल", "न्यूटन", "वाट", "डाइन"], answer: "जूल"},
@@ -132,7 +132,6 @@ const questions = [
   {q: "चेचक के टीके (Smallpox Vaccine) का आविष्कार किसने किया?", options: ["लुई पाश्चर", "एडवर्ड जेनर", "अलेक्जेंडर फ्लेमिंग", "जोनास साल्क"], answer: "एडवर्ड जेनर"},
   {q: "मानव शरीर में कुल कितनी हड्डियाँ होती हैं?", options: ["201", "206", "210", "208"], answer: "206"},
   {q: "रेफ्रिजरेटर में कौन सी गैस शीतलन (Cooling) के लिए प्रयोग की जाती है?", options: ["नाइट्रोजन", "ऑक्सीजन", "फ्रीन/अमोनिया", "क्लोरीन"], answer: "फ्रीन/अमोनिया"},
-
 ];
 
 
@@ -144,6 +143,11 @@ function startTest(){
   if(localStorage.getItem("finalResult")){
     alert("Test already submitted");
     return;
+  }
+
+  if(!candidateName.value || !testTime.value) {
+      alert("Please enter Name and Time");
+      return;
   }
 
   displayName.textContent=candidateName.value;
@@ -307,33 +311,7 @@ function clearResult(){
   localStorage.clear();
   location.reload();
 }
-
-  document.addEventListener("DOMContentLoaded", function () {
-  const lu = document.getElementById("lastUpdated");
-  if (lu && document.lastModified) {
-    const d = new Date(document.lastModified);
-
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = d.toLocaleString("en-US", { month: "short" });
-    const year = d.getFullYear();
-
-    let hours = d.getHours();
-    const minutes = String(d.getMinutes()).padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-
-    lu.textContent = `Last Updated: ${day} ${month}, ${year}, ${hours}:${minutes} ${ampm}`;
-  }
-});
-
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
