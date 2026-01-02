@@ -68,7 +68,7 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <h1>Target Test- English 2026</h1>
 
 <p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: 01 Jan, 2026, 15:49 
+  Last Updated: 02 Jan, 2026, 16:33 
 </p>
 
 <div class="start-screen" id="startScreen">
@@ -106,31 +106,38 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <script>
 /* SAMPLE QUESTIONS */
 const questions = [
-  {q: "Fill in the blank:<br><br>She _____ already finished her work.", options: ["has","have","had","having"], answer: "has"},
-  {q: "Choose the correct synonym of the word:<br><br>‘Quick’", options: ["Slow","Rapid","Late","Weak"], answer: "Rapid"},
-  {q: "Choose the correct antonym of the word:<br><br>‘Victory’", options: ["Win","Defeat","Success","Gain"], answer: "Defeat"},
-  {q: "Spot the error:<br><br>He do not like coffee.", options: ["He","do not","like","coffee"], answer: "do not"},
-  {q: "Choose the correct one-word substitution:<br><br>‘A person who speaks many languages’", options: ["Linguist","Orator","Scholar","Author"], answer: "Linguist"},
-  {q: "Fill in the blank:<br><br>Neither Ram nor his friends _____ present today.", options: ["was","were","is","has"], answer: "were"},
-  {q: "Choose the correct meaning of the idiom:<br><br>‘To lose heart’", options: ["To become weak","To lose money","To lose confidence","To become sick"], answer: "To lose confidence"},
-  {q: "Choose the correct passive voice:<br><br>She writes a letter.", options: ["A letter is written by her","A letter was written by her","A letter has written by her","A letter is writing by her"], answer: "A letter is written by her"},
-  {q: "Choose the correct spelling:", options: ["Definately","Definitely","Definetely","Definitly"], answer: "Definitely"},
-  {q: "Choose the correct synonym of the word:<br><br>‘Honest’", options: ["Truthful","Clever","Lazy","Harsh"], answer: "Truthful"},
-  {q: "Fill in the blank:<br><br>He is good _____ mathematics.", options: ["in","at","on","with"], answer: "at"},
-  {q: "Choose the correct antonym of the word:<br><br>‘Increase’", options: ["Grow","Expand","Reduce","Develop"], answer: "Reduce"},
-  {q: "Spot the error:<br><br>Each of the boys were given a prize.", options: ["Each of","the boys","were given","a prize"], answer: "were given"},
-  {q: "Choose the correct meaning of the idiom:<br><br>‘At the eleventh hour’", options: ["Very early","At the last moment","At noon","Without delay"], answer: "At the last moment"},
-  {q: "Choose the correct one-word substitution:<br><br>‘One who loves mankind’", options: ["Philanthropist","Pessimist","Optimist","Miser"], answer: "Philanthropist"},
-  {q: "Fill in the blank:<br><br>The train _____ before we reached the station.", options: ["left","had left","has left","leaves"], answer: "had left"},
-  {q: "Choose the correct synonym of the word:<br><br>‘Strong’", options: ["Weak","Powerful","Thin","Soft"], answer: "Powerful"},
-  {q: "Choose the correct antonym of the word:<br><br>‘Permanent’", options: ["Fixed","Lasting","Temporary","Solid"], answer: "Temporary"},
-  {q: "Spot the error:<br><br>She is more smarter than her sister.", options: ["She is","more smarter","than her","sister"], answer: "more smarter"},
-  {q: "Choose the correct meaning of the idiom:<br><br>‘Break the ice’", options: ["To stop talking","To start a conversation","To break something","To end friendship"], answer: "To start a conversation"},
-  {q: "Choose the correct one-word substitution:<br><br>‘A place where books are kept’", options: ["Gallery","Library","Auditorium","Laboratory"], answer: "Library"},
-  {q: "Fill in the blank:<br><br>If it _____ tomorrow, we will stay at home.", options: ["rains","rained","will rain","has rained"], answer: "rains"},
-  {q: "Choose the correct synonym of the word:<br><br>‘Silent’", options: ["Quiet","Noisy","Loud","Angry"], answer: "Quiet"},
-  {q: "Choose the correct antonym of the word:<br><br>‘Accept’", options: ["Receive","Admit","Reject","Allow"], answer: "Reject"},
-  {q: "Spot the error:<br><br>He has been working here since two years.", options: ["He has been","working here","since two years",""], answer: "since two years"},
+
+  {q: "Spot the error:<br><br>The teacher together with his students <u>were</u> present.", options: ["The teacher", "together with", "were present", "No error"], answer: "were present"},
+  {q: "Fill in the blank:<br><br>He is married _____ my cousin.", options: ["with", "to", "by", "for"], answer: "to"},
+  {q: "Choose the correct form of verb:<br><br>If it rains, we _____ the match.", options: ["cancel", "would cancel", "will cancel", "cancelled"], answer: "will cancel"},
+  {q: "Fill in the blank:<br><br>Bread and butter _____ my favorite breakfast.", options: ["is", "are", "were", "being"], answer: "is"},
+  {q: "Choose the correct preposition:<br><br>The cat jumped _____ the table.", options: ["on", "in", "upon", "at"], answer: "upon"},
+  {q: "Synonym of 'CANDID':", options: ["Secretive", "Frank", "Dishonest", "Vague"], answer: "Frank"},
+  {q: "Antonym of 'STINGY':", options: ["Miserly", "Generous", "Cheap", "Careful"], answer: "Generous"},
+  {q: "Synonym of 'ENORMOUS':", options: ["Tiny", "Soft", "Huge", "Weak"], answer: "Huge"},
+  {q: "Antonym of 'OPTIMIST':", options: ["Pessimist", "Idealist", "Realist", "Atheist"], answer: "Pessimist"},
+  {q: "Meaning of the idiom:<br><br>‘To turn a deaf ear’", options: ["To be hard of hearing", "To ignore", "To listen carefully", "To shout"], answer: "To ignore"},
+  {q: "Meaning of:<br><br>‘At the eleventh hour’", options: ["At 11 o'clock", "At the last moment", "Very early", "In the morning"], answer: "At the last moment"},
+  {q: "Meaning of:<br><br>‘Burn the candle at both ends’", options: ["To be rich", "To work very hard", "To waste money", "To be careless"], answer: "To work very hard"},
+  {q: "A person who hates mankind:", options: ["Misanthrope", "Philanthropist", "Misogynist", "Polyglot"], answer: "Misanthrope"},
+  {q: "The study of birds:", options: ["Biology", "Ornithology", "Zoology", "Botany"], answer: "Ornithology"},
+  {q: "Something that cannot be seen through:", options: ["Transparent", "Translucent", "Opaque", "Clear"], answer: "Opaque"},
+  {q: "Identify the correctly spelled word:", options: ["Maintanance", "Maintenance", "Maintenence", "Maintainance"], answer: "Maintenance"},
+  {q: "Choose the correctly spelled word:", options: ["Receive", "Recieve", "Receve", "Riceive"], answer: "Receive"},
+  {q: "Improve the sentence:<br><br>He <u>has been working</u> here for five years.", options: ["is working", "was working", "had worked", "No improvement"], answer: "No improvement"},
+  {q: "Change into Passive Voice:<br><br>Who wrote this book?", options: ["By whom this book was written?", "By whom was this book written?", "Who was written this book?", "Book was written by whom?"], answer: "By whom was this book written?"},
+  {q: "Direct to Indirect Speech:<br><br>She said, 'I have finished my work.'", options: ["She said that she has finished her work", "She said that she had finished her work", "She says she finished her work", "She said she finishes her work"], answer: "She said that she had finished her work"},
+  {q: "Fill in the blank:<br><br>He is _____ European.", options: ["a", "an", "the", "no article"], answer: "a"},
+  {q: "Choose the correct word:<br><br>The _____ of the school is very strict.", options: ["Principle", "Principal", "Princepal", "Prinicipal"], answer: "Principal"},
+  {q: "Fill in the blank:<br><br>I don't have _____ money.", options: ["many", "any", "some", "few"], answer: "any"},
+  {q: "Opposite of 'REVEAL':", options: ["Show", "Hide", "Tell", "Disclose"], answer: "Hide"},
+  {q: "Meaning of:<br><br>‘A bolt from the blue’", options: ["Thunderstorm", "Unexpected shock", "Blue sky", "Bad weather"], answer: "Unexpected shock"},
+  {q: "Identify the antonym of 'VAGUE':", options: ["Clear", "Dull", "Unknown", "Shady"], answer: "Clear"},
+  {q: "Fill in the blank:<br><br>The police _____ investigating the case.", options: ["is", "are", "has", "was"], answer: "are"},
+  {q: "Choose the correct preposition:<br><br>He is fond _____ music.", options: ["at", "in", "of", "for"], answer: "of"},
+  {q: "One word for 'A person who can use both hands equally well':", options: ["Ambidextrous", "Ambivalent", "Expert", "Glutton"], answer: "Ambidextrous"},
+  {q: "Idiom meaning: 'To hit the nail on the head'", options: ["To make a mistake", "To do something exactly right", "To hurt someone", "To work in a factory"], answer: "To do something exactly right"},
+
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -296,5 +303,6 @@ function clearResult(){
 
 </body>
 </html>
+
 
 
