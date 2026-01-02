@@ -66,8 +66,9 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div class="container">
 
 <h1>Target Test- Teaching Principles 2026</h1>
-  <p id="lastUpdated" style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: --
+
+<p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
+  Last Updated: 02 Jan, 2026, 01:30 PM
 </p>
 
 
@@ -106,10 +107,9 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <script>
 /* SAMPLE QUESTIONS */
 const questions = [
-
 {q:"शिक्षण की 'खेल विधि' (Play-way Method) किस पर आधारित है?",options:["शिक्षण के सिद्धांतों पर","मनोवैज्ञानिक सिद्धांतों पर","समाजशास्त्रीय सिद्धांतों पर","शारीरिक शिक्षा कार्यक्रमों पर"],answer:"मनोवैज्ञानिक सिद्धांतों पर"},
 {q:"एक शिक्षक के लिए सबसे महत्वपूर्ण क्या है?",options:["कक्षा में अनुशासन बनाए रखना","कक्षा में समय का पाबंद होना","छात्रों की कठिनाइयों को दूर करना","एक अच्छा वक्ता होना"],answer:"छात्रों की कठिनाइयों को दूर करना"},
-{q:"'करके सीखना' (Learning by Doing) क्यों प्रभावी है?",options:["यह बच्चों में अनुशासन बढ़ाता है","यह रटने की आदत को कम करता है","बच्चा सक्रिय रहकर सार्थक ज्ञान प्राप्त करता है","यह शिक्षक का काम आसान करता है"],answer:"बच्चा सक्रिय रहकर सार्थक ज्ञान प्राप्त करता है"},
+{q:"'कर करके सीखना' (Learning by Doing) क्यों प्रभावी है?",options:["यह बच्चों में अनुशासन बढ़ाता है","यह रटने की आदत को कम करता है","बच्चा सक्रिय रहकर सार्थक ज्ञान प्राप्त करता है","यह शिक्षक का काम आसान करता है"],answer:"बच्चा सक्रिय रहकर सार्थक ज्ञान प्राप्त करता है"},
 {q:"प्रगतिशील शिक्षा (Progressive Education) के जनक किसे माना जाता है?",options:["जीन पियाजे","जॉन डीवी","स्किनर","कोहलर"],answer:"जॉन डीवी"},
 {q:"सूक्ष्म शिक्षण (Micro Teaching) का मुख्य उद्देश्य क्या है?",options:["कम समय में पढ़ाना","शिक्षण कौशलों का विकास करना","छात्रों का मूल्यांकन करना","कठिन विषयों को सरल बनाना"],answer:"शिक्षण कौशलों का विकास करना"},
 {q:"छात्रों में 'प्रेरणा' (Motivation) पैदा करने की सबसे अच्छी विधि क्या है?",options:["सजा देना","पुरस्कार देना","प्रशंसा करना","रुचि पैदा करना"],answer:"रुचि पैदा करना"},
@@ -134,23 +134,19 @@ const questions = [
 {q:"शिक्षण में 'प्रतिपुष्टि' (Feedback) का क्या महत्व है?",options:["यह केवल छात्रों के लिए है","यह शिक्षक और छात्र दोनों के सुधार में मदद करता है","यह ग्रेडिंग के लिए जरूरी है","इसका कोई खास महत्व नहीं है"],answer:"यह शिक्षक और छात्र दोनों के सुधार में मदद करता है"},
 ];
 
-
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
-/* ---------- START TEST ---------- */
 function startTest(){
   if(localStorage.getItem("finalResult")){
     alert("Test already submitted");
     return;
   }
-
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
   navBtns.style.display="flex";
   submitBtn.style.display="block";
-
   totalSeconds=testTime.value*60;
   startTime=Date.now();
   saveProgress();
@@ -158,7 +154,6 @@ function startTest(){
   renderQuestion();
 }
 
-/* ---------- TIMER ---------- */
 function startTimer(){
   updateTimer();
   timerInterval=setInterval(()=>{
@@ -174,7 +169,6 @@ function updateTimer(){
     String(totalSeconds%60).padStart(2,'0');
 }
 
-/* ---------- QUESTION ---------- */
 function renderQuestion(){
   visited[currentIndex]=true;
   const q=questions[currentIndex];
@@ -202,7 +196,6 @@ function selectAnswer(val){
   renderPalette();
 }
 
-/* ---------- PALETTE ---------- */
 function renderPalette(){
   palette.innerHTML="";
   questions.forEach((_,i)=>{
@@ -215,11 +208,9 @@ function renderPalette(){
   });
 }
 
-/* ---------- NAV ---------- */
 function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
 function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-/* ---------- SAVE IN-PROGRESS ---------- */
 function saveProgress(){
   localStorage.setItem("inProgress",JSON.stringify({
     name:displayName.textContent,
@@ -227,14 +218,11 @@ function saveProgress(){
   }));
 }
 
-/* ---------- SUBMIT ---------- */
 function submitQuiz(){
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
-
   let correct=0,attempted=0;
   let html="<h2>Result</h2>";
-
   questions.forEach((q,i)=>{
     if(answers[i])attempted++;
     if(answers[i]==q.answer)correct++;
@@ -243,9 +231,7 @@ function submitQuiz(){
       Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
       | Correct: <b>${q.answer}</b></p>`;
   });
-
   const timeTaken=Math.floor((Date.now()-startTime)/1000);
-
   html+=`
     <hr>
     Score: ${correct}/${questions.length}<br>
@@ -253,12 +239,10 @@ function submitQuiz(){
     Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
     Time Taken: ${Math.floor(timeTaken/60)} min
   `;
-
   localStorage.setItem("finalResult",JSON.stringify({
     name:displayName.textContent,
     html
   }));
-
   quizArea.innerHTML="";
   navBtns.style.display="none";
   submitBtn.style.display="none";
@@ -266,11 +250,9 @@ function submitQuiz(){
   clearBtn.style.display="block";
 }
 
-/* ---------- RESTORE ON LOAD ---------- */
 window.onload=function(){
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
-
   if(final){
     const d=JSON.parse(final);
     startScreen.style.display="none";
@@ -280,7 +262,6 @@ window.onload=function(){
     clearBtn.style.display="block";
     return;
   }
-
   if(progress){
     const p=JSON.parse(progress);
     displayName.textContent=p.name;
@@ -289,48 +270,21 @@ window.onload=function(){
     currentIndex=p.currentIndex||0;
     totalSeconds=p.totalSeconds||0;
     startTime=p.startTime||Date.now();
-
     startScreen.style.display="none";
     topBar.style.display="flex";
     navBtns.style.display="flex";
     submitBtn.style.display="block";
-
     startTimer();
     renderQuestion();
   }
 };
 
-/* ---------- CLEAR ---------- */
 function clearResult(){
   if(!confirm("Start new test?"))return;
   localStorage.clear();
   location.reload();
 }
-  document.addEventListener("DOMContentLoaded", function () {
-  const lu = document.getElementById("lastUpdated");
-  if (lu && document.lastModified) {
-    const d = new Date(document.lastModified);
-
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = d.toLocaleString("en-US", { month: "short" });
-    const year = d.getFullYear();
-
-    let hours = d.getHours();
-    const minutes = String(d.getMinutes()).padStart(2, "0");
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-
-    lu.textContent = `Last Updated: ${day} ${month}, ${year}, ${hours}:${minutes} ${ampm}`;
-  }
-});
-
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
