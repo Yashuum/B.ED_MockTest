@@ -3,244 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NishuAbhyasi – Dashboard</title>
+<title>NishuAbhyasi – Professional Dashboard</title>
 
 <style>
+/* Theme Configuration & Global Variables */
 :root{
-  --bg1:#6a11cb;
-  --bg2:#2575fc;
-  --card:#ffffff;
-  --accent:#ff9800;
-  --text:#222;
+  --color-primary: #1a2a6c;    /* Dominant Deep Blue */
+  --color-secondary: #2575fc;  /* Vibrant Blue */
+  --color-accent: #f2994a;     /* Subtle Amber for Mesh highlights */
+  --btn-grad: linear-gradient(135deg, #ff9800, #ff5722);
+  --glass: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.25);
 }
 
+/* Global Reset */
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:Segoe UI, Arial, sans-serif;
+  font-family:'Segoe UI', Roboto, sans-serif;
 }
 
+/* Dynamic Mesh Gradient Background */
 body{
   min-height:100vh;
-  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  background: linear-gradient(-45deg, 
+              var(--color-primary), 
+              var(--color-secondary), 
+              var(--color-primary), 
+              var(--color-accent));
+  background-size: 300% 300%;
+  animation: dynamicFlow 18s ease-in-out infinite;
   display:flex;
-  justify-content:center;
+  flex-direction:column; /* Changed to column for sticky header support */
   align-items:center;
-  padding:20px;
+  padding:0; /* Padding handled inside wrapper */
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* MAIN */
+@keyframes dynamicFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Background Particle Layer */
+.bubbles-container {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+}
+.bubble {
+  position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in;
+}
+
+@keyframes riseEffect {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 0.4; }
+  100% { transform: translateY(-1300px) scale(2); opacity: 0; }
+}
+
+.bubble:nth-child(1) { left: 10%; width: 40px; height: 40px; animation-delay: 0s; }
+.bubble:nth-child(2) { left: 30%; width: 20px; height: 20px; animation-delay: 5s; }
+.bubble:nth-child(3) { left: 50%; width: 60px; height: 60px; animation-delay: 2s; }
+.bubble:nth-child(4) { left: 70%; width: 30px; height: 30px; animation-delay: 8s; }
+.bubble:nth-child(5) { left: 90%; width: 50px; height: 50px; animation-delay: 3s; }
+
+/* Sticky Notice Bar Configuration */
+.notice-wrapper {
+  position: sticky;
+  top: 10px; /* Slight gap from top for modern look */
+  width: 95%;
+  max-width: 1100px;
+  z-index: 100; /* Stays above everything */
+  margin-top: 10px;
+}
+
+.notice-bar{
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  color:#fff;
+  padding:12px 0;
+  border-radius: 60px;
+  overflow:hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.notice-track{ display:flex; width:max-content; animation:scrollNotice 25s linear infinite; }
+.notice-track a{ white-space:nowrap; margin-right:120px; color:#fff; font-weight:600; text-decoration:none; }
+
+@keyframes scrollNotice{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+/* Main Content Wrapper */
 .wrapper{
   width:100%;
-  max-width:100%;
+  max-width:1100px;
+  position: relative;
+  z-index: 2;
+  padding: 20px;
 }
 
-/* ===== NOTICE BAR ===== */
-.notice-bar{
-  background:linear-gradient(135deg,#ff9800,#ff5722);
-  color:#fff;
-  padding:10px 0;
-  border-radius:14px;
-  margin-bottom:18px;
-  overflow:hidden;
-  box-shadow:0 6px 16px rgba(0,0,0,.2);
-}
-
-.notice-track{
-  display:flex;
-  width:max-content;
-  animation:scrollNotice 22s linear infinite;
-}
-
-.notice-track a{
-  white-space:nowrap;
-  margin-right:80px;
-  color:#fff;
-  font-weight:600;
-  text-decoration:none;
-}
-
-@keyframes scrollNotice{
-  from{ transform:translateX(0); }
-  to{ transform:translateX(-50%); }
-}
-
-/* Smaller notice text on phone / tab */
-@media(max-width:768px){
-  .notice-track a{
-    font-size:14px;
-    font-weight:500;
-  }
-}
-
-/* WELCOME */
+/* Hero Section Branding */
 .welcome{
-  background:#fff;
-  border-radius:18px;
-  padding:22px;
+  background: var(--glass);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 35px;
+  padding:35px;
   text-align:center;
+  margin-top: 20px;
   margin-bottom:30px;
-  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
 }
+.welcome .brand{ font-size:38px; font-weight:900; color:#fff; text-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-.welcome .small{
-  font-size:16px;
-  color:#666;
-  margin-bottom:6px;
-}
+/* Dashboard Grid */
+.dashboard{ display:grid; grid-template-columns:1fr 1fr; gap:30px; }
+.column{ display:flex; flex-direction:column; gap:25px; }
 
-.welcome .brand{
-  font-size:28px;
-  font-weight:700;
-  color:#222;
-}
-
-/* DASHBOARD */
-.dashboard{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-}
-
-.column{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-
+/* 3D Glass Cards with Enhanced Shadows */
 .card{
-  background:var(--card);
-  border-radius:16px;
-  padding:22px;
-  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 28px;
+  padding:25px;
+  /* 3D Shadow Effect */
+  box-shadow: 
+    0 15px 35px rgba(0,0,0,0.2),
+    inset 0 0 15px rgba(255,255,255,0.05);
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  min-height:150px;
+  min-height:160px;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.card h3{
-  font-size:18px;
-  margin-bottom:6px;
+.card:hover {
+  transform: translateY(-12px) rotateX(2deg); /* Subtle 3D tilt */
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
 }
 
-/* 🔔 UPDATED BADGE */
+.card h3{ font-size:20px; color:#fff; margin-bottom:10px; }
 .badge{
-  display:inline-block;
-  background:#16a34a;
-  color:#fff;
-  font-size:11px;
-  font-weight:600;
-  padding:3px 8px;
-  border-radius:999px;
-  margin-left:8px;
-  vertical-align:middle;
+  background: #16a34a; color:#fff; font-size:10px; font-weight:700;
+  padding:4px 10px; border-radius:50px; margin-left: 8px; vertical-align: middle;
 }
 
-.card p{
-  font-size:14px;
-  color:#555;
-}
+.card p{ font-size:14px; color: rgba(255,255,255,0.85); line-height: 1.5; }
 
+/* Primary Action Buttons */
 .btn{
-  margin-top:14px;
-  padding:12px;
+  margin-top:16px;
+  padding:14px;
   border:none;
-  border-radius:10px;
-  background:linear-gradient(135deg,#ff9800,#ff5722);
+  border-radius:15px;
+  background: var(--btn-grad);
   color:#fff;
   font-size:15px;
-  font-weight:600;
+  font-weight:700;
   cursor:pointer;
   text-align:center;
   text-decoration:none;
-  display:block;
+  box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4);
+  transition: 0.3s;
+}
+.btn:hover{ 
+  transform: scale(1.05); 
+  box-shadow: 0 12px 25px rgba(255, 87, 34, 0.6); 
 }
 
-.btn:hover{opacity:.9}
-
-/* FOOTER */
-.footer{
-  margin-top:28px;
-  text-align:center;
-  font-size:13px;
-  color:#fff;
-  opacity:.85;
-}
-
-/* POPUP BACKDROP */
+/* Popup Components */
 .popup-bg{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-  backdrop-filter:blur(6px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(15px); display:none; align-items:center; justify-content:center; z-index:1000;
 }
-
-/* POPUP */
 .popup{
-  background:rgba(255,255,255,0.75);
-  backdrop-filter:blur(14px);
-  border-radius:18px;
-  padding:26px;
-  max-width:420px;
-  width:90%;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.2);
+  background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(30px);
+  border: 1px solid rgba(255,255,255,0.3); border-radius:30px; padding:35px;
+  max-width:400px; width:90%; text-align:center; color:#fff;
 }
 
-/* MOBILE GRID */
 @media(max-width:768px){
-  .dashboard{
-    grid-template-columns:1fr;
-    gap:24px;
-  }
+  .dashboard{ grid-template-columns:1fr; }
+  .notice-wrapper { width: 92%; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<div class="bubbles-container">
+  <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+  <div class="bubble"></div><div class="bubble"></div>
+</div>
 
-  <!-- NOTICE BAR -->
+<div class="notice-wrapper">
   <div class="notice-bar">
     <div class="notice-track">
-      <a href="tests/all_in_one.html">
-        🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-      </a>
-      <a href="tests/all_in_one.html">
-        🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀
-      </a>
+      <a href="tests/all_in_one.html">🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀</a>
+      <a href="tests/all_in_one.html">🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀</a>
     </div>
   </div>
+</div>
 
+<div class="wrapper">
+  
   <div class="welcome">
-    <div class="small">Welcome to</div>
+    <div style="color:rgba(255,255,255,0.7); font-size:14px; margin-bottom:5px;">WELCOME TO</div>
     <div class="brand">NishuAbhyasi</div>
   </div>
 
   <div class="dashboard">
-
     <div class="column">
       <div class="card">
-        <h3>📘 English <span class="badge">Questions Updated Recently</span></h3>
+        <h3>📘 English <span class="badge">UPDATED</span></h3>
         <p>Grammar, comprehension and vocabulary practice.</p>
         <a href="tests/English.html" class="btn">Start Test</a>
       </div>
-
       <div class="card">
-        <h3>🧠 Reasoning & Aptitude <span class="badge">Questions Updated Recently</span></h3>
+        <h3>🧠 Reasoning <span class="badge">UPDATED</span></h3>
         <p>Logical reasoning and quantitative aptitude.</p>
         <a href="tests/reasoning.html" class="btn">Start Test</a>
       </div>
-
       <div class="card">
-        <h3>👩‍🏫 Teaching Principles <span class="badge">Questions Updated Recently</span></h3>
+        <h3>👩‍🏫 Teaching <span class="badge">UPDATED</span></h3>
         <p>Pedagogy and teaching methodology questions.</p>
         <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
       </div>
@@ -248,50 +241,39 @@ body{
 
     <div class="column">
       <div class="card">
-        <h3>📝 Hindi <span class="badge">Questions Updated Recently</span></h3>
+        <h3>📝 Hindi <span class="badge">UPDATED</span></h3>
         <p>Vyakaran, comprehension and language skills.</p>
         <a href="tests/Hindi.html" class="btn">Start Test</a>
       </div>
-
       <div class="card">
-        <h3>🌍 General Awareness <span class="badge">Questions Updated Recently</span></h3>
+        <h3>🌍 Awareness <span class="badge">UPDATED</span></h3>
         <p>Static GK, current affairs and basics.</p>
         <a href="tests/General_Awareness.html" class="btn">Start Test</a>
       </div>
-
-      <div class="card">
+      <div class="card" style="border-style: dashed;">
         <h3>💬 Feedback</h3>
-        <p>Share suggestions or report issues.</p>
-        <button class="btn" onclick="openPopup()">Contact Developer</button>
+        <p>Share suggestions or report issues directly.</p>
+        <button class="btn" onclick="openPopup()" style="background: rgba(255,255,255,0.1); box-shadow: none;">Contact Developer</button>
       </div>
     </div>
-
   </div>
 
-  <div class="footer">
-    © 2025 NishuAbhyasi
+  <div class="footer" style="margin-top:50px; text-align:center; color:#fff; opacity:0.8; padding-bottom:30px;">
+    © 2026 NishuAbhyasi | Learning Made Modern
   </div>
-
 </div>
 
-<!-- POPUP -->
 <div class="popup-bg" id="popup" onclick="closePopup()">
   <div class="popup" onclick="event.stopPropagation()">
-    <h3>Send Your Feedback to Yashwant</h3>
-    <p>This will open your email app</p>
-    <p>
-      <a href="mailto:singhyashwant559@gmail.com">Open Email App</a>
-    </p>
+    <h3 style="margin-bottom:10px;">Send Feedback</h3>
+    <p style="margin-bottom:20px; font-size:14px; opacity:0.8;">Contact Yashwant directly via email</p>
+    <a href="mailto:singhyashwant559@gmail.com" class="btn" style="text-decoration:none; display:block;">Open Email App</a>
   </div>
 </div>
 
 <script>
-function openPopup(){
-  document.getElementById("popup").style.display="flex";
-}
-function closePopup(){
-  document.getElementById("popup").style.display="none";
-}
+function openPopup(){ document.getElementById("popup").style.display="flex"; }
+function closePopup(){ document.getElementById("popup").style.display="none"; }
 </script>
 
 </body>
