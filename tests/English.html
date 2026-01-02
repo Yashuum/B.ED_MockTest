@@ -66,8 +66,9 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div class="container">
 
 <h1>Target Test- English 2026</h1>
-<p id="lastUpdated" style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: --
+
+<p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
+  Last Updated: 02 Jan, 2026, 01:00 PM
 </p>
 
 <div class="start-screen" id="startScreen">
@@ -75,9 +76,11 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
   <input id="testTime" type="number" placeholder="Time (minutes)"><br>
   <button onclick="startTest()">Start Test</button>
 
-  <a href="https://yashuum.github.io/B.ED_MockTest/" style="text-decoration:none;">
-    <button type="button">Go Back to Home</button>
-  </a>
+<a href="https://yashuum.github.io/B.ED_MockTest/" style="text-decoration:none;">
+  <button type="button">Go Back to Home</button>
+</a>
+  
+  
 </div>
 
 <div class="top-bar" id="topBar">
@@ -101,35 +104,33 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 </div>
 
 <script>
-/* ===== TEST LAST UPDATED (EDIT ONLY THIS WHEN QUESTIONS CHANGE) ===== */
-const TEST_LAST_UPDATED = "2026-01-01T15:38";
-
-/* AUTO FORMAT LAST UPDATED */
-document.addEventListener("DOMContentLoaded", function () {
-  const lu = document.getElementById("lastUpdated");
-  if (!lu) return;
-
-  const d = new Date(TEST_LAST_UPDATED);
-
-  const day = String(d.getDate()).padStart(2, "0");
-  const month = d.toLocaleString("en-US", { month: "short" });
-  const year = d.getFullYear();
-
-  let hours = d.getHours();
-  const minutes = String(d.getMinutes()).padStart(2, "0");
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-
-  lu.textContent = `Last Updated: ${day} ${month}, ${year}, ${hours}:${minutes} ${ampm}`;
-});
-
-/* ================= EXISTING TEST LOGIC (UNCHANGED) ================= */
-
 /* SAMPLE QUESTIONS */
 const questions = [
-  {q:"Fill in the blank:<br><br>She _____ already finished her work.",options:["has","have","had","having"],answer:"has"},
-  {q:"Choose the correct synonym of the word:<br><br>‘Quick’",options:["Slow","Rapid","Late","Weak"],answer:"Rapid"}
-  // rest unchanged
+  {q: "Fill in the blank:<br><br>She _____ already finished her work.", options: ["has","have","had","having"], answer: "has"},
+  {q: "Choose the correct synonym of the word:<br><br>‘Quick’", options: ["Slow","Rapid","Late","Weak"], answer: "Rapid"},
+  {q: "Choose the correct antonym of the word:<br><br>‘Victory’", options: ["Win","Defeat","Success","Gain"], answer: "Defeat"},
+  {q: "Spot the error:<br><br>He do not like coffee.", options: ["He","do not","like","coffee"], answer: "do not"},
+  {q: "Choose the correct one-word substitution:<br><br>‘A person who speaks many languages’", options: ["Linguist","Orator","Scholar","Author"], answer: "Linguist"},
+  {q: "Fill in the blank:<br><br>Neither Ram nor his friends _____ present today.", options: ["was","were","is","has"], answer: "were"},
+  {q: "Choose the correct meaning of the idiom:<br><br>‘To lose heart’", options: ["To become weak","To lose money","To lose confidence","To become sick"], answer: "To lose confidence"},
+  {q: "Choose the correct passive voice:<br><br>She writes a letter.", options: ["A letter is written by her","A letter was written by her","A letter has written by her","A letter is writing by her"], answer: "A letter is written by her"},
+  {q: "Choose the correct spelling:", options: ["Definately","Definitely","Definetely","Definitly"], answer: "Definitely"},
+  {q: "Choose the correct synonym of the word:<br><br>‘Honest’", options: ["Truthful","Clever","Lazy","Harsh"], answer: "Truthful"},
+  {q: "Fill in the blank:<br><br>He is good _____ mathematics.", options: ["in","at","on","with"], answer: "at"},
+  {q: "Choose the correct antonym of the word:<br><br>‘Increase’", options: ["Grow","Expand","Reduce","Develop"], answer: "Reduce"},
+  {q: "Spot the error:<br><br>Each of the boys were given a prize.", options: ["Each of","the boys","were given","a prize"], answer: "were given"},
+  {q: "Choose the correct meaning of the idiom:<br><br>‘At the eleventh hour’", options: ["Very early","At the last moment","At noon","Without delay"], answer: "At the last moment"},
+  {q: "Choose the correct one-word substitution:<br><br>‘One who loves mankind’", options: ["Philanthropist","Pessimist","Optimist","Miser"], answer: "Philanthropist"},
+  {q: "Fill in the blank:<br><br>The train _____ before we reached the station.", options: ["left","had left","has left","leaves"], answer: "had left"},
+  {q: "Choose the correct synonym of the word:<br><br>‘Strong’", options: ["Weak","Powerful","Thin","Soft"], answer: "Powerful"},
+  {q: "Choose the correct antonym of the word:<br><br>‘Permanent’", options: ["Fixed","Lasting","Temporary","Solid"], answer: "Temporary"},
+  {q: "Spot the error:<br><br>She is more smarter than her sister.", options: ["She is","more smarter","than her","sister"], answer: "more smarter"},
+  {q: "Choose the correct meaning of the idiom:<br><br>‘Break the ice’", options: ["To stop talking","To start a conversation","To break something","To end friendship"], answer: "To start a conversation"},
+  {q: "Choose the correct one-word substitution:<br><br>‘A place where books are kept’", options: ["Gallery","Library","Auditorium","Laboratory"], answer: "Library"},
+  {q: "Fill in the blank:<br><br>If it _____ tomorrow, we will stay at home.", options: ["rains","rained","will rain","has rained"], answer: "rains"},
+  {q: "Choose the correct synonym of the word:<br><br>‘Silent’", options: ["Quiet","Noisy","Loud","Angry"], answer: "Quiet"},
+  {q: "Choose the correct antonym of the word:<br><br>‘Accept’", options: ["Receive","Admit","Reject","Allow"], answer: "Reject"},
+  {q: "Spot the error:<br><br>He has been working here since two years.", options: ["He has been","working here","since two years",""], answer: "since two years"},
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -141,13 +142,11 @@ function startTest(){
     alert("Test already submitted");
     return;
   }
-
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
   navBtns.style.display="flex";
   submitBtn.style.display="block";
-
   totalSeconds=testTime.value*60;
   startTime=Date.now();
   saveProgress();
@@ -155,8 +154,146 @@ function startTest(){
   renderQuestion();
 }
 
-/* rest of your existing JS stays EXACTLY same */
+/* ---------- TIMER ---------- */
+function startTimer(){
+  updateTimer();
+  timerInterval=setInterval(()=>{
+    totalSeconds--;
+    updateTimer();
+    saveProgress();
+    if(totalSeconds<=0)submitQuiz();
+  },1000);
+}
+function updateTimer(){
+  timer.textContent=
+    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
+    String(totalSeconds%60).padStart(2,'0');
+}
+
+/* ---------- QUESTION ---------- */
+function renderQuestion(){
+  visited[currentIndex]=true;
+  const q=questions[currentIndex];
+  quizArea.innerHTML=`
+    <div class="quiz-card">
+      <b>${currentIndex+1}. ${q.q}</b>
+      <div class="options">
+        ${q.options.map(o=>`
+          <label>
+            <input type="radio" name="opt"
+              ${answers[currentIndex]==o?'checked':''}
+              onchange="selectAnswer('${o}')">
+            ${o}
+          </label>
+        `).join("")}
+      </div>
+    </div>`;
+  renderPalette();
+  saveProgress();
+}
+
+function selectAnswer(val){
+  answers[currentIndex]=val;
+  saveProgress();
+  renderPalette();
+}
+
+/* ---------- PALETTE ---------- */
+function renderPalette(){
+  palette.innerHTML="";
+  questions.forEach((_,i)=>{
+    const s=document.createElement("span");
+    s.textContent=i+1;
+    if(visited[i])s.classList.add("visited");
+    if(answers[i])s.classList.add("attempted");
+    s.onclick=()=>{currentIndex=i;renderQuestion()};
+    palette.appendChild(s);
+  });
+}
+
+/* ---------- NAV ---------- */
+function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+
+/* ---------- SAVE IN-PROGRESS ---------- */
+function saveProgress(){
+  localStorage.setItem("inProgress",JSON.stringify({
+    name:displayName.textContent,
+    answers,visited,currentIndex,totalSeconds,startTime
+  }));
+}
+
+/* ---------- SUBMIT ---------- */
+function submitQuiz(){
+  clearInterval(timerInterval);
+  localStorage.removeItem("inProgress");
+  let correct=0,attempted=0;
+  let html="<h2>Result</h2>";
+  questions.forEach((q,i)=>{
+    if(answers[i])attempted++;
+    if(answers[i]==q.answer)correct++;
+    html+=`
+      <p>${i+1}. ${q.q}<br>
+      Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
+      | Correct: <b>${q.answer}</b></p>`;
+  });
+  const timeTaken=Math.floor((Date.now()-startTime)/1000);
+  html+=`
+    <hr>
+    Score: ${correct}/${questions.length}<br>
+    Attempted: ${attempted}<br>
+    Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
+    Time Taken: ${Math.floor(timeTaken/60)} min
+  `;
+  localStorage.setItem("finalResult",JSON.stringify({
+    name:displayName.textContent,
+    html
+  }));
+  quizArea.innerHTML="";
+  navBtns.style.display="none";
+  submitBtn.style.display="none";
+  result.innerHTML=html;
+  clearBtn.style.display="block";
+}
+
+/* ---------- RESTORE ON LOAD ---------- */
+window.onload=function(){
+  const final=localStorage.getItem("finalResult");
+  const progress=localStorage.getItem("inProgress");
+  if(final){
+    const d=JSON.parse(final);
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    displayName.textContent=d.name;
+    result.innerHTML=d.html;
+    clearBtn.style.display="block";
+    return;
+  }
+  if(progress){
+    const p=JSON.parse(progress);
+    displayName.textContent=p.name;
+    answers=p.answers||{};
+    visited=p.visited||{};
+    currentIndex=p.currentIndex||0;
+    totalSeconds=p.totalSeconds||0;
+    startTime=p.startTime||Date.now();
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    navBtns.style.display="flex";
+    submitBtn.style.display="block";
+    startTimer();
+    renderQuestion();
+  }
+};
+
+/* ---------- CLEAR ---------- */
+function clearResult(){
+  if(!confirm("Start new test?"))return;
+  localStorage.clear();
+  location.reload();
+}
 </script>
 
 </body>
 </html>
+
