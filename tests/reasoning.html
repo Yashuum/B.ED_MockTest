@@ -2,87 +2,156 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mock Test – Reasoning by Yash</title>
 
 <style>
+/* Professional Glassmorphism Theme */
 :root{
-  --bg:#f8fafc;
-  --card:#ffffff;
-  --primary:#2563eb;
-  --border:#e5e7eb;
-  --success:#16a34a;
-  --danger:#dc2626;
+  --color-primary: #1a2a6c;
+  --color-secondary: #2575fc;
+  --color-accent: #f2994a;
+  --glass: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --success: #16a34a;
+  --danger: #ef4444;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:var(--bg)}
-.container{max-width:900px;margin:auto;padding:16px}
-h1{text-align:center}
 
-/* START */
-.start-screen{text-align:center;margin-top:60px}
-.start-screen input{width:260px;padding:12px;margin:8px 0;border-radius:8px;border:1px solid var(--border)}
-button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary);color:#fff;cursor:pointer}
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
 
-/* TOP BAR */
+body{
+  min-height:100vh;
+  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+  background-size: 300% 300%;
+  animation: dynamicFlow 18s ease-in-out infinite;
+  color: #fff;
+  padding: 20px 10px;
+}
+
+@keyframes dynamicFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+
+h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+/* START SCREEN */
+.start-screen{
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  padding: 40px 20px;
+  border-radius: 30px;
+  text-align:center;
+  margin-top: 50px;
+}
+
+/* FIX: Input Text Visibility */
+.start-screen input {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 15px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.15); /* Slightly brighter bg */
+  color: #ffffff !important; /* Forces Text to be White */
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* FIX: Placeholder Visibility */
+.start-screen input::placeholder {
+  color: rgba(255, 255, 255, 0.8) !important; /* Bright White Placeholder */
+  opacity: 1;
+}
+
+/* Input Focus Glow */
+.start-screen input:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 15px rgba(242, 153, 74, 0.4);
+}
+
+button{
+  padding: 14px 28px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #ff9800, #ff5722);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s;
+}
+button:hover{ transform: scale(1.05); }
+
+/* TOP BAR - STICKY */
 .top-bar{
-  display:none;justify-content:space-between;align-items:center;
-  padding:12px 16px;background:var(--card);
-  border:1px solid var(--border);border-radius:14px;
-  position:sticky;top:10px;z-index:10;margin-bottom:16px
+  display:none; justify-content:space-between; align-items:center;
+  padding:15px 25px; background: var(--glass);
+  backdrop-filter: blur(15px);
+  border:1px solid var(--glass-border); border-radius:50px;
+  position:sticky; top:10px; z-index:100; margin-bottom:15px;
 }
-.timer{font-weight:bold;color:var(--danger)}
+.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
 
 /* PALETTE */
-.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.palette span{
-  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
-  border-radius:8px;background:#e5e7eb;cursor:pointer
+#palette{ 
+  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
+  justify-content: center; padding: 10px;
 }
-.palette .visited{background:#bfdbfe}
-.palette .attempted{background:#86efac}
+.palette span{
+  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
+  border-radius:10px; background: rgba(255,255,255,0.1); 
+  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
+}
+.palette .visited{ background: var(--color-secondary); }
+.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
 
-/* QUESTION */
+/* QUIZ CARD */
 .quiz-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:20px
+  background: var(--glass); border:1px solid var(--glass-border);
+  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
 }
 .options label{
-  display:flex;gap:10px;padding:12px;border:1px solid var(--border);
-  border-radius:10px;margin:10px 0;cursor:pointer
+  display:flex; align-items: center; gap:12px; padding:14px; 
+  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
+  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
 }
+.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
 
-/* NAV */
-.nav{display:flex;justify-content:space-between;margin-top:18px}
+.nav{ display:flex; justify-content:space-between; margin-top:20px; }
+.btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* RESULT */
-.result{margin-top:20px}
-.correct{color:var(--success);font-weight:bold}
-.wrong{color:var(--danger);font-weight:bold}
-.clear-btn{background:#dc2626;margin-top:20px}
+/* RESULT ANALYSIS */
+.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+.correct{ color: #4ade80; font-weight:bold; }
+.wrong{ color: #f87171; font-weight:bold; }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
 <h1>Target Test- Reasoning 2026</h1>
-
-<p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: 04 Jan, 2026, 16:01 
-</p>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 04 Jan, 2026</p>
 
 <div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name"><br>
-  <input id="testTime" type="number" placeholder="Time (minutes)"><br>
-  <button onclick="startTest()">Start Test</button>
-
-<a href="https://yashuum.github.io/B.ED_MockTest/" style="text-decoration:none;">
-  <button type="button">Go Back to Home</button>
-</a>
+  <input id="candidateName" placeholder="Enter your name">
+  <input id="testTime" type="number" placeholder="Time (minutes)">
+  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
+    <button onclick="startTest()">Start Test</button>
+    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+  </div>
 </div>
 
 <div class="top-bar" id="topBar">
-  <div><b>Name:</b> <span id="displayName"></span></div>
+  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
   <div class="timer" id="timer">00:00</div>
 </div>
 
@@ -90,21 +159,21 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div id="quizArea"></div>
 
 <div class="nav" id="navBtns" style="display:none">
-  <button onclick="prevQ()">Prev</button>
-  <button onclick="nextQ()">Next</button>
+  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
+  <button onclick="nextQ()">Next Question →</button>
 </div>
 
-<button id="submitBtn" style="display:none;margin-top:20px" onclick="submitQuiz()">Submit Test</button>
+<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
 
-<div id="result" class="result"></div>
-<button id="clearBtn" class="clear-btn" style="display:none" onclick="clearResult()">Clear Result & Start New</button>
+<div id="result" class="result" style="display:none"></div>
+<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
 
 </div>
 
 <script>
+// Logic sections same as previous to maintain functionality
 const questions = [
 
-  const reasoningFinalVerifiedBatch = [
   {q: "यदि 'TEACHER' को 'VGCEJGT' लिखा जाता है, तो 'STUDENT' को क्या लिखेंगे?", options: ["UVWFGPV", "VUVFGPU", "UVVFGPU", "VTVFGPV"], answer: "VTVFGPV"}, // Logic: Each letter +2
   {q: "श्रेणी पूर्ण करें: 7, 10, 15, 22, 31, ?", options: ["40", "42", "44", "45"], answer: "42"}, // Logic: +3, +5, +7, +9, +11
   {q: "विषम चुनें (Odd One Out):", options: ["27", "64", "125", "144"], answer: "144"}, // Logic: All are cubes except 144 (square)
@@ -140,7 +209,6 @@ const questions = [
   {q: "विषम चुनें:", options: ["दौड़ना", "कूदना", "सोना", "टहलना"], answer: "सोना"},
   {q: "Ranking: राहुल का स्थान ऊपर से 9वां और नीचे से 38वां है। कुल छात्र कितने हैं?", options: ["47", "46", "45", "48"], answer: "46"}, // Logic: 9+38-1 = 46
   {q: "Matrix Logic: 4 | 9 | 13 <br> 8 | 5 | 13 <br> 10 | 3 | ?", options: ["13", "14", "15", "16"], answer: "13"}, // Logic: Simple Addition (4+9=13)
-  
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -148,12 +216,12 @@ let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
   if(localStorage.getItem("finalResult")){
-    alert("Test already submitted");
-    return;
+    alert("Test already submitted"); return;
   }
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
+  palette.style.display="flex"; 
   navBtns.style.display="flex";
   submitBtn.style.display="block";
   totalSeconds=testTime.value*60;
@@ -172,6 +240,7 @@ function startTimer(){
     if(totalSeconds<=0)submitQuiz();
   },1000);
 }
+
 function updateTimer(){
   timer.textContent=
     String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
@@ -183,7 +252,7 @@ function renderQuestion(){
   const q=questions[currentIndex];
   quizArea.innerHTML=`
     <div class="quiz-card">
-      <b>${currentIndex+1}. ${q.q}</b>
+      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
       <div class="options">
         ${q.options.map(o=>`
           <label>
@@ -230,33 +299,54 @@ function saveProgress(){
 function submitQuiz(){
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
-  let correct=0,attempted=0;
-  let html="<h2>Result</h2>";
+  let correct=0, attempted=0;
+  let detailHtml="<h2>Detailed Analysis</h2>";
+  
   questions.forEach((q,i)=>{
-    if(answers[i])attempted++;
-    if(answers[i]==q.answer)correct++;
-    html+=`
-      <p>${i+1}. ${q.q}<br>
-      Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
-      | Correct: <b>${q.answer}</b></p>`;
+    if(answers[i]) attempted++;
+    if(answers[i] == q.answer) correct++;
+    
+    detailHtml+=`
+      <div style="margin:10px 0; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; border-left:4px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
+        <p><b>Q${i+1}.</b> ${q.q}</p>
+        <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b>${q.answer}</b></p>
+      </div>`;
   });
-  const timeTaken=Math.floor((Date.now()-startTime)/1000);
-  html+=`
-    <hr>
-    Score: ${correct}/${questions.length}<br>
-    Attempted: ${attempted}<br>
-    Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
-    Time Taken: ${Math.floor(timeTaken/60)} min
+
+  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+
+  const summaryBox = `
+    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">Test Performance Report</h3>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Attempted: <br><b style="font-size:18px;">${attempted}</b>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b>
+        </div>
+      </div>
+    </div>
   `;
-  localStorage.setItem("finalResult",JSON.stringify({
-    name:displayName.textContent,
-    html
-  }));
+
+  const finalHtml = summaryBox + detailHtml;
+  localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+  
   quizArea.innerHTML="";
+  palette.style.display="none"; 
   navBtns.style.display="none";
   submitBtn.style.display="none";
-  result.innerHTML=html;
+  result.style.display="block";
+  result.innerHTML=finalHtml;
   clearBtn.style.display="block";
+  window.scrollTo(0,0);
 }
 
 window.onload=function(){
@@ -267,11 +357,10 @@ window.onload=function(){
     startScreen.style.display="none";
     topBar.style.display="flex";
     displayName.textContent=d.name;
+    result.style.display="block";
     result.innerHTML=d.html;
     clearBtn.style.display="block";
-    return;
-  }
-  if(progress){
+  } else if(progress){
     const p=JSON.parse(progress);
     displayName.textContent=p.name;
     answers=p.answers||{};
@@ -281,6 +370,7 @@ window.onload=function(){
     startTime=p.startTime||Date.now();
     startScreen.style.display="none";
     topBar.style.display="flex";
+    palette.style.display="flex";
     navBtns.style.display="flex";
     submitBtn.style.display="block";
     startTimer();
@@ -289,17 +379,9 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(!confirm("Start new test?"))return;
-  localStorage.clear();
-  location.reload();
+  if(confirm("Start new test?")){ localStorage.clear(); location.reload(); }
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
