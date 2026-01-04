@@ -2,90 +2,146 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Mock Test – B.ED by Yash</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Test – General Awareness by Yash</title>
 
 <style>
+/* Professional Glassmorphism Theme (Consistent with Reasoning & English) */
 :root{
-  --bg:#f8fafc;
-  --card:#ffffff;
-  --primary:#2563eb;
-  --border:#e5e7eb;
-  --success:#16a34a;
-  --danger:#dc2626;
+  --color-primary: #1a2a6c;
+  --color-secondary: #2575fc;
+  --color-accent: #f2994a;
+  --glass: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --success: #16a34a;
+  --danger: #ef4444;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:var(--bg)}
-.container{max-width:900px;margin:auto;padding:16px}
-h1{text-align:center}
 
-/* START */
-.start-screen{text-align:center;margin-top:60px}
-.start-screen input{width:260px;padding:12px;margin:8px 0;border-radius:8px;border:1px solid var(--border)}
-button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary);color:#fff;cursor:pointer}
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+
+body{
+  min-height:100vh;
+  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+  background-size: 300% 300%;
+  animation: dynamicFlow 18s ease-in-out infinite;
+  color: #fff;
+  padding: 20px 10px;
+}
+
+@keyframes dynamicFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+
+h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+/* START SCREEN */
+.start-screen{
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  padding: 40px 20px;
+  border-radius: 30px;
+  text-align:center;
+  margin-top: 50px;
+}
+
+.start-screen input {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 15px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff !important;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.start-screen input::placeholder {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+button{
+  padding: 14px 28px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #ff9800, #ff5722);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s;
+}
+button:hover{ transform: scale(1.05); }
 
 /* TOP BAR */
 .top-bar{
-  display:none;justify-content:space-between;align-items:center;
-  padding:12px 16px;background:var(--card);
-  border:1px solid var(--border);border-radius:14px;
-  position:sticky;top:10px;z-index:10;margin-bottom:16px
+  display:none; justify-content:space-between; align-items:center;
+  padding:15px 25px; background: var(--glass);
+  backdrop-filter: blur(15px);
+  border:1px solid var(--glass-border); border-radius:50px;
+  position:sticky; top:10px; z-index:100; margin-bottom:15px;
 }
-.timer{font-weight:bold;color:var(--danger)}
+.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
 
 /* PALETTE */
-.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.palette span{
-  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
-  border-radius:8px;background:#e5e7eb;cursor:pointer
+#palette{ 
+  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
+  justify-content: center; padding: 10px;
 }
-.palette .visited{background:#bfdbfe}
-.palette .attempted{background:#86efac}
+.palette span{
+  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
+  border-radius:10px; background: rgba(255,255,255,0.1); 
+  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
+}
+.palette .visited{ background: var(--color-secondary); }
+.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
 
-/* QUESTION */
+/* QUIZ CARD */
 .quiz-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:20px
+  background: var(--glass); border:1px solid var(--glass-border);
+  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
 }
 .options label{
-  display:flex;gap:10px;padding:12px;border:1px solid var(--border);
-  border-radius:10px;margin:10px 0;cursor:pointer
+  display:flex; align-items: center; gap:12px; padding:14px; 
+  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
+  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
 }
+.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
 
-/* NAV */
-.nav{display:flex;justify-content:space-between;margin-top:18px}
+.nav{ display:flex; justify-content:space-between; margin-top:20px; }
+.btn-secondary { background: rgba(255,255,255,0.15); }
 
 /* RESULT */
-.result{margin-top:20px}
-.correct{color:var(--success);font-weight:bold}
-.wrong{color:var(--danger);font-weight:bold}
-.clear-btn{background:#dc2626;margin-top:20px}
+.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+.correct{ color: #4ade80; font-weight:bold; }
+.wrong{ color: #f87171; font-weight:bold; }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
 <h1>Target Test- General Awareness 2026</h1>
-
-<p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: 02 Jan, 2026, 16:41 
-</p>
-
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 02 Jan, 2026</p>
 
 <div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name"><br>
-  <input id="testTime" type="number" placeholder="Time (minutes)"><br>
-  <button onclick="startTest()">Start Test</button>
-
-<a href="https://yashuum.github.io/B.ED_MockTest/" style="text-decoration:none;">
-  <button type="button">Go Back to Home</button>
-</a>
-  
-  
+  <input id="candidateName" placeholder="Enter your name">
+  <input id="testTime" type="number" placeholder="Time (minutes)">
+  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
+    <button onclick="startTest()">Start Test</button>
+    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+  </div>
 </div>
 
 <div class="top-bar" id="topBar">
-  <div><b>Name:</b> <span id="displayName"></span></div>
+  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
   <div class="timer" id="timer">00:00</div>
 </div>
 
@@ -93,19 +149,18 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div id="quizArea"></div>
 
 <div class="nav" id="navBtns" style="display:none">
-  <button onclick="prevQ()">Prev</button>
-  <button onclick="nextQ()">Next</button>
+  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
+  <button onclick="nextQ()">Next Question →</button>
 </div>
 
-<button id="submitBtn" style="display:none;margin-top:20px" onclick="submitQuiz()">Submit Test</button>
+<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
 
-<div id="result" class="result"></div>
-<button id="clearBtn" class="clear-btn" style="display:none" onclick="clearResult()">Clear Result & Start New</button>
+<div id="result" class="result" style="display:none"></div>
+<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
 
 </div>
 
 <script>
-/* SAMPLE QUESTIONS */
 const questions = [
   {q: "मानव शरीर में 'इन्सुलिन' का उत्पादन कहाँ होता है?", options: ["यकृत", "अग्न्याशय (Pancreas)", "प्लीहा", "पीयूष ग्रंथि"], answer: "अग्न्याशय (Pancreas)"},
   {q: "किस विटामिन की कमी से 'बेरी-बेरी' रोग होता है?", options: ["विटामिन B1", "विटामिन B12", "विटामिन C", "विटामिन D"], answer: "विटामिन B1"},
@@ -114,7 +169,7 @@ const questions = [
   {q: "रक्त का pH मान (pH Value) कितना होता है?", options: ["6.4", "7.0", "7.4", "8.2"], answer: "7.4"},
   {q: "वर्ष 2025 में संपन्न हुए 'IPL' का खिताब किस टीम ने जीता?", options: ["कोलकाता नाइट राइडर्स", "चेन्नई सुपर किंग्स", "मुंबई इंडियंस", "सनराइजर्स हैदराबाद"], answer: "कोलकाता नाइट राइडर्स"},
   {q: "वायुमंडल में ऑक्सीजन का प्रतिशत लगभग कितना है?", options: ["78%", "21%", "0.03%", "1%"], answer: "21%"},
-  {q: "वर्तमान में भारत के चीफ ऑफ डिफेंस स्टाफ (CDS) कौन हैं?", options: ["मनोज पांडे", "अनिल चौहान", "आर. हरि कुमार", "विवेक राम चौधरी"], answer: "अनिल चौहान"},
+  {q: "वर्तमान में भारत के चीफ ऑफ डिफेंस संतुलित (CDS) कौन हैं?", options: ["मनोज पांडे", "अनिल चौहान", "आर. हरि कुमार", "विवेक राम चौधरी"], answer: "अनिल चौहान"},
   {q: "निम्नलिखित में से कौन सा एक 'आनुवंशिक रोग' (Genetic Disease) है?", options: ["हैजा", "हीमोफीलिया", "मलेरिया", "एनीमिया"], answer: "हीमोफीलिया"},
   {q: "बिहार में 'मर्चा धान' को GI टैग मिला है, यह मुख्य रूप से किस क्षेत्र का है?", options: ["मिथिला", "पश्चिमी चंपारण", "भागलपुर", "पूर्णिया"], answer: "पश्चिमी चंपारण"},
   {q: "प्रकाश के परावर्तन के नियम के अनुसार, आपतन कोण (i) हमेशा किसके बराबर होता है?", options: ["अपवर्तन कोण", "परावर्तन कोण (r)", "90 डिग्री", "0 डिग्री"], answer: "परावर्तन कोण (r)"},
@@ -131,31 +186,22 @@ const questions = [
   {q: "वर्ष 2026 में शीतकालीन ओलंपिक (Winter Olympics) कहाँ आयोजित होंगे?", options: ["पेरिस", "मिलान और कोर्टिना (इटली)", "बीजिंग", "लॉस एंजिल्स"], answer: "मिलान और कोर्टिना (इटली)"},
   {q: "सिरके (Vinegar) में कौन सा अम्ल पाया जाता है?", options: ["लैक्टिक अम्ल", "साइट्रिक अम्ल", "एसिटिक अम्ल", "टार्टरिक अम्ल"], answer: "एसिटिक अम्ल"},
   {q: "हाल ही में लॉन्च किए गए 'गगनयान' मिशन का संबंध किससे है?", options: ["मानव अंतरिक्ष उड़ान", "समुद्र की गहराई", "मंगल मिशन", "सूर्य का अध्ययन"], answer: "मानव अंतरिक्ष उड़ान"},
-  {q: "रबड़ को कड़ा करने के लिए उसके साथ क्या मिलाया जाता है?", options: ["नाइट्रोजन", "सल्फर", "फास्फोरस", "कार्बन"], answer: "सल्फर"},
+  {q: "रबड़ को कड़ा करने के लिए उसके साथ क्या मिलाया जाता है?", options: ["नाइट्रोजन", "सल्फर", "फास्फोरस", "कार्बन"], answer: "सल्फर"}
 ];
-
 
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
-/* ---------- START TEST ---------- */
 function startTest(){
-  if(localStorage.getItem("finalResult")){
-    alert("Test already submitted");
-    return;
-  }
-
-  if(!candidateName.value || !testTime.value) {
-      alert("Please enter Name and Time");
-      return;
-  }
-
+  if(localStorage.getItem("finalResult")){ alert("Test already submitted"); return; }
+  if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+  
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
+  palette.style.display="flex"; 
   navBtns.style.display="flex";
   submitBtn.style.display="block";
-
   totalSeconds=testTime.value*60;
   startTime=Date.now();
   saveProgress();
@@ -163,7 +209,6 @@ function startTest(){
   renderQuestion();
 }
 
-/* ---------- TIMER ---------- */
 function startTimer(){
   updateTimer();
   timerInterval=setInterval(()=>{
@@ -173,25 +218,23 @@ function startTimer(){
     if(totalSeconds<=0)submitQuiz();
   },1000);
 }
+
 function updateTimer(){
   timer.textContent=
     String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
     String(totalSeconds%60).padStart(2,'0');
 }
 
-/* ---------- QUESTION ---------- */
 function renderQuestion(){
   visited[currentIndex]=true;
   const q=questions[currentIndex];
   quizArea.innerHTML=`
     <div class="quiz-card">
-      <b>${currentIndex+1}. ${q.q}</b>
+      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
       <div class="options">
         ${q.options.map(o=>`
           <label>
-            <input type="radio" name="opt"
-              ${answers[currentIndex]==o?'checked':''}
-              onchange="selectAnswer('${o}')">
+            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')">
             ${o}
           </label>
         `).join("")}
@@ -201,13 +244,8 @@ function renderQuestion(){
   saveProgress();
 }
 
-function selectAnswer(val){
-  answers[currentIndex]=val;
-  saveProgress();
-  renderPalette();
-}
+function selectAnswer(val){ answers[currentIndex]=val; saveProgress(); renderPalette(); }
 
-/* ---------- PALETTE ---------- */
 function renderPalette(){
   palette.innerHTML="";
   questions.forEach((_,i)=>{
@@ -220,99 +258,75 @@ function renderPalette(){
   });
 }
 
-/* ---------- NAV ---------- */
 function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
 function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-/* ---------- SAVE IN-PROGRESS ---------- */
 function saveProgress(){
   localStorage.setItem("inProgress",JSON.stringify({
-    name:displayName.textContent,
-    answers,visited,currentIndex,totalSeconds,startTime
+    name:displayName.textContent, answers,visited,currentIndex,totalSeconds,startTime
   }));
 }
 
-/* ---------- SUBMIT ---------- */
 function submitQuiz(){
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
-
-  let correct=0,attempted=0;
-  let html="<h2>Result</h2>";
-
+  let correct=0, attempted=0;
+  let detailHtml="<h2>Detailed Analysis</h2>";
+  
   questions.forEach((q,i)=>{
-    if(answers[i])attempted++;
-    if(answers[i]==q.answer)correct++;
-    html+=`
-      <p>${i+1}. ${q.q}<br>
-      Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
-      | Correct: <b>${q.answer}</b></p>`;
+    if(answers[i]) attempted++;
+    if(answers[i] == q.answer) correct++;
+    detailHtml+=`
+      <div style="margin:10px 0; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; border-left:4px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
+        <p><b>Q${i+1}.</b> ${q.q}</p>
+        <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b>${q.answer}</b></p>
+      </div>`;
   });
 
-  const timeTaken=Math.floor((Date.now()-startTime)/1000);
+  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-  html+=`
-    <hr>
-    Score: ${correct}/${questions.length}<br>
-    Attempted: ${attempted}<br>
-    Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
-    Time Taken: ${Math.floor(timeTaken/60)} min
-  `;
+  const summaryBox = `
+    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="color:#4ade80;">${accuracy}%</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+      </div>
+    </div>`;
 
-  localStorage.setItem("finalResult",JSON.stringify({
-    name:displayName.textContent,
-    html
-  }));
-
-  quizArea.innerHTML="";
-  navBtns.style.display="none";
-  submitBtn.style.display="none";
-  result.innerHTML=html;
-  clearBtn.style.display="block";
+  const finalHtml = summaryBox + detailHtml;
+  localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+  
+  quizArea.innerHTML=""; palette.style.display="none"; 
+  navBtns.style.display="none"; submitBtn.style.display="none";
+  result.style.display="block"; result.innerHTML=finalHtml;
+  clearBtn.style.display="block"; window.scrollTo(0,0);
 }
 
-/* ---------- RESTORE ON LOAD ---------- */
 window.onload=function(){
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
-
   if(final){
     const d=JSON.parse(final);
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    displayName.textContent=d.name;
-    result.innerHTML=d.html;
-    clearBtn.style.display="block";
-    return;
-  }
-
-  if(progress){
+    startScreen.style.display="none"; topBar.style.display="flex";
+    displayName.textContent=d.name; result.style.display="block";
+    result.innerHTML=d.html; clearBtn.style.display="block";
+  } else if(progress){
     const p=JSON.parse(progress);
-    displayName.textContent=p.name;
-    answers=p.answers||{};
-    visited=p.visited||{};
-    currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0;
-    startTime=p.startTime||Date.now();
-
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    navBtns.style.display="flex";
-    submitBtn.style.display="block";
-
-    startTimer();
-    renderQuestion();
+    displayName.textContent=p.name; answers=p.answers||{};
+    visited=p.visited||{}; currentIndex=p.currentIndex||0;
+    totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
+    startScreen.style.display="none"; topBar.style.display="flex";
+    palette.style.display="flex"; navBtns.style.display="flex";
+    submitBtn.style.display="block"; startTimer(); renderQuestion();
   }
 };
 
-/* ---------- CLEAR ---------- */
-function clearResult(){
-  if(!confirm("Start new test?"))return;
-  localStorage.clear();
-  location.reload();
-}
+function clearResult(){ if(confirm("Start new test?")){ localStorage.clear(); location.reload(); } }
 </script>
 
 </body>
 </html>
-
