@@ -1,5 +1,5 @@
 🔥 NishuAbhyasi Dashboard – Overall Features
-🧭 Centralized Exam Dashboard
+🧭 Centralized Exam Dashboard : https://yashuum.github.io/B.ED_MockTest/
 
 All B.Ed entrance preparation in one place
 
