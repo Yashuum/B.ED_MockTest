@@ -2,90 +2,143 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Mock Test – B.ED by Yash</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Test – B.ED 2026 by Yash</title>
 
 <style>
+/* Consistent Professional Glassmorphism Theme from Reference */
 :root{
-  --bg:#f8fafc;
-  --card:#ffffff;
-  --primary:#2563eb;
-  --border:#e5e7eb;
-  --success:#16a34a;
-  --danger:#dc2626;
+  --color-primary: #1a2a6c;
+  --color-secondary: #2575fc;
+  --color-accent: #f2994a;
+  --glass: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --success: #16a34a;
+  --danger: #ef4444;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:var(--bg)}
-.container{max-width:900px;margin:auto;padding:16px}
-h1{text-align:center}
 
-/* START */
-.start-screen{text-align:center;margin-top:60px}
-.start-screen input{width:260px;padding:12px;margin:8px 0;border-radius:8px;border:1px solid var(--border)}
-button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary);color:#fff;cursor:pointer}
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+
+body{
+  min-height:100vh;
+  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+  background-size: 300% 300%;
+  animation: dynamicFlow 18s ease-in-out infinite;
+  color: #fff;
+  padding: 20px 10px;
+}
+
+@keyframes dynamicFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+
+h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+/* START SCREEN */
+.start-screen{
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  padding: 40px 20px;
+  border-radius: 30px;
+  text-align:center;
+  margin-top: 50px;
+}
+
+.start-screen input {
+  width: 100%;
+  max-width: 300px;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 15px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff !important;
+  font-size: 16px;
+  outline: none;
+}
+
+.start-screen input::placeholder { color: rgba(255, 255, 255, 0.8); }
+
+button{
+  padding: 14px 28px;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #ff9800, #ff5722);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s;
+}
+button:hover{ transform: scale(1.05); }
 
 /* TOP BAR */
 .top-bar{
-  display:none;justify-content:space-between;align-items:center;
-  padding:12px 16px;background:var(--card);
-  border:1px solid var(--border);border-radius:14px;
-  position:sticky;top:10px;z-index:10;margin-bottom:16px
+  display:none; justify-content:space-between; align-items:center;
+  padding:15px 25px; background: var(--glass);
+  backdrop-filter: blur(15px);
+  border:1px solid var(--glass-border); border-radius:50px;
+  position:sticky; top:10px; z-index:100; margin-bottom:15px;
 }
-.timer{font-weight:bold;color:var(--danger)}
+.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
 
 /* PALETTE */
-.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.palette span{
-  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
-  border-radius:8px;background:#e5e7eb;cursor:pointer
+#palette{ 
+  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
+  justify-content: center; padding: 10px;
 }
-.palette .visited{background:#bfdbfe}
-.palette .attempted{background:#86efac}
+.palette span{
+  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
+  border-radius:10px; background: rgba(255,255,255,0.1); 
+  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
+}
+.palette .visited{ background: var(--color-secondary); }
+.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
 
-/* QUESTION */
+/* QUIZ CARD */
 .quiz-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:20px
+  background: var(--glass); border:1px solid var(--glass-border);
+  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
 }
 .options label{
-  display:flex;gap:10px;padding:12px;border:1px solid var(--border);
-  border-radius:10px;margin:10px 0;cursor:pointer
+  display:flex; align-items: center; gap:12px; padding:14px; 
+  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
+  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
 }
+.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
 
-/* NAV */
-.nav{display:flex;justify-content:space-between;margin-top:18px}
+.nav{ display:flex; justify-content:space-between; margin-top:20px; }
+.btn-secondary { background: rgba(255,255,255,0.15); }
 
 /* RESULT */
-.result{margin-top:20px}
-.correct{color:var(--success);font-weight:bold}
-.wrong{color:var(--danger);font-weight:bold}
-.clear-btn{background:#dc2626;margin-top:20px}
+.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+.correct{ color: #4ade80; font-weight:bold; }
+.wrong{ color: #f87171; font-weight:bold; }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
-<h1>Target Test- Mock 2026</h1>
-
-<p style="text-align:center;color:#666;font-size:14px;margin-top:-10px;">
-  Last Updated: 02 Jan, 2026, 16:30 
-</p>
-
+<h1>Target Test- B.ED Mock 2026</h1>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 02 Jan, 2026, 04:30 PM</p>
 
 <div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name"><br>
-  <input id="testTime" type="number" placeholder="Time (minutes)"><br>
-  <button onclick="startTest()">Start Test</button>
-
-<a href="https://yashuum.github.io/B.ED_MockTest/" style="text-decoration:none;">
-  <button type="button">Go Back to Home</button>
-</a>
-  
-  
+  <input id="candidateName" placeholder="Enter your name">
+  <input id="testTime" type="number" placeholder="Time (minutes)">
+  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
+    <button onclick="startTest()">Start Test</button>
+    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Home</button>
+  </div>
 </div>
 
 <div class="top-bar" id="topBar">
-  <div><b>Name:</b> <span id="displayName"></span></div>
+  <div><small style="opacity:0.9;">STUDENT:</small><br><b id="displayName"></b></div>
   <div class="timer" id="timer">00:00</div>
 </div>
 
@@ -93,22 +146,20 @@ button{padding:12px 22px;border:none;border-radius:10px;background:var(--primary
 <div id="quizArea"></div>
 
 <div class="nav" id="navBtns" style="display:none">
-  <button onclick="prevQ()">Prev</button>
-  <button onclick="nextQ()">Next</button>
+  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
+  <button onclick="nextQ()">Next Question →</button>
 </div>
 
-<button id="submitBtn" style="display:none;margin-top:20px" onclick="submitQuiz()">Submit Test</button>
+<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
 
-<div id="result" class="result"></div>
-<button id="clearBtn" class="clear-btn" style="display:none" onclick="clearResult()">Clear Result & Start New</button>
+<div id="result" class="result" style="display:none"></div>
+<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart New</button>
 
 </div>
 
 <script>
-/* SAMPLE QUESTIONS */
+// Your Original Questions Data
 const questions = [
-
-  
   {q: "Choose the correct synonym of the word:<br><br>‘ABANDON’", options: ["Keep", "Leave", "Join", "Hold"], answer: "Leave"},
   {q: "Fill in the blank with correct article:<br><br>He is _____ Honorable man.", options: ["a", "an", "the", "no article"], answer: "an"},
   {q: "Choose the correct antonym of the word:<br><br>‘FRAGILE’", options: ["Soft", "Weak", "Strong", "Brittle"], answer: "Strong"},
@@ -125,7 +176,7 @@ const questions = [
   {q: "Meaning of the idiom:<br><br>‘A piece of cake’", options: ["Something very sweet", "Something very easy", "A difficult task", "To eat cake"], answer: "Something very easy"},
   {q: "Choose the correct one-word substitution:<br><br>‘A place where birds are kept’", options: ["Zoo", "Apiary", "Aviary", "Stable"], answer: "Aviary"},
   {q: "Fill in the blank:<br><br>Hardly had I reached the station _____ the train started.", options: ["then", "than", "when", "so"], answer: "when"},
-  {q: "Choose the correctly spelled word:", options: ["Occurred", "Ocured", "Occured", "Ocurede"], answer: "Occurred"},
+  {get q(){return "Choose the correctly spelled word:"}, options: ["Occurred", "Ocured", "Occured", "Ocurede"], answer: "Occurred"},
   {q: "Fill in the blank:<br><br>Ram is _____ taller of the two brothers.", options: ["a", "an", "the", "no article"], answer: "the"},
   {q: "Choose the correct synonym of:<br><br>‘COURAGEOUS’", options: ["Timid", "Brave", "Coward", "Fearful"], answer: "Brave"},
   {q: "Change into Indirect Speech:<br><br>He said, 'I am busy.'", options: ["He said that he is busy", "He said that he was busy", "He said he busy", "He says he was busy"], answer: "He said that he was busy"},
@@ -153,7 +204,7 @@ const questions = [
   {q: "‘उत्थान’ का विलोम शब्द क्या होगा?", options: ["गिरावट", "पतन", "नीचे", "अंत"], answer: "पतन"},
   {q: "‘दाँतों तले उँगली दबाना’ का अर्थ है:", options: ["दाँत साफ करना", "हैरान रह जाना", "दर्द होना", "गुस्सा करना"], answer: "हैरान रह जाना"},
   {q: "‘जो सब कुछ जानता हो’ वाक्यांश के लिए एक शब्द क्या है?", options: ["अल्पज्ञ", "बहुज्ञ", "सर्वज्ञ", "अज्ञ"], answer: "सर्वज्ञ"},
-  {q: "‘ऊँट के मुँह में जीरा’ का सही अर्थ क्या है?", options: ["ऊँट को जीरा खिलाना", "जरूरत से बहुत कम मिलना", "बड़े को छोटा समझना", "बीमार होना"], answer: "जरूरत से बहुत कम मिलना"},
+  {q: "‘ऊँट के मुँह में जीरा’ का सही अर्थ क्या है?", options: ["ऊँट को जीरा खिलाना", "जरूरत से बहुत कम मिलना", "बड़े को छोटा समझना", "बीमार होना"], answer: "जरूरत से बहुत कम मिलना"},
   {q: "‘वर्णों के समूह’ को क्या कहते हैं?", options: ["शब्द", "वर्णमाला", "वाक्य", "स्वर"], answer: "वर्णमाला"},
   {q: "‘लोहा मानना’ मुहावरे का अर्थ है:", options: ["युद्ध करना", "श्रेष्ठता स्वीकार करना", "लोहा खरीदना", "मजबूत होना"], answer: "श्रेष्ठता स्वीकार करना"},
   {q: "‘पेड़ से पत्ता गिरा’ - इस वाक्य में ‘से’ किस कारक की विभक्ति है?", options: ["करण", "अपादान", "सम्प्रदान", "सम्बन्ध"], answer: "अपादान"},
@@ -171,7 +222,7 @@ const questions = [
   {q: "‘कोल्हू का बैल होना’ मुहावरे का अर्थ है:", options: ["खेती करना", "दिन-रात कठिन परिश्रम करना", "बहुत धीरे चलना", "मूर्ख होना"], answer: "दिन-रात कठिन परिश्रम करना"},
   {q: "हाल ही में (2025) किस भारतीय फिल्म ने ऑस्कर में सर्वश्रेष्ठ अंतरराष्ट्रीय फीचर फिल्म का पुरस्कार जीता?", options: ["Kalki 2898 AD", "All We Imagine as Light", "Jawan", "Pushpa 2"], answer: "All We Imagine as Light"},
   {q: "मानव शरीर की सबसे बड़ी कोशिका (Largest Cell) कौन सी है?", options: ["तंत्रिका कोशिका (Neuron)", "शुक्राणु", "डिम्ब (Ovum)", "यकृत कोशिका"], answer: "तंत्रिका कोशिका (Neuron)"},
-  {q: "इसरो (ISRO) के 'चंद्रयान-4' मिशन का मुख्य उद्देश्य क्या है?", options: ["चाँद की परिक्रमा", "चाँद से नमूने वापस लाना", "चाँद पर बस्ती बसाना", "चाँद के पानी की खोज"], answer: "चाँद से नमूने वापस लाना"},
+  {q: "इसरो (ISRO) के 'चंद्रयान-4' मिशन का मुख्य उद्देश्य क्या है?", options: ["चाँद की परिक्रमा", "चाँद से नमूने वापस लाना", "चाँद पर भर्ती बसाना", "चाँद के पानी की खोज"], answer: "चाँद से नमूने वापस लाना"},
   {q: "रक्त का थक्का (Blood Clotting) जमने में कौन सा विटामिन सहायक है?", options: ["विटामिन A", "विटामिन C", "विटामिन D", "विटामिन K"], answer: "विटामिन K"},
   {q: "2026 के एशियाई खेलों (Asian Games) का आयोजन कहाँ किया जाएगा?", options: ["भारत", "चीन", "जापान (नागोया)", "कतर"], answer: "जापान (नागोया)"},
   {q: "शुष्क बर्फ (Dry Ice) किसे कहा जाता है?", options: ["ठोस ऑक्सीजन", "ठोस कार्बन डाइऑक्साइड", "ठोस नाइट्रोजन", "ठोस हाइड्रोजन"], answer: "ठोस कार्बन डाइऑक्साइड"},
@@ -179,10 +230,10 @@ const questions = [
   {q: "प्रकाश वर्ष (Light Year) किसकी इकाई है?", options: ["समय", "प्रकाश की गति", "दूरी", "तीव्रता"], answer: "दूरी"},
   {q: "बिहार के वर्तमान राज्यपाल (Governor) कौन हैं? (जनवरी 2026 के अनुसार)", options: ["फागू चौहान", "राजेंद्र विश्वनाथ आर्लेकर", "नितीश कुमार", "लालजी टंडन"], answer: "राजेंद्र विश्वनाथ आर्लेकर"},
   {q: "कौन सा रक्त समूह 'सर्वदाता' (Universal Donor) कहलाता है?", options: ["A+", "B+", "AB+", "O-"], answer: "O-"},
-  {q: "2025 का 'नोबेल शांति पुरस्कार' किसे प्रदान किया गया?", options: ["निहोन हिडांक्यो (Nihon Hidankyo)", "वर्ल्ड फ़ूड प्रोग्राम", "नरगिस मोहम्मदी", "यूक्रेन रिलीफ"], answer: "निहोन हिडांक्यो (Nihon Hidankyo)"},
+  {q: "2025 का 'नोबेल शांति पुरस्कार' किसे प्रदान किया गया?", options: ["निहोन हिडांक्यो (Nihon Hidankyo)", "वर्ल्ड फ़ूड प्रोग्राम", "नरगिस मोहम्मदी", "यूक्रेन रिलीफ"], answer: "निहोन हिडांक्यो (Nihon Hidankyo)"},
   {q: "एलपीजी (LPG) गैस में मुख्य रूप से कौन सी गैसें होती हैं?", options: ["मीथेन और ईथेन", "प्रोपेन और ब्यूटेन", "हाइड्रोजन और हीलियम", "ईथेन और प्रोपेन"], answer: "प्रोपेन और ब्यूटेन"},
   {q: "भारत के वर्तमान मुख्य चुनाव आयुक्त (CEC) कौन हैं?", options: ["राजीव कुमार", "सुशील चंद्रा", "सुनील अरोड़ा", "ओम प्रकाश रावत"], answer: "राजीव कुमार"},
-  {q: "मधुमेह (Diabetes) रोग किसकी कमी से होता है?", options: ["विटामिन", "इंसुलिन", "कैल्शियम", "लोहा"], answer: "इंसुलिन"},
+  {q: "मधुमेह (Diabetes) रोग किसकी कमी से होता है?", options: ["विटामिन", "इंसुलिन", "कैल्शियम", "लोहा"], answer: "इंसulin"},
   {q: "हाल ही में शुरू की गई 'पीएम श्री' (PM SHRI) योजना का संबंध किससे है?", options: ["स्वास्थ्य", "खेती", "स्कूल/शिक्षा", "सड़क निर्माण"], answer: "स्कूल/शिक्षा"},
   {q: "विद्युत धारा (Electric Current) को मापने के लिए किस यंत्र का प्रयोग होता है?", options: ["वोल्टमीटर", "एमीटर", "गैल्वेनोमीटर", "लैक्टोमीटर"], answer: "एमीटर"},
   {q: "G20 शिखर सम्मेलन 2025 की मेजबानी किस देश ने की?", options: ["भारत", "ब्राजील", "दक्षिण अफ्रीका", "अमेरिका"], answer: "दक्षिण अफ्रीका"},
@@ -197,37 +248,37 @@ const questions = [
   {q: "लुप्त संख्या ज्ञात करें:<br>7 | 14 | 4<br>4 | 12 | 9<br>6 | 24 | ?", options: ["14", "16", "21", "22"], answer: "16"},
   {q: "Series: 0.5, 1.5, 4.5, 13.5, ?", options: ["40.5", "30.5", "39.5", "42.5"], answer: "40.5"},
   {q: "यदि 'LEMON' को 'ELMNO' (Alphabetical order) लिखा जाता है, तो 'CLUSTER' को क्या लिखेंगे?", options: ["CELRSTU", "CCELRSTU", "CELURST", "CELRSUT"], answer: "CELRSTU"},
-  {q: "कथन: 'धूम्रपान स्वास्थ्य के लिए हानिकारक है' - सिगरेट के पैकेट पर एक चेतावनी।<br>पूर्वधारणा: I. लोग चेतावनी पढ़ते हैं। II. लोग इसे गंभीरता से लेते हैं।", options: ["केवल I सही", "केवल II सही", "I और II दोनों", "कोई नहीं"], answer: "I और II दोनों"},
-  {q: "विषम का चयन करें (Based on Prime Numbers):", options: ["131", "151", "161", "181"], answer: "161"}, // 161 is divisible by 7 and 2,
-  {q: "यदि 'GO' = 32, 'SHE' = 49, तो 'SOME' = ?", options: ["56", "58", "62", "64"], answer: "56"}, // Reverse alphabet positions su,
+  {q: "कथन: 'धूम्रपान स्वास्थ्य के लिए हानिकारक है' - सिगरेट के पैकेट पर एक चेतावनी।<br>पूर्वधारणा: I. लोग चेतावनी पढ़ते हैं। II. लोग इसे गंभीरता से लेते हैं।", options: ["केवल I सही", "केवल II सही", "I और II दोनों", "कोई नहीं"], answer: "I और II दोनों"},
+  {q: "विषम का चयन करें (Based on Prime Numbers):", options: ["131", "151", "161", "181"], answer: "161"},
+  {q: "यदि 'GO' = 32, 'SHE' = 49, तो 'SOME' = ?", options: ["56", "58", "62", "64"], answer: "56"},
   {q: "एक कूट भाषा में 'Green means Pink', 'Pink means Blue', 'Blue means White'. आसमान का रंग क्या होगा?", options: ["Blue", "Pink", "White", "Green"], answer: "White"},
   {q: "A+B का अर्थ है A, B का भाई है। A-B का अर्थ है A, B की बहन है। P+Q-R में P का R से क्या सम्बंध है?", options: ["भाई", "बहन", "पिता", "चाचा"], answer: "भाई"},
   {q: "यदि 12 @ 4 = 3, 15 @ 3 = 5, तो 60 @ 5 = ?", options: ["10", "12", "15", "20"], answer: "12"},
   {q: "6 लोग A, B, C, D, E, F उत्तर की ओर मुख करके बैठे हैं। B, F और D के बीच है। E, A और C के बीच है। A और F सिरों पर हैं। C के ठीक बगल में कौन है?", options: ["A", "B", "D", "E"], answer: "E"},
   {q: "एक कतार में 25 बच्चे हैं। राहुल दाएं से 14वां है। बाएं से उसका स्थान क्या होगा?", options: ["11", "12", "10", "13"], answer: "12"},
-  {q: "यदि 2024 एक लीप वर्ष है, तो 2024 के कैलेंडर जैसा दोबारा किस वर्ष होगा?", options: ["2048", "2052", "2032", "2028"], answer: "2052"}, // Leap year repeats after 28 year,
-  {q: "दर्पण में देखने पर एक घड़ी 8:20 समय दिखाती है। वास्तविक समय क्या है?", options: ["4:40", "3:40", "4:20", "3:20"], answer: "3:40"}, // Subtract from 11:6,
-  {q: "9 : 80 :: 100 : ?", options: ["999", "10001", "9999", "1001"], answer: "9999"}, // n^2 - ,
+  {q: "यदि 2024 एक लीप वर्ष है, तो 2024 के कैलेंडर जैसा दोबारा किस वर्ष होगा?", options: ["2048", "2052", "2032", "2028"], answer: "2028"},
+  {q: "दर्पण में देखने पर एक घड़ी 8:20 समय दिखाती है। वास्तविक समय क्या है?", options: ["4:40", "3:40", "4:20", "3:20"], answer: "3:40"},
+  {q: "9 : 80 :: 100 : ?", options: ["999", "10001", "9999", "1001"], answer: "9999"},
   {q: "Series: A, C, F, J, O, ?", options: ["T", "U", "V", "W"], answer: "U"},
   {q: "विषम चुनें (Based on Cubes):", options: ["125", "216", "343", "511"], answer: "511"},
   {q: "यदि 'BUN' को '212114' लिखा जाता है, तो 'TOP' को क्या लिखेंगे?", options: ["201516", "201515", "191415", "201617"], answer: "201516"},
   {q: "यदि 'कल' से दो दिन पहले 'मंगलवार' था, तो 'कल' के दो दिन बाद क्या होगा?", options: ["शनिवार", "रविवार", "सोमवार", "मंगलवार"], answer: "शनिवार"},
-  {q: "एक सुबह, अमित अपनी छाया की ओर पीठ करके खड़ा था। उसका मुख किस दिशा में था?", options: ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], answer: "पूर्व"},
+  {q: "एक सुबह, अमित अपनी छाया की ओर पीठ करके खड़ा था। उसका मुख किस दिशा में था?", options: ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], answer: "पूर्व"},
   {q: "Venn Diagram: 'शिक्षक, लेखक, दार्शनिक' का सही चित्र क्या होगा?", options: ["तीनों अलग", "तीनों एक दूसरे को काटते हुए", "दो अंदर एक बाहर", "एक के अंदर दो"], answer: "तीनों एक दूसरे को काटते हुए"},
   {q: "एक चरवाहे के पास 17 भेड़ें थीं। 9 को छोड़कर सभी मर गईं। अब उसके पास कितनी भेड़ें बची हैं?", options: ["8", "9", "17", "0"], answer: "9"},
-  {q: "एक बंदर 30 फिट ऊंचे खंभे पर चढ़ता है। वह एक मिनट में 3 फिट चढ़ता है और 2 फिट फिसल जाता है। वह शिखर पर कितने मिनट में पहुँचेगा?", options: ["28", "29", "30", "27"], answer: "28"},
-  {q: "यदि 5*3 = 16, 10*4 = 60, तो 6*2 = ?", options: ["32", "12", "8", "24"], answer: "32"}, // (5+3)*,
-  {q: "कौन सा शब्द 'INDEPENDENT' के अक्षरों से नहीं बनाया जा सकता?", options: ["DEEP", "PENT", "DENT", "INDEED"], answer: "INDEED"}, // E is needed 3 times, D twice,
+  {q: "एक बंदर 30 फिट ऊंचे खंभे पर चढ़ता है। वह एक मिनट में 3 फिट चढ़ता है और 2 फिट फिसल जाता है। वह शिखर पर कितने मिनट में पहुँचेगा?", options: ["28", "29", "30", "27"], answer: "28"},
+  {q: "यदि 5*3 = 16, 10*4 = 60, तो 6*2 = ?", options: ["32", "12", "8", "24"], answer: "32"},
+  {q: "कौन सा शब्द 'INDEPENDENT' के अक्षरों से नहीं बनाया जा सकता?", options: ["DEEP", "PENT", "DENT", "INDEED"], answer: "INDEED"},
   {q: "लुप्त पद: D-4, F-6, H-8, J-10, ?", options: ["K-11", "L-12", "M-13", "N-14"], answer: "L-12"},
-  {q: "8 : 28 :: 27 : ?", options: ["65", "64", "63", "81"], answer: "65"}, // 2^3 : 3^3+1 :: 3^3 : 4^3+,
+  {q: "8 : 28 :: 27 : ?", options: ["65", "64", "63", "81"], answer: "65"},
   {q: "किसी कूट में '123' का अर्थ 'Hot Filtered Coffee', '356' का अर्थ 'Very Hot Day'. 'Hot' का कोड क्या है?", options: ["1", "2", "3", "5"], answer: "3"},
-  {q: "विषम चुनें:", options: ["बकरी", "पिल्ला", "गाय", "भैंस"], answer: "पिल्ला"}, // Rest are animals, Puppy is offsprin,
+  {q: "विषम चुनें:", options: ["बकरी", "पिल्ला", "गाय", "भैंस"], answer: "पिल्ला"},
   {q: "Series: 1, 1, 2, 6, 24, 120, ?", options: ["240", "600", "720", "840"], answer: "720"},
-  {q: "यदि '+' का अर्थ 'बेटा', '-' का अर्थ 'पत्नी', 'x' का अर्थ 'भाई' है। P x R + Q का अर्थ क्या है?", options: ["P, Q का भाई है", "P, Q का बेटा है", "P, Q का पोता है", "P, Q का पिता है"], answer: "P, Q का बेटा hai"},
-  {q: "एक घड़ी में 4:30 बज रहे हैं। यदि मिनट की सुई पूर्व की ओर है, तो घंटे की सुई किस दिशा में होगी?", options: ["उत्तर-पूर्व", "दक्षिण-पूर्व", "उत्तर-पश्चिम", "दक्षिण-पश्चिम"], answer: "उत्तर-पूर्व"},
+  {q: "यदि '+' का अर्थ 'बेटा', '-' का अर्थ 'पत्नी', 'x' का अर्थ 'भाई' है। P x R + Q का अर्थ क्या है?", options: ["P, Q का भाई है", "P, Q का बेटा है", "P, Q का पोता है", "P, Q का पिता है"], answer: "P, Q का बेटा है"},
+  {q: "एक घड़ी में 4:30 बज रहे हैं। यदि मिनट की सुई पूर्व की ओर है, तो घंटे की सुई किस दिशा में होगी?", options: ["उत्तर-पूर्व", "दक्षिण-पूर्व", "उत्तर-पश्चिम", "दक्षिण-पश्चिम"], answer: "उत्तर-पूर्व"},
   {q: "Missing Number: 1, 8, 27, ?, 125", options: ["36", "49", "64", "81"], answer: "64"},
-  {q: "यदि 'A' 26 है और 'SUN' 27 है, तो 'CAT' का मान क्या होगा?", options: ["24", "27", "57", "58"], answer: "57"}, // Reverse alphabet su,
-  {q: "पासे में 4 के सामने क्या होगा? (Dice with 1,2,3 visible and 1,4,5 visible in 2 positions)", options: ["2", "3", "5", "6"], answer: "2"},
+  {q: "यदि 'A' 26 है और 'SUN' 27 है, तो 'CAT' का मान क्या होगा?", options: ["24", "27", "57", "58"], answer: "57"},
+  {q: "पासे में 4 के सामने क्या होगा?", options: ["2", "3", "5", "6"], answer: "2"},
   {q: "निष्कर्ष: 'सभी आम मीठे हैं'। 'राम आम खा रहा है'। क्या राम मीठा फल खा रहा है?", options: ["हाँ", "नहीं", "कहा नहीं जा सकता", "केवल आम मीठा है"], answer: "हाँ"},
   {q: "‘करके सीखना’ (Learning by Doing) का सिद्धांत किसने दिया था?", options: ["रूसो", "जॉन डीवी (John Dewey)", "स्किनर", "अरस्तू"], answer: "जॉन डीवी (John Dewey)"},
   {q: "सूक्ष्म शिक्षण (Micro-Teaching) के भारतीय मॉडल में कुल कितना समय लगता है?", options: ["30 मिनट", "36 मिनट", "40 मिनट", "45 मिनट"], answer: "36 मिनट"},
@@ -248,22 +299,20 @@ const questions = [
   {q: "कोहलबर्ग के अनुसार 'नैतिक विकास' (Moral Development) के कितने स्तर हैं?", options: ["2", "3", "4", "5"], answer: "3"},
   {q: "एनसीएफ (NCF) 2005 के अनुसार शिक्षक की भूमिका क्या है?", options: ["तानाशाह", "नेता", "सुविधादाता (Facilitator)", "स्वामी"], answer: "सुविधादाता (Facilitator)"},
   {q: "बच्चों में 'सृजनात्मकता' (Creativity) को कैसे प्रोत्साहित किया जा सकता है?", options: ["नोट्स लिखवाकर", "रटने को कहकर", "अपसारी चिंतन (Divergent Thinking) के अवसर देकर", "चुप्पी साधकर"], answer: "अपसारी चिंतन (Divergent Thinking) के अवसर देकर"},
-  {q: "शिक्षण का सूत्र 'ज्ञात से अज्ञात की ओर' (Known to Unknown) का क्या अर्थ है?", options: ["पुराना ज्ञान भूलना", "नया ज्ञान सीधे पढ़ाना", "बच्चे के पहले के ज्ञान से जोड़कर नया पढ़ाना", "सिर्फ अज्ञात बातें बताना"], answer: "बच्चे के पहले के ज्ञान से जोड़कर नया पढ़ाना"},
-
+  {q: "शिक्षण का सूत्र 'ज्ञात से अज्ञात की ओर' (Known to Unknown) का क्या अर्थ है?", options: ["पुराना ज्ञान भूलना", "नया ज्ञान सीधे पढ़ाना", "बच्चे के पहले के ज्ञान से जोड़कर नया पढ़ाना", "सिर्फ अज्ञात बातें बताना"], answer: "बच्चे के पहले के ज्ञान से जोड़कर नया पढ़ाना"}
 ];
-
 
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
-  if(localStorage.getItem("finalResult")){
-    alert("Test already submitted");
-    return;
-  }
+  if(localStorage.getItem("finalResult")){ return; }
+  if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+  
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
+  palette.style.display="flex"; 
   navBtns.style.display="flex";
   submitBtn.style.display="block";
   totalSeconds=testTime.value*60;
@@ -282,6 +331,7 @@ function startTimer(){
     if(totalSeconds<=0)submitQuiz();
   },1000);
 }
+
 function updateTimer(){
   timer.textContent=
     String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
@@ -293,13 +343,11 @@ function renderQuestion(){
   const q=questions[currentIndex];
   quizArea.innerHTML=`
     <div class="quiz-card">
-      <b>${currentIndex+1}. ${q.q}</b>
+      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
       <div class="options">
         ${q.options.map(o=>`
           <label>
-            <input type="radio" name="opt"
-              ${answers[currentIndex]==o?'checked':''}
-              onchange="selectAnswer('${o}')">
+            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')">
             ${o}
           </label>
         `).join("")}
@@ -309,11 +357,7 @@ function renderQuestion(){
   saveProgress();
 }
 
-function selectAnswer(val){
-  answers[currentIndex]=val;
-  saveProgress();
-  renderPalette();
-}
+function selectAnswer(val){ answers[currentIndex]=val; saveProgress(); renderPalette(); }
 
 function renderPalette(){
   palette.innerHTML="";
@@ -332,41 +376,48 @@ function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
 function saveProgress(){
   localStorage.setItem("inProgress",JSON.stringify({
-    name:displayName.textContent,
-    answers,visited,currentIndex,totalSeconds,startTime
+    name:displayName.textContent, answers,visited,currentIndex,totalSeconds,startTime
   }));
 }
 
 function submitQuiz(){
+  if(!confirm("Are you sure you want to submit?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
-  let correct=0,attempted=0;
-  let html="<h2>Result</h2>";
+  let correct=0, attempted=0;
+  let detailHtml="<h2>Detailed Analysis</h2>";
+  
   questions.forEach((q,i)=>{
-    if(answers[i])attempted++;
-    if(answers[i]==q.answer)correct++;
-    html+=`
-      <p>${i+1}. ${q.q}<br>
-      Your: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span>
-      | Correct: <b>${q.answer}</b></p>`;
+    if(answers[i]) attempted++;
+    if(answers[i] == q.answer) correct++;
+    detailHtml+=`
+      <div style="margin:10px 0; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; border-left:4px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
+        <p><b>Q${i+1}.</b> ${q.q}</p>
+        <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b>${q.answer}</b></p>
+      </div>`;
   });
-  const timeTaken=Math.floor((Date.now()-startTime)/1000);
-  html+=`
-    <hr>
-    Score: ${correct}/${questions.length}<br>
-    Attempted: ${attempted}<br>
-    Accuracy: ${attempted?Math.round(correct/attempted*100):0}%<br>
-    Time Taken: ${Math.floor(timeTaken/60)} min
-  `;
-  localStorage.setItem("finalResult",JSON.stringify({
-    name:displayName.textContent,
-    html
-  }));
-  quizArea.innerHTML="";
-  navBtns.style.display="none";
-  submitBtn.style.display="none";
-  result.innerHTML=html;
-  clearBtn.style.display="block";
+
+  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+
+  const summaryBox = `
+    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="color:#4ade80;">${accuracy}%</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+      </div>
+    </div>`;
+
+  const finalHtml = summaryBox + detailHtml;
+  localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+  
+  quizArea.innerHTML=""; palette.style.display="none"; 
+  navBtns.style.display="none"; submitBtn.style.display="none";
+  result.style.display="block"; result.innerHTML=finalHtml;
+  clearBtn.style.display="block"; window.scrollTo(0,0);
 }
 
 window.onload=function(){
@@ -374,39 +425,22 @@ window.onload=function(){
   const progress=localStorage.getItem("inProgress");
   if(final){
     const d=JSON.parse(final);
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    displayName.textContent=d.name;
-    result.innerHTML=d.html;
-    clearBtn.style.display="block";
-    return;
-  }
-  if(progress){
+    startScreen.style.display="none"; topBar.style.display="flex";
+    displayName.textContent=d.name; result.style.display="block";
+    result.innerHTML=d.html; clearBtn.style.display="block";
+  } else if(progress){
     const p=JSON.parse(progress);
-    displayName.textContent=p.name;
-    answers=p.answers||{};
-    visited=p.visited||{};
-    currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0;
-    startTime=p.startTime||Date.now();
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    navBtns.style.display="flex";
-    submitBtn.style.display="block";
-    startTimer();
-    renderQuestion();
+    displayName.textContent=p.name; answers=p.answers||{};
+    visited=p.visited||{}; currentIndex=p.currentIndex||0;
+    totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
+    startScreen.style.display="none"; topBar.style.display="flex";
+    palette.style.display="flex"; navBtns.style.display="flex";
+    submitBtn.style.display="block"; startTimer(); renderQuestion();
   }
 };
 
-function clearResult(){
-  if(!confirm("Start new test?"))return;
-  localStorage.clear();
-  location.reload();
-}
+function clearResult(){ if(confirm("Start new test?")){ localStorage.clear(); location.reload(); } }
 </script>
 
 </body>
 </html>
-
-
-
