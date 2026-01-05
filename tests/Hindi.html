@@ -6,7 +6,7 @@
 <title>Mock Test – Hindi by Yash</title>
 
 <style>
-/* Professional Glassmorphism Theme */
+/* Professional Glassmorphism Theme (Same as Reasoning) */
 :root{
   --color-primary: #1a2a6c;
   --color-secondary: #2575fc;
@@ -49,6 +49,7 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   margin-top: 50px;
 }
 
+/* Input Styling with High Visibility */
 .start-screen input {
   width: 100%;
   max-width: 300px;
@@ -65,6 +66,12 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
 
 .start-screen input::placeholder {
   color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.start-screen input:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 15px rgba(242, 153, 74, 0.4);
 }
 
 button{
@@ -117,7 +124,7 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* RESULT */
+/* RESULT ANALYSIS */
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
@@ -161,9 +168,9 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
+// Hindi Question Set (Original 30 Questions)
 const questions = [
-
-{q: "सन्धि के मुख्य भेद हैं:", options: ["दो", "तीन", "चार", "पांच"], answer: "तीन"},
+  {q: "सन्धि के मुख्य भेद हैं:", options: ["दो", "तीन", "चार", "पांच"], answer: "तीन"},
 {q: "‘नारायण’ का सही सन्धि-विच्छेद क्या है?", options: ["नर + आपन", "नार + आयन", "नर + अयन", "नार + अण"], answer: "नर + अयन"},
 {q: "‘सप्तर्षि’ में कौन-सी सन्धि है?", options: ["अयादि स्वर सन्धि", "दीर्घ स्वर सन्धि", "वृद्धि स्वर सन्धि", "गुण स्वर सन्धि"], answer: "गुण स्वर सन्धि"},
 {q: "‘देव्यैश्वर्य’ किसका सन्धि-विच्छेद है?", options: ["देवेश्वर्य", "देवी + ऐश्वर्य", "देव्यैश्वर्य", "देवोश्वर्य"], answer: "देवी + ऐश्वर्य"},
@@ -222,16 +229,16 @@ const questions = [
 {q: "‘थाली का बैंगन’ होना मुहावरे का अर्थ है:", options: ["सब्जी बनाना", "सिद्धांतहीन व्यक्ति", "गोल-मटोल होना", "कष्ट देना"], answer: "सिद्धांतहीन व्यक्ति"},
 {q: "‘लोहा लेना’ का अर्थ क्या है?", options: ["लोहा खरीदना", "सामना करना", "मजबूत होना", "युद्ध हारना"], answer: "सामना करना"},
 {q: "‘श्री गणेश करना’ मुहावरे का अर्थ है:", options: ["पूजा करना", "आरम्भ करना", "कार्य समाप्त करना", "नाम लिखना"], answer: "आरम्भ करना"},
-{q: "‘टेढ़ी खीर’ होना मुहावरे का अर्थ है:", options: ["मीठा पकवान", "बहुत कठिन कार्य", "आसान काम", "खीर का खराब होना"], answer: "बहुत कठिन कार्य"},  
+{q: "‘टेढ़ी खीर’ होना मुहावरे का अर्थ है:", options: ["मीठा पकवान", "बहुत कठिन कार्य", "आसान काम", "खीर का खराब होना"], answer: "बहुत कठिन कार्य"},
 ];
 
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
-  if(localStorage.getItem("finalResult")){ return; } // Removed alert
-  if(!candidateName.value || !testTime.value) { return; } // Removed alert
-  
+  if(localStorage.getItem("finalResult")){
+    alert("Test already submitted"); return;
+  }
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
@@ -270,7 +277,9 @@ function renderQuestion(){
       <div class="options">
         ${q.options.map(o=>`
           <label>
-            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')">
+            <input type="radio" name="opt"
+              ${answers[currentIndex]==o?'checked':''}
+              onchange="selectAnswer('${o}')">
             ${o}
           </label>
         `).join("")}
@@ -280,7 +289,11 @@ function renderQuestion(){
   saveProgress();
 }
 
-function selectAnswer(val){ answers[currentIndex]=val; saveProgress(); renderPalette(); }
+function selectAnswer(val){
+  answers[currentIndex]=val;
+  saveProgress();
+  renderPalette();
+}
 
 function renderPalette(){
   palette.innerHTML="";
@@ -299,7 +312,8 @@ function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
 function saveProgress(){
   localStorage.setItem("inProgress",JSON.stringify({
-    name:displayName.textContent, answers,visited,currentIndex,totalSeconds,startTime
+    name:displayName.textContent,
+    answers,visited,currentIndex,totalSeconds,startTime
   }));
 }
 
@@ -312,6 +326,7 @@ function submitQuiz(){
   questions.forEach((q,i)=>{
     if(answers[i]) attempted++;
     if(answers[i] == q.answer) correct++;
+    
     detailHtml+=`
       <div style="margin:10px 0; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; border-left:4px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
         <p><b>Q${i+1}.</b> ${q.q}</p>
@@ -326,20 +341,33 @@ function submitQuiz(){
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
       <h3 style="margin-bottom:15px; color:var(--color-accent);">Test Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="color:#4ade80;">${accuracy}%</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Attempted: <br><b style="font-size:18px;">${attempted}</b>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
+          Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b>
+        </div>
       </div>
-    </div>`;
+    </div>
+  `;
 
   const finalHtml = summaryBox + detailHtml;
   localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
   
-  quizArea.innerHTML=""; palette.style.display="none"; 
-  navBtns.style.display="none"; submitBtn.style.display="none";
-  result.style.display="block"; result.innerHTML=finalHtml;
-  clearBtn.style.display="block"; window.scrollTo(0,0);
+  quizArea.innerHTML="";
+  palette.style.display="none"; 
+  navBtns.style.display="none";
+  submitBtn.style.display="none";
+  result.style.display="block";
+  result.innerHTML=finalHtml;
+  clearBtn.style.display="block";
+  window.scrollTo(0,0);
 }
 
 window.onload=function(){
@@ -347,24 +375,34 @@ window.onload=function(){
   const progress=localStorage.getItem("inProgress");
   if(final){
     const d=JSON.parse(final);
-    startScreen.style.display="none"; topBar.style.display="flex";
-    displayName.textContent=d.name; result.style.display="block";
-    result.innerHTML=d.html; clearBtn.style.display="block";
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    displayName.textContent=d.name;
+    result.style.display="block";
+    result.innerHTML=d.html;
+    clearBtn.style.display="block";
   } else if(progress){
     const p=JSON.parse(progress);
-    displayName.textContent=p.name; answers=p.answers||{};
-    visited=p.visited||{}; currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
-    startScreen.style.display="none"; topBar.style.display="flex";
-    palette.style.display="flex"; navBtns.style.display="flex";
-    submitBtn.style.display="block"; startTimer(); renderQuestion();
+    displayName.textContent=p.name;
+    answers=p.answers||{};
+    visited=p.visited||{};
+    currentIndex=p.currentIndex||0;
+    totalSeconds=p.totalSeconds||0;
+    startTime=p.startTime||Date.now();
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    palette.style.display="flex";
+    navBtns.style.display="flex";
+    submitBtn.style.display="block";
+    startTimer();
+    renderQuestion();
   }
 };
 
-function clearResult(){ if(confirm("Start new test?")){ localStorage.clear(); location.reload(); } }
+function clearResult(){
+  if(confirm("Start new test?")){ localStorage.clear(); location.reload(); }
+}
 </script>
 
 </body>
 </html>
-
-
