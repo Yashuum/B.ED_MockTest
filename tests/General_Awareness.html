@@ -6,7 +6,7 @@
 <title>Mock Test – General Awareness by Yash</title>
 
 <style>
-/* Professional Glassmorphism Theme (Consistent with Reasoning & English) */
+/* Professional Glassmorphism Theme */
 :root{
   --color-primary: #1a2a6c;
   --color-secondary: #2575fc;
@@ -32,6 +32,12 @@ body{
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
@@ -65,6 +71,28 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
 
 .start-screen input::placeholder {
   color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Question Count Sticker */
+.q-count-sticker {
+  margin: 5px auto 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #00e676; /* Green dot for GK */
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
 }
 
 button{
@@ -117,7 +145,6 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* RESULT */
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
@@ -134,6 +161,12 @@ button:hover{ transform: scale(1.05); }
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
   <input id="testTime" type="number" placeholder="Time (minutes)">
+  
+  <div class="q-count-sticker">
+    <span class="pulse-dot"></span>
+    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+  </div>
+
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
     <button onclick="startTest()">Start Test</button>
     <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
@@ -162,31 +195,26 @@ button:hover{ transform: scale(1.05); }
 
 <script>
 const questions = [
-  {q: "मानव शरीर में 'इन्सुलिन' का उत्पादन कहाँ होता है?", options: ["यकृत", "अग्न्याशय (Pancreas)", "प्लीहा", "पीयूष ग्रंथि"], answer: "अग्न्याशय (Pancreas)"},
-  {q: "किस विटामिन की कमी से 'बेरी-बेरी' रोग होता है?", options: ["विटामिन B1", "विटामिन B12", "विटामिन C", "विटामिन D"], answer: "विटामिन B1"},
-  {q: "ध्वनि की तीव्रता (Intensity of Sound) मापने की इकाई क्या है?", options: ["हर्ट्ज़", "डेसिबल", "वाट", "कैंडेला"], answer: "डेसिबल"},
-  {q: "बिहार के किस जिले में हाल ही में विश्व का सबसे बड़ा रामायण मंदिर बनाया जा रहा है?", options: ["वैशाली", "पूर्वी चंपारण", "गया", "पटना"], answer: "पूर्वी चंपारण"},
-  {q: "रक्त का pH मान (pH Value) कितना होता है?", options: ["6.4", "7.0", "7.4", "8.2"], answer: "7.4"},
-  {q: "वर्ष 2025 में संपन्न हुए 'IPL' का खिताब किस टीम ने जीता?", options: ["कोलकाता नाइट राइडर्स", "चेन्नई सुपर किंग्स", "मुंबई इंडियंस", "सनराइजर्स हैदराबाद"], answer: "कोलकाता नाइट राइडर्स"},
-  {q: "वायुमंडल में ऑक्सीजन का प्रतिशत लगभग कितना है?", options: ["78%", "21%", "0.03%", "1%"], answer: "21%"},
-  {q: "वर्तमान में भारत के चीफ ऑफ डिफेंस संतुलित (CDS) कौन हैं?", options: ["मनोज पांडे", "अनिल चौहान", "आर. हरि कुमार", "विवेक राम चौधरी"], answer: "अनिल चौहान"},
-  {q: "निम्नलिखित में से कौन सा एक 'आनुवंशिक रोग' (Genetic Disease) है?", options: ["हैजा", "हीमोफीलिया", "मलेरिया", "एनीमिया"], answer: "हीमोफीलिया"},
-  {q: "बिहार में 'मर्चा धान' को GI टैग मिला है, यह मुख्य रूप से किस क्षेत्र का है?", options: ["मिथिला", "पश्चिमी चंपारण", "भागलपुर", "पूर्णिया"], answer: "पश्चिमी चंपारण"},
-  {q: "प्रकाश के परावर्तन के नियम के अनुसार, आपतन कोण (i) हमेशा किसके बराबर होता है?", options: ["अपवर्तन कोण", "परावर्तन कोण (r)", "90 डिग्री", "0 डिग्री"], answer: "परावर्तन कोण (r)"},
-  {q: "इसरो (ISRO) के वर्तमान अध्यक्ष कौन हैं?", options: ["के. सिवन", "एस. सोमनाथ", "जी. सतीश रेड्डी", "ए.एस. किरण कुमार"], answer: "एस. सोमनाथ"},
-  {q: "लोहे का शुद्धतम रूप (Purest form of Iron) कौन सा है?", options: ["ढलवा लोहा (Cast Iron)", "पिटवा लोहा (Wrought Iron)", "स्टील", "पिग आयरन"], answer: "पिटवा लोहा (Wrought Iron)"},
-  {q: "नीति आयोग के 'इंडिया इनोवेशन इंडेक्स' में बिहार का स्थान क्या रहा?", options: ["प्रथम", "अंतिम के पास", "मध्यम", "शीर्ष पांच"], answer: "अंतिम के पास"},
-  {q: "विद्युत बल्ब का तंतु (Filament) किसका बना होता है?", options: ["तांबा", "नाइक्रोम", "टंगस्टन", "लोहा"], answer: "टंगस्टन"},
-  {q: "हाल ही में बिहार के किस पूर्व मुख्यमंत्री को मरणोपरांत 'भारत रत्न' (2024) से सम्मानित किया गया?", options: ["जगन्नाथ मिश्रा", "कर्पूरी ठाकुर", "सत्येंद्र नारायण सिन्हा", "भोला पासवान शास्त्री"], answer: "कर्पूरी ठाकुर"},
-  {q: "गाजर में मुख्य रूप से कौन सा विटामिन पाया जाता है?", options: ["विटामिन A", "विटामिन B", "विटामिन C", "विटामिन K"], answer: "विटामिन A"},
-  {q: "विश्व स्वास्थ्य संगठन (WHO) का मुख्यालय कहाँ स्थित है?", options: ["न्यूयॉर्क", "जेनेवा", "पेरिस", "लंदन"], answer: "जेनेवा"},
-  {q: "मछलियाँ किसके द्वारा श्वसन (Breathing) करती हैं?", options: ["फेफड़े", "त्वचा", "गलफड़े (Gills)", "नाक"], answer: "गलफड़े (Gills)"},
-  {q: "बिहार दिवस हर साल किस तिथि को मनाया जाता है?", options: ["20 मार्च", "22 मार्च", "25 मार्च", "1 अप्रैल"], answer: "22 मार्च"},
-  {q: "पेंसिल की लीड बनाने में किसका उपयोग किया जाता है?", options: ["कोयला", "ग्रेफाइट", "हीरा", "चारकोल"], answer: "ग्रेफाइट"},
-  {q: "वर्ष 2026 में शीतकालीन ओलंपिक (Winter Olympics) कहाँ आयोजित होंगे?", options: ["पेरिस", "मिलान और कोर्टिना (इटली)", "बीजिंग", "लॉस एंजिल्स"], answer: "मिलान और कोर्टिना (इटली)"},
-  {q: "सिरके (Vinegar) में कौन सा अम्ल पाया जाता है?", options: ["लैक्टिक अम्ल", "साइट्रिक अम्ल", "एसिटिक अम्ल", "टार्टरिक अम्ल"], answer: "एसिटिक अम्ल"},
-  {q: "हाल ही में लॉन्च किए गए 'गगनयान' मिशन का संबंध किससे है?", options: ["मानव अंतरिक्ष उड़ान", "समुद्र की गहराई", "मंगल मिशन", "सूर्य का अध्ययन"], answer: "मानव अंतरिक्ष उड़ान"},
-  {q: "रबड़ को कड़ा करने के लिए उसके साथ क्या मिलाया जाता है?", options: ["नाइट्रोजन", "सल्फर", "फास्फोरस", "कार्बन"], answer: "सल्फर"}
+  {q: "बिहार के प्रथम मुख्यमंत्री कौन थे?", options: ["श्री कृष्ण सिंह", "नीतीश कुमार", "लालू प्रसाद यादव", "राबड़ी देवी"], answer: "श्री कृष्ण सिंह"},
+  {q: "मानव शरीर की सबसे बड़ी ग्रंथि (Gland) कौन सी है?", options: ["थायराइड", "पीयूष", "यकृत (Liver)", "अग्न्याशय"], answer: "यकृत (Liver)"},
+  {q: "भारतीय संविधान का जनक किसे कहा जाता है?", options: ["जवाहरलाल नेहरू", "डॉ. बी.आर. अम्बेडकर", "महात्मा गांधी", "सरदार पटेल"], answer: "डॉ. बी.आर. अम्बेडकर"},
+  {q: "विटामिन 'C' की कमी से कौन सा रोग होता है?", options: ["रिकेट्स", "बेरी-बेरी", "स्कर्वी", "रतोंधी"], answer: "स्कर्वी"},
+  {q: "विश्व का सबसे बड़ा लोकतांत्रिक देश कौन सा है?", options: ["अमेरिका", "चीन", "भारत", "रूस"], answer: "भारत"},
+  {q: "प्रकाश संश्लेषण (Photosynthesis) के दौरान कौन सी गैस निकलती है?", options: ["कार्बन डाइऑक्साइड", "नाइट्रोजन", "ऑक्सीजन", "हाइड्रोजन"], answer: "ऑक्सीजन"},
+  {q: "बिहार में 1857 के विद्रोह का नेतृत्व किसने किया था?", options: ["मंगल पांडे", "कुंवर सिंह", "तात्या टोपे", "नाना साहेब"], answer: "कुंवर सिंह"},
+  {q: "सौरमंडल का सबसे गर्म ग्रह कौन सा है?", options: ["बुध", "शुक्र (Venus)", "मंगल", "बृहस्पति"], answer: "शुक्र (Venus)"},
+  {q: "कार्य (Work) का मात्रक क्या है?", options: ["जूल", "न्यूटन", "वाट", "डाइन"], answer: "जूल"},
+  {q: "भारत का 'सिलिकॉन वैली' किसे कहा जाता है?", options: ["हैदराबाद", "बेंगलुरु", "चेन्नई", "मुंबई"], answer: "बेंgeluru"},
+  {q: "स्वस्थ मनुष्य के शरीर का सामान्य तापमान कितना होता है?", options: ["98.6°F", "37°C", "दोनों A اور B", "96°F"], answer: "दोनों A aur B"},
+  {q: "महात्मा गांधी ने 'चंपारण सत्याग्रह' कब शुरू किया था?", options: ["1915", "1917", "1919", "1920"], answer: "1917"},
+  {q: "ध्वनि (Sound) की तीव्रता मापने की इकाई क्या है?", options: ["हर्ट्ज़", "डेसीबल", "एम्पीयर", "वोल्ट"], answer: "डेसीबल"},
+  {q: "राज्यसभा का पदेन सभापति कौन होता है?", options: ["राष्ट्रपति", "प्रधानमंत्री", "उपराष्ट्रपति", "लोकसभा अध्यक्ष"], answer: "उपराष्ट्रपति"},
+  {q: "इंसुलिन की कमी से कौन सी बीमारी होती है?", options: ["घेघा", "मधुमेह (Diabetes)", "एनीमिया", "कैंसर"], answer: "मधुमेह (Diabetes)"},
+  {q: "गौतम बुद्ध ने अपना प्रथम उपदेश कहाँ दिया था?", options: ["बोधगया", "लुम्बिनी", "सारनाथ", "कुशीनगर"], answer: "सारनाथ"},
+  {q: "वायुमंडल में सबसे प्रचुर मात्रा में पाई जाने वाली गैस कौन सी है?", options: ["ऑक्सीजन", "कार्बन डाइऑक्साइड", "नाइट्रोजन", "आर्गन"], answer: "नाइट्रोजन"},
+  {q: "भारत के किस राज्य में सर्वाधिक साक्षरता दर (Literacy Rate) है?", options: ["बिहार", "केरल", "महाराष्ट्र", "तमिलनाडु"], answer: "केरल"},
+  {q: "कोशिका का 'पावर हाउस' (Powerhouse of the Cell) किसे कहते हैं?", options: ["राइबोसोम", "माइटोकॉन्ड्रिया", "लाइसोसोम", "केंद्रक"], answer: "माइटोकॉन्ड्रिया"},
+  {q: "गदर पार्टी की स्थापना किसने की थी?", options: ["भगत सिंह", "लाला हरदयाल", "सुभाष चंद्र बोस", "चंद्रशेखर आजाद"], answer: "लाला हरदयाल"}
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -268,6 +296,7 @@ function saveProgress(){
 }
 
 function submitQuiz(){
+  if(!confirm("Submit GK Test?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
   let correct=0, attempted=0;
@@ -288,7 +317,7 @@ function submitQuiz(){
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">GK Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
@@ -307,6 +336,10 @@ function submitQuiz(){
 }
 
 window.onload=function(){
+  // Automatic Question Count & Time Suggestion
+  document.getElementById("totalQDisplay").textContent = questions.length;
+  document.getElementById("testTime").value = questions.length;
+
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
   if(final){
@@ -325,7 +358,7 @@ window.onload=function(){
   }
 };
 
-function clearResult(){ if(confirm("Start new test?")){ localStorage.clear(); location.reload(); } }
+function clearResult(){ if(confirm("Start new GK test?")){ localStorage.clear(); location.reload(); } }
 </script>
 
 </body>
