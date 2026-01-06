@@ -34,6 +34,12 @@ body{
   100% { background-position: 0% 50%; }
 }
 
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
 
 h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -63,6 +69,28 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
 }
 
 .start-screen input::placeholder { color: rgba(255, 255, 255, 0.8); }
+
+/* Question Count Sticker */
+.q-count-sticker {
+  margin: 5px auto 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #f2994a; /* Orange dot for Teaching Aptitude */
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
 
 button{
   padding: 14px 28px;
@@ -131,6 +159,12 @@ button:hover{ transform: scale(1.05); }
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
   <input id="testTime" type="number" placeholder="Time (minutes)">
+  
+  <div class="q-count-sticker">
+    <span class="pulse-dot"></span>
+    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+  </div>
+
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
     <button onclick="startTest()">Start Test</button>
     <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Home</button>
@@ -159,26 +193,26 @@ button:hover{ transform: scale(1.05); }
 
 <script>
 const questions = [
-  {q: "एक शिक्षक के रूप में, यदि कोई छात्र आपकी कक्षा में बार-बार प्रश्न पूछता है, तो आप क्या करेंगे?", options: ["उसे डाँटकर बैठा देंगे", "उसे कक्षा के बाद मिलने को कहेंगे", "उसकी जिज्ञासा को शांत करेंगे और प्रोत्साहित करेंगे", "उसे अनदेखा करेंगे"], answer: "उसकी जिज्ञासा को शांत करेंगे और प्रोत्साहित करेंगे"},
-  {q: "प्रायोगिक शिक्षण (Heuristic Method) के प्रतिपादक कौन थे?", options: ["एच.ई. आर्मस्ट्रांग", "फ्रॉबेल", "किलपैट्रिक", "मोंटेसरी"], answer: "एच.ई. आर्मस्ट्रांग"},
-  {q: "‘मूल्यांकन’ (Evaluation) का सबसे मुख्य उद्देश्य क्या होना चाहिए?", options: ["छात्रों को ग्रेड देना", "सीखने में होने वाली कमियों का निदान और उपचार करना", "छात्रों को फेल करना", "कक्षा में अनुशासन बनाना"], answer: "सीखने में होने वाली कमियों का निदान और उपचार करना"},
-  {q: "यदि आपकी कक्षा का कोई छात्र चोरी करता है, तो आप शिक्षक के रूप में क्या करेंगे?", options: ["उसे पुलिस के हवाले करेंगे", "कक्षा के सामने उसे शर्मिंदा करेंगे", "चोरी के कारणों का पता लगाकर सुधारात्मक कदम उठाएंगे", "उसे स्कूल से निकाल देंगे"], answer: "चोरी के कारणों का पता लगाकर सुधारात्मक कदम उठाएंगे"},
-  {q: "शिक्षण की 'परियोजना विधि' (Project Method) किस दर्शन पर आधारित है?", options: ["आदर्शवाद", "प्रयोजनवाद (Pragmatism)", "प्रकृतिवाद", "यथार्थवाद"], answer: "प्रयोजनवाद (Pragmatism)"},
-  {q: "एक समावेशी कक्षा (Inclusive Classroom) में शिक्षक की सबसे महत्वपूर्ण भूमिका क्या है?", options: ["समय पर पाठ्यक्रम पूरा करना", "यह सुनिश्चित करना कि प्रत्येक बच्चे को अपनी क्षमता विकसित करने का अवसर मिले", "केवल प्रतिभाशाली बच्चों पर ध्यान देना", "कमजोर बच्चों को अलग बैठाना"], answer: "यह सुनिश्चित करना कि प्रत्येक बच्चे को अपनी क्षमता विकसित करने का अवसर मिले"},
-  {q: "जीन पियाजे के अनुसार, 'संज्ञानात्मक विकास' की पहली अवस्था कौन सी है?", options: ["पूर्व-संक्रियात्मक", "मूर्त-संक्रियात्मक", "संवेदी-प्रेरक (Sensorimotor)", "औपचारिक संक्रियात्मक"], answer: "संवेदी-प्रेरक (Sensorimotor)"},
-  {q: "शिक्षण का सबसे प्रभावी तरीका (Effective Method) कौन सा माना जाता है?", options: ["व्याख्यान विधि", "दृश्य-श्रव्य सामग्री का उपयोग", "क्रिया-आधारित शिक्षण (Activity Based)", "रटकर याद करना"], answer: "क्रिया-आधारित शिक्षण (Activity Based)"},
-  {q: "सतत और व्यापक मूल्यांकन (CCE) में 'व्यापक' का क्या अर्थ है?", options: ["महीने में एक बार परीक्षा", "शैक्षिक और सह-शैक्षिक दोनों क्षेत्रों का मूल्यांकन", "केवल किताबी ज्ञान की जाँच", "लंबी लिखित परीक्षा"], answer: "शैक्षिक और सह-शैक्षिक दोनों क्षेत्रों का मूल्यांकन"},
-  {q: "यदि कोई छात्र आपकी कक्षा में देर से आता है, तो आपकी प्रतिक्रिया क्या होगी?", options: ["उसे कक्षा के बाहर खड़ा करेंगे", "कारण जानने का प्रयास करेंगे", "उसे आर्थिक दंड देंगे", "उसके माता-पिता को तुरंत बुलाएंगे"], answer: "कारण जानने का प्रयास करेंगे"},
-  {q: "बुद्धि का 'द्वि-कारक सिद्धांत' (Two-Factor Theory) किसने दिया था?", options: ["थार्नडाइक", "स्पीयरमैन", "गार्डनर", "बिने"], answer: "स्पीयरमैन"},
-  {q: "कक्षा शिक्षण के दौरान एक शिक्षक को सबसे अधिक किस पर ध्यान देना चाहिए?", options: ["श्यामपट्ट लेखन पर", "छात्रों की व्यक्तिगत भिन्नताओं पर", "अपनी आवाज की तीव्रता पर", "कक्षा की सजावट पर"], answer: "छात्रों की व्यक्तिगत भिन्नताओं पर"},
-  {q: "शिक्षा का अधिकार अधिनियम (RTE) 2009 के अनुसार, प्राथमिक स्तर पर शिक्षक-छात्र अनुपात क्या होना चाहिए?", options: ["1:40", "1:35", "1:30", "1:25"], answer: "1:30"},
-  {q: "किंडरगार्टन (Kindergarten) शिक्षा पद्धति के जनक कौन हैं?", options: ["रूसो", "फ्रॉबेल", "पेस्टालॉजी", "डीवी"], answer: "फ्रॉबेल"},
-  {q: "कक्षा में अनुशासन बनाए रखने का सबसे प्रभावी उपाय क्या है?", options: ["अनुशासनहीन छात्रों को बाहर निकालना", "शिक्षण को रोचक और छात्र-केंद्रित बनाना", "छात्रों को सजा का डर दिखाना", "कक्षा में मॉनिटर नियुक्त करना"], answer: "शिक्षण को रोचक और छात्र-केंद्रित बनाना"},
-  {q: "माइक्रो-टीचिंग (Micro-teaching) का मुख्य उद्देश्य क्या है?", options: ["कम समय में अधिक पढ़ाना", "शिक्षण कौशल (Teaching Skills) का विकास करना", "छात्रों की संख्या कम करना", "नोट्स बनवाना"], answer: "शिक्षण कौशल (Teaching Skills) का विकास करना"},
-  {q: "बुद्धि लब्धि (IQ) मापने का सूत्र क्या है?", options: ["MA/CA x 100", "CA/MA x 100", "MA x CA / 100", "MA + CA"], answer: "MA/CA x 100"},
-  {q: "थार्नडाइक ने अपने प्रयोग किस जानवर पर किए थे?", options: ["कुत्ता", "चूहा", "बिल्ली", "बंदर"], answer: "बिल्ली"},
-  {q: "एक आदर्श शिक्षक में निम्नलिखित में से कौन सा गुण होना चाहिए?", options: ["विषय पर पूर्ण अधिकार", "छात्रों के प्रति सहानुभूति", "शिक्षण विधियों का ज्ञान", "उपर्युक्त सभी"], answer: "उपर्युक्त सभी"},
-  {q: "एनसीएफ (NCF) 2005 के अनुसार, सीखने का स्वरूप कैसा होना चाहिए?", options: ["रटंत प्रणाली पर आधारित", "सक्रिय और सामाजिक", "केवल पाठ्यपुस्तक तक सीमित", "शिक्षक केंद्रित"], answer: "सक्रिय और सामाजिक"}
+  {q: "शिक्षण (Teaching) का मुख्य उद्देश्य क्या है?", options: ["छात्रों को जानकारी देना", "छात्रों की सोचने की शक्ति और तर्क का विकास करना", "केवल परीक्षा पास करवाना", "सिलेबस पूरा करना"], answer: "छात्रों की सोचने की शक्ति और तर्क का विकास करना"},
+  {q: "एक प्रभावी शिक्षक वह है जो:", options: ["कक्षा पर पूरा नियंत्रण रखता है", "विषय का ज्ञान रखता है", "छात्रों को सीखने के लिए प्रेरित करता है", "बहुत सारा होमवर्क देता है"], answer: "छात्रों को सीखने के लिए प्रेरित करता है"},
+  {q: "कक्षा में छात्र प्रश्न पूछते हैं, तो शिक्षक को क्या करना चाहिए?", options: ["उन्हें डांट कर बिठा देना चाहिए", "उन्हें कक्षा के बाद मिलने को कहना चाहिए", "प्रश्नों का उत्तर देना और और प्रश्न पूछने के लिए प्रोत्साहित करना चाहिए", "अनदेखा कर देना चाहिए"], answer: "प्रश्नों का उत्तर देना और और प्रश्न पूछने के लिए प्रोत्साहित करना चाहिए"},
+  {q: "शिक्षण की सबसे अच्छी विधि कौन सी है?", options: ["व्याख्यान विधि (Lecture Method)", "पाठ्यपुस्तक विधि", "परियोजना विधि (Project Method)", "रटने की विधि"], answer: "परियोजना विधि (Project Method)"},
+  {q: "एक शिक्षक के लिए सबसे महत्वपूर्ण चुनौती क्या है?", options: ["कक्षा में अनुशासन बनाना", "प्रश्न पत्र तैयार करना", "शिक्षण-अधिगम प्रक्रिया को आनंददायक बनाना", "समय पर सिलेबस खत्म करना"], answer: "शिक्षण-अधिगम प्रक्रिया को आनंददायक बनाना"},
+  {q: "छात्रों में 'नैतिक मूल्य' (Moral Values) विकसित करने का सबसे अच्छा तरीका क्या है?", options: ["महान व्यक्तियों के बारे में बताना", "शिक्षक द्वारा स्वयं उन मूल्यों का प्रदर्शन करना", "रोजाना सुबह की सभा में भाषण देना", "धार्मिक किताबें पढ़ाना"], answer: "शिक्षक द्वारा स्वयं उन मूल्यों का प्रदर्शन करना"},
+  {q: "यदि कोई छात्र आपकी कक्षा में अनुपस्थित रहता है, तो आप क्या करेंगे?", options: ["उसे दंड देंगे", "उसके नाम को रजिस्टर से काट देंगे", "कारण जानने की कोशिश करेंगे और मदद करेंगे", "अनदेखा करेंगे"], answer: "कारण जानने की कोशिश करेंगे और मदद करेंगे"},
+  {q: "कक्षा में दृश्य-श्रव्य सामग्री (Audio-Visual Aids) का उपयोग क्यों किया जाता है?", options: ["कक्षा को सजाने के लिए", "शिक्षण को और अधिक प्रभावशाली और रोचक बनाने के लिए", "शिक्षक का बोझ कम करने के लिए", "छात्रों को व्यस्त रखने के लिए"], answer: "शिक्षण को और अधिक प्रभावशाली और रोचक बनाने के लिए"},
+  {q: "बाल-केंद्रित शिक्षा (Child-Centered Education) का अर्थ क्या है?", options: ["बच्चों को स्वतंत्र रूप से सीखने देना", "बच्चों को क्लास में बिठाकर पढ़ाना", "शिक्षक की इच्छा के अनुसार पढ़ाना", "परीक्षा पर ध्यान देना"], answer: "बच्चों को स्वतंत्र रूप से सीखने देना"},
+  {q: "सीखने का सबसे प्रभावशाली तरीका क्या है?", options: ["पढ़ना", "सुनना", "करके सीखना (Learning by doing)", "देखना"], answer: "करके सीखना (Learning by doing)"},
+  {q: "कक्षा शिक्षण के दौरान, एक शिक्षक को सबसे अधिक ध्यान किस पर देना चाहिए?", options: ["विषय वस्तु पर", "छात्रों की व्यक्तिगत भिन्नताओं (Individual differences) पर", "श्यामपट्ट पर", "समय पर"], answer: "छात्रों की व्यक्तिगत भिन्नताओं (Individual differences) पर"},
+  {q: "एक अच्छा शिक्षक होने के लिए क्या आवश्यक है?", options: ["विषय पर अधिकार और संप्रेषण कौशल (Communication skills)", "उच्च योग्यता", "सुندر लिखावट", "महंगे कपड़े"], answer: "विषय पर अधिकार और संप्रेषण कौशल (Communication skills)"},
+  {q: "मूल्यांकन (Evaluation) का मुख्य उद्देश्य क्या है?", options: ["छात्रों को ग्रेड देना", "छात्रों की सीखने की कठिनाइयों को जानना और सुधार करना", "फेल और पास का निर्णय लेना", "प्रतिस्पर्धा बढ़ाना"], answer: "छात्रों की सीखने की कठिनाइयों को जानना और सुधार करना"},
+  {q: "समावेशी शिक्षा (Inclusive Education) का क्या अर्थ है?", options: ["सिर्फ प्रतिभाशाली बच्चों को पढ़ाना", "अक्षम और सामान्य बच्चों को एक साथ पढ़ाना", "अलग-अलग स्कूल खोलना", "सिर्फ गरीब बच्चों को पढ़ाना"], answer: "अक्षम और सामान्य बच्चों को एक साथ पढ़ाना"},
+  {q: "शिक्षण में 'ज्ञात से अज्ञात' (Known to Unknown) का सिद्धांत क्या है?", options: ["पुरानी जानकारी के आधार पर नई जानकारी देना", "सीधे कठिन सवाल पूछना", "बिना बताए पढ़ाना", "सिर्फ सिलेबस पढ़ाना"], answer: "पुरानी जानकारी के आधार पर नई जानकारी देना"},
+  {q: "माइक्रो-टीचिंग (Micro-teaching) किस लिए उपयोगी है?", options: ["बड़ी कक्षाओं के लिए", "शिक्षण कौशल (Teaching skills) के विकास के लिए", "कम समय में पढ़ाने के लिए", "परीक्षा की तैयारी के लिए"], answer: "शिक्षण कौशल (Teaching skills) के विकास के लिए"},
+  {q: "यदि कोई छात्र कक्षा में शोर मचाता है, तो आप क्या करेंगे?", options: ["क्लास से बाहर निकाल देंगे", "मजाक उड़ाएंगे", "शोर मचाने का कारण जानकर उसे सही दिशा देंगे", "प्रिंसिपल के पास भेज देंगे"], answer: "शोर मचाने का कारण जानकर उसे सही दिशा देंगे"},
+  {q: "ब्लैकबोर्ड पर लिखते समय सबसे महत्वपूर्ण क्या है?", options: ["तेज लिखना", "बड़े अक्षर", "लेखन में स्पष्टता और शुद्धता", "रंगीन चॉक का उपयोग"], answer: "लेखन में स्पष्टता और शुद्धता"},
+  {q: "शिक्षक-छात्र संबंध कैसा होना चाहिए?", options: ["मित्रतापूर्ण और सम्मानजनक", "दूरी वाला", "कठोर", "सिर्फ काम का"], answer: "मित्रतापूर्ण और सम्मानजनक"},
+  {q: "पाठ योजना (Lesson Plan) बनाने का लाभ क्या है?", options: ["शिक्षण व्यवस्थित होता है", "समय की बचत होती है", "सिलेबस पूरा होता है", "कोई लाभ नहीं"], answer: "शिक्षण व्यवस्थित होता है"}
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -186,7 +220,7 @@ let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
   if(localStorage.getItem("finalResult")){ return; }
-  if(!candidateName.value || !testTime.value) { return; }
+  if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
   
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
@@ -260,6 +294,7 @@ function saveProgress(){
 }
 
 function submitQuiz(){
+  if(!confirm("Are you sure you want to submit the Teaching Aptitude test?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
   let correct=0, attempted=0;
@@ -280,7 +315,7 @@ function submitQuiz(){
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">Teaching Principles Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
@@ -299,6 +334,10 @@ function submitQuiz(){
 }
 
 window.onload=function(){
+  // Auto Settings
+  document.getElementById("totalQDisplay").textContent = questions.length;
+  document.getElementById("testTime").value = questions.length;
+
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
   if(final){
@@ -317,7 +356,7 @@ window.onload=function(){
   }
 };
 
-function clearResult(){ if(confirm("Start new test?")){ localStorage.clear(); location.reload(); } }
+function clearResult(){ if(confirm("Start new Teaching Aptitude test?")){ localStorage.clear(); location.reload(); } }
 </script>
 
 </body>
