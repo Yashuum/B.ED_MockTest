@@ -6,7 +6,7 @@
 <title>Mock Test – Hindi by Yash</title>
 
 <style>
-/* Professional Glassmorphism Theme (Same as Reasoning) */
+/* Professional Glassmorphism Theme */
 :root{
   --color-primary: #1a2a6c;
   --color-secondary: #2575fc;
@@ -34,6 +34,12 @@ body{
   100% { background-position: 0% 50%; }
 }
 
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
 
 h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -49,7 +55,6 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   margin-top: 50px;
 }
 
-/* Input Styling with High Visibility */
 .start-screen input {
   width: 100%;
   max-width: 300px;
@@ -72,6 +77,29 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   background: rgba(255, 255, 255, 0.25);
   border-color: var(--color-accent);
   box-shadow: 0 0 15px rgba(242, 153, 74, 0.4);
+}
+
+/* Question Count Sticker */
+.q-count-sticker {
+  margin: 5px auto 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
 }
 
 button{
@@ -124,7 +152,6 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* RESULT ANALYSIS */
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
@@ -140,7 +167,14 @@ button:hover{ transform: scale(1.05); }
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
+  
   <input id="testTime" type="number" placeholder="Time (minutes)">
+  
+  <div class="q-count-sticker">
+    <span class="pulse-dot"></span>
+    <span>Total Questions Loaded: <b id="totalQDisplay">0</b></span>
+  </div>
+
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
     <button onclick="startTest()">Start Test</button>
     <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
@@ -168,9 +202,7 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
-// Hindi Question Set (Original 30 Questions)
 const questions = [
-
   {q: "‘गगनचुम्बी’ में कौन-सा समास है?", options: ["तत्पुरुष", "अव्ययीभाव", "कर्मधारय", "द्विगु"], answer: "तत्पुरुष"},
   {q: "‘कलेजा ठण्डा होना’ मुहावरे का सही अर्थ क्या है?", options: ["बहुत खुश होना", "संतोष होना", "बीमार होना", "डर जाना"], answer: "संतोष होना"},
   {q: "‘उज्ज्वल’ का सही सन्धि-विच्छेद क्या है?", options: ["उत् + ज्वल", "उज् + ज्वल", "उद् + ज्वल", "उज् + वल"], answer: "उत् + ज्वल"},
@@ -205,7 +237,7 @@ const questions = [
   {q: "‘खिसियानी बिल्ली खम्भा नोचे’ का अर्थ है:", options: ["बिल्ली का खेल", "शर्म के मारे क्रोध करना", "दीवार गंदी करना", "डर जाना"], answer: "शर्म के मारे क्रोध करना"},
   {q: "‘प्रत्यक्ष’ का सन्धि-विच्छेद क्या है?", options: ["प्रत + अक्ष", "प्रति + अक्ष", "प्रत्या + अक्ष", "प्रतिय + अक्ष"], answer: "प्रति + अक्ष"},
   {q: "‘पगड़ी उछालना’ का अर्थ है:", options: ["टोपी पहनना", "अपमान करना", "सम्मान देना", "खुश होना"], answer: "अपमान करना"},
-  {q: "शुद्ध शब्द कौन सा है?", options: ["सन्यासी", "संन्यासी", "सनयासी", "सन्याशी"], answer: "संन्यासी"}
+  {q: "शुद्ध शब्द कौन सा है?", options: ["सन्यासी", "संन्यासी", "सनयासी", "सन्याशी"], answer: "संन्यासी"},
   {q: "‘परमेश्वर’ में कौन-सा समास है?", options: ["द्विगु", "कर्मधारय", "तत्पुरुष", "अव्ययीभाव"], answer: "कर्मधारय"},
   {q: "‘मक्खन लगाना’ का अर्थ है:", options: ["मक्खन बेचना", "चापलूसी करना", "खाना बनाना", "मालिश करना"], answer: "चापलूसी करना"},
   {q: "‘स्वागत’ में कौन-सी सन्धि है?", options: ["दीर्घ सन्धि", "गुण सन्धि", "यण सन्धि", "वृद्धि सन्धि"], answer: "यण सन्धि"},
@@ -225,8 +257,7 @@ const questions = [
   {q: "‘मुँह में राम बगल में छुरी’ का अर्थ है:", options: ["पूजा करना", "ऊपर से मित्रता हृदय में कपट", "भगवान को याद करना", "हथियार रखना"], answer: "ऊपर से मित्रता हृदय में कपट"},
   {q: "‘रघुपति’ किस समास का उदाहरण है?", options: ["द्विगु", "द्वन्द्व", "बहुब्रीहि", "कर्मधारय"], answer: "बहुब्रीहि"},
   {q: "‘बया पेड़ बबूल का आम कहाँ से होय’ का अर्थ है:", options: ["पेड़ लगाना", "बुरे कर्मों का बुरा परिणाम", "फसल काटना", "आम खाना"], answer: "बुरे कर्मों का बुरा परिणाम"},
-  {q: "‘घुटने टेकना’ मुहावरे का अर्थ है:", options: ["घुटने में दर्द होना", "हार मान लेना", "बैठ जाना", "दौड़ना"], answer: "हार मान लेना"},
-  
+  {q: "‘घुटने टेकना’ मुहावरे का अर्थ है:", options: ["घुटने में दर्द होना", "हार मान लेना", "बैठ जाना", "दौड़ना"], answer: "हार मान लेना"}
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -235,6 +266,9 @@ let totalSeconds=0,timerInterval,startTime;
 function startTest(){
   if(localStorage.getItem("finalResult")){
     alert("Test already submitted"); return;
+  }
+  if(!candidateName.value || !testTime.value) {
+    alert("Please enter Name and Time"); return;
   }
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
@@ -315,6 +349,7 @@ function saveProgress(){
 }
 
 function submitQuiz(){
+  if(!confirm("Are you sure you want to submit?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
   let correct=0, attempted=0;
@@ -368,8 +403,14 @@ function submitQuiz(){
 }
 
 window.onload=function(){
+  // UPDATE QUESTION COUNT AUTOMATICALLY
+  document.getElementById("totalQDisplay").textContent = questions.length;
+  // AUTO-SUGGEST TIME (1 question = 1 minute)
+  document.getElementById("testTime").value = questions.length;
+
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
+  
   if(final){
     const d=JSON.parse(final);
     startScreen.style.display="none";
@@ -397,10 +438,9 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(confirm("Start new test?")){ localStorage.clear(); location.reload(); }
+  if(confirm("Start new test? This will delete previous results.")){ localStorage.clear(); location.reload(); }
 }
 </script>
 
 </body>
 </html>
-
