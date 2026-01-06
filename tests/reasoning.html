@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mock Test – Reasoning by Yash</title>
+<title>Mock Test – English by Yash</title>
 
 <style>
 /* Professional Glassmorphism Theme */
@@ -34,6 +34,12 @@ body{
   100% { background-position: 0% 50%; }
 }
 
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
 
 h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -49,7 +55,6 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   margin-top: 50px;
 }
 
-/* FIX: Input Text Visibility */
 .start-screen input {
   width: 100%;
   max-width: 300px;
@@ -57,24 +62,37 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   margin: 10px 0;
   border-radius: 15px;
   border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.15); /* Slightly brighter bg */
-  color: #ffffff !important; /* Forces Text to be White */
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff !important;
   font-size: 16px;
   outline: none;
   transition: all 0.3s ease;
 }
 
-/* FIX: Placeholder Visibility */
 .start-screen input::placeholder {
-  color: rgba(255, 255, 255, 0.8) !important; /* Bright White Placeholder */
-  opacity: 1;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Input Focus Glow */
-.start-screen input:focus {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: var(--color-accent);
-  box-shadow: 0 0 15px rgba(242, 153, 74, 0.4);
+/* Question Count Sticker */
+.q-count-sticker {
+  margin: 5px auto 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #4facfe; /* Blue dot for English */
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
 }
 
 button{
@@ -89,7 +107,7 @@ button{
 }
 button:hover{ transform: scale(1.05); }
 
-/* TOP BAR - STICKY */
+/* TOP BAR */
 .top-bar{
   display:none; justify-content:space-between; align-items:center;
   padding:15px 25px; background: var(--glass);
@@ -127,7 +145,6 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* RESULT ANALYSIS */
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
@@ -138,12 +155,18 @@ button:hover{ transform: scale(1.05); }
 
 <div class="container">
 
-<h1>Target Test- Reasoning 2026</h1>
+<h1>Target Test- English 2026</h1>
 <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 06 Jan, 2026</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
   <input id="testTime" type="number" placeholder="Time (minutes)">
+  
+  <div class="q-count-sticker">
+    <span class="pulse-dot"></span>
+    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+  </div>
+
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
     <button onclick="startTest()">Start Test</button>
     <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
@@ -171,7 +194,6 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
-// Logic sections same as previous to maintain functionality
 const questions = [
 
   {q: "लुप्त संख्या ज्ञात करें:<br>4 | 3 | 25<br>6 | 8 | 100<br>5 | 12 | ?", options: ["144", "169", "121", "150"], answer: "169"},
@@ -217,6 +239,9 @@ let totalSeconds=0,timerInterval,startTime;
 function startTest(){
   if(localStorage.getItem("finalResult")){
     alert("Test already submitted"); return;
+  }
+  if(!candidateName.value || !testTime.value) {
+    alert("Please enter Name and Time"); return;
   }
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
@@ -297,6 +322,7 @@ function saveProgress(){
 }
 
 function submitQuiz(){
+  if(!confirm("Are you sure you want to submit the English test?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
   let correct=0, attempted=0;
@@ -318,7 +344,7 @@ function submitQuiz(){
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Test Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">English Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
           Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b>
@@ -350,8 +376,13 @@ function submitQuiz(){
 }
 
 window.onload=function(){
+  // Automatic Question Count & Time Recommendation
+  document.getElementById("totalQDisplay").textContent = questions.length;
+  document.getElementById("testTime").value = questions.length;
+
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
+  
   if(final){
     const d=JSON.parse(final);
     startScreen.style.display="none";
@@ -379,12 +410,9 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(confirm("Start new test?")){ localStorage.clear(); location.reload(); }
+  if(confirm("Start new test? All previous results will be cleared.")){ localStorage.clear(); location.reload(); }
 }
 </script>
 
 </body>
 </html>
-
-
-
