@@ -6,7 +6,7 @@
 <title>Mock Test – English by Yash</title>
 
 <style>
-/* Professional Glassmorphism Theme (Same as Reasoning) */
+/* Professional Glassmorphism Theme */
 :root{
   --color-primary: #1a2a6c;
   --color-secondary: #2575fc;
@@ -34,6 +34,12 @@ body{
   100% { background-position: 0% 50%; }
 }
 
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
 
 h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -49,7 +55,6 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   margin-top: 50px;
 }
 
-/* Input Styling with High Visibility */
 .start-screen input {
   width: 100%;
   max-width: 300px;
@@ -68,10 +73,26 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-.start-screen input:focus {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: var(--color-accent);
-  box-shadow: 0 0 15px rgba(242, 153, 74, 0.4);
+/* Question Count Sticker */
+.q-count-sticker {
+  margin: 5px auto 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #4facfe; /* Blue dot for English */
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
 }
 
 button{
@@ -124,7 +145,6 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* RESULT ANALYSIS */
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
@@ -141,6 +161,12 @@ button:hover{ transform: scale(1.05); }
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
   <input id="testTime" type="number" placeholder="Time (minutes)">
+  
+  <div class="q-count-sticker">
+    <span class="pulse-dot"></span>
+    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+  </div>
+
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
     <button onclick="startTest()">Start Test</button>
     <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
@@ -168,38 +194,49 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
-// English Question Set (Original 30 Questions)
 const questions = [
-  {q: "Spot the error:<br><br>The teacher together with his students <u>were</u> present.", options: ["The teacher", "together with", "were present", "No error"], answer: "were present"},
-  {q: "Fill in the blank:<br><br>He is married _____ my cousin.", options: ["with", "to", "by", "for"], answer: "to"},
-  {q: "Choose the correct form of verb:<br><br>If it rains, we _____ the match.", options: ["cancel", "would cancel", "will cancel", "cancelled"], answer: "will cancel"},
-  {q: "Fill in the blank:<br><br>Bread and butter _____ my favorite breakfast.", options: ["is", "are", "were", "being"], answer: "is"},
-  {q: "Choose the correct preposition:<br><br>The cat jumped _____ the table.", options: ["on", "in", "upon", "at"], answer: "upon"},
-  {q: "Synonym of 'CANDID':", options: ["Secretive", "Frank", "Dishonest", "Vague"], answer: "Frank"},
-  {q: "Antonym of 'STINGY':", options: ["Miserly", "Generous", "Cheap", "Careful"], answer: "Generous"},
-  {q: "Synonym of 'ENORMOUS':", options: ["Tiny", "Soft", "Huge", "Weak"], answer: "Huge"},
-  {q: "Antonym of 'OPTIMIST':", options: ["Pessimist", "Idealist", "Realist", "Atheist"], answer: "Pessimist"},
-  {q: "Meaning of the idiom:<br><br>‘To turn a deaf ear’", options: ["To be hard of hearing", "To ignore", "To listen carefully", "To shout"], answer: "To ignore"},
-  {q: "Meaning of:<br><br>‘At the eleventh hour’", options: ["At 11 o'clock", "At the last moment", "Very early", "In the morning"], answer: "At the last moment"},
-  {q: "Meaning of:<br><br>‘Burn the candle at both ends’", options: ["To be rich", "To work very hard", "To waste money", "To be careless"], answer: "To work very hard"},
-  {q: "A person who hates mankind:", options: ["Misanthrope", "Philanthropist", "Misogynist", "Polyglot"], answer: "Misanthrope"},
-  {q: "The study of birds:", options: ["Biology", "Ornithology", "Zoology", "Botany"], answer: "Ornithology"},
-  {q: "Something that cannot be seen through:", options: ["Transparent", "Translucent", "Opaque", "Clear"], answer: "Opaque"},
-  {q: "Identify the correctly spelled word:", options: ["Maintanance", "Maintenance", "Maintenence", "Maintainance"], answer: "Maintenance"},
-  {q: "Choose the correctly spelled word:", options: ["Receive", "Recieve", "Receve", "Riceive"], answer: "Receive"},
-  {q: "Improve the sentence:<br><br>He <u>has been working</u> here for five years.", options: ["is working", "was working", "had worked", "No improvement"], answer: "No improvement"},
-  {q: "Change into Passive Voice:<br><br>Who wrote this book?", options: ["By whom this book was written?", "By whom was this book written?", "Who was written this book?", "Book was written by whom?"], answer: "By whom was this book written?"},
-  {q: "Direct to Indirect Speech:<br><br>She said, 'I have finished my work.'", options: ["She said that she has finished her work", "She said that she had finished her work", "She says she finished her work", "She said she finishes her work"], answer: "She said that she had finished her work"},
-  {q: "Fill in the blank:<br><br>He is _____ European.", options: ["a", "an", "the", "no article"], answer: "a"},
-  {q: "Choose the correct word:<br><br>The _____ of the school is very strict.", options: ["Principle", "Principal", "Princepal", "Prinicipal"], answer: "Principal"},
-  {q: "Fill in the blank:<br><br>I don't have _____ money.", options: ["many", "any", "some", "few"], answer: "any"},
-  {q: "Opposite of 'REVEAL':", options: ["Show", "Hide", "Tell", "Disclose"], answer: "Hide"},
-  {q: "Meaning of:<br><br>‘A bolt from the blue’", options: ["Thunderstorm", "Unexpected shock", "Blue sky", "Bad weather"], answer: "Unexpected shock"},
-  {q: "Identify the antonym of 'VAGUE':", options: ["Clear", "Dull", "Unknown", "Shady"], answer: "Clear"},
-  {q: "Fill in the blank:<br><br>The police _____ investigating the case.", options: ["is", "are", "has", "was"], answer: "are"},
-  {q: "Choose the correct preposition:<br><br>He is fond _____ music.", options: ["at", "in", "of", "for"], answer: "of"},
-  {q: "One word for 'A person who can use both hands equally well':", options: ["Ambidextrous", "Ambivalent", "Expert", "Glutton"], answer: "Ambidextrous"},
-  {q: "Idiom meaning: 'To hit the nail on the head'", options: ["To make a mistake", "To do something exactly right", "To hurt someone", "To work in a factory"], answer: "To do something exactly right"}
+
+  {q: "Choose the correct preposition: He is senior ______ me in service.", options: ["than", "to", "from", "with"], answer: "to"},
+  {q: "One word substitution: A person who can use both hands with equal ease.", options: ["Ambidextrous", "Ambivalent", "Ambiguous", "Amphibian"], answer: "Ambidextrous"},
+  {q: "Find the Synonym of 'ABANDON':", options: ["Keep", "Leave", "Support", "Hold"], answer: "Leave"},
+  {q: "Fill in the blank: The Jury ______ divided in their opinion.", options: ["was", "were", "has", "is"], answer: "were"},
+  {q: "Find the Antonym of 'ARTIFICIAL':", options: ["Natural", "Synthetic", "Man-made", "False"], answer: "Natural"},
+  {q: "Choose the correct Passive Voice: 'She sings a song.'", options: ["A song is sung by her.", "A song was sung by her.", "A song is sing by her.", "A song has sung by her."], answer: "A song is sung by her."},
+  {q: "One word substitution: A person who writes the life history of another person.", options: ["Autobiography", "Biography", "Bibliography", "Memoir"], answer: "Biography"},
+  {q: "Identify the idiom: 'At the eleventh hour' means:", options: ["At 11:00 AM", "At the very last moment", "Early in the morning", "At midnight"], answer: "At the very last moment"},
+  {q: "Fill in the blank: Neither of the two boys ______ present in the class.", options: ["were", "was", "are", "have"], answer: "was"},
+  {q: "Choose the correctly spelt word:", options: ["Committee", "Comittee", "Commitee", "Comitee"], answer: "Committee"},
+  {q: "Choose the correct Antonym of 'ADVERSITY':", options: ["Misfortune", "Prosperity", "Calamity", "Poverty"], answer: "Prosperity"},
+  {q: "Identify the idiom: 'To spill the beans' means:", options: ["To cook beans", "To reveal a secret", "To waste food", "To be clumsy"], answer: "To reveal a secret"},
+  {q: "Fill in the blank: Mathematics ______ an interesting subject.", options: ["are", "is", "were", "have"], answer: "is"},
+  {q: "Choose the correct preposition: She has been suffering from fever ______ Monday.", options: ["for", "from", "since", "by"], answer: "since"},
+  {q: "Find the Synonym of 'FRUGAL':", options: ["Extravagant", "Economical", "Generous", "Wasteful"], answer: "Economical"},
+  {q: "Find the Synonym of 'ENORMOUS':", options: ["Tiny", "Huge", "Soft", "Weak"], answer: "Huge"},
+  {q: "Change into Indirect Speech: He said, 'I am hungry.'", options: ["He said that he is hungry.", "He said that he was hungry.", "He said he was hungry.", "He says that he was hungry."], answer: "He said that he was hungry."},
+  {q: "One word substitution: A place where birds are kept.", options: ["Aquarium", "Apiary", "Aviary", "Zoo"], answer: "Aviary"},
+  {q: "Choose the correct preposition: I am tired ______ walking.", options: ["with", "by", "of", "from"], answer: "of"},
+  {q: "Fill in the blank: Bread and butter ______ my favorite breakfast.", options: ["is", "are", "were", "am"], answer: "is"},
+  {q: "Find the Antonym of 'GIANT':", options: ["Huge", "Dwarf", "Large", "Monster"], answer: "Dwarf"},
+  {q: "Find the Antonym of 'FRAGILE':", options: ["Weak", "Strong", "Brittle", "Delicate"], answer: "Strong"},
+  {q: "Identify the idiom: 'To cry wolf' means:", options: ["To shout like a wolf", "To give a false alarm", "To be brave", "To keep quiet"], answer: "To give a false alarm"},
+  {q: "Identify the meaning of: 'A red letter day'", options: ["A dangerous day", "An important day", "A bloody day", "A holiday"], answer: "An important day"},
+  {q: "Choose the correctly spelt word:", options: ["Vacuum", "Vaccum", "Vacum", "Vacuume"], answer: "Vacuum"},
+  {q: "Choose the correct article: He is ______ honest man.", options: ["a", "an", "the", "no article"], answer: "an"},
+  {q: "Fill in the blank: Ten miles ______ a long distance to walk.", options: ["are", "is", "were", "have"], answer: "is"},
+  {q: "Synonym of 'CORDIAL':", options: ["Cold", "Friendly", "Rude", "Hard"], answer: "Friendly"},
+  {q: "Synonym of 'VIGILANT':", options: ["Careless", "Watchful", "Sleepy", "Lazy"], answer: "Watchful"},
+  {q: "Antonym of 'VAGUE':", options: ["Unclear", "Clear", "Dull", "Dark"], answer: "Clear"},
+  {q: "Choose the correct preposition: Distribute these sweets ______ the children.", options: ["between", "among", "with", "in"], answer: "among"},
+  {q: "Fill in the blank: The police ______ investigating the case.", options: ["is", "are", "has", "was"], answer: "are"},
+  {q: "Find the correctly spelt word:", options: ["Grammar", "Grammer", "Grammar", "Grammer"], answer: "Grammar"},
+  {q: "One word substitution: One who does not believe in God.", options: ["Theist", "Atheist", "Optimist", "Pessimist"], answer: "Atheist"},
+  {q: "Antonym of 'LOQUACIOUS':", options: ["Talkative", "Silent", "Garrulous", "Noisy"], answer: "Silent"},
+  {q: "Correct the sentence: I ______ (go) to Delhi yesterday.", options: ["go", "gone", "went", "goes"], answer: "went"},
+  {q: "Fill in the blank: One of my friends ______ a doctor.", options: ["are", "were", "is", "have"], answer: "is"},
+  {q: "Choose the correctly spelt word:", options: ["Occurence", "Occurrence", "Ocurence", "Occurance"], answer: "Occurrence"},
+  {q: "One word substitution: A person who looks at the bright side of things.", options: ["Pessimist", "Atheist", "Optimist", "Theist"], answer: "Optimist"},
+  {q: "Meaning of the idiom: 'Bone of contention'", options: ["A healthy bone", "Cause of quarrel", "A peaceful matter", "A delicious food"], answer: "Cause of quarrel"},
+
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -208,6 +245,9 @@ let totalSeconds=0,timerInterval,startTime;
 function startTest(){
   if(localStorage.getItem("finalResult")){
     alert("Test already submitted"); return;
+  }
+  if(!candidateName.value || !testTime.value) {
+    alert("Please enter Name and Time"); return;
   }
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
@@ -288,6 +328,7 @@ function saveProgress(){
 }
 
 function submitQuiz(){
+  if(!confirm("Are you sure you want to submit the English test?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
   let correct=0, attempted=0;
@@ -309,7 +350,7 @@ function submitQuiz(){
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Test Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">English Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
           Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b>
@@ -341,8 +382,13 @@ function submitQuiz(){
 }
 
 window.onload=function(){
+  // Automatic Question Count & Time Recommendation
+  document.getElementById("totalQDisplay").textContent = questions.length;
+  document.getElementById("testTime").value = questions.length;
+
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
+  
   if(final){
     const d=JSON.parse(final);
     startScreen.style.display="none";
@@ -370,7 +416,7 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(confirm("Start new test?")){ localStorage.clear(); location.reload(); }
+  if(confirm("Start new test? All previous results will be cleared.")){ localStorage.clear(); location.reload(); }
 }
 </script>
 
