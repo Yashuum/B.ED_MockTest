@@ -90,7 +90,7 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
 .pulse-dot {
   width: 8px;
   height: 8px;
-  background: #4facfe; /* Blue dot for English */
+  background: #4facfe; 
   border-radius: 50%;
   animation: pulse 1.5s infinite;
 }
@@ -145,6 +145,17 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
+/* SOLUTION BOX STYLE */
+.sol-box {
+  margin-top:12px; 
+  padding:12px; 
+  background:rgba(242, 153, 74, 0.15); 
+  border-radius:12px; 
+  font-size:14px; 
+  color:#ffcc80;
+  border: 1px dashed var(--color-accent);
+}
+
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
@@ -194,49 +205,109 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
+// Placeholder for Questions with Solution field
 const questions = [
 
-  {q: "Choose the correct preposition: He is senior ______ me in service.", options: ["than", "to", "from", "with"], answer: "to"},
-  {q: "One word substitution: A person who can use both hands with equal ease.", options: ["Ambidextrous", "Ambivalent", "Ambiguous", "Amphibian"], answer: "Ambidextrous"},
-  {q: "Find the Synonym of 'ABANDON':", options: ["Keep", "Leave", "Support", "Hold"], answer: "Leave"},
-  {q: "Fill in the blank: The Jury ______ divided in their opinion.", options: ["was", "were", "has", "is"], answer: "were"},
-  {q: "Find the Antonym of 'ARTIFICIAL':", options: ["Natural", "Synthetic", "Man-made", "False"], answer: "Natural"},
-  {q: "Choose the correct Passive Voice: 'She sings a song.'", options: ["A song is sung by her.", "A song was sung by her.", "A song is sing by her.", "A song has sung by her."], answer: "A song is sung by her."},
-  {q: "One word substitution: A person who writes the life history of another person.", options: ["Autobiography", "Biography", "Bibliography", "Memoir"], answer: "Biography"},
-  {q: "Identify the idiom: 'At the eleventh hour' means:", options: ["At 11:00 AM", "At the very last moment", "Early in the morning", "At midnight"], answer: "At the very last moment"},
-  {q: "Fill in the blank: Neither of the two boys ______ present in the class.", options: ["were", "was", "are", "have"], answer: "was"},
-  {q: "Choose the correctly spelt word:", options: ["Committee", "Comittee", "Commitee", "Comitee"], answer: "Committee"},
-  {q: "Choose the correct Antonym of 'ADVERSITY':", options: ["Misfortune", "Prosperity", "Calamity", "Poverty"], answer: "Prosperity"},
-  {q: "Identify the idiom: 'To spill the beans' means:", options: ["To cook beans", "To reveal a secret", "To waste food", "To be clumsy"], answer: "To reveal a secret"},
-  {q: "Fill in the blank: Mathematics ______ an interesting subject.", options: ["are", "is", "were", "have"], answer: "is"},
-  {q: "Choose the correct preposition: She has been suffering from fever ______ Monday.", options: ["for", "from", "since", "by"], answer: "since"},
-  {q: "Find the Synonym of 'FRUGAL':", options: ["Extravagant", "Economical", "Generous", "Wasteful"], answer: "Economical"},
-  {q: "Find the Synonym of 'ENORMOUS':", options: ["Tiny", "Huge", "Soft", "Weak"], answer: "Huge"},
-  {q: "Change into Indirect Speech: He said, 'I am hungry.'", options: ["He said that he is hungry.", "He said that he was hungry.", "He said he was hungry.", "He says that he was hungry."], answer: "He said that he was hungry."},
-  {q: "One word substitution: A place where birds are kept.", options: ["Aquarium", "Apiary", "Aviary", "Zoo"], answer: "Aviary"},
-  {q: "Choose the correct preposition: I am tired ______ walking.", options: ["with", "by", "of", "from"], answer: "of"},
-  {q: "Fill in the blank: Bread and butter ______ my favorite breakfast.", options: ["is", "are", "were", "am"], answer: "is"},
-  {q: "Find the Antonym of 'GIANT':", options: ["Huge", "Dwarf", "Large", "Monster"], answer: "Dwarf"},
-  {q: "Find the Antonym of 'FRAGILE':", options: ["Weak", "Strong", "Brittle", "Delicate"], answer: "Strong"},
-  {q: "Identify the idiom: 'To cry wolf' means:", options: ["To shout like a wolf", "To give a false alarm", "To be brave", "To keep quiet"], answer: "To give a false alarm"},
-  {q: "Identify the meaning of: 'A red letter day'", options: ["A dangerous day", "An important day", "A bloody day", "A holiday"], answer: "An important day"},
-  {q: "Choose the correctly spelt word:", options: ["Vacuum", "Vaccum", "Vacum", "Vacuume"], answer: "Vacuum"},
-  {q: "Choose the correct article: He is ______ honest man.", options: ["a", "an", "the", "no article"], answer: "an"},
-  {q: "Fill in the blank: Ten miles ______ a long distance to walk.", options: ["are", "is", "were", "have"], answer: "is"},
-  {q: "Synonym of 'CORDIAL':", options: ["Cold", "Friendly", "Rude", "Hard"], answer: "Friendly"},
-  {q: "Synonym of 'VIGILANT':", options: ["Careless", "Watchful", "Sleepy", "Lazy"], answer: "Watchful"},
-  {q: "Antonym of 'VAGUE':", options: ["Unclear", "Clear", "Dull", "Dark"], answer: "Clear"},
-  {q: "Choose the correct preposition: Distribute these sweets ______ the children.", options: ["between", "among", "with", "in"], answer: "among"},
-  {q: "Fill in the blank: The police ______ investigating the case.", options: ["is", "are", "has", "was"], answer: "are"},
-  {q: "Find the correctly spelt word:", options: ["Grammar", "Grammer", "Grammar", "Grammer"], answer: "Grammar"},
-  {q: "One word substitution: One who does not believe in God.", options: ["Theist", "Atheist", "Optimist", "Pessimist"], answer: "Atheist"},
-  {q: "Antonym of 'LOQUACIOUS':", options: ["Talkative", "Silent", "Garrulous", "Noisy"], answer: "Silent"},
-  {q: "Correct the sentence: I ______ (go) to Delhi yesterday.", options: ["go", "gone", "went", "goes"], answer: "went"},
-  {q: "Fill in the blank: One of my friends ______ a doctor.", options: ["are", "were", "is", "have"], answer: "is"},
-  {q: "Choose the correctly spelt word:", options: ["Occurence", "Occurrence", "Ocurence", "Occurance"], answer: "Occurrence"},
-  {q: "One word substitution: A person who looks at the bright side of things.", options: ["Pessimist", "Atheist", "Optimist", "Theist"], answer: "Optimist"},
-  {q: "Meaning of the idiom: 'Bone of contention'", options: ["A healthy bone", "Cause of quarrel", "A peaceful matter", "A delicious food"], answer: "Cause of quarrel"},
-
+  {q: "Choose the correct preposition: He is junior ______ me in service.", options: ["than", "to", "from", "with"], answer: "to", solution: "Logic: Words like 'junior', 'senior', 'superior', 'inferior' take 'to' instead of 'than'."},
+  {q: "One word substitution: A person who can use both hands with equal ease.", options: ["Ambidextrous", "Ambivalent", "Ambiguous", "Amphibian"], answer: "Ambidextrous", solution: "Logic: 'Ambi' means both, 'dextrous' means skillful. So, one who uses both hands equally."},
+  {q: "Find the Synonym of 'ABANDON':", options: ["Keep", "Leave", "Support", "Hold"], answer: "Leave", solution: "Logic: Abandon means to give up or leave completely."},
+  {q: "Fill in the blank: The Jury ______ divided in their opinion.", options: ["was", "were", "has", "is"], answer: "were", solution: "Logic: When a collective noun (Jury) is divided in opinion, we use a plural verb ('were')."},
+  {q: "Find the Antonym of 'ARTIFICIAL':", options: ["Natural", "Synthetic", "Man-made", "False"], answer: "Natural", solution: "Logic: Artificial means man-made, so the opposite is Natural."},
+  {q: "Choose the correct Passive Voice: 'She sings a song.'", options: ["A song is sung by her.", "A song was sung by her.", "A song is sing by her.", "A song has sung by her."], answer: "A song is sung by her.", solution: "Logic: Present Simple (sings) changes to 'is/am/are + V3' in passive voice."},
+  {q: "One word substitution: A person who writes the life history of another person.", options: ["Autobiography", "Biography", "Bibliography", "Memoir"], answer: "Biography", solution: "Logic: 'Bio' (life) + 'Graphy' (writing). Writing about someone else is Biography."},
+  {q: "Identify the idiom: 'At the eleventh hour' means:", options: ["At 11:00 AM", "At the very last moment", "Early in the morning", "At midnight"], answer: "At the very last moment", solution: "Logic: This idiom is used for something happening just before it's too late."},
+  {q: "Fill in the blank: Neither of the two boys ______ present in the class.", options: ["were", "was", "are", "have"], answer: "was", solution: "Logic: 'Neither of' followed by a plural noun takes a singular verb ('was')."},
+  {q: "Choose the correctly spelt word:", options: ["Committee", "Comittee", "Commitee", "Comitee"], answer: "Committee", solution: "Logic: Remember double 'm', double 't', and double 'e' in Committee."},
+  {q: "Choose the correct Antonym of 'ADVERSITY':", options: ["Misfortune", "Prosperity", "Calamity", "Poverty"], answer: "Prosperity", solution: "Logic: Adversity means hard times; Prosperity means good/rich times."},
+  {q: "Identify the idiom: 'To spill the beans' means:", options: ["To cook beans", "To reveal a secret", "To waste food", "To be clumsy"], answer: "To reveal a secret", solution: "Logic: It means to give away a secret or information accidentally or prematurely."},
+  {q: "Fill in the blank: Mathematics ______ an interesting subject.", options: ["are", "is", "were", "have"], answer: "is", solution: "Logic: Subjects ending in 's' (Maths, Physics) are treated as singular."},
+  {q: "Choose the correct preposition: She has been suffering from fever ______ Monday.", options: ["for", "from", "since", "by"], answer: "since", solution: "Logic: 'Since' is used for a specific point of time (Monday)."},
+  {q: "Find the Synonym of 'FRUGAL':", options: ["Extravagant", "Economical", "Generous", "Wasteful"], answer: "Economical", solution: "Logic: Frugal means careful with money; sparing."},
+  {q: "Find the Synonym of 'ENORMOUS':", options: ["Tiny", "Huge", "Soft", "Weak"], answer: "Huge", solution: "Logic: Enormous means extremely large in size or amount."},
+  {q: "Change into Indirect Speech: He said, 'I am hungry.'", options: ["He said that he is hungry.", "He said that he was hungry.", "He said he was hungry.", "He says that he was hungry."], answer: "He said that he was hungry.", solution: "Logic: If the reporting verb is in past (said), the present simple changes to past simple."},
+  {q: "One word substitution: A place where birds are kept.", options: ["Aquarium", "Apiary", "Aviary", "Zoo"], answer: "Aviary", solution: "Logic: 'Avis' means bird. Aviary is for birds, Apiary is for bees."},
+  {q: "Choose the correct preposition: I am tired ______ walking.", options: ["with", "by", "of", "from"], answer: "of", solution: "Logic: 'Tired of' is a fixed phrase when you are bored or exhausted by something."},
+  {q: "Fill in the blank: Bread and butter ______ my favorite breakfast.", options: ["is", "are", "were", "am"], answer: "is", solution: "Logic: When two nouns suggest one idea (a meal), we use a singular verb."},
+  {q: "Find the Antonym of 'GIANT':", options: ["Huge", "Dwarf", "Large", "Monster"], answer: "Dwarf", solution: "Logic: Giant means very big; Dwarf means very small."},
+  {q: "Find the Antonym of 'FRAGILE':", options: ["Weak", "Strong", "Brittle", "Delicate"], answer: "Strong", solution: "Logic: Fragile means easily broken; Strong is the opposite."},
+  {q: "Identify the idiom: 'To cry wolf' means:", options: ["To shout like a wolf", "To give a false alarm", "To be brave", "To keep quiet"], answer: "To give a false alarm", solution: "Logic: Referring to the fable where a boy lies about a wolf appearing."},
+  {q: "Identify the meaning of: 'A red letter day'", options: ["A dangerous day", "An important day", "A bloody day", "A holiday"], answer: "An important day", solution: "Logic: Historically, important festivals were marked in red on calendars."},
+  {q: "Choose the correctly spelt word:", options: ["Vacuum", "Vaccum", "Vacum", "Vacuume"], answer: "Vacuum", solution: "Logic: Vacuum has double 'u', not double 'c'."},
+  {q: "Choose the correct article: He is ______ honest man.", options: ["a", "an", "the", "no article"], answer: "an", solution: "Logic: 'Honest' starts with a vowel sound ('o'), so we use 'an'."},
+  {q: "Fill in the blank: Ten miles ______ a long distance to walk.", options: ["are", "is", "were", "have"], answer: "is", solution: "Logic: A specific distance or amount is treated as a single unit (singular)."},
+  {q: "Synonym of 'CORDIAL':", options: ["Cold", "Friendly", "Rude", "Hard"], answer: "Friendly", solution: "Logic: Cordial means warm and friendly."},
+  {q: "Synonym of 'VIGILANT':", options: ["Careless", "Watchful", "Sleepy", "Lazy"], answer: "Watchful", solution: "Logic: Vigilant means keeping careful watch for possible danger."},
+  {q: "Antonym of 'VAGUE':", options: ["Unclear", "Clear", "Dull", "Dark"], answer: "Clear", solution: "Logic: Vague means uncertain or unclear; Clear is the opposite."},
+  {q: "Choose the correct preposition: Distribute these sweets ______ the children.", options: ["between", "among", "with", "in"], answer: "among", solution: "Logic: 'Between' is for two; 'Among' is for more than two."},
+  {q: "Fill in the blank: The police ______ investigating the case.", options: ["is", "are", "has", "was"], answer: "are", solution: "Logic: 'Police' is a plural noun and always takes a plural verb."},
+  {q: "Find the correctly spelt word:", options: ["Grammar", "Grammer", "Grammar", "Grammer"], answer: "Grammar", solution: "Logic: It ends with '-ar', not '-er'."},
+  {q: "One word substitution: One who does not believe in God.", options: ["Theist", "Atheist", "Optimist", "Pessimist"], answer: "Atheist", solution: "Logic: 'A-' (without) + 'Theist' (believer)."},
+  {q: "Antonym of 'LOQUACIOUS':", options: ["Talkative", "Silent", "Garrulous", "Noisy"], answer: "Silent", solution: "Logic: Loquacious means talkative; Silent means quiet."},
+  {q: "Correct the sentence: I ______ (go) to Delhi yesterday.", options: ["go", "gone", "went", "goes"], answer: "went", solution: "Logic: 'Yesterday' indicates Past Simple tense (V2)."},
+  {q: "Fill in the blank: One of my friends ______ a doctor.", options: ["are", "were", "is", "have"], answer: "is", solution: "Logic: The subject is 'One', so the verb must be singular ('is')."},
+  {q: "Choose the correctly spelt word:", options: ["Occurence", "Occurrence", "Ocurence", "Occurance"], answer: "Occurrence", solution: "Logic: Remember double 'c' and double 'r'."},
+  {q: "One word substitution: A person who looks at the bright side of things.", options: ["Pessimist", "Atheist", "Optimist", "Theist"], answer: "Optimist", solution: "Logic: Optimist looks for the best; Pessimist looks for the worst."},
+  {q: "Meaning of the idiom: 'Bone of contention'", options: ["A healthy bone", "Cause of quarrel", "A peaceful matter", "A delicious food"], answer: "Cause of quarrel", solution: "Logic: Something that people argue about constantly."},
+  {q: "Fill in the blank: My sister is ______ M.A. in English.", options: ["a", "an", "the", "no article"], answer: "an", solution: "Logic: Pronunciation of 'M' starts with a vowel sound 'em', so we use 'an'."},
+  {q: "Antonym of 'OPTIMIST':", options: ["Pessimist", "Cynic", "Theist", "Realist"], answer: "Pessimist", solution: "Logic: Direct opposite of someone who is hopeful."},
+  {q: "Synonym of 'REVEAL':", options: ["Hide", "Show", "Cover", "Keep"], answer: "Show", solution: "Logic: To reveal means to make something known or visible."},
+  {q: "Identify the tense: 'I have been living here for ten years.'", options: ["Present Perfect", "Present Perfect Continuous", "Past Perfect", "Future Perfect"], answer: "Present Perfect Continuous", solution: "Logic: Has/Have + been + V1 + ing is the structure for this tense."},
+  {q: "Choose the correct preposition: He died ______ cancer.", options: ["from", "with", "of", "by"], answer: "of", solution: "Logic: Use 'died of' for diseases (of cancer, of cholera)."},
+  {q: "One word substitution: A person who loves mankind.", options: ["Misanthrope", "Philanthropist", "Anthropologist", "Mercenary"], answer: "Philanthropist", solution: "Logic: 'Phil' (love) + 'Anthro' (man)."},
+  {q: "Identify the idiom: 'To turn over a new leaf'", options: ["To plant a tree", "To change for the better", "To read a book", "To be confused"], answer: "To change for the better", solution: "Logic: It means to start behaving in a better way."},
+  {q: "Antonym of 'CRUEL':", options: ["Kind", "Mean", "Rough", "Hard"], answer: "Kind", solution: "Logic: Cruel means causing pain; Kind is the opposite."},
+  {q: "Fill in the blank: Neither you nor I ______ going to the party.", options: ["is", "am", "are", "were"], answer: "am", solution: "Logic: In 'Neither-Nor', the verb agrees with the nearest subject ('I')."},
+  {q: "Choose the correct Passive Voice: 'Who wrote this book?'", options: ["By whom was this book written?", "By who this book was written?", "Who was written this book?", "This book was written by who?"], answer: "By whom was this book written?", solution: "Logic: 'Who' changes to 'By whom' and Past Simple changes to 'was/were + V3'."},
+  {q: "Fill in the blank: She is ______ university professor.", options: ["a", "an", "the", "no article"], answer: "a", solution: "Logic: 'University' starts with a consonant sound 'yu', isliye 'a' lagega, 'an' nahi."},
+  {q: "Choose the correct preposition: He is ashamed ______ his conduct.", options: ["of", "at", "with", "by"], answer: "of", solution: "Logic: 'Ashamed' ke saath fixed preposition 'of' ka use hota hai."},
+  {q: "Antonym of 'STINGY':", options: ["Miser", "Generous", "Cheap", "Tight"], answer: "Generous", solution: "Logic: Stingy matlab kanjoos, Generous matlab udaar ya bade dil wala."},
+  {q: "One word substitution: A person who hates women.", options: ["Misanthrope", "Misogynist", "Philanthropist", "Misogamist"], answer: "Misogynist", solution: "Logic: 'Miso' (hate) + 'Gyn' (woman)."},
+  {q: "Fill in the blank: The news ______ true.", options: ["is", "are", "were", "have"], answer: "is", solution: "Logic: 'News' dikhne mein plural hai par actually uncountable singular noun hai."},
+  {q: "Identify the idiom: 'To smell a rat' means:", options: ["To see a rat", "To suspect something foul", "To be a detective", "To get a bad smell"], answer: "To suspect something foul", solution: "Logic: Jab hamein kuch galat hone ka shak hota hai tab ye idiom use karte hain."},
+  {q: "Synonym of 'PRECARIOUS':", options: ["Safe", "Brittle", "Perilous", "Strong"], answer: "Perilous", solution: "Logic: Precarious matlab khatarnak ya anishchit, Perilous uska synonym hai."},
+  {q: "Correct the sentence: Each of the students ______ given a book.", options: ["was", "were", "have", "are"], answer: "was", solution: "Logic: 'Each of' hamesha singular verb leta hai."},
+  {q: "Choose the correctly spelt word:", options: ["Accommodation", "Acommodation", "Accomodation", "Acomodation"], answer: "Accommodation", solution: "Logic: Ismein double 'c' aur double 'm' dono hote hain."},
+  {q: "Change into Passive: 'Open the door.'", options: ["Let the door be opened.", "The door is opened.", "The door should open.", "Let door opened."], answer: "Let the door be opened.", solution: "Logic: Imperative sentences (commands) ko 'Let + object + be + V3' se banate hain."},
+  {q: "Fill in the blank: I have no ______ to the internet.", options: ["access", "excess", "axess", "accession"], answer: "access", solution: "Logic: Access matlab pahunch (reach), Excess matlab zarurat se zyada."},
+  {q: "Antonym of 'ENMITY':", options: ["Hatred", "Friendship", "Rivalry", "Animosity"], answer: "Friendship", solution: "Logic: Enmity matlab dushmani, Friendship matlab dosti."},
+  {q: "Identify the idiom: 'A bolt from the blue' means:", options: ["A sudden disaster", "A blue bolt", "Thunderstorm", "Very rare"], answer: "A sudden disaster", solution: "Logic: Kuch aisa jo bilkul unexpected aur bura ho."},
+  {q: "Choose the correct preposition: He has no taste ______ music.", options: ["in", "for", "with", "at"], answer: "for", solution: "Logic: 'Taste for something' matlab kisi cheez mein ruchi hona."},
+  {q: "One word substitution: A life history written by oneself.", options: ["Biography", "Autobiography", "History", "Manuscript"], answer: "Autobiography", solution: "Logic: 'Auto' matlab self. Khud ki kahani likhna."},
+  {q: "Fill in the blank: If I ______ a bird, I would fly.", options: ["was", "am", "were", "had been"], answer: "were", solution: "Logic: Imaginary sentences (hypothetical) mein subject kuch bhi ho, 'were' lagta hai."},
+  {q: "Synonym of 'CANDID':", options: ["Frank", "Devious", "Shy", "Diplomatic"], answer: "Frank", solution: "Logic: Candid matlab jo saaf-saaf bol de (Honest/Frank)."},
+  {q: "Correct the sentence: He is one of the best ______ that have ever lived.", options: ["man", "men", "mans", "mens"], answer: "men", solution: "Logic: 'One of the' ke baad hamesha plural noun (men) aata hai."},
+  {q: "Identify the idiom: 'To beat about the bush' means:", options: ["To cut bushes", "To talk in a roundabout way", "To be brave", "To hide"], answer: "To talk in a roundabout way", solution: "Logic: Asli baat par na aakar ghuma-fira kar baat karna."},
+  {q: "Choose the correctly spelt word:", options: ["Lieutenant", "Leutenant", "Lieutanant", "Lutenant"], answer: "Lieutenant", solution: "Logic: Iski spelling 'Lieu-ten-ant' yaad rakhein."},
+  {q: "Fill in the blank: Many a man ______ been killed in the war.", options: ["has", "have", "were", "are"], answer: "has", solution: "Logic: 'Many a' ke baad singular noun aur singular verb aata hai."},
+  {q: "Antonym of 'TRANSPARENT':", options: ["Clear", "Opaque", "Translucent", "Sharp"], answer: "Opaque", solution: "Logic: Transparent matlab jiske paar dikhe, Opaque matlab jiske paar na dikhe."},
+  {q: "Choose the correct preposition: She is good ______ English.", options: ["in", "at", "with", "for"], answer: "at", solution: "Logic: Kisi subject ya skill mein acha hone ke liye 'good at' use karte hain."},
+  {q: "One word substitution: A person who lives at the same time as another.", options: ["Contemporary", "Colleague", "Cosmopolitan", "Connoisseur"], answer: "Contemporary", solution: "Logic: Samkaleen (Same time period)."},
+  {q: "Fill in the blank: Unless you ______ hard, you will fail.", options: ["work", "will work", "worked", "working"], answer: "work", solution: "Logic: Conditional sentences mein 'unless' wale part mein future tense nahi lagta."},
+  {q: "Synonym of 'IMPECCABLE':", options: ["Faulty", "Perfect", "Dirty", "Flashy"], answer: "Perfect", solution: "Logic: Impeccable matlab jisme koi galti na ho (Flawless)."},
+  {q: "Identify the idiom: 'Once in a blue moon' means:", options: ["Very rarely", "Every night", "Once a month", "On full moon day"], answer: "Very rarely", solution: "Logic: Jo cheez bahut hi kabhi-kabhaar ho."},
+  {q: "Choose the correct article: He is ______ European.", options: ["a", "an", "the", "no article"], answer: "a", solution: "Logic: 'European' ka sound 'Y' (consonant) se shuru hota hai."},
+  {q: "Correct the sentence: Scarcely had I reached the station ______ the train started.", options: ["then", "than", "when", "that"], answer: "when", solution: "Logic: 'Scarcely' aur 'Hardly' ke saath 'when' ka pair banta hai."},
+  {q: "One word substitution: A collection of flowers.", options: ["Bouquet", "Bundle", "Cluster", "Fleet"], answer: "Bouquet", solution: "Logic: Guldasta (Bouquet)."},
+  {q: "Fill in the blank: Neither the teacher nor the students ______ present.", options: ["was", "were", "is", "has"], answer: "were", solution: "Logic: 'Neither-nor' mein verb pass wale subject (students) ke hisab se plural hogi."},
+  {q: "Antonym of 'HUMBLE':", options: ["Modest", "Proud", "Meek", "Polite"], answer: "Proud", solution: "Logic: Humble matlab vinamra, Proud matlab ghamandi."},
+  {q: "Choose the correctly spelt word:", options: ["Psychology", "Sychology", "Psycology", "Psychologi"], answer: "Psychology", solution: "Logic: 'P' silent hota hai par spelling mein aata hai."},
+  {q: "Identify the idiom: 'To end in smoke' means:", options: ["To burn something", "To yield no result", "To enjoy a cigar", "To die"], answer: "To yield no result", solution: "Logic: Bina kisi natije ke khatam ho jana."},
+  {q: "Fill in the blank: He has ______ friends in the city.", options: ["much", "a few", "a little", "any"], answer: "a few", solution: "Logic: Friends countable hain, isliye 'a few' lagega."},
+  {q: "Synonym of 'ABRIDGE':", options: ["Expand", "Shorten", "Bridge", "Cross"], answer: "Shorten", solution: "Logic: Abridge matlab kisi text ya speech ko chota karna."},
+  {q: "One word substitution: Murder of a king.", options: ["Homicide", "Regicide", "Patricide", "Fratricide"], answer: "Regicide", solution: "Logic: 'Regi' (king) + 'cide' (killing)."},
+  {q: "Choose the correct preposition: We should abstain ______ drinking.", options: ["from", "to", "at", "with"], answer: "from", solution: "Logic: Abstain/Refrain ke saath hamesha 'from' lagta hai."},
+  {q: "Correct the sentence: Senior citizens are ______ of tax.", options: ["exempted", "excepted", "accepted", "expected"], answer: "exempted", solution: "Logic: Exempted matlab chhoot milna (tax etc. mein)."},
+  {q: "Identify the idiom: 'Gift of the gab' means:", options: ["A costly gift", "Talent for speaking", "A surprise", "To be talkative"], answer: "Talent for speaking", solution: "Logic: Ache se bolne ki kala hona."},
+  {q: "Fill in the blank: She has been playing ______ two hours.", options: ["since", "for", "from", "by"], answer: "for", solution: "Logic: Duration of time (2 hours) ke liye 'for' lagta hai."},
+  {q: "Antonym of 'BARREN':", options: ["Empty", "Fertile", "Dry", "Dull"], answer: "Fertile", solution: "Logic: Barren matlab banjar, Fertile matlab upjau."},
+  {q: "One word substitution: A person who knows many languages.", options: ["Polyglot", "Bilingual", "Linguist", "Grammarian"], answer: "Polyglot", solution: "Logic: 'Poly' (many) + 'glot' (tongue/language)."},
+  {q: "Choose the correct preposition: Translate this ______ Hindi.", options: ["in", "into", "to", "with"], answer: "into", solution: "Logic: Medium change hone par 'into' ka use karte hain."},
+  {q: "Synonym of 'ADAMANT':", options: ["Flexible", "Stubborn", "Soft", "Kind"], answer: "Stubborn", solution: "Logic: Adamant matlab ziddi ya atal."},
+  {q: "Identify the idiom: 'Through thick and thin' means:", options: ["In good and bad times", "To become thin", "To be very fat", "Losing weight"], answer: "In good and bad times", solution: "Logic: Har tarah ki paristhiti mein saath dena."},
+  {q: "Choose the correctly spelt word:", options: ["Maintenance", "Maintainance", "Maintenence", "Maintainence"], answer: "Maintenance", solution: "Logic: 'Maintain' se banta hai par spelling 'Mainte-nance' ho jati hai."},
+  {q: "Fill in the blank: This is the ______ book I have ever read.", options: ["better", "good", "best", "most good"], answer: "best", solution: "Logic: 'The' ke baad superlative degree (best) lagti hai."},
+  {q: "Antonym of 'VIRTUE':", options: ["Vice", "Goodness", "Worth", "Honesty"], answer: "Vice", solution: "Logic: Virtue matlab achai/guna, Vice matlab burai/dosha."},
+  {q: "One word substitution: A handwriting that cannot be read.", options: ["Illegible", "Eligible", "Inedible", "Inevitable"], answer: "Illegible", solution: "Logic: Jo padha na ja sake."},
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -339,9 +410,12 @@ function submitQuiz(){
     if(answers[i] == q.answer) correct++;
     
     detailHtml+=`
-      <div style="margin:10px 0; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; border-left:4px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
+      <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
         <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b>${q.answer}</b></p>
+        <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+        <div class="sol-box">
+          <b>Logic:</b> ${q.solution || "Solution will be updated soon."}
+        </div>
       </div>`;
   });
 
@@ -352,18 +426,10 @@ function submitQuiz(){
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
       <h3 style="margin-bottom:15px; color:var(--color-accent);">English Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
-          Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b>
-        </div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
-          Attempted: <br><b style="font-size:18px;">${attempted}</b>
-        </div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
-          Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b>
-        </div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">
-          Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b>
-        </div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
       </div>
     </div>
   `;
@@ -382,7 +448,6 @@ function submitQuiz(){
 }
 
 window.onload=function(){
-  // Automatic Question Count & Time Recommendation
   document.getElementById("totalQDisplay").textContent = questions.length;
   document.getElementById("testTime").value = questions.length;
 
@@ -422,4 +487,3 @@ function clearResult(){
 
 </body>
 </html>
-
