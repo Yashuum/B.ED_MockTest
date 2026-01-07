@@ -155,6 +155,14 @@ button:hover{ transform: scale(1.05); }
   border: 1px dashed var(--color-accent);
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function () {
+    emailjs.init("L8kGW-X7JOiYaycH5");
+  })();
+</script>
+	
 </head>
 
 <body>
@@ -431,6 +439,33 @@ function submitQuiz(){
 
   const finalHtml = summaryBox + detailHtml;
   localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+
+	// ================= EMAIL NOTIFICATION =================
+const emailParams = {
+  candidate_name: displayName.textContent,
+  subject: "English",
+  score: correct,
+  total: questions.length,
+  attempted: attempted,
+  accuracy: accuracy + "%",
+  time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+  test_date: new Date().toLocaleString("en-IN")
+};
+
+emailjs.send(
+  "service_wq5yoyp",
+  "template_doegpcp",
+  emailParams
+).then(
+  function (response) {
+    console.log("✅ Email sent successfully", response.status);
+  },
+  function (error) {
+    console.error("❌ Email failed", error);
+  }
+);
+// ======================================================
+
   
   quizArea.innerHTML="";
   palette.style.display="none"; 
@@ -482,3 +517,4 @@ function clearResult(){
 
 </body>
 </html>
+
