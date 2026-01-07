@@ -378,6 +378,31 @@ function submitQuiz(){
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
   const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
+  /* ===== CERTIFICATE ELIGIBILITY LOGIC ===== */
+
+if (accuracy >= 50) {
+
+  const certData = {
+    name: displayName.textContent,
+    subject: "English", // ← subject change karna ho to sirf ye line
+    percent: accuracy,
+    date: new Date().toLocaleDateString("en-IN"),
+    certId: "YASH-" + Date.now()
+  };
+
+  sessionStorage.setItem("CERT_DATA", JSON.stringify(certData));
+
+  setTimeout(() => {
+    if (confirm(
+      `🎉 Congratulations!\n\nYou scored ${accuracy}%.\nYou are eligible for a digital certificate.\n\nClick OK to view your certificate.`
+    )) {
+      window.open("certificate.html", "_blank");
+    }
+  }, 800);
+
+}
+
+
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
       <h3 style="margin-bottom:15px; color:var(--color-accent);">Teaching principles Performance Report</h3>
@@ -470,4 +495,5 @@ function clearResult(){
 
 </body>
 </html>
+
 
