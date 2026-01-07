@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mock Test – B.ED 2026 by Yash</title>
+<title>NishuAbhyasi – All-in-one by Yash</title>
 
 <style>
-/* Consistent Professional Glassmorphism Theme from Reference */
+/* Professional Glassmorphism Theme */
 :root{
   --color-primary: #1a2a6c;
   --color-secondary: #2575fc;
@@ -32,6 +32,12 @@ body{
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
@@ -62,7 +68,30 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   outline: none;
 }
 
-.start-screen input::placeholder { color: rgba(255, 255, 255, 0.8); }
+.start-screen input::placeholder {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.q-count-sticker {
+  margin: 5px auto 15px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #4facfe;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
 
 button{
   padding: 14px 28px;
@@ -76,7 +105,6 @@ button{
 }
 button:hover{ transform: scale(1.05); }
 
-/* TOP BAR */
 .top-bar{
   display:none; justify-content:space-between; align-items:center;
   padding:15px 25px; background: var(--glass);
@@ -86,7 +114,6 @@ button:hover{ transform: scale(1.05); }
 }
 .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
 
-/* PALETTE */
 #palette{ 
   display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
   justify-content: center; padding: 10px;
@@ -99,7 +126,6 @@ button:hover{ transform: scale(1.05); }
 .palette .visited{ background: var(--color-secondary); }
 .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
 
-/* QUIZ CARD */
 .quiz-card{
   background: var(--glass); border:1px solid var(--glass-border);
   backdrop-filter: blur(20px); border-radius:25px; padding:30px;
@@ -114,10 +140,20 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* RESULT */
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
+
+/* Solution Box Styling */
+.sol-box {
+  margin-top:12px; 
+  padding:12px; 
+  background:rgba(242, 153, 74, 0.15); 
+  border-radius:12px; 
+  font-size:14px; 
+  color:#ffcc80;
+  border: 1px dashed var(--color-accent);
+}
 </style>
 </head>
 
@@ -125,20 +161,26 @@ button:hover{ transform: scale(1.05); }
 
 <div class="container">
 
-<h1>Target Test- B.ED Mock 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 02 Jan, 2026, 04:30 PM</p>
+<h1>Target Test- All-in-one 2026</h1>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 07 Jan, 2026 - 21:51</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
   <input id="testTime" type="number" placeholder="Time (minutes)">
+  
+  <div class="q-count-sticker">
+    <span class="pulse-dot"></span>
+    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+  </div>
+
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
     <button onclick="startTest()">Start Test</button>
-    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Home</button>
+    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
   </div>
 </div>
 
 <div class="top-bar" id="topBar">
-  <div><small style="opacity:0.9;">STUDENT:</small><br><b id="displayName"></b></div>
+  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
   <div class="timer" id="timer">00:00</div>
 </div>
 
@@ -153,162 +195,148 @@ button:hover{ transform: scale(1.05); }
 <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
 
 <div id="result" class="result" style="display:none"></div>
-<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart New</button>
+<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
 
 </div>
 
 <script>
-// Your Original Questions Data
+
 const questions = [
-  {q: "Choose the correct synonym of the word:<br><br>‘ABANDON’", options: ["Keep", "Leave", "Join", "Hold"], answer: "Leave"},
-  {q: "Fill in the blank with correct article:<br><br>He is _____ Honorable man.", options: ["a", "an", "the", "no article"], answer: "an"},
-  {q: "Choose the correct antonym of the word:<br><br>‘FRAGILE’", options: ["Soft", "Weak", "Strong", "Brittle"], answer: "Strong"},
-  {q: "Identify the correctly spelled word:", options: ["Comittee", "Committee", "Comitey", "Comittie"], answer: "Committee"},
-  {q: "Fill in the blank:<br><br>She has been living in Patna _____ 2010.", options: ["for", "from", "since", "by"], answer: "since"},
-  {q: "Choose the correct meaning of the idiom:<br><br>‘To smell a rat’", options: ["To see a rat", "To suspect something wrong", "To be blind", "To smell bad"], answer: "To suspect something wrong"},
-  {q: "Change into Passive Voice:<br><br>Ram is playing cricket.", options: ["Cricket is played by Ram", "Cricket was played by Ram", "Cricket is being played by Ram", "Cricket has been played by Ram"], answer: "Cricket is being played by Ram"},
-  {q: "Choose the one-word substitution:<br><br>‘A person who looks at the bright side of things’", options: ["Pessimist", "Optimist", "Atheist", "Theist"], answer: "Optimist"},
-  {q: "Fill in the blank with correct preposition:<br><br>He died _____ Cholera.", options: ["from", "of", "with", "by"], answer: "of"},
-  {q: "Choose the correct antonym of:<br><br>‘ANCIENT’", options: ["Old", "Modern", "Historic", "Past"], answer: "Modern"},
-  {q: "Spot the error:<br><br>Neither of the two boys are ready.", options: ["Neither of", "the two boys", "are ready", "No error"], answer: "are ready"},
-  {q: "Fill in the blank:<br><br>I _____ a letter yesterday.", options: ["write", "wrote", "written", "writing"], answer: "wrote"},
-  {q: "Choose the correct synonym of:<br><br>‘HUGE’", options: ["Small", "Tiny", "Gigantic", "Weak"], answer: "Gigantic"},
-  {q: "Meaning of the idiom:<br><br>‘A piece of cake’", options: ["Something very sweet", "Something very easy", "A difficult task", "To eat cake"], answer: "Something very easy"},
-  {q: "Choose the correct one-word substitution:<br><br>‘A place where birds are kept’", options: ["Zoo", "Apiary", "Aviary", "Stable"], answer: "Aviary"},
-  {q: "Fill in the blank:<br><br>Hardly had I reached the station _____ the train started.", options: ["then", "than", "when", "so"], answer: "when"},
-  {get q(){return "Choose the correctly spelled word:"}, options: ["Occurred", "Ocured", "Occured", "Ocurede"], answer: "Occurred"},
-  {q: "Fill in the blank:<br><br>Ram is _____ taller of the two brothers.", options: ["a", "an", "the", "no article"], answer: "the"},
-  {q: "Choose the correct synonym of:<br><br>‘COURAGEOUS’", options: ["Timid", "Brave", "Coward", "Fearful"], answer: "Brave"},
-  {q: "Change into Indirect Speech:<br><br>He said, 'I am busy.'", options: ["He said that he is busy", "He said that he was busy", "He said he busy", "He says he was busy"], answer: "He said that he was busy"},
-  {q: "Choose the correct antonym of:<br><br>‘ARROGANT’", options: ["Proud", "Humble", "Egoistic", "Rude"], answer: "Humble"},
-  {q: "Fill in the blank:<br><br>I prefer milk _____ tea.", options: ["than", "to", "over", "for"], answer: "to"},
-  {q: "Meaning of the idiom:<br><br>‘Once in a blue moon’", options: ["Regularly", "Rarely", "Always", "Every night"], answer: "Rarely"},
-  {q: "Spot the error:<br><br>The sceneries of Kashmir is very beautiful.", options: ["The sceneries", "of Kashmir", "is very", "beautiful"], answer: "The sceneries"},
-  {q: "Choose the one-word substitution:<br><br>‘One who does not believe in God’", options: ["Theist", "Atheist", "Monk", "Saint"], answer: "Atheist"},
-  {q: "Fill in the blank:<br><br>Slow and steady _____ the race.", options: ["win", "wins", "winning", "won"], answer: "wins"},
-  {q: "Choose the correct synonym of:<br><br>‘VIGILANT’", options: ["Careless", "Watchful", "Sleepy", "Lazy"], answer: "Watchful"},
-  {q: "Fill in the blank:<br><br>If I _____ a bird, I would fly.", options: ["am", "was", "were", "be"], answer: "were"},
-  {q: "Choose the correct meaning of:<br><br>‘To cry wolf’", options: ["To shout", "To give a false alarm", "To be afraid", "To kill a wolf"], answer: "To give a false alarm"},
-  {q: "Identify the part of speech of the underlined word:<br><br>He runs <u>fast</u>.", options: ["Noun", "Verb", "Adverb", "Adjective"], answer: "Adverb"},
-  {q: "‘हाथ मलना’ मुहावरे का सही अर्थ क्या है?", options: ["हाथ साफ करना", "पछताना", "मेहनत करना", "मालिश करना"], answer: "पछताना"},
-  {q: "‘संधि’ के कितने भेद होते हैं?", options: ["2", "3", "4", "5"], answer: "3"},
-  {q: "‘ईद का चाँद होना’ मुहावरे का अर्थ क्या है?", options: ["बहुत सुंदर होना", "बहुत दिनों बाद दिखाई देना", "चाँद की पूजा करना", "दर्शन देना"], answer: "बहुत दिनों बाद दिखाई देना"},
-  {q: "‘यथाशक्ति’ में कौन सा समास है?", options: ["तत्पुरुष", "अव्ययीभाव", "द्विगु", "कर्मधारय"], answer: "अव्ययीभाव"},
-  {q: "‘गागर में सागर भरना’ का अर्थ क्या है?", options: ["घड़े में पानी भरना", "कम शब्दों में बहुत कुछ कहना", "मजाक करना", "असंभव काम करना"], answer: "कम शब्दों में बहुत कुछ कहना"},
-  {q: "‘पवन’ का सही संधि विच्छेद क्या है?", options: ["प + वन", "पा + वन", "पो + अन", "पौ + अन"], answer: "पो + अन"},
-  {q: "‘नौ दो ग्यारह होना’ का क्या अर्थ है?", options: ["गिनती करना", "भाग जाना", "हार मान लेना", "मिलकर काम करना"], answer: "भाग जाना"},
-  {q: "निम्नलिखित में से शुद्ध वर्तनी का चयन कीजिए:", options: ["कवयित्री", "कवियत्री", "कवयत्री", "कविइत्री"], answer: "कवयित्री"},
-  {q: "‘अंधे की लकड़ी’ होना मुहावरे का अर्थ है:", options: ["अंधे की मदद करना", "एकमात्र सहारा", "मूर्ख होना", "लकड़ी का सहारा लेना"], answer: "एकमात्र सहारा"},
-  {q: "‘अमृत’ का पर्यायवाची शब्द कौन सा है?", options: ["अम्बर", "सुधा", "नीर", "शहद"], answer: "सुधा"},
-  {q: "‘आग बबूला होना’ का सही अर्थ क्या है?", options: ["आग जलाना", "बहुत गुस्सा होना", "गर्मी लगना", "शांत होना"], answer: "बहुत गुस्सा होना"},
-  {q: "‘उत्थान’ का विलोम शब्द क्या होगा?", options: ["गिरावट", "पतन", "नीचे", "अंत"], answer: "पतन"},
-  {q: "‘दाँतों तले उँगली दबाना’ का अर्थ है:", options: ["दाँत साफ करना", "हैरान रह जाना", "दर्द होना", "गुस्सा करना"], answer: "हैरान रह जाना"},
-  {q: "‘जो सब कुछ जानता हो’ वाक्यांश के लिए एक शब्द क्या है?", options: ["अल्पज्ञ", "बहुज्ञ", "सर्वज्ञ", "अज्ञ"], answer: "सर्वज्ञ"},
-  {q: "‘ऊँट के मुँह में जीरा’ का सही अर्थ क्या है?", options: ["ऊँट को जीरा खिलाना", "जरूरत से बहुत कम मिलना", "बड़े को छोटा समझना", "बीमार होना"], answer: "जरूरत से बहुत कम मिलना"},
-  {q: "‘वर्णों के समूह’ को क्या कहते हैं?", options: ["शब्द", "वर्णमाला", "वाक्य", "स्वर"], answer: "वर्णमाला"},
-  {q: "‘लोहा मानना’ मुहावरे का अर्थ है:", options: ["युद्ध करना", "श्रेष्ठता स्वीकार करना", "लोहा खरीदना", "मजबूत होना"], answer: "श्रेष्ठता स्वीकार करना"},
-  {q: "‘पेड़ से पत्ता गिरा’ - इस वाक्य में ‘से’ किस कारक की विभक्ति है?", options: ["करण", "अपादान", "सम्प्रदान", "सम्बन्ध"], answer: "अपादान"},
-  {q: "‘नाक कटना’ मुहावरे का सही अर्थ क्या है?", options: ["चोट लगना", "इज्जत जाना", "सर्दी होना", "झूठ बोलना"], answer: "इज्जत जाना"},
-  {q: "‘लंबोदर’ किस प्रकार का शब्द है?", options: ["रूढ़", "यौगिक", "योगरूढ़", "तद्भव"], answer: "योगरूढ़"},
-  {q: "‘अक्ल पर पत्थर पड़ना’ का अर्थ क्या है?", options: ["बुद्धि भ्रष्ट होना", "सिर में चोट लगना", "पत्थर से मारना", "विद्वान होना"], answer: "बुद्धि भ्रष्ट होना"},
-  {q: "‘आँखों का तारा’ मुहावरे का अर्थ है:", options: ["दुश्मन होना", "बहुत प्यारा होना", "देखना", "कमजोर होना"], answer: "बहुत प्यारा होना"},
-  {q: "‘सूर्य’ का पर्यायवाची शब्द नहीं है:", options: ["दिनकर", "दिवाकर", "रवि", "शशांक"], answer: "शशांक"},
-  {q: "हिंदी वर्णमाला में ‘अयोगवाह’ वर्ण कौन से हैं?", options: ["इ, ई", "उ, ऊ", "अं, अः", "अ, आ"], answer: "अं, अः"},
-  {q: "‘सज्जन’ का संधि विच्छेद क्या होगा?", options: ["सज + जन", "सत + जन", "स: + जन", "सज् + जन"], answer: "सत + जन"},
-  {q: "निम्नलिखित में से ‘तद्भव’ शब्द पहचानिए:", options: ["अग्नि", "सूर्य", "हाथ", "दन्त"], answer: "हाथ"},
-  {q: "‘चौराहा’ में कौन सा समास है?", options: ["द्विगु", "द्वंद्व", "बहुव्रीहि", "तत्पुरुष"], answer: "द्विगु"},
-  {q: "‘आशीर्वाद’ की शुद्ध वर्तनी क्या है?", options: ["आशिर्वाद", "आशीर्वाद", "आशीवार्द", "अशीर्वाद"], answer: "आशीर्वाद"},
-  {q: "‘तरणि’ का पर्यायवाची शब्द क्या है?", options: ["नदी", "सूर्य", "नाव", "युवती"], answer: "सूर्य"},
-  {q: "‘कोल्हू का बैल होना’ मुहावरे का अर्थ है:", options: ["खेती करना", "दिन-रात कठिन परिश्रम करना", "बहुत धीरे चलना", "मूर्ख होना"], answer: "दिन-रात कठिन परिश्रम करना"},
-  {q: "हाल ही में (2025) किस भारतीय फिल्म ने ऑस्कर में सर्वश्रेष्ठ अंतरराष्ट्रीय फीचर फिल्म का पुरस्कार जीता?", options: ["Kalki 2898 AD", "All We Imagine as Light", "Jawan", "Pushpa 2"], answer: "All We Imagine as Light"},
-  {q: "मानव शरीर की सबसे बड़ी कोशिका (Largest Cell) कौन सी है?", options: ["तंत्रिका कोशिका (Neuron)", "शुक्राणु", "डिम्ब (Ovum)", "यकृत कोशिका"], answer: "तंत्रिका कोशिका (Neuron)"},
-  {q: "इसरो (ISRO) के 'चंद्रयान-4' मिशन का मुख्य उद्देश्य क्या है?", options: ["चाँद की परिक्रमा", "चाँद से नमूने वापस लाना", "चाँद पर भर्ती बसाना", "चाँद के पानी की खोज"], answer: "चाँद से नमूने वापस लाना"},
-  {q: "रक्त का थक्का (Blood Clotting) जमने में कौन सा विटामिन सहायक है?", options: ["विटामिन A", "विटामिन C", "विटामिन D", "विटामिन K"], answer: "विटामिन K"},
-  {q: "2026 के एशियाई खेलों (Asian Games) का आयोजन कहाँ किया जाएगा?", options: ["भारत", "चीन", "जापान (नागोया)", "कतर"], answer: "जापान (नागोया)"},
-  {q: "शुष्क बर्फ (Dry Ice) किसे कहा जाता है?", options: ["ठोस ऑक्सीजन", "ठोस कार्बन डाइऑक्साइड", "ठोस नाइट्रोजन", "ठोस हाइड्रोजन"], answer: "ठोस कार्बन डाइऑक्साइड"},
-  {q: "नीति आयोग (NITI Aayog) के वर्तमान उपाध्यक्ष कौन हैं?", options: ["सुमन बेरी", "अमिताभ कांत", "बी.वी.आर. सुब्रमण्यम", "राजीव कुमार"], answer: "सुमन बेरी"},
-  {q: "प्रकाश वर्ष (Light Year) किसकी इकाई है?", options: ["समय", "प्रकाश की गति", "दूरी", "तीव्रता"], answer: "दूरी"},
-  {q: "बिहार के वर्तमान राज्यपाल (Governor) कौन हैं? (जनवरी 2026 के अनुसार)", options: ["फागू चौहान", "राजेंद्र विश्वनाथ आर्लेकर", "नितीश कुमार", "लालजी टंडन"], answer: "राजेंद्र विश्वनाथ आर्लेकर"},
-  {q: "कौन सा रक्त समूह 'सर्वदाता' (Universal Donor) कहलाता है?", options: ["A+", "B+", "AB+", "O-"], answer: "O-"},
-  {q: "2025 का 'नोबेल शांति पुरस्कार' किसे प्रदान किया गया?", options: ["निहोन हिडांक्यो (Nihon Hidankyo)", "वर्ल्ड फ़ूड प्रोग्राम", "नरगिस मोहम्मदी", "यूक्रेन रिलीफ"], answer: "निहोन हिडांक्यो (Nihon Hidankyo)"},
-  {q: "एलपीजी (LPG) गैस में मुख्य रूप से कौन सी गैसें होती हैं?", options: ["मीथेन और ईथेन", "प्रोपेन और ब्यूटेन", "हाइड्रोजन और हीलियम", "ईथेन और प्रोपेन"], answer: "प्रोपेन और ब्यूटेन"},
-  {q: "भारत के वर्तमान मुख्य चुनाव आयुक्त (CEC) कौन हैं?", options: ["राजीव कुमार", "सुशील चंद्रा", "सुनील अरोड़ा", "ओम प्रकाश रावत"], answer: "राजीव कुमार"},
-  {q: "मधुमेह (Diabetes) रोग किसकी कमी से होता है?", options: ["विटामिन", "इंसुलिन", "कैल्शियम", "लोहा"], answer: "इंसulin"},
-  {q: "हाल ही में शुरू की गई 'पीएम श्री' (PM SHRI) योजना का संबंध किससे है?", options: ["स्वास्थ्य", "खेती", "स्कूल/शिक्षा", "सड़क निर्माण"], answer: "स्कूल/शिक्षा"},
-  {q: "विद्युत धारा (Electric Current) को मापने के लिए किस यंत्र का प्रयोग होता है?", options: ["वोल्टमीटर", "एमीटर", "गैल्वेनोमीटर", "लैक्टोमीटर"], answer: "एमीटर"},
-  {q: "G20 शिखर सम्मेलन 2025 की मेजबानी किस देश ने की?", options: ["भारत", "ब्राजील", "दक्षिण अफ्रीका", "अमेरिका"], answer: "दक्षिण अफ्रीका"},
-  {q: "रेफ्रिजरेटर में कौन सी गैस शीतलन (Cooling) के लिए उपयोग की जाती है?", options: ["अमोनिया/फ्रीन", "ऑक्सीजन", "नाइट्रोजन", "क्लोरीन"], answer: "अमोनिया/फ्रीन"},
-  {q: "वर्ष 2025 का दादा साहब फाल्के पुरस्कार किसे दिया गया?", options: ["मिथुन चक्रवर्ती", "शाहरुख खान", "अमिताभ बच्चन", "रेखा"], answer: "मिथुन चक्रवर्ती"},
-  {q: "लोहे पर जंग लगना (Rusting) किस प्रकार की अभिक्रिया है?", options: ["भौतिक", "रासायनिक", "जैविक", "कोई नहीं"], answer: "रासायनिक"},
-  {q: "बिहार के किस उत्पाद को हाल ही में GI टैग मिला है?", options: ["मर्चा धान", "मिथिला मखाना", "शाही लीची", "उपर्युक्त सभी"], answer: "उपर्युक्त सभी"},
-  {q: "कोशिका की 'आत्मघाती थैली' (Suicide Bag) किसे कहा जाता है?", options: ["माइटोकॉन्ड्रिया", "लाइसोसोम", "राइबोसोम", "केंद्रक"], answer: "लाइसोसोम"},
-  {q: "भारत की पहली 'एआई सिटी' (AI City) कहाँ बनाई जा रही है?", options: ["बेंगलुरु", "हैदराबाद", "लखनऊ", "पुणे"], answer: "लखनऊ"},
-  {q: "दूध का खट्टा होना किसके कारण होता है?", options: ["विषाणु", "जीवाणु (Bacteria)", "कवक", "प्रोटोजोआ"], answer: "जीवाणु (Bacteria)"},
-  {q: "भारत ने 2025 में अपना कौन सा गणतंत्र दिवस (Republic Day) मनाया?", options: ["75वाँ", "76वाँ", "77वाँ", "74वाँ"], answer: "76वाँ"},
-  {q: "लुप्त संख्या ज्ञात करें:<br>7 | 14 | 4<br>4 | 12 | 9<br>6 | 24 | ?", options: ["14", "16", "21", "22"], answer: "16"},
-  {q: "Series: 0.5, 1.5, 4.5, 13.5, ?", options: ["40.5", "30.5", "39.5", "42.5"], answer: "40.5"},
-  {q: "यदि 'LEMON' को 'ELMNO' (Alphabetical order) लिखा जाता है, तो 'CLUSTER' को क्या लिखेंगे?", options: ["CELRSTU", "CCELRSTU", "CELURST", "CELRSUT"], answer: "CELRSTU"},
-  {q: "कथन: 'धूम्रपान स्वास्थ्य के लिए हानिकारक है' - सिगरेट के पैकेट पर एक चेतावनी।<br>पूर्वधारणा: I. लोग चेतावनी पढ़ते हैं। II. लोग इसे गंभीरता से लेते हैं।", options: ["केवल I सही", "केवल II सही", "I और II दोनों", "कोई नहीं"], answer: "I और II दोनों"},
-  {q: "विषम का चयन करें (Based on Prime Numbers):", options: ["131", "151", "161", "181"], answer: "161"},
-  {q: "यदि 'GO' = 32, 'SHE' = 49, तो 'SOME' = ?", options: ["56", "58", "62", "64"], answer: "56"},
-  {q: "एक कूट भाषा में 'Green means Pink', 'Pink means Blue', 'Blue means White'. आसमान का रंग क्या होगा?", options: ["Blue", "Pink", "White", "Green"], answer: "White"},
-  {q: "A+B का अर्थ है A, B का भाई है। A-B का अर्थ है A, B की बहन है। P+Q-R में P का R से क्या सम्बंध है?", options: ["भाई", "बहन", "पिता", "चाचा"], answer: "भाई"},
-  {q: "यदि 12 @ 4 = 3, 15 @ 3 = 5, तो 60 @ 5 = ?", options: ["10", "12", "15", "20"], answer: "12"},
-  {q: "6 लोग A, B, C, D, E, F उत्तर की ओर मुख करके बैठे हैं। B, F और D के बीच है। E, A और C के बीच है। A और F सिरों पर हैं। C के ठीक बगल में कौन है?", options: ["A", "B", "D", "E"], answer: "E"},
-  {q: "एक कतार में 25 बच्चे हैं। राहुल दाएं से 14वां है। बाएं से उसका स्थान क्या होगा?", options: ["11", "12", "10", "13"], answer: "12"},
-  {q: "यदि 2024 एक लीप वर्ष है, तो 2024 के कैलेंडर जैसा दोबारा किस वर्ष होगा?", options: ["2048", "2052", "2032", "2028"], answer: "2028"},
-  {q: "दर्पण में देखने पर एक घड़ी 8:20 समय दिखाती है। वास्तविक समय क्या है?", options: ["4:40", "3:40", "4:20", "3:20"], answer: "3:40"},
-  {q: "9 : 80 :: 100 : ?", options: ["999", "10001", "9999", "1001"], answer: "9999"},
-  {q: "Series: A, C, F, J, O, ?", options: ["T", "U", "V", "W"], answer: "U"},
-  {q: "विषम चुनें (Based on Cubes):", options: ["125", "216", "343", "511"], answer: "511"},
-  {q: "यदि 'BUN' को '212114' लिखा जाता है, तो 'TOP' को क्या लिखेंगे?", options: ["201516", "201515", "191415", "201617"], answer: "201516"},
-  {q: "यदि 'कल' से दो दिन पहले 'मंगलवार' था, तो 'कल' के दो दिन बाद क्या होगा?", options: ["शनिवार", "रविवार", "सोमवार", "मंगलवार"], answer: "शनिवार"},
-  {q: "एक सुबह, अमित अपनी छाया की ओर पीठ करके खड़ा था। उसका मुख किस दिशा में था?", options: ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], answer: "पूर्व"},
-  {q: "Venn Diagram: 'शिक्षक, लेखक, दार्शनिक' का सही चित्र क्या होगा?", options: ["तीनों अलग", "तीनों एक दूसरे को काटते हुए", "दो अंदर एक बाहर", "एक के अंदर दो"], answer: "तीनों एक दूसरे को काटते हुए"},
-  {q: "एक चरवाहे के पास 17 भेड़ें थीं। 9 को छोड़कर सभी मर गईं। अब उसके पास कितनी भेड़ें बची हैं?", options: ["8", "9", "17", "0"], answer: "9"},
-  {q: "एक बंदर 30 फिट ऊंचे खंभे पर चढ़ता है। वह एक मिनट में 3 फिट चढ़ता है और 2 फिट फिसल जाता है। वह शिखर पर कितने मिनट में पहुँचेगा?", options: ["28", "29", "30", "27"], answer: "28"},
-  {q: "यदि 5*3 = 16, 10*4 = 60, तो 6*2 = ?", options: ["32", "12", "8", "24"], answer: "32"},
-  {q: "कौन सा शब्द 'INDEPENDENT' के अक्षरों से नहीं बनाया जा सकता?", options: ["DEEP", "PENT", "DENT", "INDEED"], answer: "INDEED"},
-  {q: "लुप्त पद: D-4, F-6, H-8, J-10, ?", options: ["K-11", "L-12", "M-13", "N-14"], answer: "L-12"},
-  {q: "8 : 28 :: 27 : ?", options: ["65", "64", "63", "81"], answer: "65"},
-  {q: "किसी कूट में '123' का अर्थ 'Hot Filtered Coffee', '356' का अर्थ 'Very Hot Day'. 'Hot' का कोड क्या है?", options: ["1", "2", "3", "5"], answer: "3"},
-  {q: "विषम चुनें:", options: ["बकरी", "पिल्ला", "गाय", "भैंस"], answer: "पिल्ला"},
-  {q: "Series: 1, 1, 2, 6, 24, 120, ?", options: ["240", "600", "720", "840"], answer: "720"},
-  {q: "यदि '+' का अर्थ 'बेटा', '-' का अर्थ 'पत्नी', 'x' का अर्थ 'भाई' है। P x R + Q का अर्थ क्या है?", options: ["P, Q का भाई है", "P, Q का बेटा है", "P, Q का पोता है", "P, Q का पिता है"], answer: "P, Q का बेटा है"},
-  {q: "एक घड़ी में 4:30 बज रहे हैं। यदि मिनट की सुई पूर्व की ओर है, तो घंटे की सुई किस दिशा में होगी?", options: ["उत्तर-पूर्व", "दक्षिण-पूर्व", "उत्तर-पश्चिम", "दक्षिण-पश्चिम"], answer: "उत्तर-पूर्व"},
-  {q: "Missing Number: 1, 8, 27, ?, 125", options: ["36", "49", "64", "81"], answer: "64"},
-  {q: "यदि 'A' 26 है और 'SUN' 27 है, तो 'CAT' का मान क्या होगा?", options: ["24", "27", "57", "58"], answer: "57"},
-  {q: "पासे में 4 के सामने क्या होगा?", options: ["2", "3", "5", "6"], answer: "2"},
-  {q: "निष्कर्ष: 'सभी आम मीठे हैं'। 'राम आम खा रहा है'। क्या राम मीठा फल खा रहा है?", options: ["हाँ", "नहीं", "कहा नहीं जा सकता", "केवल आम मीठा है"], answer: "हाँ"},
-  {q: "‘करके सीखना’ (Learning by Doing) का सिद्धांत किसने दिया था?", options: ["रूसो", "जॉन डीवी (John Dewey)", "स्किनर", "अरस्तू"], answer: "जॉन डीवी (John Dewey)"},
-  {q: "सूक्ष्म शिक्षण (Micro-Teaching) के भारतीय मॉडल में कुल कितना समय लगता है?", options: ["30 मिनट", "36 मिनट", "40 मिनट", "45 मिनट"], answer: "36 मिनट"},
-  {q: "एक बच्चा अपनी मातृभाषा सीख रहा है और दूसरा वही भाषा द्वितीय भाषा के रूप में सीख रहा है। दोनों किस प्रकार की गलती समान रूप से कर सकते हैं?", options: ["अति-सामान्यीकरण", "सरलीकरण", "विकासात्मक", "उपर्युक्त सभी"], answer: "विकासात्मक"},
-  {q: "प्रगतिशील शिक्षा (Progressive Education) के संदर्भ में 'समान शैक्षिक अवसर' का अर्थ है कि सभी छात्रों को:", options: ["बिना किसी भेदभाव के समान शिक्षा मिले", "ऐसी शिक्षा मिले जो उनके भविष्य के लिए उपयुक्त हो", "परीक्षा पास करने की ट्रेनिंग मिले", "समान पाठ्यपुस्तकें मिले"], answer: "ऐसी शिक्षा मिले जो उनके भविष्य के लिए उपयुक्त हो"},
-  {q: "शिक्षण का 'लोकतांत्रिक' (Democratic) तरीका कौन सा है?", options: ["व्याख्यान विधि", "प्रोजेक्ट/चर्चा विधि", "तानाशाही विधि", "पाठ्यपुस्तक विधि"], answer: "प्रोजेक्ट/चर्चा विधि"},
-  {q: "मनोविज्ञान के अनुसार, शिक्षा का केंद्र (Center of Education) कौन है?", options: ["शिक्षक", "पाठ्यचर्या", "बालक", "विद्यालय"], answer: "बालक"},
-  {q: "यदि कोई छात्र कक्षा में पिछड़ रहा है, तो नैदानिक परीक्षण (Diagnostic Test) का उद्देश्य क्या होना चाहिए?", options: ["उसे सजा देना", "कमजोरी के कारणों का पता लगाना", "माता-पिता को शिकायत करना", "उसे फेल करना"], answer: "कमजोरी के कारणों का पता लगाना"},
-  {q: "समावेशी शिक्षा (Inclusive Education) मानती है कि हमें _______ को _______ के अनुरूप बदलना चाहिए।", options: ["बच्चे/व्यवस्था", "व्यवस्था/बच्चे", "परिवेश/परिवार", "बच्चे/पाठ्यपुस्तक"], answer: "व्यवस्था/बच्चे"},
-  {q: "ब्लूम के वर्गीकरण (Bloom’s Taxonomy) के अनुसार 'ज्ञान' के बाद कौन सा स्तर आता है?", options: ["विश्लेषण", "मूल्यांकन", "समझ/बोध (Understanding)", "अनुप्रयोग"], answer: "समझ/बोध (Understanding)"},
-  {q: "एक शिक्षक को छात्रों के बीच 'सहयोग' की भावना विकसित करने के लिए क्या करना चाहिए?", options: ["प्रतियोगिता कराना", "समूह कार्य (Group Work) देना", "पुरस्कार देना", "भाषण देना"], answer: "समूह कार्य (Group Work) देना"},
-  {q: "क्रियात्मक अनुसंधान (Action Research) का मुख्य उद्देश्य क्या है?", options: ["नया सिद्धांत बनाना", "कक्षा की समस्याओं का तत्काल समाधान", "पीएचडी करना", "सिर्फ डेटा इकट्ठा करना"], answer: "कक्षा की समस्याओं का तत्काल समाधान"},
-  {q: "शिक्षण की 'खेल विधि' (Play-way Method) का मुख्य लाभ क्या है?", options: ["शारीरिक विकास", "मनोवैज्ञानिक विकास", "समय की बचत", "शिक्षक का आराम"], answer: "मनोवैज्ञानिक विकास"},
-  {q: "दृश्य-श्रव्य सामग्री (Audio-Visual Aids) का उपयोग क्यों किया जाता है?", options: ["मनोरंजन के लिए", "शिक्षण को अधिक स्थायी और रोचक बनाने के लिए", "कक्षा में अनुशासन के लिए", "शिक्षक के काम को कम करने के लिए"], answer: "शिक्षण को अधिक स्थायी और रोचक बनाने के लिए"},
-  {q: "प्रभावी संप्रेषण (Effective Communication) के लिए क्या आवश्यक है?", options: ["कठिन शब्द", "स्पष्ट और सरल भाषा", "सिर्फ अंग्रेजी", "चुप रहना"], answer: "स्पष्ट और सरल भाषा"},
-  {q: "किशोरावस्था (Adolescence) को 'तनाव और तूफान की अवस्था' किसने कहा है?", options: ["जी. स्टेनली हॉल", "पियाजे", "कोहलबर्ग", "थार्नडाइक"], answer: "जी. स्टेनली हॉल"},
-  {q: "कक्षा में प्रश्न पूछने का मुख्य उद्देश्य क्या है?", options: ["छात्रों को चुप कराना", "पूर्व ज्ञान की जाँच करना और जिज्ञासा जगाना", "समय काटना", "परीक्षा लेना"], answer: "पूर्व ज्ञान की जाँच करना और जिज्ञासा जगाना"},
-  {q: "कोहलबर्ग के अनुसार 'नैतिक विकास' (Moral Development) के कितने स्तर हैं?", options: ["2", "3", "4", "5"], answer: "3"},
-  {q: "एनसीएफ (NCF) 2005 के अनुसार शिक्षक की भूमिका क्या है?", options: ["तानाशाह", "नेता", "सुविधादाता (Facilitator)", "स्वामी"], answer: "सुविधादाता (Facilitator)"},
-  {q: "बच्चों में 'सृजनात्मकता' (Creativity) को कैसे प्रोत्साहित किया जा सकता है?", options: ["नोट्स लिखवाकर", "रटने को कहकर", "अपसारी चिंतन (Divergent Thinking) के अवसर देकर", "चुप्पी साधकर"], answer: "अपसारी चिंतन (Divergent Thinking) के अवसर देकर"},
-  {q: "शिक्षण का सूत्र 'ज्ञात से अज्ञात की ओर' (Known to Unknown) का क्या अर्थ है?", options: ["पुराना ज्ञान भूलना", "नया ज्ञान सीधे पढ़ाना", "बच्चे के पहले के ज्ञान से जोड़कर नया पढ़ाना", "सिर्फ अज्ञात बातें बताना"], answer: "बच्चे के पहले के ज्ञान से जोड़कर नया पढ़ाना"}
+
+  {q: "Choose the correct Antonym of 'ENORMOUS':", options: ["Huge", "Tiny", "Grand", "Heavy"], answer: "Tiny", solution: "Logic: Enormous means very large, so its opposite is Tiny."},
+  {q: "Fill in the blank: 'He is ______ honest man.'", options: ["a", "an", "the", "no article"], answer: "an", solution: "Logic: 'Honest' starts with a vowel sound (O), so 'an' is used."},
+  {q: "One word substitution: 'A person who writes the life history of himself.'", options: ["Biography", "Autobiography", "History", "Novel"], answer: "Autobiography", solution: "Logic: Self-written life story is an autobiography."},
+  {q: "Correct spelling:", options: ["Committee", "Comittee", "Commitee", "Comite"], answer: "Committee", solution: "Logic: The correct spelling has double m, double t, and double e."},
+  {q: "Synonym of 'ABANDON':", options: ["Keep", "Leave", "Join", "Hold"], answer: "Leave", solution: "Logic: Abandon means to give up or leave something."},
+  {q: "Idiom 'Once in a blue moon' means:", options: ["Daily", "Very rarely", "At night", "Regularly"], answer: "Very rarely", solution: "Logic: This idiom is used for events that happen very seldom."},
+  {q: "Fill in: 'She has been studying _____ morning.'", options: ["for", "from", "since", "to"], answer: "since", solution: "Logic: 'Since' is used for a specific point in time (morning)."},
+  {q: "Change to Passive: 'He plays football.'", options: ["Football is played by him", "Football was played by him", "He is playing football", "Football played by him"], answer: "Football is played by him", solution: "Logic: Present simple changes to 'is + V3' in passive."},
+  {q: "Plural of 'Mouse':", options: ["Mouses", "Mice", "Mices", "Mouse"], answer: "Mice", solution: "Logic: Mice is the irregular plural form of mouse."},
+  {q: "Find the error: 'I / have / two brothers / and a sister.'", options: ["I", "have", "two brothers", "No error"], answer: "No error", solution: "Logic: The sentence is grammatically correct."},
+  {q: "Opposite of 'ANCIENT':", options: ["Old", "Modern", "History", "Past"], answer: "Modern", solution: "Logic: Ancient means very old, so its antonym is Modern."},
+  {q: "Which is a Noun?", options: ["Beautiful", "Run", "Happiness", "Slowly"], answer: "Happiness", solution: "Logic: Happiness is an abstract noun."},
+  {q: "Fill in: 'Divide these sweets ____ the two children.'", options: ["among", "between", "in", "into"], answer: "between", solution: "Logic: 'Between' is used for two people/things."},
+  {q: "Meaning of 'Vigilant':", options: ["Careless", "Watchful", "Sleepy", "Lazy"], answer: "Watchful", solution: "Logic: Vigilant means being very careful and alert."},
+  {q: "Past tense of 'Go':", options: ["Goes", "Gone", "Went", "Going"], answer: "Went", solution: "Logic: Went is the V2 (past) form of go."},
+  {q: "‘महोत्सव’ का संधि विच्छेद क्या है?", options: ["मह + उत्सव", "महा + उत्सव", "महो + उत्सव", "महे + उत्सव"], answer: "महा + उत्सव", solution: "Logic: अ + उ = ओ (गुण संधि)।"},
+  {q: "‘समास’ का शाब्दिक अर्थ क्या होता है?", options: ["विस्तार", "संक्षेप", "विग्रह", "व्याख्या"], answer: "संक्षेप", solution: "Logic: समास का अर्थ है शब्दों को छोटा करना।"},
+  {q: "‘कमल’ का पर्यायवाची कौन सा है?", options: ["भानु", "जलज", "जलद", "वारिद"], answer: "जलज", solution: "Logic: जल में जन्म लेने वाला अर्थात कमल।"},
+  {q: "शुद्ध वर्तनी चुनिए:", options: ["उज्वल", "उज्जवल", "उज्ज्वल", "उजवल"], answer: "उज्ज्वल", solution: "Logic: इसमें दोनों 'ज' आधे होते हैं।"},
+  {q: "‘हाथ मलना’ मुहावरे का अर्थ है:", options: ["पछताना", "हाथ साफ करना", "ठंड लगना", "लड़ाई करना"], answer: "पछताना", solution: "Logic: अवसर हाथ से निकल जाने पर होने वाला दुख।"},
+  {q: "‘आस्तिक’ का विलोम शब्द क्या है?", options: ["नास्तिक", "भक्त", "अधर्मी", "साधु"], answer: "नास्तिक", solution: "Logic: ईश्वर को न मानने वाला नास्तिक कहलाता है।"},
+  {q: "‘यथाशक्ति’ में कौन सा समास है?", options: ["तत्पुरुष", "द्विगु", "अव्ययीभाव", "बहुब्रीहि"], answer: "अव्ययीभाव", solution: "Logic: पहला पद 'यथा' अव्यय है।"},
+  {q: "जो सब कुछ जानता हो:", options: ["अल्पज्ञ", "सर्वज्ञ", "बहुज्ञ", "ज्ञानी"], answer: "सर्वज्ञ", solution: "Logic: सर्व (सब) + ज्ञ (जानने वाला)।"},
+  {q: "‘लड़का’ का भाववाचक संज्ञा क्या होगा?", options: ["लड़की", "लड़कपन", "लड़कापन", "बचपन"], answer: "लड़कपन", solution: "Logic: लड़का से बनी अवस्था का नाम लड़कपन है।"},
+  {q: "हिंदी वर्णमाला में स्वरों की संख्या कितनी है?", options: ["10", "11", "13", "15"], answer: "11", solution: "Logic: हिंदी में मुख्य रूप से 11 स्वर माने जाते हैं।"},
+  {q: "‘दशानन’ में कौन सा समास है?", options: ["द्विगु", "बहुब्रीहि", "कर्मधारय", "द्वंद्व"], answer: "बहुब्रीहि", solution: "Logic: दशानन का अर्थ रावण से है (तीसरा पद प्रधान)।"},
+  {q: "‘घी के दिए जलाना’ का अर्थ:", options: ["रोशनी करना", "खुशियां मनाना", "दिवाली मनाना", "पूजा करना"], answer: "खुशियां मनाना", solution: "Logic: बहुत अधिक प्रसन्नता प्रकट करना।"},
+  {q: "‘नदी’ का बहुवचन क्या होगा?", options: ["नदियाँ", "नदियां", "नदीयों", "नदियाँ"], answer: "नदियाँ", solution: "Logic: इकारान्त शब्दों के अंत में 'इयाँ' लगता है।"},
+  {q: "हिंदी किस लिपि में लिखी जाती है?", options: ["गुरुमुखी", "देवनागरी", "रोमन", "फारसी"], answer: "देवनागरी", solution: "Logic: भारतीय संविधान के अनुसार हिंदी की लिपि देवनागरी है।"},
+  {q: "‘पवन’ का संधि विच्छेद:", options: ["प + वन", "पौ + अन", "पो + अन", "पा + वन"], answer: "पो + अन", solution: "Logic: यह अयादि संधि का उदाहरण है।"},
+  {q: "Series: 2, 4, 8, 16, ?", options: ["20", "24", "32", "64"], answer: "32", solution: "Logic: Every number is multiplied by 2."},
+  {q: "Odd one out:", options: ["Apple", "Orange", "Potato", "Grape"], answer: "Potato", solution: "Logic: Potato is a vegetable, others are fruits."},
+  {q: "If CAT = 24, then DOG = ?", options: ["20", "26", "22", "30"], answer: "26", solution: "Logic: Sum of alphabet positions (D=4, O=15, G=7 = 26)."},
+  {q: "Pointing to a man, a woman said, 'He is the only son of my father.' Who is he?", options: ["Brother", "Uncle", "Son", "Father"], answer: "Brother", solution: "Logic: Father's only son is her brother."},
+  {q: "Book : Author :: Statue : ?", options: ["Painter", "Sculptor", "Musician", "Writer"], answer: "Sculptor", solution: "Logic: Author writes books, Sculptor makes statues."},
+  {q: "In a certain code 'RED' is 'DIR'. What is 'BLUE'?", options: ["EULB", "ELUB", "LEUB", "BULB"], answer: "EULB", solution: "Logic: The word is written in reverse order."},
+  {q: "What comes next: A, C, E, G, ?", options: ["H", "I", "J", "K"], answer: "I", solution: "Logic: Skip one letter (A..B..C..D..E..F..G..H..I)."},
+  {q: "Clock 3:00 is Right Angle. What is 6:00?", options: ["Acute", "Obtuse", "Straight", "Reflex"], answer: "Straight", solution: "Logic: At 6:00, hands are in a straight line (180°)."},
+  {q: "Day after tomorrow is Sunday. What was yesterday?", options: ["Thursday", "Friday", "Wednesday", "Saturday"], answer: "Thursday", solution: "Logic: If Day After Tomorrow = Sun, then Tomorrow = Sat, Today = Fri, Yesterday = Thu."},
+  {q: "Doctor : Hospital :: Teacher : ?", options: ["Office", "School", "Market", "Home"], answer: "School", solution: "Logic: Doctor works in hospital, Teacher works in school."},
+  {q: "Odd out: 11, 13, 15, 17", options: ["11", "13", "15", "17"], answer: "15", solution: "Logic: 15 is a composite number, others are prime."},
+  {q: "If '+' means 'x' and 'x' means '-', what is 5 + 4 x 10?", options: ["10", "20", "30", "40"], answer: "10", solution: "Logic: (5 x 4) - 10 = 20 - 10 = 10."},
+  {q: "Direction: A man walks North, then turns Right. Where is he facing?", options: ["North", "South", "East", "West"], answer: "East", solution: "Logic: Turning right from North leads to East."},
+  {q: "Series: Z, Y, X, W, ?", options: ["U", "V", "T", "S"], answer: "V", solution: "Logic: Reverse alphabetical order."},
+  {q: "Light : Sun :: Heat : ?", options: ["Ice", "Fire", "Moon", "Stars"], answer: "Fire", solution: "Logic: Sun gives light, Fire gives heat."},
+  {q: "If RAIN is 1234, NAIR is:", options: ["4231", "4123", "4321", "1234"], answer: "4123", solution: "Logic: R=1, A=2, I=3, N=4 mapping."},
+  {q: "A is taller than B, B is taller than C. Who is shortest?", options: ["A", "B", "C", "None"], answer: "C", solution: "Logic: A > B > C."},
+  {q: "Which can't be formed from 'TEACHER'?", options: ["REACH", "TEA", "CHAIR", "HER"], answer: "CHAIR", solution: "Logic: 'I' is not present in TEACHER."},
+  {q: "How many triangles in a square with two diagonals?", options: ["4", "6", "8", "10"], answer: "8", solution: "Logic: Basic geometry trick: 4 small + 4 large triangles."},
+  {q: "Find next: 1, 4, 9, 16, ?", options: ["20", "25", "30", "35"], answer: "25", solution: "Logic: Squares of 1, 2, 3, 4, 5."},
+  {q: "Sun : Star :: Moon : ?", options: ["Planet", "Satellite", "Comet", "Galaxy"], answer: "Satellite", solution: "Logic: Sun is a star, Moon is a satellite."},
+  {q: "Odd: 64, 81, 100, 125", options: ["64", "81", "100", "125"], answer: "125", solution: "Logic: Others are squares (8, 9, 10), 125 is a cube (5)."},
+  {q: "If water is called Blue, and Blue is called Sky, what do we drink?", options: ["Water", "Blue", "Sky", "Rain"], answer: "Blue", solution: "Logic: We drink water, and water is called Blue."},
+  {q: "Pen : Paper :: Chalk : ?", options: ["Blackboard", "Desk", "Bag", "Floor"], answer: "Blackboard", solution: "Logic: Pen is used on paper, chalk on blackboard."},
+  {q: "Complete: 10, 20, 40, 70, ?", options: ["100", "110", "120", "130"], answer: "110", solution: "Logic: Differences are +10, +20, +30, so next is +40 (70+40=110)."},
+  {q: "बिहार के वर्तमान मुख्यमंत्री कौन हैं?", options: ["तेजस्वी यादव", "नीतीश कुमार", "चिराग पासवान", "सम्राट चौधरी"], answer: "नीतीश कुमार", solution: "Logic: श्री नीतीश कुमार वर्तमान में बिहार के मुख्यमंत्री हैं।"},
+  {q: "भारत का राष्ट्रीय पुष्प क्या है?", options: ["गुलाब", "कमल", "सूरजमुखी", "गेंदा"], answer: "कमल", solution: "Logic: कमल भारत का राष्ट्रीय फूल है।"},
+  {q: "विटामिन C की कमी से कौन सा रोग होता है?", options: ["रतौंधी", "बेरी-बेरी", "स्कर्वी", "रिकेट्स"], answer: "स्कर्वी", solution: "Logic: विटामिन C (खट्टे फलों) की कमी से मसूड़ों की बीमारी 'स्कर्वी' होती है।"},
+  {q: "बिहार दिवस कब मनाया जाता है?", options: ["22 मार्च", "1 अप्रैल", "15 अगस्त", "26 जनवरी"], answer: "22 मार्च", solution: "Logic: 1912 में इसी दिन बिहार बंगाल से अलग हुआ था।"},
+  {q: "सौरमंडल का सबसे गर्म ग्रह कौन सा है?", options: ["बुध", "शुक्र", "मंगल", "बृहस्पति"], answer: "शुक्र", solution: "Logic: शुक्र (Venus) घने बादलों के कारण सबसे गर्म ग्रह है।"},
+  {q: "भारतीय संविधान का जनक किसे कहा जाता है?", options: ["महात्मा गांधी", "डॉ. बी.आर. अंबेडकर", "जवाहरलाल नेहरू", "सरदार पटेल"], answer: "डॉ. बी.आर. अंबेडकर", solution: "Logic: वह प्रारूप समिति के अध्यक्ष थे।"},
+  {q: "पटना का प्राचीन नाम क्या था?", options: ["वैशाली", "पाटलिपुत्र", "गया", "मुंगेर"], answer: "पाटलिपुत्र", solution: "Logic: मौर्य काल में इसे पाटलिपुत्र कहा जाता था।"},
+  {q: "विश्व का सबसे ऊँचा पर्वत कौन सा है?", options: ["K2", "कंचनजंगा", "माउंट एवरेस्ट", "अल्पास"], answer: "माउंट एवरेस्ट", solution: "Logic: नेपाल में स्थित, ऊँचाई 8848.86 मीटर।"},
+  {q: "स्वतंत्र भारत के प्रथम प्रधानमंत्री कौन थे?", options: ["राजेंद्र प्रसाद", "जवाहरलाल नेहरू", "लाल बहादुर शास्त्री", "इंदिरा गांधी"], answer: "जवाहरलाल नेहरू", solution: "Logic: 15 अगस्त 1947 को उन्होंने शपथ ली थी।"},
+  {q: "लोकसभा का कार्यकाल कितने वर्ष का होता है?", options: ["4 वर्ष", "5 वर्ष", "6 वर्ष", "अनिश्चित"], answer: "5 वर्ष", solution: "Logic: सामान्यतः लोकसभा 5 साल के लिए चुनी जाती है।"},
+  {q: "बिहार में कुल कितने जिले हैं?", options: ["35", "38", "40", "42"], answer: "38", solution: "Logic: वर्तमान में बिहार में 38 प्रशासनिक जिले हैं।"},
+  {q: "सूर्य से आने वाली पराबैंगनी किरणों से कौन बचाता है?", options: ["CO2", "ओजोन परत", "नाइट्रोजन", "ऑक्सीजन"], answer: "ओजोन परत", solution: "Logic: ओजोन लेयर (O3) UV किरणों को सोख लेती है।"},
+  {q: "भारत की प्रथम महिला राष्ट्रपति कौन थीं?", options: ["सरोजिनी नायडू", "प्रतिभा पाटिल", "इंदिरा गांधी", "द्रौपदी मुर्मू"], answer: "प्रतिभा पाटिल", solution: "Logic: श्रीमती प्रतिभा देवी सिंह पाटिल भारत की पहली महिला राष्ट्रपति बनीं।"},
+  {q: "सफेद क्रांति (White Revolution) किससे संबंधित है?", options: ["मछली", "दूध", "अंडा", "गेहूं"], answer: "दूध", solution: "Logic: वर्गीज कुरियन इसके जनक थे, दूध उत्पादन बढ़ाने के लिए।"},
+  {q: "कंप्यूटर का दिमाग किसे कहते हैं?", options: ["RAM", "CPU", "Hard Disk", "Monitor"], answer: "CPU", solution: "Logic: Central Processing Unit को कंप्यूटर का मस्तिष्क कहते हैं।"},
+  {q: "महात्मा बुद्ध को ज्ञान कहाँ प्राप्त हुआ था?", options: ["लुम्बिनी", "सारनाथ", "बोधगया", "कुशीनगर"], answer: "बोधगया", solution: "Logic: निरंजना नदी के तट पर पीपल वृक्ष के नीचे।"},
+  {q: "सार्क (SAARC) का मुख्यालय कहाँ है?", options: ["दिल्ली", "ढाका", "काठमांडू", "कोलंबो"], answer: "काठमांडू", solution: "Logic: नेपाल की राजधानी में इसका सचिवालय है।"},
+  {q: "क्षेत्रफल की दृष्टि से भारत का सबसे बड़ा राज्य कौन सा है?", options: ["उत्तर प्रदेश", "महाराष्ट्र", "राजस्थान", "मध्य प्रदेश"], answer: "राजस्थान", solution: "Logic: राजस्थान भारत का सबसे बड़ा राज्य (Area wise) है।"},
+  {q: "IPL 2025 का विजेता कौन सी टीम रही?", options: ["KKR", "CSK", "RCB", "MI"], answer: "KKR", solution: "Logic: Current Affairs (Updated)."},
+  {q: "बिहार के किस जिले में सर्वाधिक साक्षरता है?", options: ["पटना", "रोहतास", "पूर्णिया", "गया"], answer: "रोहतास", solution: "Logic: जनगणना 2011 के अनुसार रोहतास सबसे साक्षर जिला है।"},
+  {q: "वायुमंडल में सबसे अधिक गैस कौन सी है?", options: ["ऑक्सीजन", "नाइट्रोजन", "कार्बन डाइऑक्साइड", "हीलियम"], answer: "नाइट्रोजन", solution: "Logic: लगभग 78% भाग नाइट्रोजन है।"},
+  {q: "महात्मा गांधी का जन्म कब हुआ था?", options: ["2 Oct 1869", "2 Oct 1870", "15 Aug 1947", "26 Jan 1950"], answer: "2 Oct 1869", solution: "Logic: गुजरात के पोरबंदर में।"},
+  {q: "नीति आयोग का अध्यक्ष कौन होता है?", options: ["राष्ट्रपति", "प्रधानमंत्री", "वित्त मंत्री", "राज्यपाल"], answer: "प्रधानमंत्री", solution: "Logic: PM ही नीति आयोग के पदेन अध्यक्ष होते हैं।"},
+  {q: "किस नदी को 'बिहार का शोक' कहा जाता है?", options: ["गंगा", "सोन", "कोसी", "गंडक"], answer: "कोसी", solution: "Logic: अपना रास्ता बदलने और बाढ़ लाने के कारण।"},
+  {q: "मानव शरीर में कितनी हड्डियाँ होती हैं?", options: ["200", "206", "210", "300"], answer: "206", solution: "Logic: एक व्यस्क मनुष्य में 206 हड्डियाँ होती हैं।"},
+  {q: "संयुक्त राष्ट्र संघ (UNO) की स्थापना कब हुई?", options: ["1942", "1945", "1948", "1950"], answer: "1945", solution: "Logic: 24 अक्टूबर 1945 को।"},
+  {q: "पृथ्वी के सबसे नजदीक तारा कौन सा है?", options: ["ध्रुव तारा", "सूर्य", "प्रॉक्सिमा सेंचुरी", "सीरियस"], answer: "सूर्य", solution: "Logic: सूर्य स्वयं एक तारा है और पृथ्वी के सबसे पास है।"},
+  {q: "भारत का मैनचेस्टर किसे कहा जाता है?", options: ["मुंबई", "अहमदाबाद", "कानपुर", "सूरत"], answer: "अहमदाबाद", solution: "Logic: सूती वस्त्र उद्योग के कारण।"},
+  {q: "गौतम बुद्ध ने अपना प्रथम उपदेश कहाँ दिया था?", options: ["बोधगया", "सारनाथ", "वैशाली", "लुम्बिनी"], answer: "सारनाथ", solution: "Logic: इसे 'धर्मचक्र प्रवर्तन' कहा जाता है।"},
+  {q: "बिहार के प्रथम राज्यपाल कौन थे?", options: ["जयरामदास दौलतराम", "राजेंद्र प्रसाद", "नित्यानंद कानूनगो", "फागू चौहान"], answer: "जयरामदास दौलतराम", solution: "Logic: आजादी के बाद बिहार के पहले गवर्नर।"},
+  {q: "अनुच्छेद 370 का संबंध किससे था?", options: ["बिहार", "पंजाब", "जम्मू-कश्मीर", "असम"], answer: "जम्मू-कश्मीर", solution: "Logic: जिसे 2019 में हटा दिया गया।"},
+  {q: "ध्वनि की तीव्रता किसमें मापी जाती है?", options: ["मीटर", "डेसीबल", "किलोग्राम", "हर्ट्ज"], answer: "डेसीबल", solution: "Logic: Decibel (dB) ध्वनि मापने की इकाई है।"},
+  {q: "आर्य समाज के संस्थापक कौन थे?", options: ["राजा राममोहन राय", "स्वामी दयानंद सरस्वती", "स्वामी विवेकानंद", "एनी बेसेंट"], answer: "स्वामी दयानंद सरस्वती", solution: "Logic: 1875 में इन्होंने इसकी स्थापना की।"},
+  {q: "बिहार की राजकीय भाषा क्या है?", options: ["हिंदी", "भोजपुरी", "मैथिली", "मगही"], answer: "हिंदी", solution: "Logic: हिंदी पहली और उर्दू दूसरी राजकीय भाषा है।"},
+  {q: "विश्व स्वास्थ्य संगठन (WHO) का मुख्यालय कहाँ है?", options: ["पेरिस", "जिनेवा", "न्यूयॉर्क", "लंदन"], answer: "जिनेवा", solution: "Logic: स्विट्जरलैंड के जिनेवा में।"},
+  {q: "भारत का राष्ट्रीय जलीय जीव कौन सा है?", options: ["मगरमच्छ", "कछुआ", "गंगा डॉल्फिन", "शार्क"], answer: "गंगा डॉल्फिन", solution: "Logic: इसे राष्ट्रीय जलीय जीव घोषित किया गया है।"},
+  {q: "रेडियम की खोज किसने की थी?", options: ["न्यूटन", "आइंस्टीन", "मैडम क्यूरी", "एडिसन"], answer: "मैडम क्यूरी", solution: "Logic: मैडम क्यूरी और पियरे क्यूरी ने।"},
+  {q: "बिहार के किस स्थान पर विश्व शांति स्तूप स्थित है?", options: ["गया", "नालंदा", "राजगीर", "वैशाली"], answer: "राजगीर", solution: "Logic: राजगीर की पहाड़ियों पर यह स्थित है।"},
+  {q: "मौर्य वंश का संस्थापक कौन था?", options: ["बिंदुसार", "अशोक", "चंद्रगुप्त मौर्य", "धननंद"], answer: "चंद्रगुप्त मौर्य", solution: "Logic: चाणक्य की मदद से उन्होंने मगध पर अधिकार किया।"},
+  {q: "भारत का सबसे छोटा राज्य (क्षेत्रफल) कौन सा है?", options: ["सिक्किम", "गोवा", "त्रिपुरा", "मिजोरम"], answer: "गोवा", solution: "Logic: गोवा क्षेत्रफल में सबसे छोटा है।"},
+  {q: "शिक्षण का मुख्य उद्देश्य क्या है?", options: ["पाठ्यपुस्तक पढ़ाना", "बच्चे का सर्वांगीण विकास", "अनुशासन बनाए रखना", "परीक्षा पास कराना"], answer: "बच्चे का सर्वांगीण विकास", solution: "Logic: शिक्षा का लक्ष्य मानसिक, शारीरिक और नैतिक विकास है।"},
+  {q: "एक शिक्षक के रूप में आप कक्षा में कैसे प्रश्न पूछेंगे?", options: ["कठिन", "सरल और स्पष्ट", "बिना अर्थ के", "केवल किताब से"], answer: "सरल और स्पष्ट", solution: "Logic: प्रश्न ऐसे हों जो बच्चे समझ सकें।"},
+  {q: "किंडरगार्टन विधि के जनक कौन हैं?", options: ["रूसो", "फ्रॉबेल", "मोंटेसरी", "पेस्टालॉजी"], answer: "फ्रॉबेल", solution: "Logic: फ्रॉबेल ने छोटे बच्चों के लिए यह पद्धति दी थी।"},
+  {q: "शिक्षण-अधिगम सामग्री (TLM) का उपयोग क्यों होता है?", options: ["सजावट के लिए", "सीखने को रोचक बनाने के लिए", "समय बिताने के लिए", "शिक्षक का भार कम करने के लिए"], answer: "सीखने को रोचक बनाने के लिए", solution: "Logic: TLM से बच्चे जल्दी और बेहतर समझते हैं।"},
+  {q: "बच्चे का पहला स्कूल कौन सा होता है?", options: ["प्ले स्कूल", "प्राइमरी स्कूल", "परिवार", "समाज"], answer: "परिवार", solution: "Logic: बच्चा सबसे पहले घर और परिवार से सीखता है।"},
+  {q: "एक आदर्श शिक्षक का गुण क्या है?", options: ["विषय का ज्ञान", "धैर्य", "छात्रों के प्रति सहानुभूति", "उपरोक्त सभी"], answer: "उपरोक्त सभी", solution: "Logic: ये तीनों गुण एक अच्छे शिक्षक के लिए जरूरी हैं।"},
+  {q: "यदि कोई छात्र कक्षा में देरी से आता है, तो आप क्या करेंगे?", options: ["दंड देंगे", "कारण जानने की कोशिश करेंगे", "बाहर निकाल देंगे", "माता-पिता को बुलाएंगे"], answer: "कारण जानने की कोशिश करेंगे", solution: "Logic: समस्या जानकर ही समाधान संभव है।"},
+  {q: "ब्लैकबोर्ड पर लिखते समय क्या जरूरी है?", options: ["तेज लिखना", "स्पष्ट और सुंदर लेख", "छोटे अक्षर", "ज्यादा चित्र बनाना"], answer: "स्पष्ट और सुंदर लेख", solution: "Logic: ताकि अंतिम पंक्ति वाला बच्चा भी पढ़ सके।"},
+  {q: "NCF 2005 के अनुसार शिक्षक क्या है?", options: ["नेता", "तानाशाह", "सुविधादाता (Facilitator)", "ज्ञान का भंडार"], answer: "सुविधादाता (Facilitator)", solution: "Logic: शिक्षक बच्चों को सीखने में मदद करता है।"},
+  {q: "समावेशी शिक्षा का अर्थ क्या है?", options: ["सिर्फ मेधावी बच्चों को पढ़ाना", "बिना भेदभाव सभी को साथ पढ़ाना", "विशेष स्कूलों में शिक्षा", "अमीरों को पढ़ाना"], answer: "बिना भेदभाव सभी को साथ पढ़ाना", solution: "Logic: सामान्य और दिव्यांग बच्चों को एक साथ शिक्षा।"},
+  {q: "शिक्षा का अधिकार (RTE) अधिनियम कब लागू हुआ?", options: ["2005", "2009", "2010", "2012"], answer: "2010", solution: "Logic: 1 अप्रैल 2010 को लागू हुआ था।"},
+  {q: "सीखने (Learning) की प्रक्रिया कैसी है?", options: ["जीवन भर चलने वाली", "सिर्फ स्कूल तक", "सिर्फ 20 वर्ष तक", "रुकावट वाली"], answer: "जीवन भर चलने वाली", solution: "Logic: मनुष्य जन्म से मृत्यु तक सीखता रहता है।"},
+  {q: "मनोविज्ञान (Psychology) किसका विज्ञान है?", options: ["आत्मा का", "शरीर का", "व्यवहार का", "समाज का"], answer: "व्यवहार का", solution: "Logic: आधुनिक मनोविज्ञान मानव व्यवहार का अध्ययन है।"},
+  {q: "कक्षा में शोर होने पर आप क्या करेंगे?", options: ["चिल्लाएंगे", "शांत खड़े रहेंगे", "पढ़ाना छोड़ देंगे", "प्रिंसिपल को बुलाएंगे"], answer: "शांत खड़े रहेंगे", solution: "Logic: शिक्षक की चुप्पी छात्रों को शांत होने का संकेत देती है।"},
+  {q: "मिड-डे मील का उद्देश्य क्या है?", options: ["बच्चों को खाना देना", "उपस्थिति बढ़ाना और पोषण", "पैसे बचाना", "छुट्टी जल्दी करना"], answer: "उपस्थिति बढ़ाना और पोषण", solution: "Logic: पोषण के साथ नामांकन दर बढ़ाना।"},
+  {q: "गृहकार्य (Homework) क्यों देना चाहिए?", options: ["बच्चे व्यस्त रहें", "अभिभावक खुश हों", "स्वाध्याय की आदत पड़े", "शिक्षक को काम न करना पड़े"], answer: "स्वाध्याय की आदत पड़े", solution: "Logic: सेल्फ स्टडी की आदत के लिए।"},
+  {q: "ऑपरेशन ब्लैकबोर्ड किससे संबंधित है?", options: ["उच्च शिक्षा", "प्राथमिक शिक्षा", "तकनीकी शिक्षा", "खेलकूद"], answer: "प्राथमिक शिक्षा", solution: "Logic: प्राथमिक स्कूलों में न्यूनतम सुविधाएं उपलब्ध कराना।"},
+  {q: "माइक्रो टीचिंग (Micro Teaching) का उद्देश्य क्या है?", options: ["कौशल विकास", "छोटे बच्चों को पढ़ाना", "बड़े बच्चों को पढ़ाना", "परीक्षा लेना"], answer: "कौशल विकास", solution: "Logic: शिक्षकों के पढ़ाने के कौशल (Skills) को सुधारना।"},
+  {q: "पाठ्यक्रम (Curriculum) कैसा होना चाहिए?", options: ["कठोर", "लचीला और छात्र-केंद्रित", "सिर्फ किताबों वाला", "शिक्षक-केंद्रित"], answer: "लचीला और छात्र-केंद्रित", solution: "Logic: जो छात्रों की जरूरतों के हिसाब से बदल सके।"},
+  {q: "कक्षा में अनुशासन का अर्थ क्या है?", options: ["चुपचाप बैठना", "डरा कर रखना", "नियमों का पालन और सक्रियता", "बाहर न जाना"], answer: "नियमों का पालन और सक्रियता", solution: "Logic: स्वस्थ अनुशासन पढ़ाई में मदद करता है।"},
+  {q: "नई शिक्षा नीति (NEP 2020) का ढांचा क्या है?", options: ["10+2", "5+3+3+4", "5+2+3+2", "8+4"], answer: "5+3+3+4", solution: "Logic: स्कूली शिक्षा का नया स्ट्रक्चर।"},
+  {q: "बुद्धि लब्धि (IQ) का सूत्र क्या है?", options: ["MA/CA x 100", "CA/MA x 100", "MA+CA", "MA-CA"], answer: "MA/CA x 100", solution: "Logic: Mental Age divided by Chronological Age times 100."},
+  {q: "डिस्लेक्सिया (Dyslexia) किससे संबंधित है?", options: ["पढ़ने में कठिनाई", "लिखने में कठिनाई", "गणित में कठिनाई", "चलने में कठिनाई"], answer: "पढ़ने में कठिनाई", solution: "Logic: Reading disability is Dyslexia."},
+  {q: "एक शिक्षक को अपने छात्रों के साथ कैसा व्यवहार करना चाहिए?", options: ["तानाशाह जैसा", "मित्र और मार्गदर्शक जैसा", "अजनबी जैसा", "बहुत कठोर"], answer: "मित्र और मार्गदर्शक जैसा", solution: "Logic: ताकि छात्र अपनी समस्याएं साझा कर सकें।"},
+  {q: "प्रेरणा (Motivation) शिक्षण में क्या कार्य करती है?", options: ["सीखने की इच्छा जगाती है", "समय बर्बाद करती है", "अनुशासन तोड़ती है", "थकान पैदा करती है"], answer: "सीखने की इच्छा जगाती है", solution: "Logic: बिना मोटिवेशन के सीखना असंभव है।"},
+];
+
 ];
 
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
-  if(localStorage.getItem("finalResult")){ return; }
-  if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
-  
+  if(localStorage.getItem("finalResult")){
+    alert("Test already submitted"); return;
+  }
+  if(!candidateName.value || !testTime.value) {
+    alert("Please enter Name and Time"); return;
+  }
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
@@ -347,7 +375,9 @@ function renderQuestion(){
       <div class="options">
         ${q.options.map(o=>`
           <label>
-            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')">
+            <input type="radio" name="opt"
+              ${answers[currentIndex]==o?'checked':''}
+              onchange="selectAnswer('${o}')">
             ${o}
           </label>
         `).join("")}
@@ -357,7 +387,11 @@ function renderQuestion(){
   saveProgress();
 }
 
-function selectAnswer(val){ answers[currentIndex]=val; saveProgress(); renderPalette(); }
+function selectAnswer(val){
+  answers[currentIndex]=val;
+  saveProgress();
+  renderPalette();
+}
 
 function renderPalette(){
   palette.innerHTML="";
@@ -376,12 +410,13 @@ function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
 function saveProgress(){
   localStorage.setItem("inProgress",JSON.stringify({
-    name:displayName.textContent, answers,visited,currentIndex,totalSeconds,startTime
+    name:displayName.textContent,
+    answers,visited,currentIndex,totalSeconds,startTime
   }));
 }
 
 function submitQuiz(){
-  if(!confirm("Are you sure you want to submit?")) return;
+  if(!confirm("Are you sure you want to submit the All-in-one test?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
   let correct=0, attempted=0;
@@ -390,10 +425,14 @@ function submitQuiz(){
   questions.forEach((q,i)=>{
     if(answers[i]) attempted++;
     if(answers[i] == q.answer) correct++;
+    
     detailHtml+=`
-      <div style="margin:10px 0; padding:12px; background:rgba(255,255,255,0.05); border-radius:12px; border-left:4px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
+      <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
         <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b>${q.answer}</b></p>
+        <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+        <div class="sol-box">
+          <b>Logic:</b> ${q.solution || "Solution not available for this question."}
+        </div>
       </div>`;
   });
 
@@ -402,44 +441,65 @@ function submitQuiz(){
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">All-in-one Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="color:#4ade80;">${accuracy}%</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
+        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
       </div>
-    </div>`;
+    </div>
+  `;
 
   const finalHtml = summaryBox + detailHtml;
   localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
   
-  quizArea.innerHTML=""; palette.style.display="none"; 
-  navBtns.style.display="none"; submitBtn.style.display="none";
-  result.style.display="block"; result.innerHTML=finalHtml;
-  clearBtn.style.display="block"; window.scrollTo(0,0);
+  quizArea.innerHTML="";
+  palette.style.display="none"; 
+  navBtns.style.display="none";
+  submitBtn.style.display="none";
+  result.style.display="block";
+  result.innerHTML=finalHtml;
+  clearBtn.style.display="block";
+  window.scrollTo(0,0);
 }
 
 window.onload=function(){
+  document.getElementById("totalQDisplay").textContent = questions.length;
+  document.getElementById("testTime").value = questions.length;
+
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
+  
   if(final){
     const d=JSON.parse(final);
-    startScreen.style.display="none"; topBar.style.display="flex";
-    displayName.textContent=d.name; result.style.display="block";
-    result.innerHTML=d.html; clearBtn.style.display="block";
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    displayName.textContent=d.name;
+    result.style.display="block";
+    result.innerHTML=d.html;
+    clearBtn.style.display="block";
   } else if(progress){
     const p=JSON.parse(progress);
-    displayName.textContent=p.name; answers=p.answers||{};
-    visited=p.visited||{}; currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
-    startScreen.style.display="none"; topBar.style.display="flex";
-    palette.style.display="flex"; navBtns.style.display="flex";
-    submitBtn.style.display="block"; startTimer(); renderQuestion();
+    displayName.textContent=p.name;
+    answers=p.answers||{};
+    visited=p.visited||{};
+    currentIndex=p.currentIndex||0;
+    totalSeconds=p.totalSeconds||0;
+    startTime=p.startTime||Date.now();
+    startScreen.style.display="none";
+    topBar.style.display="flex";
+    palette.style.display="flex";
+    navBtns.style.display="flex";
+    submitBtn.style.display="block";
+    startTimer();
+    renderQuestion();
   }
 };
 
-function clearResult(){ if(confirm("Start new test?")){ localStorage.clear(); location.reload(); } }
+function clearResult(){
+  if(confirm("Start new test? All previous results will be cleared.")){ localStorage.clear(); location.reload(); }
+}
 </script>
 
 </body>
