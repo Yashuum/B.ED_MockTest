@@ -66,14 +66,12 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
   color: #ffffff !important;
   font-size: 16px;
   outline: none;
-  transition: all 0.3s ease;
 }
 
 .start-screen input::placeholder {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* Question Count Sticker */
 .q-count-sticker {
   margin: 5px auto 15px;
   width: fit-content;
@@ -90,7 +88,7 @@ h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 
 .pulse-dot {
   width: 8px;
   height: 8px;
-  background: #4facfe; 
+  background: #4facfe;
   border-radius: 50%;
   animation: pulse 1.5s infinite;
 }
@@ -107,7 +105,6 @@ button{
 }
 button:hover{ transform: scale(1.05); }
 
-/* TOP BAR */
 .top-bar{
   display:none; justify-content:space-between; align-items:center;
   padding:15px 25px; background: var(--glass);
@@ -117,7 +114,6 @@ button:hover{ transform: scale(1.05); }
 }
 .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
 
-/* PALETTE */
 #palette{ 
   display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
   justify-content: center; padding: 10px;
@@ -130,7 +126,6 @@ button:hover{ transform: scale(1.05); }
 .palette .visited{ background: var(--color-secondary); }
 .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
 
-/* QUIZ CARD */
 .quiz-card{
   background: var(--glass); border:1px solid var(--glass-border);
   backdrop-filter: blur(20px); border-radius:25px; padding:30px;
@@ -145,7 +140,11 @@ button:hover{ transform: scale(1.05); }
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
 
-/* SOLUTION BOX STYLE */
+.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+.correct{ color: #4ade80; font-weight:bold; }
+.wrong{ color: #f87171; font-weight:bold; }
+
+/* Solution Box Styling */
 .sol-box {
   margin-top:12px; 
   padding:12px; 
@@ -155,10 +154,6 @@ button:hover{ transform: scale(1.05); }
   color:#ffcc80;
   border: 1px dashed var(--color-accent);
 }
-
-.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
-.correct{ color: #4ade80; font-weight:bold; }
-.wrong{ color: #f87171; font-weight:bold; }
 </style>
 </head>
 
@@ -167,7 +162,7 @@ button:hover{ transform: scale(1.05); }
 <div class="container">
 
 <h1>Target Test- English 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 07 Jan, 2026 - 14:33</p>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 07 Jan, 2026 - 21:12</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
@@ -205,10 +200,10 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
-// Placeholder for Questions with Solution field
-const questions = [
 
-  {q: "Choose the correct preposition: He is junior ______ me in service.", options: ["than", "to", "from", "with"], answer: "to", solution: "Logic: Words like 'junior', 'senior', 'superior', 'inferior' take 'to' instead of 'than'."},
+const questions = [
+	
+    {q: "Choose the correct preposition: He is junior ______ me in service.", options: ["than", "to", "from", "with"], answer: "to", solution: "Logic: Words like 'junior', 'senior', 'superior', 'inferior' take 'to' instead of 'than'."},
   {q: "One word substitution: A person who can use both hands with equal ease.", options: ["Ambidextrous", "Ambivalent", "Ambiguous", "Amphibian"], answer: "Ambidextrous", solution: "Logic: 'Ambi' means both, 'dextrous' means skillful. So, one who uses both hands equally."},
   {q: "Find the Synonym of 'ABANDON':", options: ["Keep", "Leave", "Support", "Hold"], answer: "Leave", solution: "Logic: Abandon means to give up or leave completely."},
   {q: "Fill in the blank: The Jury ______ divided in their opinion.", options: ["was", "were", "has", "is"], answer: "were", solution: "Logic: When a collective noun (Jury) is divided in opinion, we use a plural verb ('were')."},
@@ -412,9 +407,9 @@ function submitQuiz(){
     detailHtml+=`
       <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
         <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+        <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
         <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Solution will be updated soon."}
+          <b>Logic:</b> ${q.solution || "Solution not available for this question."}
         </div>
       </div>`;
   });
@@ -487,4 +482,3 @@ function clearResult(){
 
 </body>
 </html>
-
