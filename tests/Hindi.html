@@ -23,7 +23,7 @@ body{
   min-height:100vh;
   background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
   background-size: 300% 300%;
-  animation: dynamicFlow 18s ease-in-out infinite;
+  animation: dynamicFlow 25s ease-in-out infinite; /* Slightly slower for better focus */
   color: #fff;
   padding: 20px 10px;
 }
@@ -130,12 +130,35 @@ button:hover{ transform: scale(1.05); }
   background: var(--glass); border:1px solid var(--glass-border);
   backdrop-filter: blur(20px); border-radius:25px; padding:30px;
 }
+
+/* --- UPDATED OPTIONS STYLING FOR VISIBILITY --- */
 .options label{
-  display:flex; align-items: center; gap:12px; padding:14px; 
-  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
-  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
+  display:flex; align-items: center; gap:12px; padding:16px; 
+  background: rgba(0, 0, 0, 0.25); /* Darker base for contrast */
+  border: 1px solid var(--glass-border);
+  border-radius: 15px; margin:12px 0; cursor:pointer; transition: all 0.2s ease;
+  color: #fff;
+  font-weight: 500;
 }
+
 .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
+
+/* Highlight when radio is selected */
+.options input[type="radio"]:checked + span, 
+.options label:has(input:checked) {
+  background: #ffffff !important; 
+  color: #1a2a6c !important; 
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.options input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-accent);
+}
+
+/* --- END UPDATED STYLING --- */
 
 .nav{ display:flex; justify-content:space-between; margin-top:20px; }
 .btn-secondary { background: rgba(255,255,255,0.15); }
@@ -144,7 +167,6 @@ button:hover{ transform: scale(1.05); }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
 
-/* Solution Box Styling */
 .sol-box {
   margin-top:12px; 
   padding:12px; 
@@ -162,8 +184,6 @@ button:hover{ transform: scale(1.05); }
     emailjs.init("L8kGW-X7JOiYaycH5");
   })();
 </script>
-
-  
 </head>
 
 <body>
@@ -209,9 +229,7 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
-
 const questions = [
-
 {q: "‘यथासमय’ में कौन-सा समास है?", options: ["अव्ययीभाव", "कर्मधारय", "बहुब्रीहि", "द्वंद्व"], answer: "अव्ययीभाव", solution: "पहला पद 'यथा' अव्यय है।"},
 {q: "‘दशानन’ में कौन-सा समास है?", options: ["बहुब्रीहि", "तत्पुरुष", "द्विगु", "द्वंद्व"], answer: "बहुब्रीहि", solution: "दस हैं आनन (मुख) जिसके अर्थात् रावण।"},
 {q: "‘भाई-बहन’ में कौन-सा समास है?", options: ["द्वंद्व", "द्विगु", "अव्ययीभाव", "तत्पुरुष"], answer: "द्वंद्व", solution: "दोनों पद प्रधान हैं और योजक चिह्न लगा है।"},
@@ -230,18 +248,17 @@ const questions = [
 {q: "निम्न में से कौन-सा शब्द शुद्ध है?", options: ["असीर्वाद", "आशीर्वाद", "आशिर्वाद", "आसीरवाद"], answer: "आशीर्वाद", solution: "व के ऊपर 'र' की मात्रा आती है।"},
 {q: "सही वर्तनी वाला शब्द चुनें:", options: ["कवयित्री", "कवियत्री", "कवयत्री", "कवियित्री"], answer: "कवयित्री", solution: "स्त्रीलिंग रूप में 'कवयित्री' सही है।"},
 {q: "शुद्ध शब्द कौन-सा है?", options: ["सत्यार्थी", "सत्यार्थि", "सत्यारथी", "सतयार्थी"], answer: "सत्यार्थी", solution: "सत्य + अर्थी = सत्यार्थी।"},
-{q: "शुद्ध वर्तनी चुनें:", options: ["परीछा", "परिक्षा", "परीक्षा", "पारीक्षा"], answer: "परीक्षा", solution: "र में बड़ी 'ई' की मात्रा होती है।"},
-{q: "शुद्ध शब्द क्या है?", options: ["श्रीमति", "श्रीमती", "सरिमति", "स्रीमती"], answer: "श्रीमती", solution: "त में बड़ी 'ई' की मात्रा होती है।"},
-{q: "निम्न में से शुद्ध शब्द है:", options: ["अनुग्रहीत", "अनुग्रहित", "अनग्रहीत", "अनुग्रहहित"], answer: "अनुग्रहीत", solution: "'ह' में बड़ी ई और 'ग' में ऋ की मात्रा।"},
-{q: "शुद्ध वाक्य चुनें:", options: ["राम ने किताब पढ़ा।", "राम ने किताब पढ़ी।", "राम किताब पढ़ा।", "राम ने किताब पढ़ लिया।"], answer: "राम ने किताब पढ़ी।", solution: "क्रिया 'किताब' (स्त्रीलिंग) के अनुसार होगी।"},
+{q: "शुद्ध वर्तनी चुनें:", options: ["परीछा", "परिक्षा", "परीक्षा", "पारीक्षा"], answer: "परीक्षा", solution: "र में बड़ी 'ई' की मात्रा होती है।"},
+{q: "शुद्ध शब्द क्या है?", options: ["श्रीमति", "श्रीमती", "सरिमति", "स्रीमती"], answer: "श्रीमती", solution: "त में बड़ी 'ई' की मात्रा होती है।"},
+{q: "निम्न में से शुद्ध शब्द है:", options: ["अनुग्रहीत", "अनुग्रहित", "अनग्रहीत", "अनुग्रहहित"], answer: "अनुग्रहीत", solution: "'ह' में बड़ी ई और 'ग' में ऋ की मात्रा।"},
+{q: "शुद्ध वाक्य चुनें:", options: ["राम ने किताब पढ़ा।", "राम ने किताब पढ़ी।", "राम किताब पढ़ा।", "राम ने किताब पढ़ लिया।"], answer: "राम ने किताब पढ़ी।", solution: "क्रिया 'किताब' (स्त्रीलिंग) के अनुसार होगी।"},
 {q: "शुद्ध वाक्य कौन-सा है?", options: ["मेरे को जाना है।", "मुझे जाना है।", "मुझको को जाना है।", "मैं जाना है।"], answer: "मुझे जाना है।", solution: "सर्वनाम का सही प्रयोग 'मुझे' है।"},
 {q: "सही वाक्य का चयन करें:", options: ["यहाँ शुद्ध गाय का दूध मिलता है।", "यहाँ गाय का शुद्ध दूध मिलता है।", "शुद्ध गाय का यहाँ दूध मिलता है।", "यहाँ गाय दूध शुद्ध मिलता है।"], answer: "यहाँ गाय का शुद्ध दूध मिलता है।", solution: "विशेषण 'शुद्ध' दूध के लिए है, गाय के लिए नहीं।"},
 {q: "शुद्ध वाक्य है:", options: ["वह लोग आ गए।", "वे लोग आ गए।", "उन लोग आ गए।", "वे लोग आ गया।"], answer: "वे लोग आ गए।", solution: "बहुवचन के साथ 'वे' और 'गए' का प्रयोग होगा।"},
 {q: "गलत वाक्य पहचानें:", options: ["सीता गाना गा रही है।", "बच्चा सो रहा है।", "मैंने कल जाना है।", "वह घर जाता है।"], answer: "मैंने कल जाना है।", solution: "सही वाक्य होगा 'मुझे कल जाना है'।"},
 {q: "शुद्ध वाक्य चुनें:", options: ["गर्म चाय का प्याला लाओ।", "एक गर्म चाय का प्याला लाओ।", "चाय का एक गर्म प्याला लाओ।", "प्याला गर्म चाय का लाओ।"], answer: "चाय का एक गर्म प्याला लाओ।", solution: "शब्दों का क्रम सही होना चाहिए।"},
 {q: "शुद्ध वाक्य है:", options: ["तेरे नाम क्या है?", "तेरा नाम क्या है?", "तुझको नाम क्या है?", "तेरा नाम क्या?"], answer: "तेरा नाम क्या है?", solution: "एकदम सरल और शुद्ध रूप।"},
-{q: "शुद्ध वाक्य चुनें:", options: ["साहित्य और जीवन का घोर संबंध है।", "साहित्य और जीवन का अभिन्न संबंध है।", "साहित्य और जीवन का गहरा संबंध है।", "साहित्य और जीवन का बड़ा संबंध है।"], answer: "साहित्य और जीवन का अभिन्न संबंध है।", solution: "उपयुक्त शब्द 'अभिन्न' या 'घनिष्ठ' होता है।"},
-  
+{q: "शुद्ध वाक्य चुनें:", options: ["साहित्य और जीवन का घोर संबंध है।", "साहित्य और जीवन का अभिन्न संबंध है।", "साहित्य और जीवन का गहरा संबंध है।", "साहित्य और जीवन का बड़ा संबंध है।"], answer: "साहित्य और जीवन का अभिन्न संबंध है।", solution: "उपयुक्त शब्द 'अभिन्न' या 'घनिष्ठ' होता है।"}
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -295,7 +312,7 @@ function renderQuestion(){
             <input type="radio" name="opt"
               ${answers[currentIndex]==o?'checked':''}
               onchange="selectAnswer('${o}')">
-            ${o}
+            <span>${o}</span>
           </label>
         `).join("")}
       </div>
@@ -356,30 +373,21 @@ function submitQuiz(){
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
   const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-  /* ===== CERTIFICATE ELIGIBILITY LOGIC ===== */
-
-if (accuracy >= 50) {
-
-  const certData = {
-    name: displayName.textContent,
-    subject: "Hindi", // ← subject change karna ho to sirf ye line
-    percent: accuracy,
-    date: new Date().toLocaleDateString("en-IN"),
-    certId: "NishuAbhyasi-" + Date.now()
-  };
-
-  sessionStorage.setItem("CERT_DATA", JSON.stringify(certData));
-
-  setTimeout(() => {
-    if (confirm(
-      `🎉 Congratulations!\n\nYou scored ${accuracy}%.\nYou are eligible for a digital certificate.\n\nClick OK to view your certificate.`
-    )) {
-      window.open("certificate.html", "_blank");
-    }
-  }, 800);
-
-}
-
+  if (accuracy >= 50) {
+    const certData = {
+      name: displayName.textContent,
+      subject: "Hindi",
+      percent: accuracy,
+      date: new Date().toLocaleDateString("en-IN"),
+      certId: "NishuAbhyasi-" + Date.now()
+    };
+    sessionStorage.setItem("CERT_DATA", JSON.stringify(certData));
+    setTimeout(() => {
+      if (confirm(`🎉 Congratulations!\n\nYou scored ${accuracy}%.\nYou are eligible for a digital certificate.\n\nClick OK to view your certificate.`)) {
+        window.open("certificate.html", "_blank");
+      }
+    }, 800);
+  }
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
@@ -396,38 +404,21 @@ if (accuracy >= 50) {
   const finalHtml = summaryBox + detailHtml;
   localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
-  const TEST_SUBJECT = document.title
-  .replace("Target Test-", "")
-  .replace("2026", "")
-  .trim();
+  const emailParams = {
+    candidate_name: displayName.textContent,
+    subject: "Hindi Test",
+    score: correct,
+    total: questions.length,
+    attempted: attempted,
+    accuracy: accuracy + "%",
+    time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+    test_date: new Date().toLocaleString("en-IN")
+  };
 
-
-  // ================= EMAIL NOTIFICATION =================
-const emailParams = {
-  candidate_name: displayName.textContent,
-  subject: "TEST_SUBJECT",
-  score: correct,
-  total: questions.length,
-  attempted: attempted,
-  accuracy: accuracy + "%",
-  time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-  test_date: new Date().toLocaleString("en-IN")
-};
-
-emailjs.send(
-  "service_wq5yoyp",
-  "template_doegpcp",
-  emailParams
-).then(
-  function (response) {
-    console.log("✅ Email sent successfully", response.status);
-  },
-  function (error) {
-    console.error("❌ Email failed", error);
-  }
-);
-// ======================================================
-
+  emailjs.send("service_wq5yoyp", "template_doegpcp", emailParams).then(
+    function(res) { console.log("Email Sent", res.status); },
+    function(err) { console.error("Email Failed", err); }
+  );
   
   quizArea.innerHTML="";
   palette.style.display="none"; 
@@ -442,7 +433,6 @@ emailjs.send(
 window.onload=function(){
   document.getElementById("totalQDisplay").textContent = questions.length;
   document.getElementById("testTime").value = questions.length;
-
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
   
@@ -479,15 +469,3 @@ function clearResult(){
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
