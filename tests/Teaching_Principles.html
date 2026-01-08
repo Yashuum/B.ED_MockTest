@@ -417,11 +417,17 @@ if (accuracy >= 50) {
 
   const finalHtml = summaryBox + detailHtml;
   localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+  
+  const TEST_SUBJECT = document.title
+  .replace("Target Test-", "")
+  .replace("2026", "")
+  .trim();
+
 
   // ================= EMAIL NOTIFICATION =================
 const emailParams = {
   candidate_name: displayName.textContent,
-  subject: "English",
+  subject: "TEST_SUBJECT",
   score: correct,
   total: questions.length,
   attempted: attempted,
@@ -495,5 +501,6 @@ function clearResult(){
 
 </body>
 </html>
+
 
 
