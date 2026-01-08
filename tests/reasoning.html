@@ -210,38 +210,38 @@ button:hover{ transform: scale(1.05); }
 <script>
 // Yahan apna JSON paste karein jisme 'solution' field ho
 const questions = [
-	
-{q: "यदि 'COACH' को 'XLZXS' लिखा जाता है, तो 'PLAYER' को क्या लिखा जाएगा?", options: ["Kozbvi", "Kovbvi", "Koybvi", "Kozbui"], answer: "Kozbvi", solution: "Logic: Opposite letters ka use hua hai (A=Z, B=Y, C=X)."},
-{q: "एक तस्वीर की ओर इशारा करते हुए राम ने कहा, 'वह मेरे पिता के इकलौते बेटे की पत्नी है।' तस्वीर वाली महिला राम की क्या है?", options: ["बहन", "पत्नी", "माँ", "भाभी"], answer: "पत्नी", solution: "Logic: राम के पिता का इकलौता बेटा राम खुद है, और उसकी पत्नी तस्वीर में है।"},
-{q: "विषम (Odd one out) का चयन करें:", options: ["जनवरी", "जुलाई", "अगस्त", "नवंबर"], answer: "नवंबर", solution: "Logic: नवंबर में 30 दिन होते हैं, बाकी सब में 31 दिन।"},
-{q: "श्रृंखला पूरी करें: 2, 6, 12, 20, 30, ?", options: ["38", "40", "42", "44"], answer: "42", solution: "Logic: Difference +4, +6, +8, +10, +12 ka hai (30+12=42)."},
-{q: "यदि 'लाल' को 'हरा' कहा जाए, 'हरा' को 'पीला' और 'पीला' को 'नीला', तो स्वच्छ आसमान का रंग क्या होगा?", options: ["नीला", "पीला", "लाल", "हरा"], answer: "नीला", solution: "Logic: Yahan 'नीला' के लिए कोई नया नाम नहीं दिया गया, isliye sawal ke anusar blue hi rahega (ya option bias check)."},
-{q: "कथन: सभी पेन पेंसिल हैं। कुछ पेंसिल रबर हैं। निष्कर्ष: 1. सभी पेन रबर हैं। 2. कुछ रबर पेंसिल हैं।", options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "कोई नहीं"], answer: "केवल 2", solution: "Logic: Syllogism rule se 'कुछ पेंसिल रबर हैं' ka ulta 'कुछ रबर पेंसिल हैं' hamesha sahi hota hai."},
-{q: "A, B का भाई है। C, A की माता है। D, C का पिता है। B, D की क्या है?", options: ["पोती/नातिन", "पोता", "बेटी", "चाची"], answer: "पोती/नातिन", solution: "Logic: C माता है और D उसका पिता, toh D नाना हुआ। B उसकी नातिन (या नाती) होगी।"},
-{q: "घड़ी में 4:30 बज रहे हैं। यदि मिनट की सुई पूर्व (East) की ओर है, तो घंटे की सुई किस दिशा में होगी?", options: ["उत्तर-पूर्व", "उत्तर-पश्चिम", "दक्षिण-पूर्व", "दक्षिण-पश्चिम"], answer: "उत्तर-पूर्व", solution: "Logic: 4:30 par ghante ki sui 4 aur 5 ke beech hoti hai."},
-{q: "जैसे 'किताब' का संबंध 'लेखक' से है, वैसे ही 'मूर्ति' का संबंध किससे है?", options: ["संग्रहालय", "पत्थर", "मूर्तिकार", "पेंटर"], answer: "मूर्तिकार", solution: "Logic: Producer-Product relation."},
-{q: "लुप्त संख्या ज्ञात करें: 5, 11, 23, 47, ?", options: ["94", "95", "96", "97"], answer: "95", solution: "Logic: (n * 2) + 1 ka pattern hai. 47*2+1 = 95."},
-{q: "यदि 'P' का अर्थ '+', 'Q' का '-', 'R' का '÷' और 'S' का '×' है, तो: 18S3P12R4Q5 = ?", options: ["52", "55", "58", "60"], answer: "52", solution: "Logic: BODMAS rule: 18*3 + 12/4 - 5 => 54 + 3 - 5 = 52."},
-{q: "शब्द 'TEACHER' के अक्षरों से कौन-सा शब्द नहीं बनाया जा सकता?", options: ["REACH", "CHAIR", "CHEER", "TEA"], answer: "CHAIR", solution: "Logic: 'TEACHER' में 'I' अक्षर नहीं है।"},
-{q: "एक कक्षा में सोहन का स्थान ऊपर से 7वाँ और नीचे से 26वाँ है। कक्षा में कुल कितने छात्र हैं?", options: ["31", "32", "33", "34"], answer: "32", solution: "Logic: (Top + Bottom) - 1 => (7 + 26) - 1 = 32."},
-{q: "यदि आज शनिवार है, तो 61 दिनों बाद कौन-सा दिन होगा?", options: ["मंगलवार", "गुरुवार", "बुधवार", "शुक्रवार"], answer: "गुरुवार", solution: "Logic: 61/7 ka shesh (remainder) 5 hai. Saturday + 5 = Thursday."},
-{q: "पासे की दो स्थितियाँ दी गई हैं। 3 के विपरीत क्या होगा? (1-3-2 और 1-5-4)", options: ["2", "4", "5", "6"], answer: "5", solution: "Logic: Common digit '1' se clockwise ghumne par 3 ke samne 5 aayega."},
-{q: "कथन: क्या स्कूल में मोबाइल फोन बैन होना चाहिए? तर्क: 1. हाँ, इससे पढ़ाई में बाधा आती है। 2. नहीं, आपातकाल में काम आता है।", options: ["केवल 1 मजबूत है", "केवल 2 मजबूत है", "1 और 2 दोनों मजबूत हैं", "कोई नहीं"], answer: "1 और 2 दोनों मजबूत हैं", solution: "Logic: Dono tarka practical aur valid hain."},
-{q: "विषम चुनें:", options: ["चाकू", "काँटा", "चम्मच", "प्लेट"], answer: "प्लेट", solution: "Logic: Plate khana rakhne ke liye hai, baki khane ke tools hain."},
-{q: "श्रृंखला: AZ, CX, EV, ?", options: ["GT", "GS", "HS", "IR"], answer: "GT", solution: "Logic: First letter +2 ho raha hai, second letter opposite hai."},
-{q: "5 व्यक्ति एक पंक्ति में बैठे हैं। A, B के पास है, C, D के पास है। D, E के पास नहीं है। A और C के बीच कौन है?", options: ["B", "D", "E", "Data Inadequate"], answer: "Data Inadequate", solution: "Logic: Position clear nahi hai."},
-{q: "कल से पहले का दिन शुक्रवार था, तो कल के बाद का दिन क्या होगा?", options: ["मंगलवार", "बुधवार", "गुरुवार", "सोमवार"], answer: "मंगलवार", solution: "Logic: Today is Sunday. Tomorrow + 1 = Tuesday."},
-{q: "Coding: SUN = 54, MOON = ?", options: ["51", "54", "57", "60"], answer: "57", solution: "Logic: Sum of position numbers: M(13)+O(15)+O(15)+N(14) = 57."},
-{q: "एक आदमी 5 किमी उत्तर जाता है, फिर दाएं मुड़कर 3 किमी जाता है। अब वह शुरुआती बिंदु से किस दिशा में है?", options: ["उत्तर-पूर्व", "उत्तर-पश्चिम", "दक्षिण", "पूर्व"], answer: "उत्तर-पूर्व", solution: "Logic: Starting point se diagonal position North-East hai."},
-{q: "0, 7, 26, 63, ?", options: ["124", "125", "126", "127"], answer: "124", solution: "Logic: (n^3) - 1 pattern. 5^3 - 1 = 124."},
-{q: "यदि 1 जनवरी 2012 को रविवार था, तो 1 जनवरी 2013 को क्या होगा?", options: ["सोमवार", "मंगलवार", "बुधवार", "शनिवार"], answer: "मंगलवार", solution: "Logic: 2012 Leap year hai, toh +2 days badhenge. Sun + 2 = Tue."},
-{q: "VENN Diagram: फल, सेब, संतरा", options: ["Ek bada circle do chote alag circle", "Teeno overlapping", "Ek ke andar ek", "Sab alag"], answer: "Ek bada circle do chote alag circle", solution: "Logic: Seb aur Santra dono Phal ke andar aate hain par alag hain."},
-{q: "यदि 'RAIN' को '8$%6' लिखा जाए, तो 'NIAR' क्या होगा?", options: ["6%$8", "8$%6", "6$%8", "6%$9"], answer: "6%$8", solution: "Logic: Letters ko reverse code kiya gaya hai."},
-{q: "रिश्ता: पिता : पुत्र :: दादा : ?", options: ["पोता", "भाई", "भतीजा", "पिता"], answer: "पोता", solution: "Logic: Two generation gap relationship."},
-{q: "शब्दकोश (Dictionary) के अनुसार सजाएं: 1. Apple 2. Apply 3. Ape 4. April", options: ["3,1,2,4", "1,3,2,4", "3,1,4,2", "1,2,3,4"], answer: "3,1,2,4", solution: "Logic: Alphabetical order check (Ape, Apple, Apply, April)."},
-{q: "Matrix logic: 2, 4, 20 | 3, 9, 90 | 1, 7, ?", options: ["50", "40", "60", "70"], answer: "50", solution: "Logic: (a^2 + b^2). 1^2 + 7^2 = 1 + 49 = 50."},
-{q: "दर्पण छवि (Mirror Image): 'B' की दर्पण छवि क्या होगी?", options: ["उल्टा B", "सीधा B", "B जैसा", "M जैसा"], answer: "उल्टा B", solution: "Logic: Lateral inversion (dahina-baya badal jata hai)."},
-  
+
+{q: "एक व्यक्ति 3km North जाता है, फिर Left मुड़कर 2km जाता है, फिर Left मुड़कर 3km जाता है। अब वह शुरुआती बिंदु से किस दिशा में है?", options: ["East", "West", "North", "South"], answer: "West", solution: "Pahle N gaya, fir L (West) fir L (South). Start point se ab wo West mein hai."},
+{q: "P, Q, R, S, T ek bench par baithe hain. P, Q ke sath hai, R, S ke sath hai. S sabse left end par hai, Q second position par hai right se. P aur R ke beech kaun hai?", options: ["Q", "S", "T", "P"], answer: "T", solution: "Sequence: S - R - T - Q - P. P aur R ke beech T baitha hai."},
+{q: "एक तस्वीर की ओर इशारा कर महिला ने कहा, 'उसकी माँ की इकलौती बेटी मेरी माँ है', महिला का तस्वीर वाले से संबंध?", options: ["पुत्री", "भांजी", "बहन", "चाची"], answer: "भांजी", solution: "उसकी माँ की इकलौती बेटी = तस्वीर वाले की बहन; बहन की बेटी = भांजी।"},
+{q: "A, B, C, D ek square table ke charo konon par baithe hain. A ka muh South-East hai. D ka muh North-West hai. C ka muh North-East hai toh B ka muh kahan hoga?", options: ["South-West", "South-East", "North", "West"], answer: "South-West", solution: "Opposite corners face opposite directions. North-East ka ulta South-West."},
+{q: "P+Q (P, Q का पिता), P-Q (P, Q की पत्नी), P*Q (P, Q का भाई) हो, तो P*Q-R+S में P का S से संबंध?", options: ["दादा", "चाचा", "मामा", "ससुर"], answer: "मामा", solution: "S का पिता R, R की पत्नी Q (माँ), माँ का भाई P = मामा।"},
+{q: "एक 200m लंबी ट्रेन 72 km/h की रफ़्तार से एक खंभे को कितने सेकंड में पार करेगी?", options: ["10s", "12s", "15s", "20s"], answer: "10s", solution: "Speed = 72*(5/18) = 20 m/s. Time = Distance/Speed = 200/20 = 10 sec."},
+{q: "5 dost (A,B,C,D,E) ek line mein North dekh rahe hain. C, A aur E ke beech hai. D, E के right mein hai. B, A ke left mein hai. Sabse left mein kaun hai?", options: ["B", "A", "C", "D"], answer: "B", solution: "Sequence: B - A - C - E - D. Sabse left mein B hai."},
+{q: "आदमी ने महिला से कहा, 'तुम्हारी माँ के पति की बहन मेरी बुआ है', महिला का आदमी से संबंध?", options: ["माता", "बहन", "पुत्री", "भाभी"], answer: "बहन", solution: "महिला की माँ के पति की बहन = महिला की बुआ; दोनों की बुआ एक ही है = भाई-बहन।"},
+{q: "6 log ek gol ghere mein kendra ki taraf dekh rahe hain. A, B ke samne hai. B, C ke right mein hai. D, A aur C ke beech hai. B ke left mein kaun hai?", options: ["C", "A", "D", "Data incomplete"], answer: "C", solution: "B, C ke right mein hai, matlab C, B ke left mein hai."},
+{q: "एक इलेक्ट्रिक ट्रेन North की तरफ जा रही है और हवा South की तरफ बह रही है, तो ट्रेन का धुआँ किस दिशा में जाएगा?", options: ["South", "North", "East", "धुआँ नहीं होगा"], answer: "धुआँ नहीं होगा", solution: "Tricky: Electric train mein dhuan nahi nikalta bhai!"},
+{q: "M, N aur B ka भाई है, M, D का भाई है, पर N, B का भाई नहीं है, तो N का B से संबंध?", options: ["भाई", "बहन", "भतीजा", "माँ"], answer: "बहन", solution: "N सहोदर है पर भाई नहीं, मतलब लिंग स्त्रीलिंग है = बहन।"},
+{q: "5 ladkiyan ek ghere mein khadi hain. Suman, Pranti aur Kavita ke beech hai. Reena, Kavita ke right mein hai. Radha, Reena ke right mein hai. Suman ke right mein kaun hai?", options: ["Pranti", "Kavita", "Radha", "Reena"], answer: "Pranti", solution: "Anti-clockwise sequence: Suman - Pranti - Radha - Reena - Kavita."},
+{q: "मोहन 5km South गया, फिर Right मुड़कर 3km चला, फिर Left मुड़कर 5km चला। अब वह किस दिशा की ओर देख रहा है?", options: ["North", "South", "East", "West"], answer: "South", solution: "Pahle S gaya, R muda (West), fir L muda (South). Ab wo South dekh raha hai।"},
+{q: "A, B की माँ है, C, A का पुत्र है, D, E का भाई है, E, B की पुत्री है, D की दादी कौन है?", options: ["A", "B", "C", "E"], answer: "A", solution: "D, B का बेटा है और B की माँ A है = पिता/माता की माँ दादी/नानी (A)।"},
+{q: "4 dost (A, B, C, D) ek carom board khel rahe hain. A, C ke samne hai aur B, D ke samne. C, B ke left mein hai. D ki disha kya hogi agar A North dekh raha hai?", options: ["East", "West", "South", "North"], answer: "East", solution: "A North toh C South; B, C ke right (West) mein hoga toh D East mein."},
+{q: "एक रेलगाड़ी 100m लंबे प्लेटफार्म को 15s में और एक खंभे को 10s में पार करती है, ट्रेन की लंबाई क्या है?", options: ["150m", "200m", "250m", "300m"], answer: "200m", solution: "Train khambe ko 10s mein (L/10 speed) aur platform ko 15s mein ((L+100)/15) par karti hai. L=200m."},
+{q: "पुरुष ने कहा, 'उस महिला की माँ, मेरी सास की इकलौती पुत्री है', पुरुष का महिला से संबंध?", options: ["भाई", "चाचा", "पिता", "पति"], answer: "पिता", solution: "सास की इकलौती पुत्री = पुरुष की पत्नी; पत्नी उस महिला की माँ है = पिता।"},
+{q: "6 log A-F ek line mein baithe hain. E aur F beech mein hain. A aur B ends par hain. C, A ke theek left mein hai. B ke theek right mein kaun hai?", options: ["D", "E", "F", "C"], answer: "D", solution: "Sequence: A - C - E - F - D - B. B ke theek right (andar ki taraf) D hai."},
+{q: "राम अपने घर से निकलकर 4km East गया, फिर 3km North गया। शुरुआती बिंदु से उसकी न्यूनतम दूरी (shortest distance) क्या है?", options: ["5km", "7km", "1km", "12km"], answer: "5km", solution: "Pythagoras theorem: √(4² + 3²) = √(16+9) = √25 = 5km."},
+{q: "X-Y भाई हैं, R, Y का पिता है, T, S की बहन है और S, X का मामा है, T का R से संबंध?", options: ["माता", "पत्नी", "बहन", "भाभी"], answer: "पत्नी", solution: "S मामा hai toh T (S की इकलौती बहन) X की माँ हुई; पिता R की पत्नी T।"},
+{q: "7 dost ek circle mein hain. C, A aur B ke beech hai. E, F aur D ke beech hai. G, B aur D ke beech hai. A ke theek left mein kaun hai?", options: ["F", "C", "E", "G"], answer: "F", solution: "Sequence: A-C-B-G-D-E-F. A ke left mein F aayega circle pura hone par."},
+{q: "एक टोकरी में रखे फूल हर मिनट में दोगुने हो जाते हैं। यदि टोकरी 60 मिनट में भर जाती है, तो वह आधी कब भरी थी?", options: ["30 min", "59 min", "29 min", "15 min"], answer: "59 min", solution: "Har minute double ho raha hai, toh full hone se theek 1 minute pehle (59 min par) aadhi rahi hogi."},
+{q: "P, Q का पति है और R, S और Q की माँ है, तो R का P से क्या संबंध है?", options: ["माता", "बहन", "सास", "चाची"], answer: "सास", solution: "Q का पति P है और Q की माँ R है = पत्नी की माँ सास।"},
+{q: "5 log North dekh rahe hain. X, Y ke left mein hai par Z ke right mein. M, Y ke right mein hai par N ke left mein. Beech mein kaun hai?", options: ["X", "Y", "M", "Z"], answer: "Y", solution: "Sequence: Z - X - Y - M - N. Beech mein Y baitha hai."},
+{q: "दो ट्रेनें एक-दूसरे की तरफ 50 km/h और 40 km/h की रफ़्तार से आ रही हैं। उनकी सापेक्ष गति (Relative Speed) क्या होगी?", options: ["10 km/h", "90 km/h", "45 km/h", "2000 km/h"], answer: "90 km/h", solution: "Jab do cheezein opposite direction mein aati hain toh speed add ho jati hai (50+40)."},
+{q: "A, B का भाई है, C, A की माँ है, D, C का पिता है, E, B का पुत्र है, A का E से संबंध?", options: ["चाचा", "दादा", "भाई", "भतीजा"], answer: "चाचा", solution: "E का पिता B है, और B का भाई A है = पिता का भाई चाचा।"},
+{q: "सूर्योदय के समय यदि मेरी पीठ सूरज की तरफ है, तो मेरा बायाँ हाथ (Left hand) किस दिशा में होगा?", options: ["North", "South", "East", "West"], answer: "South", solution: "Suraj East mein hai, pith udhar hai toh muh West mein hoga. Tab Left hand South dikhayega."},
+{q: "6 bacche ek line mein hain. Q, R ke left mein hai par P ke right mein. S, T ke right mein hai par R ke left mein. Sabse right mein kaun hai?", options: ["T", "R", "P", "U (if 6th)"], answer: "R", solution: "Sequence: P - Q - S - T - R. Sabse right mein R hai."},
+{q: "एक पुरुष के ससुर और मेरे ससुर एक ही हैं, मेरा उस पुरुष से क्या संबंध है?", options: ["भाई", "ससुर", "दामाद", "जीजा/साला"], answer: "जीजा/साला", solution: "दोनों के ससुर एक ही हैं मतलब दोनों की पत्नियाँ बहनें हैं।"},
+{q: "एक मेज पर 5 संतरे थे, आपने 3 उठा लिए। अब आपके पास कितने संतरे हैं?", options: ["2", "3", "5", "0"], answer: "3", solution: "Tricky: Jitne aapne uthaye (3), utne hi toh aapke paas honge!"},
+
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -362,7 +362,7 @@ if (accuracy >= 50) {
 
   const certData = {
     name: displayName.textContent,
-    subject: "English", // ← subject change karna ho to sirf ye line
+    subject: "Reasoning", // ← subject change karna ho to sirf ye line
     percent: accuracy,
     date: new Date().toLocaleDateString("en-IN"),
     certId: "YASH-" + Date.now()
@@ -479,6 +479,7 @@ function clearResult(){
 
 </body>
 </html>
+
 
 
 
