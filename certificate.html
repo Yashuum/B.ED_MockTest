@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Certificate</title>
+
+<!-- QR Generator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+
+<style>
+:root{
+  --gold:#f5c97a;
+  --bg:#0f172a;
+  --glass:rgba(255,255,255,0.08);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI",sans-serif;}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f172a,#1e293b,#020617);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  padding:20px;
+}
+
+/* Certificate Card */
+.cert{
+  max-width:900px;
+  width:100%;
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border:2px solid rgba(245,201,122,0.4);
+  border-radius:25px;
+  padding:40px 30px;
+  position:relative;
+  box-shadow:0 25px 80px rgba(0,0,0,0.7);
+}
+
+.cert:before{
+  content:"";
+  position:absolute;
+  inset:15px;
+  border:1px dashed rgba(245,201,122,0.4);
+  border-radius:20px;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.header h1{
+  font-size:36px;
+  letter-spacing:2px;
+  color:var(--gold);
+}
+
+.header p{
+  opacity:0.8;
+  margin-top:6px;
+}
+
+.body{
+  text-align:center;
+  margin:40px 0;
+}
+
+.name{
+  font-size:34px;
+  font-weight:800;
+  color:#e5e7eb;
+  margin:10px 0;
+}
+
+.text{
+  font-size:16px;
+  opacity:0.9;
+  margin:6px 0;
+}
+
+.score{
+  font-size:22px;
+  margin-top:12px;
+}
+
+.score span{
+  color:var(--gold);
+  font-weight:800;
+}
+
+.footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:40px;
+  gap:20px;
+}
+
+.left small{
+  opacity:0.8;
+}
+
+.right{
+  text-align:center;
+}
+
+.cert-id{
+  font-size:13px;
+  opacity:0.8;
+  margin-top:6px;
+}
+
+/* Security */
+@media print{
+  body{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="cert" id="certificate" style="display:none">
+
+  <div class="header">
+    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+    <p>This certificate is proudly presented by</p>
+    <p><b>NishuAbhyasi Test Portal</b></p>
+  </div>
+
+  <div class="body">
+    <p class="text">This is to certify that</p>
+    <div class="name" id="cName">Student Name</div>
+    <p class="text">
+      has successfully completed the <b id="cSubject">Subject</b> test
+    </p>
+    <div class="score">
+      with a score of <span id="cPercent">0%</span>
+    </div>
+    <p class="text" style="margin-top:15px">
+      demonstrating commendable performance and dedication.
+    </p>
+  </div>
+
+  <div class="footer">
+    <div class="left">
+      <small>Date Issued</small><br>
+      <b id="cDate">--</b>
+    </div>
+
+    <div class="right">
+      <canvas id="qr"></canvas>
+      <div class="cert-id">
+        Certificate ID:<br>
+        <b id="cId"></b>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER (NEW) -->
+  <div style="
+    margin-top:25px;
+    font-size:11px;
+    opacity:0.65;
+    text-align:center;
+    line-height:1.5;
+  ">
+    ⚠️ This is <b>not an authentic certificate</b> and does not prove any official qualification.<br>
+    It is generated only for <b>learning motivation</b>. Downloading, printing or misuse is restricted.
+  </div>
+
+</div>
+
+<script>
+// ----------------- SECURITY -----------------
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("keydown", e => {
+  if(e.ctrlKey && ["s","p","u"].includes(e.key.toLowerCase())) e.preventDefault();
+});
+
+// ----------------- DATA LOAD -----------------
+let data = null;
+
+// Real certificate data (from test submit)
+const real = sessionStorage.getItem("CERT_DATA");
+if(real){
+  data = JSON.parse(real);
+} else {
+  // ADMIN PREVIEW MODE
+  const key = prompt("Enter preview key:");
+  if(key === "NishuAbhyasi"){
+    data = {
+      name: "Preview Student",
+      subject: "English",
+      percent: "72",
+      date: new Date().toLocaleDateString("en-IN"),
+      certId: "PREVIEW-CERT-0001"
+    };
+  }
+}
+
+// ----------------- RENDER -----------------
+if(!data){
+  document.body.innerHTML =
+    "<h2 style='color:white;text-align:center'>Invalid Certificate Access</h2>";
+} else {
+  document.getElementById("certificate").style.display="block";
+  document.getElementById("cName").innerText = data.name;
+  document.getElementById("cSubject").innerText = data.subject;
+  document.getElementById("cPercent").innerText = data.percent + "%";
+  document.getElementById("cDate").innerText = data.date;
+  document.getElementById("cId").innerText = data.certId;
+
+  new QRious({
+    element: document.getElementById("qr"),
+    size: 120,
+    value: data.certId
+  });
+}
+</script>
+
+</body>
+</html>
