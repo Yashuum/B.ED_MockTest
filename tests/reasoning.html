@@ -210,7 +210,7 @@ button:hover{ transform: scale(1.05); }
 <script>
 // Yahan apna JSON paste karein jisme 'solution' field ho
 const questions = [
-
+  {q: "दी गई आकृति में कुल कितने त्रिभुज हैं?",svgData: "<svg width='100' height='100'><polygon points='50,15 90,85 10,85' style='fill:none;stroke:black;stroke-width:2'/><line x1='50' y1='15' x2='50' y2='85' style='stroke:black;stroke-width:2'/></svg>",options: ["2", "3", "4", "5"],answer: "3",solution: "Ek bada triangle aur uske andar ek vertical line do chote triangles banati hai. Total = 3."},
 {q: "एक व्यक्ति 3km North जाता है, फिर Left मुड़कर 2km जाता है, फिर Left मुड़कर 3km जाता है। अब वह शुरुआती बिंदु से किस दिशा में है?", options: ["East", "West", "North", "South"], answer: "West", solution: "Pahle N gaya, fir L (West) fir L (South). Start point se ab wo West mein hai."},
 {q: "P, Q, R, S, T ek bench par baithe hain. P, Q ke sath hai, R, S ke sath hai. S sabse left end par hai, Q second position par hai right se. P aur R ke beech kaun hai?", options: ["Q", "S", "T", "P"], answer: "T", solution: "Sequence: S - R - T - Q - P. P aur R ke beech T baitha hai."},
 {q: "एक तस्वीर की ओर इशारा कर महिला ने कहा, 'उसकी माँ की इकलौती बेटी मेरी माँ है', महिला का तस्वीर वाले से संबंध?", options: ["पुत्री", "भांजी", "बहन", "चाची"], answer: "भांजी", solution: "उसकी माँ की इकलौती बेटी = तस्वीर वाले की बहन; बहन की बेटी = भांजी।"},
@@ -479,6 +479,7 @@ function clearResult(){
 
 </body>
 </html>
+
 
 
 
