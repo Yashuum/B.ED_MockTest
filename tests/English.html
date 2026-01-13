@@ -170,7 +170,7 @@ button:hover{ transform: scale(1.05); }
 <div class="container">
 
 <h1>Target Test- English 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 09 Jan, 2026 - 16:24</p>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 13 Jan, 2026 - 20:51</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
@@ -211,50 +211,46 @@ button:hover{ transform: scale(1.05); }
 
 const questions = [
 
-{q:"Choose the correct article: He is ___ honest man.", options:["a","an","the","no article"], answer:"an", solution:"Honest starts with vowel sound"},
-{q:"Choose the correct tense: She ___ to school every day.", options:["go","goes","went","going"], answer:"goes", solution:"Third person singular"},
-{q:"Identify the noun: The beauty of nature is amazing.", options:["beauty","of","is","amazing"], answer:"beauty", solution:"Name of quality"},
-{q:"Fill in the blank: I have ___ my homework.", options:["do","did","done","doing"], answer:"done", solution:"Present perfect tense"},
-{q:"Choose the correct preposition: He is fond ___ music.", options:["in","on","of","for"], answer:"of", solution:"Fond of"},
-{q:"Identify the verb: She sings very well.", options:["she","sings","very","well"], answer:"sings", solution:"Action word"},
-{q:"Choose the correct sentence.", options:["He do his work.","He does his work.","He doing his work.","He done his work."], answer:"He does his work.", solution:"Correct SVA"},
-{q:"Fill in the blank: The sun ___ in the east.", options:["rise","rises","rose","rising"], answer:"rises", solution:"Universal truth"},
-{q:"Identify the adjective: It was a beautiful day.", options:["it","was","beautiful","day"], answer:"beautiful", solution:"Describes noun"},
-{q:"Choose the correct option: Neither Ram nor Shyam ___ present.", options:["are","were","is","have"], answer:"is", solution:"Verb agrees with nearest subject"},
-{q:"Fill in the blank: She ___ already left.", options:["has","have","had","having"], answer:"has", solution:"Singular subject"},
-{q:"Identify the adverb: He runs fast.", options:["he","runs","fast","none"], answer:"fast", solution:"Describes verb"},
-{q:"Choose the correct article: ___ Ganga is a holy river.", options:["A","An","The","No article"], answer:"The", solution:"Unique river"},
-{q:"Fill in the blank: I ___ him yesterday.", options:["see","saw","seen","seeing"], answer:"saw", solution:"Past tense"},
-{q:"Choose the correct preposition: She is good ___ maths.", options:["at","in","on","with"], answer:"at", solution:"Good at"},
-{q:"Identify the pronoun: Rahul said that he was tired.", options:["Rahul","said","he","tired"], answer:"he", solution:"Pronoun"},
-{q:"Choose the correct sentence.", options:["She don't like tea.","She doesn't like tea.","She didn't likes tea.","She not like tea."], answer:"She doesn't like tea.", solution:"Correct auxiliary"},
-{q:"Fill in the blank: We ___ playing now.", options:["is","are","was","were"], answer:"are", solution:"Present continuous"},
-{q:"Identify the conjunction: He is poor but honest.", options:["he","poor","but","honest"], answer:"but", solution:"Joins clauses"},
-{q:"Choose the correct tense: When I reached, he ___ sleeping.", options:["is","was","were","has"], answer:"was", solution:"Past continuous"},
-{q:"Fill in the blank: She speaks ___ than me.", options:["fast","faster","fastest","more fast"], answer:"faster", solution:"Comparative degree"},
-{q:"Identify the preposition: The book is on the table.", options:["book","is","on","table"], answer:"on", solution:"Shows relation"},
-{q:"Choose the correct sentence.", options:["Each boy were given a prize.","Each boy was given a prize.","Each boys was given a prize.","Each boy give a prize."], answer:"Each boy was given a prize.", solution:"Each is singular"},
-{q:"Fill in the blank: I am afraid ___ dogs.", options:["from","of","with","for"], answer:"of", solution:"Afraid of"},
-{q:"Identify the verb: They are watching TV.", options:["they","are","watching","TV"], answer:"watching", solution:"Main verb"},
-{q:"Choose the correct article: He bought ___ umbrella.", options:["a","an","the","no article"], answer:"an", solution:"Vowel sound"},
-{q:"Fill in the blank: She ___ hard to succeed.", options:["work","works","worked","working"], answer:"works", solution:"Present tense"},
-{q:"Identify the adjective: This is my first attempt.", options:["this","my","first","attempt"], answer:"first", solution:"Describes noun"},
-{q:"Choose the correct sentence.", options:["He has did his duty.","He has done his duty.","He have done his duty.","He did his duty has."], answer:"He has done his duty.", solution:"Present perfect"},
-{q:"Fill in the blank: The train ___ late today.", options:["is","was","are","were"], answer:"is", solution:"Singular subject"},
-{q:"Identify the noun: Honesty is the best policy.", options:["honesty","best","is","policy"], answer:"honesty", solution:"Abstract noun"},
-{q:"Choose the correct preposition: He died ___ cancer.", options:["by","of","from","with"], answer:"of", solution:"Die of disease"},
-{q:"Fill in the blank: She ___ a letter now.", options:["writes","wrote","is writing","has written"], answer:"is writing", solution:"Present continuous"},
-{q:"Identify the adverb: She answered politely.", options:["she","answered","politely","none"], answer:"politely", solution:"Manner"},
-{q:"Choose the correct sentence.", options:["Everyone have done his work.","Everyone has done his work.","Everyone done his work.","Everyone do his work."], answer:"Everyone has done his work.", solution:"Everyone is singular"},
-{q:"Fill in the blank: I prefer tea ___ coffee.", options:["than","to","from","with"], answer:"to", solution:"Prefer to"},
-{q:"Identify the pronoun: This is mine.", options:["this","is","mine","none"], answer:"mine", solution:"Possessive pronoun"},
-{q:"Choose the correct tense: She ___ here since morning.", options:["is","was","has been","had been"], answer:"has been", solution:"Since + present perfect"},
-{q:"Fill in the blank: He is ___ best player in the team.", options:["a","an","the","no article"], answer:"the", solution:"Superlative"},
-{q:"Identify the conjunction: Although he is rich, he is unhappy.", options:["although","rich","is","he"], answer:"although", solution:"Subordinating conjunction"},
-{q:"Choose the correct sentence.", options:["She has went home.","She has gone home.","She went has home.","She gone home has."], answer:"She has gone home.", solution:"Gone is past participle"},
-{q:"Fill in the blank: The children ___ making noise.", options:["is","was","are","has"], answer:"are", solution:"Plural subject"},
-{q:"Identify the adjective: He gave me some useful advice.", options:["some","useful","gave","advice"], answer:"useful", solution:"Describes noun"},
-{q:"Choose the correct preposition: She is married ___ a doctor.", options:["with","to","by","for"], answer:"to", solution:"Married to"},
+{q: "The train ______ before we reached the station.", options: ["has left", "had left", "left", "was leaving"], answer: "had left", solution: "Past Perfect: Jab do kaam past mein hon, pehle wale ke liye 'had + V3' lagta hai."},
+{q: "Neither Ram nor his friends ______ present today.", options: ["is", "are", "was", "has"], answer: "are", solution: "Neither-nor mein verb hamesha pass wale subject (friends) ke hisab se lagti hai."},
+{q: "The teacher made the students ______ the lesson.", options: ["to repeat", "repeat", "repeating", "repeated"], answer: "repeat", solution: "Causative verb 'make' ke baad direct V1 lagta hai (without 'to')."},
+{q: "I prefer tea ______ coffee.", options: ["than", "to", "over", "for"], answer: "to", solution: "Prefer/Preferable ke saath hamesha 'to' ka prayog hota hai."},
+{q: "It has been raining ______ two hours.", options: ["since", "for", "from", "at"], answer: "for", solution: "Duration (samay ki avadhi) ke liye 'for' lagta hai."},
+{q: "Identify the Adjective: 'The hungry lion attacked the deer.'", options: ["hungry", "lion", "attacked", "deer"], answer: "hungry", solution: "Hungry yahan 'lion' ki visheshtha bata raha hai."},
+{q: "Idiom: 'To cry wolf' means:", options: ["To shout loudly", "To give a false alarm", "To be brave", "To hunt animals"], answer: "To give a false alarm", solution: "Jhoothi afwah ya khatre ki ghanti bajana."},
+{q: "Idiom: 'Apple of one's eye' means:", options: ["A sweet fruit", "Very dear/favorite", "To have a problem", "To be healthy"], answer: "Very dear/favorite", solution: "Ankhon ka tara hona."},
+{q: "Idiom: 'Bury the hatchet' means:", options: ["To dig a hole", "To end a quarrel", "To hide a secret", "To buy a tool"], answer: "To end a quarrel", solution: "Purani dushmani bhula kar shanti karna."},
+{q: "Idiom: 'Bed of roses' means:", options: ["A difficult path", "An easy and comfortable situation", "To sleep on flowers", "A luxury garden"], answer: "An easy and comfortable situation", solution: "Sukh-suvidha bhari zindagi."},
+{q: "A person who collects coins:", options: ["Numismatist", "Philatelist", "Artist", "Collector"], answer: "Numismatist", solution: "Sikke ikatthe karne wale ko Numismatist kehte hain."},
+{q: "A large group of stars:", options: ["Planet", "Galaxy", "Universe", "Orbit"], answer: "Galaxy", solution: "Taaron ke samuh ko Galaxy kehte hain."},
+{q: "A person who looks at the bright side of things:", options: ["Pessimist", "Optimist", "Atheist", "Theist"], answer: "Optimist", solution: "Aashavadi vyakti ko Optimist kehte hain."},
+{q: "Something that cannot be seen through:", options: ["Transparent", "Translucent", "Opaque", "Clear"], answer: "Opaque", solution: "Jiske paar na dekha ja sake use Opaque (Apardarshi) kehte hain."},
+{q: "Synonym of 'FRAGILE' is:", options: ["Strong", "Weak", "Delicate", "Hard"], answer: "Delicate", solution: "Fragile aur Delicate dono ka matlab hai jo jaldi toot jaye."},
+{q: "Synonym of 'VIGILANT' is:", options: ["Careless", "Watchful", "Sleepy", "Lazy"], answer: "Watchful", solution: "Vigilant matlab satark ya savdhan."},
+{q: "Antonym of 'STINGY' is:", options: ["Mean", "Generous", "Greedy", "Tight"], answer: "Generous", solution: "Stingy (kanjoos) ka ulta Generous (udar/daani) hota hai."},
+{q: "Antonym of 'HASTY' is:", options: ["Quick", "Fast", "Slow/Leisurely", "Rapid"], answer: "Slow/Leisurely", solution: "Hasty matlab jaldbazi mein; ulta hota hai dheere ya araam se."},
+{q: "Pick the correct spelling:", options: ["Occasion", "Ocassion", "Occassion", "Ocasion"], answer: "Occasion", solution: "O-C-C-A-S-I-O-N is correct."},
+{q: "Which one is correctly spelled?", options: ["Commitee", "Committee", "Comittee", "Committe"], answer: "Committee", solution: "Isme double M, double T, aur double E hote hain."},
+{q: "Find the correct spelling:", options: ["Vacuum", "Vaccum", "Vacume", "Vakum"], answer: "Vacuum", solution: "V-A-C-U-U-M (isme double U aata hai)."},
+{q: "Select the correct spelling:", options: ["Bussiness", "Business", "Buisness", "Busyness"], answer: "Business", solution: "B-U-S-I-N-E-S-S."},
+{q: "He is ______ M.A. in English.", options: ["a", "an", "the", "no article"], answer: "an", solution: "M.A. ka uchcharan 'Em' (vowel sound) se shuru hota hai."},
+{q: "The cat sprang ______ the table.", options: ["on", "upon", "in", "at"], answer: "upon", solution: "Motion (gati) ke saath kisi ke upar aane ke liye 'upon' lagta hai."},
+{q: "If it rains, the match ______ cancelled.", options: ["will be", "would be", "is", "was"], answer: "will be", solution: "Conditional sentence: If + Present, then Future (will be)."},
+{q: "Choose the odd one out:", options: ["Teacher", "Student", "Classroom", "Forest"], answer: "Forest", solution: "Baaki teeno education se jude hain, Forest alag hai."},
+{q: "She is ______ tallest girl in the class.", options: ["a", "an", "the", "some"], answer: "the", solution: "Superlative degree (tallest) se pehle 'the' lagta hai."},
+{q: "Distribute these sweets ______ the children.", options: ["between", "among", "in", "with"], answer: "among", solution: "Do se zyada logo ke liye 'among' ka prayog hota hai."},
+{q: "He is senior ______ me.", options: ["than", "to", "from", "for"], answer: "to", solution: "Senior, Junior, Superior ke saath 'to' lagta hai."},
+{q: "I have ______ one-rupee note.", options: ["a", "an", "the", "zero"], answer: "a", solution: "One ka sound 'Wa' (consonant) hai, isliye 'a' lagega."},
+{q: "Plural of 'Mouse' is:", options: ["Mouses", "Mice", "Mices", "Micey"], answer: "Mice", solution: "Mouse ka irregular plural Mice hota hai."},
+{q: "Gender of 'Drake' is:", options: ["Male Duck", "Female Duck", "Swan", "Goose"], answer: "Male Duck", solution: "Duck ka masculine Drake hota hai."},
+{q: "A person who hates women:", options: ["Misogynist", "Misanthrope", "Philanthropist", "Optimist"], answer: "Misogynist", solution: "Miso (hate) + gyne (women)."},
+{q: "He died ______ cancer.", options: ["from", "with", "of", "by"], answer: "of", solution: "Bimari se marne ke liye 'die of' ka use hota hai."},
+{q: "The antonym of 'GIANT' is:", options: ["Huge", "Dwarf", "Tall", "Big"], answer: "Dwarf", solution: "Giant (vishalkay) ka ulta Dwarf (bauna)."},
+{q: "Synonym of 'LOYAL' is:", options: ["Faithful", "Dishonest", "Friendly", "Rude"], answer: "Faithful", solution: "Loyal aur Faithful dono ka matlab wafadar hai."},
+{q: "Choose the correct sentence:", options: ["He don't know me.", "He doesn't knows me.", "He doesn't know me.", "He not know me."], answer: "He doesn't know me.", solution: "He (singular) + doesn't + V1 (know)."},
+{q: "Identify the Pronoun: 'They are going to Patna.'", options: ["They", "are", "going", "Patna"], answer: "They", solution: "Subject ke roop mein 'They' pronoun hai."},
+{q: "What is the past participle (V3) of 'Speak'?", options: ["Speak", "Spoke", "Spoken", "Speaking"], answer: "Spoken", solution: "Speak-Spoke-Spoken."},
+{q: "A group of keys is called a:", options: ["Pack", "Bunch", "Herd", "Flock"], answer: "Bunch", solution: "Chabiyo ke guchche ko 'Bunch' kehte hain."},
 	
 ];
 
@@ -493,6 +489,7 @@ function clearResult(){
 
 </body>
 </html>
+
 
 
 
