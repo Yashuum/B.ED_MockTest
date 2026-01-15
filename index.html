@@ -57,8 +57,11 @@ body{
 
 /* Dynamic Smart Badges */
 .badge{ font-size:10px; font-weight:700; padding:4px 10px; border-radius:50px; margin-left: 8px; vertical-align: middle; display: none; }
-.badge-new { background: #f2994a; color: #fff; box-shadow: 0 0 10px #f2994a; }
+.badge-new { background: #f2994a; color: #fff; box-shadow: 0 0 10px #f2994a; animation: blink 1.5s infinite; }
 .badge-done { background: #16a34a; color: #fff; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+.score-text { font-size: 11px; color: #4ade80; margin-top: 5px; font-weight: 600; display: block; }
 
 .card p{ font-size:14px; color: rgba(255,255,255,0.85); line-height: 1.5; }
 .btn{ margin-top:16px; padding:14px; border:none; border-radius:15px; background: var(--btn-grad); color:#fff; font-size:15px; font-weight:700; cursor:pointer; text-align:center; text-decoration:none; }
@@ -96,16 +99,19 @@ body{
       <div class="card">
         <h3>📘 English <span id="badge-English" class="badge"></span></h3>
         <p>Grammar, comprehension and vocabulary practice.</p>
+        <span id="score-English" class="score-text"></span>
         <a href="tests/English.html" class="btn">Start Test</a>
       </div>
       <div class="card">
         <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
         <p>Logical reasoning and quantitative aptitude.</p>
+        <span id="score-Reasoning" class="score-text"></span>
         <a href="tests/reasoning.html" class="btn">Start Test</a>
       </div>
       <div class="card">
         <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
         <p>Pedagogy and teaching methodology questions.</p>
+        <span id="score-Teaching" class="score-text"></span>
         <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
       </div>
     </div>
@@ -114,11 +120,13 @@ body{
       <div class="card">
         <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
         <p>Vyakaran, comprehension and language skills.</p>
+        <span id="score-Hindi" class="score-text"></span>
         <a href="tests/Hindi.html" class="btn">Start Test</a>
       </div>
       <div class="card">
         <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
         <p>Static GK, current affairs and basics.</p>
+        <span id="score-Awareness" class="score-text"></span>
         <a href="tests/General_Awareness.html" class="btn">Start Test</a>
       </div>
       <div class="card" style="border-style: dashed;">
@@ -143,8 +151,8 @@ body{
 </div>
 
 <script>
-// --- UNIQUE TEST ID CONFIGURATION ---
-// Jab bhi kisi subject ka content badlo, bas uska ID badal do (e.g., SET_01 ko SET_02 kar do)
+// --- CONFIGURATION ---
+// Jab naye questions daalo, bas yahan ID SET_01 se SET_02 kar dena
 const CURRENT_TEST_CONFIG = {
     "English": "ENG_SET_01",
     "Reasoning": "REA_SET_01",
@@ -153,24 +161,34 @@ const CURRENT_TEST_CONFIG = {
     "Awareness": "GKA_SET_01"
 };
 
-function updateBadges() {
+function updateDashboard() {
     Object.keys(CURRENT_TEST_CONFIG).forEach(sub => {
         const badge = document.getElementById(`badge-${sub}`);
+        const scoreLabel = document.getElementById(`score-${sub}`);
         if(!badge) return;
 
         const currentID = CURRENT_TEST_CONFIG[sub];
-        const isCompleted = localStorage.getItem(`done_${sub}_${currentID}`);
+        
+        // LocalStorage keys (Should match subject files)
+        const isDone = localStorage.getItem(`done_${sub}_${currentID}`);
+        const savedScore = localStorage.getItem(`score_${currentID}`);
 
-        if (isCompleted) {
+        if (isDone === "true") {
             badge.innerText = "COMPLETED ✅";
             badge.className = "badge badge-done";
+            if(savedScore) scoreLabel.innerText = "Last Score: " + savedScore;
         } else {
             badge.innerText = "UPDATED 🔥";
             badge.className = "badge badge-new";
-            // Agar purana koi different ID ka result hai, toh use delete kar do taaki test refresh ho sake
-            // Isse purana result page automatically hat jayega
-            localStorage.removeItem("finalResult"); 
-            localStorage.removeItem("inProgress");
+            
+            // MAGIC: Agar test ID purani hai, toh Purana Result auto-clear karo
+            // Taaki user ko "Already Submitted" na dikhe
+            const lastSessionID = localStorage.getItem(`last_id_${sub}`);
+            if(lastSessionID && lastSessionID !== currentID) {
+                localStorage.removeItem("finalResult");
+                localStorage.removeItem("inProgress");
+            }
+            localStorage.setItem(`last_id_${sub}`, currentID);
         }
         badge.style.display = "inline-block";
     });
@@ -179,7 +197,7 @@ function updateBadges() {
 function openPopup(){ document.getElementById("popup").style.display="flex"; }
 function closePopup(){ document.getElementById("popup").style.display="none"; }
 
-window.onload = updateBadges;
+window.onload = updateDashboard;
 </script>
 
 </body>
