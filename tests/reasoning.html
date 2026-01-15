@@ -168,15 +168,15 @@ button:hover{ transform: scale(1.05); }
 <div class="container">
 
 <h1>Target Test- Reasoning 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 15 Jan, 2026 - 11:49</p>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Practice Set - Reasoning & Mental Ability</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
-  <input id="testTime" type="number" placeholder="Time (minutes)">
+  <input id="testTime" type="number" placeholder="Time (minutes)" value="45">
   
   <div class="q-count-sticker">
     <span class="pulse-dot"></span>
-    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+    <span>Questions Loaded: <b id="totalQDisplay">45</b></span>
   </div>
 
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
@@ -258,11 +258,13 @@ const questions = [
 {q: "अक्षर 'E' का विपरीत (opposite) अक्षर क्या होता है?", options: ["V", "U", "W", "T"], answer: "V", solution: "Alphabetical order mein E aage se 5 aur V peeche se 5 par hai (EV - Evening)."},	
 ];
 
+
+
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
-  if(localStorage.getItem("finalResult")){
+  if(localStorage.getItem(`finalResult_${MY_SUBJECT}`)){
     alert("Test already submitted"); return;
   }
   if(!candidateName.value || !testTime.value) {
@@ -340,7 +342,7 @@ function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuesti
 function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
 function saveProgress(){
-  localStorage.setItem("inProgress",JSON.stringify({
+  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
     name:displayName.textContent,
     answers,visited,currentIndex,totalSeconds,startTime
   }));
@@ -349,7 +351,7 @@ function saveProgress(){
 function submitQuiz(){
   if(!confirm("Are you sure you want to submit the Reasoning test?")) return;
   clearInterval(timerInterval);
-  localStorage.removeItem("inProgress");
+  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
   let correct=0, attempted=0;
   let detailHtml="<h2>Detailed Analysis</h2>";
   
@@ -362,7 +364,7 @@ function submitQuiz(){
         <p><b>Q${i+1}.</b> ${q.q}</p>
         <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
         <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Solution not available for this question."}
+          <b>Logic:</b> ${q.solution || "Solution not available."}
         </div>
       </div>`;
   });
@@ -373,22 +375,6 @@ function submitQuiz(){
   // Track Progress for Dashboard
   localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
   localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
-
-  if (accuracy >= 50) {
-    const certData = {
-      name: displayName.textContent,
-      subject: "Reasoning",
-      percent: accuracy,
-      date: new Date().toLocaleDateString("en-IN"),
-      certId: "YASH-" + Date.now()
-    };
-    sessionStorage.setItem("CERT_DATA", JSON.stringify(certData));
-    setTimeout(() => {
-      if (confirm(`🎉 Congratulations!\nYou scored ${accuracy}%.\n\nClick OK to view your certificate.`)) {
-        window.open("certificate.html", "_blank");
-      }
-    }, 800);
-  }
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
@@ -404,22 +390,7 @@ function submitQuiz(){
   `;
 
   const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
-
-  // Email Notification
-  const emailParams = {
-    candidate_name: displayName.textContent,
-    subject: MY_SUBJECT,
-    score: correct,
-    total: questions.length,
-    attempted: attempted,
-    accuracy: accuracy + "%",
-    time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-    test_date: new Date().toLocaleString("en-IN")
-  };
-
-  emailjs.send("service_wq5yoyp", "template_doegpcp", emailParams)
-  .then(res => console.log("✅ Email sent"), err => console.error("❌ Email failed"));
+  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
   quizArea.innerHTML="";
   palette.style.display="none"; 
@@ -433,10 +404,8 @@ function submitQuiz(){
 
 window.onload=function(){
   document.getElementById("totalQDisplay").textContent = questions.length;
-  document.getElementById("testTime").value = questions.length;
-
-  const final=localStorage.getItem("finalResult");
-  const progress=localStorage.getItem("inProgress");
+  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
   
   if(final){
     const d=JSON.parse(final);
@@ -465,7 +434,11 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(confirm("Start new test? All previous results will be cleared.")){ localStorage.clear(); location.reload(); }
+  if(confirm("Start new test? All previous results will be cleared.")){ 
+    localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
+    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+    location.reload(); 
+  }
 }
 </script>
 
