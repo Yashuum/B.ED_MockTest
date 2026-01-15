@@ -208,9 +208,11 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
+// --- AUTOMATION CONFIG ---
+const MY_SUBJECT = "English";
+const MY_TEST_ID = "ENG_SET_01"; // Dashboard se match honi chahiye
 
 const questions = [
-
 {q: "Choose the correct article: 'Copper is ____ useful metal.'", options: ["a", "an", "the", "No article"], answer: "a", solution: "Useful start with a consonant sound 'yu', so 'a' is used instead of 'an'."},
 {q: "Fill in the blanks: 'The cat is sitting ____ the table.'", options: ["on", "under", "between", "over"], answer: "under", solution: "Generally, cats sit 'under' the table for shelter or rest."},
 {q: "What is the Synonym of 'ABANDON'?", options: ["Keep", "Leave", "Join", "Follow"], answer: "Leave", solution: "Abandon means to leave or give up something completely."},
@@ -345,30 +347,8 @@ function submitQuiz(){
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
   const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-	/* ===== CERTIFICATE ELIGIBILITY LOGIC ===== */
-
-if (accuracy >= 50) {
-
-  const certData = {
-    name: displayName.textContent,
-    subject: "English", // ← subject change karna ho to sirf ye line
-    percent: accuracy,
-    date: new Date().toLocaleDateString("en-IN"),
-    certId: "YASH-" + Date.now()
-  };
-
-  sessionStorage.setItem("CERT_DATA", JSON.stringify(certData));
-
-  setTimeout(() => {
-    if (confirm(
-      `🎉 Congratulations!\n\nYou scored ${accuracy}%.\nYou are eligible for a digital certificate.\n\nClick OK to view your certificate.`
-    )) {
-      window.open("certificate.html", "_blank");
-    }
-  }, 800);
-
-}
-
+  // Track Completion for Dashboard
+  localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
@@ -385,39 +365,22 @@ if (accuracy >= 50) {
   const finalHtml = summaryBox + detailHtml;
   localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
-	const TEST_SUBJECT = document.title
-  .replace("Target Test-", "")
-  .replace("2026", "")
-  .trim();
+  // ================= EMAIL NOTIFICATION =================
+  const emailParams = {
+    candidate_name: displayName.textContent,
+    subject: MY_SUBJECT,
+    score: correct,
+    total: questions.length,
+    attempted: attempted,
+    accuracy: accuracy + "%",
+    time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+    test_date: new Date().toLocaleString("en-IN")
+  };
 
+  emailjs.send("service_wq5yoyp", "template_doegpcp", emailParams)
+  .then(res => console.log("✅ Email sent"), err => console.error("❌ Email failed", err));
+  // ======================================================
 
-	// ================= EMAIL NOTIFICATION =================
-const emailParams = {
-  candidate_name: displayName.textContent,
-  subject: "TEST_SUBJECT",
-  score: correct,
-  total: questions.length,
-  attempted: attempted,
-  accuracy: accuracy + "%",
-  time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-  test_date: new Date().toLocaleString("en-IN")
-};
-
-emailjs.send(
-  "service_wq5yoyp",
-  "template_doegpcp",
-  emailParams
-).then(
-  function (response) {
-    console.log("✅ Email sent successfully", response.status);
-  },
-  function (error) {
-    console.error("❌ Email failed", error);
-  }
-);
-// ======================================================
-
-  
   quizArea.innerHTML="";
   palette.style.display="none"; 
   navBtns.style.display="none";
@@ -462,17 +425,12 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(confirm("Start new test? All previous results will be cleared.")){ localStorage.clear(); location.reload(); }
+  if(confirm("Start new test? All previous results will be cleared.")){ 
+    localStorage.clear(); 
+    location.reload(); 
+  }
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
