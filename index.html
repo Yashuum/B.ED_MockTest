@@ -1,204 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NishuAbhyasi</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NishuAbhyasi</title>
 
-<style>
-/* --- DESIGN INTACT: Tumhara Original Theme --- */
-:root{
-  --color-primary: #1a2a6c;
-  --color-secondary: #2575fc;
-  --color-accent: #f2994a;
-  --btn-grad: linear-gradient(135deg, #ff9800, #ff5722);
-  --glass: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.25);
-}
+    <style>
+        /* --- DESIGN CORE --- */
+        :root {
+            --color-primary: #1a2a6c;
+            --color-secondary: #2575fc;
+            --color-accent: #f2994a;
+            --btn-grad: linear-gradient(135deg, #ff9800, #ff5722);
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+        }
 
-*{ box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Roboto, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-body{
-  min-height:100vh;
-  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
-  background-size: 300% 300%;
-  animation: dynamicFlow 18s ease-in-out infinite;
-  display:flex; flex-direction:column; align-items:center; overflow-x: hidden; position: relative;
-}
+        body {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+            background-size: 300% 300%;
+            animation: dynamicFlow 18s ease-in-out infinite;
+            display: flex; flex-direction: column; align-items: center; overflow-x: hidden; position: relative;
+        }
 
-@keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-.bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-.bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
-@keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
+        /* Bubbles Background */
+        .bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
+        @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
+        .bubble:nth-child(1) { left: 10%; width: 40px; height: 40px; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 30%; width: 20px; height: 20px; animation-delay: 5s; }
+        .bubble:nth-child(3) { left: 50%; width: 60px; height: 60px; animation-delay: 2s; }
+        .bubble:nth-child(4) { left: 70%; width: 30px; height: 30px; animation-delay: 8s; }
+        .bubble:nth-child(5) { left: 90%; width: 50px; height: 50px; animation-delay: 3s; }
 
-.bubble:nth-child(1) { left: 10%; width: 40px; height: 40px; animation-delay: 0s; }
-.bubble:nth-child(2) { left: 30%; width: 20px; height: 20px; animation-delay: 5s; }
-.bubble:nth-child(3) { left: 50%; width: 60px; height: 60px; animation-delay: 2s; }
-.bubble:nth-child(4) { left: 70%; width: 30px; height: 30px; animation-delay: 8s; }
-.bubble:nth-child(5) { left: 90%; width: 50px; height: 50px; animation-delay: 3s; }
+        /* Notice Bar */
+        .notice-wrapper { position: sticky; top: 10px; width: 95%; max-width: 1100px; z-index: 100; margin-top: 10px; }
+        .notice-bar { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); color: #fff; padding: 12px 0; border-radius: 60px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .notice-track { display: flex; width: max-content; animation: scrollNotice 25s linear infinite; }
+        .notice-track a { white-space: nowrap; margin-right: 120px; color: #fff; font-weight: 600; text-decoration: none; }
+        @keyframes scrollNotice { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-.notice-wrapper { position: sticky; top: 10px; width: 95%; max-width: 1100px; z-index: 100; margin-top: 10px; }
-.notice-bar{ background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); color:#fff; padding:12px 0; border-radius: 60px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-.notice-track{ display:flex; width:max-content; animation:scrollNotice 25s linear infinite; }
-.notice-track a{ white-space:nowrap; margin-right:120px; color:#fff; font-weight:600; text-decoration:none; }
-@keyframes scrollNotice{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+        /* Dashboard & Layout */
+        .wrapper { width: 100%; max-width: 1100px; position: relative; z-index: 2; padding: 20px; }
+        .welcome { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 35px; padding: 35px; text-align: center; margin-top: 20px; margin-bottom: 30px; }
+        .welcome .brand { font-size: 38px; font-weight: 900; color: #fff; }
 
-.wrapper{ width:100%; max-width:1100px; position: relative; z-index: 2; padding: 20px; }
-.welcome{ background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 35px; padding:35px; text-align:center; margin-top: 20px; margin-bottom:30px; }
-.welcome .brand{ font-size:38px; font-weight:900; color:#fff; }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .column { display: flex; flex-direction: column; gap: 25px; }
 
-.dashboard{ display:grid; grid-template-columns:1fr 1fr; gap:30px; }
-.column{ display:flex; flex-direction:column; gap:25px; }
+        .card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; transition: 0.5s; position: relative; }
+        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .card h3 { font-size: 20px; color: #fff; margin-bottom: 10px; }
 
-.card{ background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; padding:25px; display:flex; flex-direction:column; justify-content:space-between; min-height:160px; transition: 0.5s; }
-.card:hover { transform: translateY(-12px) rotateX(2deg); background: rgba(255, 255, 255, 0.18); box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
-.card h3{ font-size:20px; color:#fff; margin-bottom:10px; }
+        /* Badges & Scores */
+        .badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 50px; margin-left: 8px; vertical-align: middle; display: none; }
+        .badge-new { background: #f2994a; color: #fff; box-shadow: 0 0 10px #f2994a; animation: blink 1.5s infinite; }
+        .badge-done { background: #16a34a; color: #fff; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .score-text { font-size: 11px; color: #4ade80; margin-top: 5px; font-weight: 600; display: block; }
 
-/* Dynamic Smart Badges */
-.badge{ font-size:10px; font-weight:700; padding:4px 10px; border-radius:50px; margin-left: 8px; vertical-align: middle; display: none; }
-.badge-new { background: #f2994a; color: #fff; box-shadow: 0 0 10px #f2994a; animation: blink 1.5s infinite; }
-.badge-done { background: #16a34a; color: #fff; }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .btn { margin-top: 16px; padding: 14px; border: none; border-radius: 15px; background: var(--btn-grad); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
+        .btn:hover { opacity: 0.9; transform: scale(1.02); }
 
-.score-text { font-size: 11px; color: #4ade80; margin-top: 5px; font-weight: 600; display: block; }
+        /* 🤖 Robot Assistive Touch Style */
+        .robot-container {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: grab; z-index: 2000; transition: opacity 0.5s ease, transform 0.3s ease;
+            touch-action: none; opacity: 1;
+        }
+        .robot-dim { opacity: 0.4; } /* iPhone-style auto-dim */
+        .robot-container img { width: 70%; pointer-events: none; }
 
-.card p{ font-size:14px; color: rgba(255,255,255,0.85); line-height: 1.5; }
-.btn{ margin-top:16px; padding:14px; border:none; border-radius:15px; background: var(--btn-grad); color:#fff; font-size:15px; font-weight:700; cursor:pointer; text-align:center; text-decoration:none; }
+        /* Robot Popup Glass UI */
+        .robot-chat-box {
+            position: fixed; bottom: 100px; right: 30px; width: 280px;
+            background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 25px;
+            display: none; flex-direction: column; z-index: 1999;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4); color: #fff; padding: 25px; text-align: center;
+        }
 
-.popup-bg{ position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(15px); display:none; align-items:center; justify-content:center; z-index:1000; }
-.popup{ background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.3); border-radius:30px; padding:35px; max-width:400px; width:90%; text-align:center; color:#fff; }
-
-@media(max-width:768px){ .dashboard{ grid-template-columns:1fr; } }
-</style>
+        @media(max-width:768px){ .dashboard { grid-template-columns: 1fr; } }
+    </style>
 </head>
 
 <body>
 
-<div class="bubbles-container">
-  <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
-</div>
-
-<div class="notice-wrapper">
-  <div class="notice-bar">
-    <div class="notice-track">
-      <a href="tests/all_in_one.html">🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀</a>
-      <a href="tests/all_in_one.html">🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀</a>
-    </div>
-  </div>
-</div>
-
-<div class="wrapper">
-  <div class="welcome">
-    <div style="color:rgba(255,255,255,0.7); font-size:14px; margin-bottom:5px;">WELCOME TO</div>
-    <div class="brand">NishuAbhyasi</div>
-  </div>
-
-  <div class="dashboard">
-    <div class="column">
-      <div class="card">
-        <h3>📘 English <span id="badge-English" class="badge"></span></h3>
-        <p>Grammar, comprehension and vocabulary practice.</p>
-        <span id="score-English" class="score-text"></span>
-        <a href="tests/English.html" class="btn">Start Test</a>
-      </div>
-      <div class="card">
-        <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
-        <p>Logical reasoning and quantitative aptitude.</p>
-        <span id="score-Reasoning" class="score-text"></span>
-        <a href="tests/reasoning.html" class="btn">Start Test</a>
-      </div>
-      <div class="card">
-        <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
-        <p>Pedagogy and teaching methodology questions.</p>
-        <span id="score-Teaching" class="score-text"></span>
-        <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
-      </div>
+    <div class="bubbles-container">
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     </div>
 
-    <div class="column">
-      <div class="card">
-        <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
-        <p>Vyakaran, comprehension and language skills.</p>
-        <span id="score-Hindi" class="score-text"></span>
-        <a href="tests/Hindi.html" class="btn">Start Test</a>
-      </div>
-      <div class="card">
-        <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
-        <p>Static GK, current affairs and basics.</p>
-        <span id="score-Awareness" class="score-text"></span>
-        <a href="tests/General_Awareness.html" class="btn">Start Test</a>
-      </div>
-      <div class="card" style="border-style: dashed;">
-        <h3>💬 Feedback</h3>
-        <p>Share suggestions or report issues directly.</p>
-        <button class="btn" onclick="openPopup()" style="background: rgba(255,255,255,0.1); box-shadow: none;">Contact Developer</button>
-      </div>
+    <div class="notice-wrapper">
+        <div class="notice-bar">
+            <div class="notice-track">
+                <a href="#">🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀</a>
+                <a href="#">🚨 Ready for All-in-One Test? Appear for All-Rounder Test — Click here 🚀</a>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="footer" style="margin-top:50px; text-align:center; color:#fff; opacity:0.8; padding-bottom:30px;">
-    © 2026 NishuAbhyasi | Learning Made Modern
-  </div>
-</div>
+    <div class="wrapper">
+        <div class="welcome">
+            <div style="color:rgba(255,255,255,0.7); font-size:14px; margin-bottom:5px;">WELCOME TO</div>
+            <div class="brand">NishuAbhyasi</div>
+        </div>
 
-<div class="popup-bg" id="popup" onclick="closePopup()">
-  <div class="popup" onclick="event.stopPropagation()">
-    <h3 style="margin-bottom:10px;">Send Feedback</h3>
-    <p style="margin-bottom:20px; font-size:14px; opacity:0.8;">Contact Yashwant directly via email</p>
-    <a href="mailto:singhyashwant559@gmail.com" class="btn" style="text-decoration:none; display:block;">Open Email App</a>
-  </div>
-</div>
+        <div class="dashboard">
+            <div class="column">
+                <div class="card">
+                    <h3>📘 English <span id="badge-English" class="badge"></span></h3>
+                    <p>Grammar, comprehension and vocabulary practice.</p>
+                    <span id="score-English" class="score-text"></span>
+                    <a href="tests/English.html" class="btn">Start Test</a>
+                </div>
+                <div class="card">
+                    <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
+                    <p>Logical reasoning and quantitative aptitude.</p>
+                    <span id="score-Reasoning" class="score-text"></span>
+                    <a href="tests/reasoning.html" class="btn">Start Test</a>
+                </div>
+                <div class="card">
+                    <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
+                    <p>Pedagogy and teaching methodology questions.</p>
+                    <span id="score-Teaching" class="score-text"></span>
+                    <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
+                </div>
+            </div>
 
-<script>
-// --- CONFIGURATION ---
-// Jab naye questions daalo, bas yahan ID SET_01 se SET_02 kar dena
-const CURRENT_TEST_CONFIG = {
-    "English": "ENG_SET_01",
-    "Reasoning": "REA_SET_01",
-    "Teaching": "TEA_SET_01",
-    "Hindi": "HIN_SET_01",
-    "Awareness": "GKA_SET_01"
-};
+            <div class="column">
+                <div class="card">
+                    <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
+                    <p>Vyakaran, comprehension and language skills.</p>
+                    <span id="score-Hindi" class="score-text"></span>
+                    <a href="tests/Hindi.html" class="btn">Start Test</a>
+                </div>
+                <div class="card">
+                    <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
+                    <p>Static GK, current affairs and basics.</p>
+                    <span id="score-Awareness" class="score-text"></span>
+                    <a href="tests/General_Awareness.html" class="btn">Start Test</a>
+                </div>
+                <div class="card" style="border: 2px solid var(--color-accent); background: rgba(242, 153, 74, 0.1);">
+                    <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
+                    <p>The Ultimate Challenge! Mixed questions from all subjects.</p>
+                    <span id="score-AllInOne" class="score-text"></span>
+                    <a href="tests/all_in_one.html" class="btn" style="background: var(--color-accent); color: #1a2a6c;">Start Mega Test</a>
+                </div>
+            </div>
+        </div>
 
-function updateDashboard() {
-    Object.keys(CURRENT_TEST_CONFIG).forEach(sub => {
-        const badge = document.getElementById(`badge-${sub}`);
-        const scoreLabel = document.getElementById(`score-${sub}`);
-        if(!badge) return;
+        <div class="footer" style="margin-top:50px; text-align:center; color:#fff; opacity:0.8; padding-bottom:30px;">
+            © 2026 NishuAbhyasi | Learning Made Modern
+        </div>
+    </div>
 
-        const currentID = CURRENT_TEST_CONFIG[sub];
-        
-        // LocalStorage keys (Should match subject files)
-        const isDone = localStorage.getItem(`done_${sub}_${currentID}`);
-        const savedScore = localStorage.getItem(`score_${currentID}`);
+    <div id="robot-fab" class="robot-container">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Robot">
+    </div>
 
-        if (isDone === "true") {
-            badge.innerText = "COMPLETED ✅";
-            badge.className = "badge badge-done";
-            if(savedScore) scoreLabel.innerText = "Last Score: " + savedScore;
-        } else {
-            badge.innerText = "UPDATED 🔥";
-            badge.className = "badge badge-new";
-            
-            // MAGIC: Agar test ID purani hai, toh Purana Result auto-clear karo
-            // Taaki user ko "Already Submitted" na dikhe
-            const lastSessionID = localStorage.getItem(`last_id_${sub}`);
-            if(lastSessionID && lastSessionID !== currentID) {
-                localStorage.removeItem("finalResult");
-                localStorage.removeItem("inProgress");
-            }
-            localStorage.setItem(`last_id_${sub}`, currentID);
+    <div id="robot-chat" class="robot-chat-box">
+        <h4 style="margin-bottom: 10px;">Help & Feedback 💡</h4>
+        <p style="font-size: 13px; opacity: 0.9; line-height: 1.4; margin-bottom: 20px;">
+            Facing technical issues or any feedback to improve ? - Your Dev is here
+        </p>
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+            <p style="font-size: 12px; margin-bottom: 10px;">Contact Yashwant Directly:</p>
+            <a href="mailto:singhyashwant559@gmail.com" class="btn" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 0; background: #fff; color: #1a2a6c; font-size: 14px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" width="20" alt="Gmail">
+                Send Email
+            </a>
+        </div>
+        <button onclick="toggleRobotChat()" style="margin-top: 15px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 12px;">Dismiss</button>
+    </div>
+
+    <script>
+        // --- DASHBOARD LOGIC ---
+        const CURRENT_TEST_CONFIG = {
+            "English": "ENG_SET_01",
+            "Reasoning": "REA_SET_01",
+            "Teaching": "TEA_SET_01",
+            "Hindi": "HIN_SET_01",
+            "Awareness": "GKA_SET_01",
+            "AllInOne": "AIO_SET_01"
+        };
+
+        function updateDashboard() {
+            Object.keys(CURRENT_TEST_CONFIG).forEach(sub => {
+                const badge = document.getElementById(`badge-${sub}`);
+                const scoreLabel = document.getElementById(`score-${sub}`);
+                if(!badge) return;
+
+                const currentID = CURRENT_TEST_CONFIG[sub];
+                const isDone = localStorage.getItem(`done_${sub}_${currentID}`);
+                const savedScore = localStorage.getItem(`score_${currentID}`);
+
+                if (isDone === "true") {
+                    badge.innerText = "COMPLETED ✅";
+                    badge.className = "badge badge-done";
+                    if(savedScore) scoreLabel.innerText = "Last Score: " + savedScore;
+                } else {
+                    badge.innerText = "UPDATED 🔥";
+                    badge.className = "badge badge-new";
+                    const lastSessionID = localStorage.getItem(`last_id_${sub}`);
+                    if(lastSessionID && lastSessionID !== currentID) {
+                        localStorage.removeItem("finalResult");
+                        localStorage.removeItem("inProgress");
+                    }
+                    localStorage.setItem(`last_id_${sub}`, currentID);
+                }
+                badge.style.display = "inline-block";
+            });
         }
-        badge.style.display = "inline-block";
-    });
-}
 
-function openPopup(){ document.getElementById("popup").style.display="flex"; }
-function closePopup(){ document.getElementById("popup").style.display="none"; }
+        // --- ROBOT & DIMMING LOGIC ---
+        const robot = document.getElementById('robot-fab');
+        const chat = document.getElementById('robot-chat');
+        let isDragging = false;
+        let startX, startY;
+        let dimTimeout;
 
-window.onload = updateDashboard;
-</script>
+        function startDimmingTimer() {
+            clearTimeout(dimTimeout);
+            robot.classList.remove('robot-dim');
+            dimTimeout = setTimeout(() => {
+                if (!isDragging) robot.classList.add('robot-dim');
+            }, 2000); // 2 Seconds Auto-Dim
+        }
 
+        function toggleRobotChat() {
+            chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
+            startDimmingTimer();
+        }
+
+        // Dragging & Click Action
+        let offset = [0,0];
+        const moveStart = (e) => {
+            const point = e.touches ? e.touches[0] : e;
+            startX = point.clientX;
+            startY = point.clientY;
+            offset = [robot.offsetLeft - point.clientX, robot.offsetTop - point.clientY];
+            robot.classList.remove('robot-dim');
+            
+            const moveAction = (moveEvent) => {
+                const p = moveEvent.touches ? moveEvent.touches[0] : moveEvent;
+                if (Math.abs(p.clientX - startX) > 5 || Math.abs(p.clientY - startY) > 5) {
+                    isDragging = true;
+                    robot.style.left = (p.clientX + offset[0]) + 'px';
+                    robot.style.top = (p.clientY + offset[1]) + 'px';
+                    robot.style.right = 'auto'; robot.style.bottom = 'auto';
+                    chat.style.display = 'none';
+                }
+            };
+
+            const moveEnd = () => {
+                document.removeEventListener(e.touches ? 'touchmove' : 'mousemove', moveAction);
+                if (!isDragging) toggleRobotChat();
+                setTimeout(() => { isDragging = false; }, 50);
+                startDimmingTimer();
+            };
+
+            document.addEventListener(e.touches ? 'touchmove' : 'mousemove', moveAction);
+            document.addEventListener(e.touches ? 'touchend' : 'mouseup', moveEnd, {once: true});
+        };
+
+        robot.addEventListener('mousedown', moveStart);
+        robot.addEventListener('touchstart', moveStart);
+
+        window.onload = () => {
+            updateDashboard();
+            startDimmingTimer();
+        };
+    </script>
 </body>
 </html>
