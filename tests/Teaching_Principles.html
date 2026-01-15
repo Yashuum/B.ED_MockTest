@@ -144,7 +144,6 @@ button:hover{ transform: scale(1.05); }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
 
-/* Solution Box Styling */
 .sol-box {
   margin-top:12px; 
   padding:12px; 
@@ -207,7 +206,7 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
-// --- CONFIGURATION ---
+// --- UNIQUE ID CONFIG ---
 const MY_SUBJECT = "Teaching Aptitude";
 const MY_TEST_ID = "TA_SET_01";
 
@@ -258,9 +257,6 @@ let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
-  if(localStorage.getItem("finalResult")){
-    alert("Test already submitted"); return;
-  }
   if(!candidateName.value || !testTime.value) {
     alert("Please enter Name and Time"); return;
   }
@@ -278,7 +274,6 @@ function startTest(){
 }
 
 function startTimer(){
-  updateTimer();
   timerInterval=setInterval(()=>{
     totalSeconds--;
     updateTimer();
@@ -336,7 +331,7 @@ function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuesti
 function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
 function saveProgress(){
-  localStorage.setItem("inProgress",JSON.stringify({
+  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
     name:displayName.textContent,
     answers,visited,currentIndex,totalSeconds,startTime
   }));
@@ -345,7 +340,7 @@ function saveProgress(){
 function submitQuiz(){
   if(!confirm("Are you sure you want to submit the Teaching principles test?")) return;
   clearInterval(timerInterval);
-  localStorage.removeItem("inProgress");
+  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
   let correct=0, attempted=0;
   let detailHtml="<h2>Detailed Analysis</h2>";
   
@@ -358,7 +353,7 @@ function submitQuiz(){
         <p><b>Q${i+1}.</b> ${q.q}</p>
         <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
         <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Solution not available for this question."}
+          <b>Logic:</b> ${q.solution || "Education aims for holistic behavioral change."}
         </div>
       </div>`;
   });
@@ -366,14 +361,12 @@ function submitQuiz(){
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
   const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-  // --- DASHBOARD SYNC LOGIC (Added) ---
   localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
   localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
-  // ------------------------------------
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Teaching Aptitude Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
@@ -385,10 +378,9 @@ function submitQuiz(){
   `;
 
   const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
-  
-  // ================= EMAIL NOTIFICATION =================
-  const emailParams = {
+  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+
+  emailjs.send("service_wq5yoyp", "template_doegpcp", {
     candidate_name: displayName.textContent,
     subject: MY_SUBJECT,
     score: correct,
@@ -397,57 +389,38 @@ function submitQuiz(){
     accuracy: accuracy + "%",
     time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
     test_date: new Date().toLocaleString("en-IN")
-  };
+  });
 
-  emailjs.send("service_wq5yoyp", "template_doegpcp", emailParams)
-  .then(res => console.log("✅ Email sent"), err => console.error("❌ Email failed", err));
-
-  quizArea.innerHTML="";
-  palette.style.display="none"; 
-  navBtns.style.display="none";
-  submitBtn.style.display="none";
-  result.style.display="block";
-  result.innerHTML=finalHtml;
-  clearBtn.style.display="block";
-  window.scrollTo(0,0);
+  quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
+  submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
+  clearBtn.style.display="block"; window.scrollTo(0,0);
 }
 
 window.onload=function(){
   document.getElementById("totalQDisplay").textContent = questions.length;
   document.getElementById("testTime").value = questions.length;
 
-  const final=localStorage.getItem("finalResult");
-  const progress=localStorage.getItem("inProgress");
+  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
   
   if(final){
     const d=JSON.parse(final);
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    displayName.textContent=d.name;
-    result.style.display="block";
-    result.innerHTML=d.html;
+    startScreen.style.display="none"; topBar.style.display="flex";
+    displayName.textContent=d.name; result.style.display="block"; result.innerHTML=d.html;
     clearBtn.style.display="block";
   } else if(progress){
     const p=JSON.parse(progress);
-    displayName.textContent=p.name;
-    answers=p.answers||{};
-    visited=p.visited||{};
-    currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0;
-    startTime=p.startTime||Date.now();
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    palette.style.display="flex";
-    navBtns.style.display="flex";
-    submitBtn.style.display="block";
-    startTimer();
-    renderQuestion();
+    displayName.textContent=p.name; answers=p.answers||{}; visited=p.visited||{};
+    currentIndex=p.currentIndex||0; totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
+    startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex";
+    navBtns.style.display="flex"; submitBtn.style.display="block"; startTimer(); renderQuestion();
   }
 };
 
 function clearResult(){
-  if(confirm("Start new test? All previous results will be cleared.")){ 
-    localStorage.clear(); 
+  if(confirm("Start new test? This subject's result will be cleared.")){ 
+    localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
+    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
     location.reload(); 
   }
 }
