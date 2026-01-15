@@ -144,7 +144,6 @@ button:hover{ transform: scale(1.05); }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
 
-/* Solution Box Styling */
 .sol-box {
   margin-top:12px; 
   padding:12px; 
@@ -162,55 +161,52 @@ button:hover{ transform: scale(1.05); }
     emailjs.init("L8kGW-X7JOiYaycH5");
   })();
 </script>
-	
 </head>
 
 <body>
 
 <div class="container">
+  <h1>Target Test- English 2026</h1>
+  <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: Jan 2026</p>
 
-<h1>Target Test- English 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 15 Jan, 2026 - 11:43</p>
+  <div class="start-screen" id="startScreen">
+    <input id="candidateName" placeholder="Enter your name">
+    <input id="testTime" type="number" placeholder="Time (minutes)">
+    
+    <div class="q-count-sticker">
+      <span class="pulse-dot"></span>
+      <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+    </div>
 
-<div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name">
-  <input id="testTime" type="number" placeholder="Time (minutes)">
-  
-  <div class="q-count-sticker">
-    <span class="pulse-dot"></span>
-    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+    <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
+      <button onclick="startTest()">Start Test</button>
+      <button type="button" class="btn-secondary" onclick="window.location.href='../index.html'">Go Back</button>
+    </div>
   </div>
 
-  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-    <button onclick="startTest()">Start Test</button>
-    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+  <div class="top-bar" id="topBar">
+    <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
+    <div class="timer" id="timer">00:00</div>
   </div>
-</div>
 
-<div class="top-bar" id="topBar">
-  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
-  <div class="timer" id="timer">00:00</div>
-</div>
+  <div id="palette" class="palette"></div>
+  <div id="quizArea"></div>
 
-<div id="palette" class="palette"></div>
-<div id="quizArea"></div>
+  <div class="nav" id="navBtns" style="display:none">
+    <button class="btn-secondary" onclick="prevQ()">← Previous</button>
+    <button onclick="nextQ()">Next Question →</button>
+  </div>
 
-<div class="nav" id="navBtns" style="display:none">
-  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
-  <button onclick="nextQ()">Next Question →</button>
-</div>
+  <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
 
-<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
-
-<div id="result" class="result" style="display:none"></div>
-<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
-
+  <div id="result" class="result" style="display:none"></div>
+  <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
 </div>
 
 <script>
 // --- AUTOMATION CONFIG ---
 const MY_SUBJECT = "English";
-const MY_TEST_ID = "ENG_SET_01"; // Dashboard se match honi chahiye
+const MY_TEST_ID = "ENG_SET_01";
 
 const questions = [
 {q: "Choose the correct article: 'Copper is ____ useful metal.'", options: ["a", "an", "the", "No article"], answer: "a", solution: "Useful start with a consonant sound 'yu', so 'a' is used instead of 'an'."},
@@ -232,19 +228,14 @@ const questions = [
 {q: "Passage: 'Time is the most valuable resource available to humans. Unlike money, time once lost can never be recovered. Successful people are those who understand the importance of time management. They prioritize their tasks and avoid procrastination. Discipline and punctuality are the keys to making the best use of time. One who wastes time today, will find themselves lagging behind in the future.' Question: According to the text, what can never be recovered once lost?", options: ["Money", "Time", "Health", "Friends"], answer: "Time", solution: "The passage says, 'time once lost can never be recovered.'"},
 {q: "Passage: 'Time is the most valuable resource available to humans. Unlike money, time once lost can never be recovered. Successful people are those who understand the importance of time management. They prioritize their tasks and avoid procrastination. Discipline and punctuality are the keys to making the best use of time. One who wastes time today, will find themselves lagging behind in the future.' Question: What are the keys to making the best use of time?", options: ["Money and Power", "Discipline and Punctuality", "Sleeping and Eating", "Reading and Writing"], answer: "Discipline and Punctuality", solution: "The passage mentions discipline and punctuality as keys to time management."},
 {q: "Passage: 'Time is the most valuable resource available to humans. Unlike money, time once lost can never be recovered. Successful people are those who understand the importance of time management. They prioritize their tasks and avoid procrastination. Discipline and punctuality are the keys to making the best use of time. One who wastes time today, will find themselves lagging behind in the future.' Question: What do successful people avoid?", options: ["Hard work", "Time management", "Procrastination", "Discipline"], answer: "Procrastination", solution: "The passage says successful people avoid procrastination (delaying work)."},
-{q: "Passage: 'Time is the most valuable resource available to humans. Unlike money, time once lost can never be recovered. Successful people are those who understand the importance of time management. They prioritize their tasks and avoid procrastination. Discipline and punctuality are the keys to making the best use of time. One who wastes time today, will find themselves lagging behind in the future.' Question: What happens to a person who wastes time today?", options: ["They get money", "They lag behind in the future", "They become successful", "They save time"], answer: "They lag behind in the future", solution: "The last line warns that wasting time leads to lagging behind in the future."},
+{q: "Passage: 'Time is the most valuable resource available to humans. Unlike money, time once lost can never be recovered. Successful people are those who understand the importance of time management. They prioritize their tasks and avoid procrastination. Discipline and punctuality are the keys to making the best use of time. One who wastes time today, will find themselves lagging behind in the future.' Question: What happens to a person who wastes time today?", options: ["They get money", "They lag behind in the future", "They become successful", "They save time"], answer: "They lag behind in the future", solution: "The last line warns that wasting time leads to lagging behind in the future."}
 ];
 
-let currentIndex=0,answers={},visited={};
-let totalSeconds=0,timerInterval,startTime;
+let currentIndex=0, answers={}, visited={};
+let totalSeconds=0, timerInterval, startTime;
 
 function startTest(){
-  if(localStorage.getItem("finalResult")){
-    alert("Test already submitted"); return;
-  }
-  if(!candidateName.value || !testTime.value) {
-    alert("Please enter Name and Time"); return;
-  }
+  if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
   displayName.textContent=candidateName.value;
   startScreen.style.display="none";
   topBar.style.display="flex";
@@ -259,19 +250,16 @@ function startTest(){
 }
 
 function startTimer(){
-  updateTimer();
   timerInterval=setInterval(()=>{
     totalSeconds--;
     updateTimer();
     saveProgress();
-    if(totalSeconds<=0)submitQuiz();
+    if(totalSeconds<=0) submitQuiz();
   },1000);
 }
 
 function updateTimer(){
-  timer.textContent=
-    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
-    String(totalSeconds%60).padStart(2,'0');
+  timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+String(totalSeconds%60).padStart(2,'0');
 }
 
 function renderQuestion(){
@@ -283,9 +271,7 @@ function renderQuestion(){
       <div class="options">
         ${q.options.map(o=>`
           <label>
-            <input type="radio" name="opt"
-              ${answers[currentIndex]==o?'checked':''}
-              onchange="selectAnswer('${o}')">
+            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')">
             ${o}
           </label>
         `).join("")}
@@ -306,67 +292,65 @@ function renderPalette(){
   questions.forEach((_,i)=>{
     const s=document.createElement("span");
     s.textContent=i+1;
-    if(visited[i])s.classList.add("visited");
-    if(answers[i])s.classList.add("attempted");
+    if(visited[i]) s.classList.add("visited");
+    if(answers[i]) s.classList.add("attempted");
     s.onclick=()=>{currentIndex=i;renderQuestion()};
     palette.appendChild(s);
   });
 }
 
-function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
-function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+function nextQ(){ if(currentIndex<questions.length-1){currentIndex++;renderQuestion();} }
+function prevQ(){ if(currentIndex>0){currentIndex--;renderQuestion();} }
 
 function saveProgress(){
   localStorage.setItem("inProgress",JSON.stringify({
-    name:displayName.textContent,
-    answers,visited,currentIndex,totalSeconds,startTime
+    name:displayName.textContent, answers, visited, currentIndex, totalSeconds, startTime
   }));
 }
 
 function submitQuiz(){
-  if(!confirm("Are you sure you want to submit the English test?")) return;
+  if(!confirm("Are you sure?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem("inProgress");
+  
   let correct=0, attempted=0;
   let detailHtml="<h2>Detailed Analysis</h2>";
   
   questions.forEach((q,i)=>{
     if(answers[i]) attempted++;
     if(answers[i] == q.answer) correct++;
-    
-    detailHtml+=`
-      <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
-        <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
-        <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Solution not available for this question."}
-        </div>
-      </div>`;
+    detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
+      <p><b>Q${i+1}.</b> ${q.q}</p>
+      <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+      <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
+    </div>`;
   });
 
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
   const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-  // Track Completion for Dashboard
+  // --- DASHBOARD SYNC ---
   localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
+  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">English Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
       </div>
+      <button onclick="window.location.href='../index.html'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
     </div>
   `;
 
   const finalHtml = summaryBox + detailHtml;
   localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
-  // ================= EMAIL NOTIFICATION =================
-  const emailParams = {
+  // --- EMAIL ---
+  emailjs.send("service_wq5yoyp", "template_doegpcp", {
     candidate_name: displayName.textContent,
     subject: MY_SUBJECT,
     score: correct,
@@ -375,62 +359,35 @@ function submitQuiz(){
     accuracy: accuracy + "%",
     time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
     test_date: new Date().toLocaleString("en-IN")
-  };
+  });
 
-  emailjs.send("service_wq5yoyp", "template_doegpcp", emailParams)
-  .then(res => console.log("✅ Email sent"), err => console.error("❌ Email failed", err));
-  // ======================================================
-
-  quizArea.innerHTML="";
-  palette.style.display="none"; 
-  navBtns.style.display="none";
-  submitBtn.style.display="none";
-  result.style.display="block";
-  result.innerHTML=finalHtml;
-  clearBtn.style.display="block";
-  window.scrollTo(0,0);
+  quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
+  submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
+  clearBtn.style.display="block"; window.scrollTo(0,0);
 }
 
 window.onload=function(){
   document.getElementById("totalQDisplay").textContent = questions.length;
   document.getElementById("testTime").value = questions.length;
-
   const final=localStorage.getItem("finalResult");
   const progress=localStorage.getItem("inProgress");
-  
   if(final){
     const d=JSON.parse(final);
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    displayName.textContent=d.name;
-    result.style.display="block";
-    result.innerHTML=d.html;
+    startScreen.style.display="none"; topBar.style.display="flex";
+    displayName.textContent=d.name; result.style.display="block"; result.innerHTML=d.html;
     clearBtn.style.display="block";
   } else if(progress){
     const p=JSON.parse(progress);
-    displayName.textContent=p.name;
-    answers=p.answers||{};
-    visited=p.visited||{};
-    currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0;
-    startTime=p.startTime||Date.now();
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    palette.style.display="flex";
-    navBtns.style.display="flex";
-    submitBtn.style.display="block";
-    startTimer();
-    renderQuestion();
+    displayName.textContent=p.name; answers=p.answers; visited=p.visited;
+    currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime;
+    startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex";
+    navBtns.style.display="flex"; submitBtn.style.display="block"; startTimer(); renderQuestion();
   }
 };
 
 function clearResult(){
-  if(confirm("Start new test? All previous results will be cleared.")){ 
-    localStorage.clear(); 
-    location.reload(); 
-  }
+  if(confirm("New test? Previous data will be lost.")){ localStorage.clear(); location.reload(); }
 }
 </script>
-
 </body>
 </html>
