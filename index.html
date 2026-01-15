@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NishuAbhyasi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 
     <style>
-        /* --- DESIGN CORE (ORIGINAL) --- */
+        /* --- ORIGINAL COLOR PALETTE --- */
         :root {
             --color-primary: #1a2a6c;
             --color-secondary: #2575fc;
@@ -32,89 +36,136 @@
         .bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
         @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
-        .bubble:nth-child(1) { left: 10%; width: 40px; height: 40px; animation-delay: 0s; }
-        .bubble:nth-child(2) { left: 30%; width: 20px; height: 20px; animation-delay: 5s; }
-        .bubble:nth-child(3) { left: 50%; width: 60px; height: 60px; animation-delay: 2s; }
-        .bubble:nth-child(4) { left: 70%; width: 30px; height: 30px; animation-delay: 8s; }
-        .bubble:nth-child(5) { left: 90%; width: 50px; height: 50px; animation-delay: 3s; }
 
-        /* --- NEW AESTHETIC TIME BAR --- */
+        /* --- BLUR OVERLAY --- */
+        #pageOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none; z-index: 1500; transition: 0.3s;
+        }
+
+        /* --- TIME BAR (Full Width) --- */
         .time-bar {
-            width: 95%; max-width: 1100px; margin: 15px auto 0;
-            padding: 10px 25px; background: rgba(255, 255, 255, 0.1);
+            width: 98%; margin: 15px auto 0;
+            padding: 12px 30px; background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
             border-radius: 50px; display: flex; justify-content: space-between;
             align-items: center; color: white; font-size: 14px; font-weight: 600;
             z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .clock-live { color: var(--color-accent); font-family: 'Courier New', monospace; font-size: 16px; }
 
-        /* Dashboard & Layout */
-        .wrapper { width: 100%; max-width: 1100px; position: relative; z-index: 2; padding: 20px; }
-        .welcome { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 35px; padding: 35px; text-align: center; margin-top: 15px; margin-bottom: 30px; }
-        .welcome .brand { font-size: 38px; font-weight: 900; color: #fff; }
+        /* --- WRAPPER (Changed to Full Width) --- */
+        .wrapper { 
+            width: 98%; /* Edge to Edge with minor padding */
+            position: relative; z-index: 2; padding: 10px 20px 40px 20px; 
+            transition: filter 0.3s; 
+        }
 
-        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .welcome { 
+            background: var(--glass); backdrop-filter: blur(25px); 
+            border: 1px solid var(--glass-border); border-radius: 35px; 
+            padding: 40px; text-align: center; margin-top: 15px; margin-bottom: 30px; 
+        }
+        
+        .welcome .brand { 
+            font-family: 'Marck Script', cursive; 
+            font-size: 64px; color: #fff; margin-top: 5px;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Dashboard Grid covering full screen */
+        .dashboard { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 25px; 
+            width: 100%;
+        }
+
         .column { display: flex; flex-direction: column; gap: 25px; }
 
-        .card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; transition: 0.5s; position: relative; }
+        .card { 
+            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; 
+            padding: 30px; display: flex; flex-direction: column; 
+            justify-content: space-between; min-height: 180px; transition: 0.5s; 
+            position: relative; 
+        }
         .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .card h3 { font-size: 20px; color: #fff; margin-bottom: 10px; }
+        .card h3 { font-size: 24px; color: #fff; margin-bottom: 12px; }
+        .card p { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.5; }
 
-        /* Badges & Scores */
-        .badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 50px; margin-left: 8px; vertical-align: middle; display: none; }
-        .badge-new { background: #f2994a; color: #fff; box-shadow: 0 0 10px #f2994a; animation: blink 1.5s infinite; }
+        .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; vertical-align: middle; display: none; }
+        .badge-new { background: #f2994a; color: #fff; animation: blink 1.5s infinite; }
         .badge-done { background: #16a34a; color: #fff; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        .score-text { font-size: 11px; color: #4ade80; margin-top: 5px; font-weight: 600; display: block; }
+        
+        .score-text { font-size: 12px; color: #4ade80; margin-top: 8px; font-weight: 600; display: block; }
 
-        .btn { margin-top: 16px; padding: 14px; border: none; border-radius: 15px; background: var(--btn-grad); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
-        .btn:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn { margin-top: 20px; padding: 16px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
+        .btn:hover { opacity: 0.9; transform: scale(1.01); box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4); }
 
-        /* --- STABLE FLOATING BUTTON --- */
+        /* --- ROBOT FAB --- */
         .floating-fab {
-            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
-            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 2000; transition: transform 0.2s;
+            cursor: pointer; z-index: 2000; overflow: hidden;
+            animation: robotPulse 2s infinite ease-in-out;
         }
-        .floating-fab:active { transform: scale(0.9); }
-        .floating-fab img { width: 70%; pointer-events: none; }
+        .floating-fab img { width: 70%; height: 70%; object-fit: contain; }
 
-        /* Glass Popup Box */
+        @keyframes robotPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.1); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
+        }
+
+        /* --- CRYSTAL POPUP --- */
         .help-popup {
-            position: fixed; bottom: 100px; right: 30px; width: 280px;
-            background: rgba(20, 30, 48, 0.9); backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.2); border-radius: 25px;
-            display: none; flex-direction: column; z-index: 1999;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4); color: #fff; padding: 25px; text-align: center;
+            position: fixed; bottom: 110px; right: 30px; width: 300px;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 30px;
+            display: none; flex-direction: column; z-index: 2000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #fff; padding: 25px; text-align: center;
         }
 
-        @media(max-width:768px){ 
+        .email-btn {
+            display: block; margin-top: 10px; padding: 14px;
+            background: white; color: #1a2a6c;
+            text-decoration: none; border-radius: 15px;
+            font-size: 15px; font-weight: 700;
+            transition: 0.3s; border: none;
+        }
+        .email-btn:hover { background: #f0f0f0; transform: translateY(-2px); }
+
+        /* Mobile Adjustments */
+        @media(max-width:900px){ 
             .dashboard { grid-template-columns: 1fr; } 
-            .welcome .brand { font-size: 30px; }
-            .time-bar { flex-direction: column; gap: 5px; border-radius: 20px; text-align: center; }
+            .wrapper { width: 95%; }
+            .welcome .brand { font-size: 48px; }
         }
     </style>
 </head>
 
 <body>
 
+    <div id="pageOverlay" onclick="toggleHelp()"></div>
+
     <div class="bubbles-container">
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     </div>
 
     <div class="time-bar">
-        <div>
-            <span id="live-date">...</span> | <span id="live-day">...</span>
-        </div>
-        <div id="live-clock" class="clock-live">00:00:00 AM</div>
+        <div><span id="live-date">...</span> | <span id="live-day">...</span></div>
+        <div id="live-clock" style="font-family: monospace; font-size: 18px;">00:00:00 AM</div>
     </div>
 
-    <div class="wrapper">
+    <div class="wrapper" id="mainWrapper">
         <div class="welcome">
-            <div style="color:rgba(255,255,255,0.7); font-size:14px; margin-bottom:5px;">WELCOME TO</div>
+            <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
             <div class="brand">NishuAbhyasi</div>
         </div>
 
@@ -122,19 +173,19 @@
             <div class="column">
                 <div class="card">
                     <h3>📘 English <span id="badge-English" class="badge"></span></h3>
-                    <p>Grammar, comprehension and vocabulary practice.</p>
+                    <p>Master Grammar, comprehension and vocabulary through interactive practice sets.</p>
                     <span id="score-English" class="score-text"></span>
                     <a href="tests/English.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
-                    <p>Logical reasoning and quantitative aptitude.</p>
+                    <p>Sharpen your logical reasoning and quantitative aptitude skills.</p>
                     <span id="score-Reasoning" class="score-text"></span>
                     <a href="tests/reasoning.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
-                    <p>Pedagogy and teaching methodology questions.</p>
+                    <p>Deep dive into Pedagogy and modern teaching methodology questions.</p>
                     <span id="score-Teaching" class="score-text"></span>
                     <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
                 </div>
@@ -143,27 +194,27 @@
             <div class="column">
                 <div class="card">
                     <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
-                    <p>Vyakaran, comprehension and language skills.</p>
+                    <p>Complete Vyakaran, comprehension and language skills for competitive exams.</p>
                     <span id="score-Hindi" class="score-text"></span>
                     <a href="tests/Hindi.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
-                    <p>Static GK, current affairs and basics.</p>
+                    <p>Daily Current Affairs, Static GK and General Knowledge updates.</p>
                     <span id="score-Awareness" class="score-text"></span>
                     <a href="tests/General_Awareness.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
-                    <p>The Ultimate Challenge! Mixed questions from all subjects.</p>
+                    <p>The Ultimate Challenge! Mixed mock questions from all subjects.</p>
                     <span id="score-AllInOne" class="score-text"></span>
                     <a href="tests/all_in_one.html" class="btn">Start Mega Test</a>
                 </div>
             </div>
         </div>
 
-        <div class="footer" style="margin-top:50px; text-align:center; color:#fff; opacity:0.8; padding-bottom:30px;">
-            © 2025 NishuAbhyasi | Learning Made Modern
+        <div class="footer" style="margin-top:60px; text-align:center; color:#fff; opacity:0.7; padding-bottom:30px; letter-spacing: 1px;">
+            © 2025 NishuAbhyasi | Designed for Excellence
         </div>
     </div>
 
@@ -172,37 +223,39 @@
     </div>
 
     <div id="helpBox" class="help-popup">
-        <h4 style="margin-bottom: 10px;">Help & Feedback 💡</h4>
-        <p style="font-size: 13px; opacity: 0.9; line-height: 1.4; margin-bottom: 20px;">
-            Facing technical issues? - Ping Yashwant
-        </p>
-        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
-            <a href="mailto:singhyashwant559@gmail.com" class="btn" style="display: block; margin-top: 0; background: #fff; color: #1a2a6c; text-decoration: none; font-size: 14px;">
-                Send Email
-            </a>
+        <h4 style="margin-bottom: 12px; font-size: 18px;">Help & Feedback 💡</h4>
+        <p style="font-size: 14px; opacity: 0.9; margin-bottom: 20px;">Facing technical issues or have suggestions? - Ping Yashwant</p>
+        <div style="background: rgba(255,255,255,0.08); padding: 15px; border-radius: 20px;">
+            <a href="mailto:singhyashwant559@gmail.com" class="email-btn">Send Email</a>
         </div>
-        <button onclick="toggleHelp()" style="margin-top: 15px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 12px;">Dismiss</button>
+        <button onclick="toggleHelp()" style="margin-top: 20px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 13px; font-weight: 600;">Dismiss</button>
     </div>
 
     <script>
         const TEST_CONFIG = {
-            "English": "ENG_SET_02",
-            "Reasoning": "REA_SET_01",
-            "Teaching": "TEA_SET_01",
-            "Hindi": "HIN_SET_01",
-            "Awareness": "GKA_SET_01",
-            "AllInOne": "AIO_SET_01"
+            "English": "ENG_SET_02", "Reasoning": "REA_SET_01", "Teaching": "TEA_SET_01",
+            "Hindi": "HIN_SET_01", "Awareness": "GKA_SET_01", "AllInOne": "AIO_SET_01"
         };
 
         function updateClock() {
             const now = new Date();
-            const date = now.toLocaleDateString('en-GB').replace(/\//g, '-');
-            const day = now.toLocaleDateString('en-US', { weekday: 'long' });
-            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            document.getElementById('live-date').innerText = now.toLocaleDateString('en-GB').replace(/\//g, '-');
+            document.getElementById('live-day').innerText = now.toLocaleDateString('en-US', { weekday: 'long' });
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        }
 
-            document.getElementById('live-date').innerText = date;
-            document.getElementById('live-day').innerText = day;
-            document.getElementById('live-clock').innerText = time;
+        function toggleHelp() {
+            const box = document.getElementById('helpBox');
+            const overlay = document.getElementById('pageOverlay');
+            const isVisible = box.style.display === 'flex';
+
+            if (isVisible) {
+                box.style.display = 'none';
+                overlay.style.display = 'none';
+            } else {
+                box.style.display = 'flex';
+                overlay.style.display = 'block';
+            }
         }
 
         function updateDashboard() {
@@ -210,11 +263,9 @@
                 const badge = document.getElementById(`badge-${sub}`);
                 const scoreLabel = document.getElementById(`score-${sub}`);
                 if(!badge) return;
-
                 const currentID = TEST_CONFIG[sub];
                 const isDone = localStorage.getItem(`done_${sub}_${currentID}`);
                 const savedScore = localStorage.getItem(`score_${currentID}`);
-
                 if (isDone === "true") {
                     badge.innerText = "COMPLETED ✅";
                     badge.className = "badge badge-done";
@@ -222,19 +273,9 @@
                 } else {
                     badge.innerText = "UPDATED 🔥";
                     badge.className = "badge badge-new";
-                    const lastID = localStorage.getItem(`last_id_${sub}`);
-                    if(lastID && lastID !== currentID) {
-                        localStorage.removeItem(`inProgress_${sub}`);
-                    }
-                    localStorage.setItem(`last_id_${sub}`, currentID);
                 }
                 badge.style.display = "inline-block";
             });
-        }
-
-        function toggleHelp() {
-            const box = document.getElementById('helpBox');
-            box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
         }
 
         window.onload = () => {
