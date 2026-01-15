@@ -170,7 +170,7 @@ button:hover{ transform: scale(1.05); }
 <div class="container">
 
 <h1>Target Test- Reasoning 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 14 Jan, 2026 - 12:10</p>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 15 Jan, 2026 - 11:49</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
@@ -212,40 +212,51 @@ button:hover{ transform: scale(1.05); }
 const questions = [
 
 
-{q: "एक व्यक्ति उत्तर की ओर 4km चलता है, फिर पूर्व की ओर 3km चलता है। वह अपने प्रारंभिक बिंदु से कितनी दूरी पर है?", options: ["5km", "7km", "1km", "12km"], answer: "5km", solution: "Pythagoras theorem: √(4² + 3²) = √(16 + 9) = √25 = 5km."},
-{q: "Nishu, Yashwant, Zuido Bhai, Bhau aur Nitesh ek ghere mein centre ki taraf munh karke baithe hain. Bhau, Nishu ke turant right side baithi hai. Zuido Bhai, Nitesh aur Yashwant ke beech mein hai. Nitesh, Nishu ke left se doosre sthan par baitha hai. Nishu ke turant left mein kaun baitha hai?", options: ["Yashwant", "Bhau", "Nitesh", "Zuido Bhai"], answer: "Yashwant", solution: "Ghere mein baithne ka kram Nishu -> Bhau -> Nitesh -> Zuido Bhai -> Yashwant hoga. Nishu ke left mein Yashwant hai."},
-{q: "श्रृंखला को पूरा करें: 7, 10, 14, 19, 25, ?", options: ["30", "31", "32", "33"], answer: "32", solution: "Logic: +3, +4, +5, +6, +7. Agla pad 25+7=32 hoga."},
-{q: "Nitesh ne Nishu ki photo ki taraf ishara karte huye kaha, 'Ye mere pita ke ikloute bete ki beti hai'. Nishu ka Nitesh se kya rishta hai?", options: ["Behen", "Beti", "Patni", "Maa"], answer: "Beti", solution: "Nitesh ke pita ka iklouta beta Nitesh khud hai. Nitesh ki beti = Nishu."},
-{q: "यदि 'COACH' को 'XLZXS' लिखा जाता है, तो 'PLAYER' को क्या लिखा जाएगा?", options: ["KOBVDI", "KOCVDI", "KOZVDI", "KOBVCI"], answer: "KOBVDI", solution: "Yahan Opposite letters ka use hua hai (A-Z, B-Y... P-K, L-O, A-Z, Y-B, E-V, R-I)."},
-{q: "Zuido Bhai ke paas Nishu se dugne paise hain. Nishu ke paas Bhau se 50 rupaye kam hain. Agar Bhau ke paas 100 rupaye hain, toh Zuido Bhai ke paas kitne hain?", options: ["50", "100", "150", "200"], answer: "100", solution: "Bhau = 100. Nishu = 100-50 = 50. Zuido Bhai = 50 * 2 = 100."},
-{q: "श्रृंखला: 1, 8, 27, 64, 125, ?", options: ["210", "216", "225", "256"], answer: "216", solution: "Ye Cubes ki series hai: 1³, 2³, 3³, 4³, 5³, 6³=216."},
-{q: "यदि 1 जनवरी 2024 को सोमवार था, तो 31 दिसंबर 2024 को कौन सा दिन होगा?", options: ["सोमवार", "मंगलवार", "बुधवार", "रविवार"], answer: "मंगलवार", solution: "2024 ek Leap Year hai. Leap year mein saal ka aakhri din pehle din se ek din aage hota hai (Somvar + 1)."},
-{q: "Nishu, Yashwant se lambi hai lekin Zuido Bhai se chhoti hai. Bhau aur Nitesh, Yashwant se chhote hain lekin Nitesh sabse chhota nahi hai. In sab mein sabse lamba kaun hai?", options: ["Nishu", "Zuido Bhai", "Bhau", "Nitesh"], answer: "Zuido Bhai", solution: "Height ka kram: Zuido Bhai > Nishu > Yashwant > Nitesh > Bhau. Sabse lamba Zuido Bhai hai."},
-{q: "विषम शब्द का चयन करें (Odd one out):", options: ["कानपुर", "विजयवाड़ा", "गंगा", "गुवाहाटी"], answer: "गंगा", solution: "Ganga ek nadi hai, baaki sabhi sheharon ke naam hain."},
-{q: "एक सुबह सूर्योदय के बाद, Suresh ek khambhe ke samne khada tha. Khambhe ki parchai Suresh ke theek danyi aur pad rahi thi. Suresh ka mukh kis disha mein tha?", options: ["Uttar", "Dakshin", "Purv", "Pashchim"], answer: "Dakshin", solution: "Subah parchai West mein hoti hai. Agar parchai Right mein hai, toh munh South ki taraf hoga."},
-{q: "Agar Nitesh, Yashwant se tez daudta hai aur Yashwant, Zuido Bhai ke barabar daudta hai, lekin Nishu sabse tez daudti hai, toh second position par sabse tez kaun daudta hai?", options: ["Yashwant", "Nitesh", "Zuido Bhai", "Nishu"], answer: "Nitesh", solution: "Daudne ka kram: Nishu > Nitesh > Yashwant = Zuido Bhai. Second par Nitesh hai."},
-{q: "यदि 'A' का अर्थ '+', 'B' का '-', 'C' का '×' है, तो 10 C 4 A 4 B 6 का मान क्या होगा?", options: ["38", "40", "42", "44"], answer: "38", solution: "10 × 4 + 4 - 6 = 40 + 4 - 6 = 38."},
-{q: "Nishu apne ghar se North ki taraf 10m chali, fir right mudkar Bhau ke ghar pahunchi. Wahan se wo dono South mein 10m chalkar Nitesh se mile. Ab wo apne shuruati point se kis direction mein hain?", options: ["North", "South", "East", "West"], answer: "East", solution: "Pehle North, fir Right (East), fir South 10m. Ab wo starting point ke bilkul East (Purv) mein hain."},
-{q: "दर्पण में देखने पर एक घड़ी 3:15 का समय दिखाती है। वास्तविक समय क्या है?", options: ["8:45", "9:45", "7:45", "8:15"], answer: "8:45", solution: "Mirror image ke liye 11:60 se ghatayein: 11:60 - 3:15 = 8:45."},
-{q: "Yashwant ne kaha, 'Nishu mere pita ke ikloute bete ki beti hai'. Yashwant ka Nishu se kya rishta hai?", options: ["Bhai", "Chacha", "Pita", "Dada"], answer: "Pita", solution: "Yashwant ke pita ka iklouta beta Yashwant khud hai. Yashwant ki beti Nishu hai, toh Yashwant pita hua."},
-{q: "जिस प्रकार 'बीमारी' का संबंध 'पैथोलॉजी' से है, उसी प्रकार 'ग्रहों' का संबंध किससे है?", options: ["ज्योतिष", "खगोल विज्ञान (Astronomy)", "भूविज्ञान", "मौसम विज्ञान"], answer: "खगोल विज्ञान (Astronomy)", solution: "Beemariyon ka adhyayan Pathology hai, Grahon ka Astronomy."},
-{q: "Nishu, Bhau aur Nitesh ek bench par baithe hain. Zuido Bhai unke theek piche khada hai. Agar Bhau aur Nitesh apni jagah badal lein, toh Zuido Bhai ke theek samne kaun hoga jo pehle Nitesh ke right mein baithi thi?", options: ["Nishu", "Bhau", "Nitesh", "Yashwant"], answer: "Nishu", solution: "Positioning aur swap ke baad Nishu ki location check karke answer nikala gaya hai."},
-{q: "लुप्त संख्या ज्ञात करें: 2, 6, 12, 20, 30, ?", options: ["40", "42", "44", "46"], answer: "42", solution: "Logic: n² + n ya +4, +6, +8, +10, +12. 30+12=42."},
-{q: "यदि दक्षिण को पूर्व कहा जाए और पश्चिम को दक्षिण कहा जाए, तो उत्तर को क्या कहा जाएगा?", options: ["पूर्व", "पश्चिम", "उत्तर-पूर्व", "दक्षिण-पश्चिम"], answer: "पश्चिम", solution: "Sabhi dishayein 90 degree clockwise ghoom rahi hain."},
-{q: "एक पंक्ति में सोहन का स्थान ऊपर से 7वाँ और नीचे से 26वाँ है। पंक्ति में कुल कितने व्यक्ति हैं?", options: ["32", "33", "34", "35"], answer: "32", solution: "Total = (Up + Down) - 1 = (7 + 26) - 1 = 32."},
-{q: "कथन: सभी पेन पेंसिल हैं। कुछ पेंसिल रबर हैं। निष्कर्ष: 1. कुछ पेन रबर हैं। 2. कोई पेन रबर नहीं है।", options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "या तो 1 या 2"], answer: "या तो 1 या 2", solution: "Complementary pair (Some + No) hone ke karan 'Either or' ka case banega."},
-{q: "एक आदमी की ओर इशारा करते हुए, राधिका ने कहा, 'उसका इकलौता भाई मेरी बेटी के पिता का पिता है'। वह आदमी राधिका से कैसे संबंधित है?", options: ["ससुर", "चाचा/ताऊ", "भाई", "दादा"], answer: "चाचा/ताऊ", solution: "Beti ka pita = Radhika ka pati. Pati ka pita = Sasur. Sasur ka bhai = Chacha/Tau."},
-{q: "0, 6, 24, 60, 120, ?", options: ["210", "240", "216", "180"], answer: "210", solution: "Logic: n³ - n. 1³-1, 2³-2, 3³-3... 6³-6 = 216-6 = 210."},
-{q: "शब्द 'TEACHER' के अक्षरों से कौन सा शब्द नहीं बनाया जा सकता?", options: ["REACH", "CHART", "TEA", "CHARE"], answer: "CHART", solution: "'TEACHER' mein 'R' ek baar hai aur 'S' nahi hai, par CHART mein 'R' ke saath 'A' bhi hai par 'S' ki dikkat nahi hai. Lekin 'CHART' mein 'R' doosri jagah hai, 'CHART' ban sakta hai lekin 'SEARCH' nahi. Answer option par depend karta hai."},
-{q: "5:30 बजे घड़ी की सुइयों के बीच का कोण क्या होगा?", options: ["15°", "30°", "45°", "60°"], answer: "15°", solution: "Formula: |(30H - 11/2 M)| = |(30*5 - 11/2*30)| = |150 - 165| = 15°."},
-{q: "यदि 16:64 :: 25:?", options: ["100", "125", "80", "150"], answer: "125", solution: "Logic: 4² : 4³ :: 5² : 5³. 5³=125."},
-{q: "विषम चुनें:", options: ["जनवरी", "मार्च", "मई", "जून"], answer: "जून", solution: "June mein 30 din hote hain, baaki sab mein 31."},
-{q: "यदि 'M' 13 है और 'MAT' 34 है, तो 'WAX' क्या होगा?", options: ["47", "48", "49", "50"], answer: "48", solution: "W(23) + A(1) + X(24) = 48."},
-{q: "कथन: सभी फल मीठे हैं। सभी आम फल हैं। निष्कर्ष: 1. सभी आम मीठे हैं। 2. कुछ मीठे फल हैं।", options: ["केवल 1", "केवल 2", "दोनों 1 और 2", "कोई नहीं"], answer: "दोनों 1 और 2", solution: "Venn diagram se dono nishkarsh sahi sabit hote hain."},
-{q: "यदि 'APPLE' को 50 लिखा जाता है, तो 'ORANGE' को क्या लिखा जाएगा?", options: ["60", "65", "70", "75"], answer: "60", solution: "A(1)+P(16)+P(16)+L(12)+E(5) = 50. ORANGE ka yog 60 hoga."},
-{q: "लुप्त पद ज्ञात करें: AZ, CX, EV, ?", options: ["GT", "GS", "HS", "IR"], answer: "GT", solution: "Pehle akshar mein +2 (A, C, E, G) aur doosra akshar opposite hai."},
-{q: "एक पासे (Dice) में 3 के विपरीत कौन सा अंक होगा, यदि सतहें 1,2,3 और 1,3,5 दी गई हों?", options: ["1", "3", "5", "2"], answer: "2", solution: "Common faces 1 aur 3 hain, isliye bacha hua 2, 5 ke opposite hoga (Standard Rule)."},
-	
+{q: "श्रृंखला को पूरा करें: 5, 11, 23, 47, 95, ?", options: ["190", "191", "181", "175"], answer: "191", solution: "Logic: (n * 2) + 1. So, 95 * 2 + 1 = 191."},
+{q: "लुप्त संख्या ज्ञात करें: 4, 9, 16, 25, 36, ?", options: ["42", "45", "49", "51"], answer: "49", solution: "Ye square series hai: 2², 3², 4², 5², 6², 7² = 49."},
+{q: "श्रृंखला: 100, 90, 81, 73, ?", options: ["65", "66", "70", "64"], answer: "66", solution: "Logic: -10, -9, -8, ab -7 hoga. 73 - 7 = 66."},
+{q: "गलत पद चुनें: 3, 5, 7, 9, 11, 13", options: ["3", "9", "13", "7"], answer: "9", solution: "Baaki sab prime numbers hain, lekin 9 ek composite number hai."},
+{q: "लुप्त पद: AZ, CX, EV, GT, ?", options: ["HS", "IR", "KP", "JQ"], answer: "IR", solution: "Pehla letter +2 ho raha hai (A, C, E, G, I) aur doosra peeche se opposite hai."},
+{q: "यदि 'CAT' = 24, तो 'DOG' = ?", options: ["24", "26", "22", "20"], answer: "26", solution: "D(4) + O(15) + G(7) = 26."},
+{q: "यदि 'FRIEND' को 'GSHOTJ' लिखा जाए, तो 'ENEMY' का पहला अक्षर क्या होगा?", options: ["F", "G", "D", "E"], answer: "F", solution: "Logic: Har letter +1 ho raha hai."},
+{q: "किसी कोड में 'WATER' को 'XYVIV' लिखा जाता है, तो 'FIRE' का कोड क्या होगा?", options: ["GJSD", "GJSF", "HKTG", "FMTW"], answer: "GJSF", solution: "Logic: W+1, A+2, T+3... isi tarah F+1, I+2, R+3, E+4."},
+{q: "यदि 'RED' = 6720, तो 'GREEN' का कोड क्या होगा?", options: ["1677199", "9207716", "1671299", "7209916"], answer: "9207716", solution: "Letters ki position ko reverse likha gaya hai."},
+{q: "यदि 'BOY' को 'YOB' लिखा जाता है, तो 'GIRL' को क्या लिखेंगे?", options: ["LRIG", "GLRI", "LIRG", "RIGL"], answer: "LRIG", solution: "Word ko reverse order mein likha gaya hai."},
+{q: "A, B का भाई है। C, A की माता है। D, C का पिता है। B का D से क्या संबंध है?", options: ["पुत्र", "पौत्र/नातिन", "पिता", "भाई"], answer: "पौत्र/नातिन", solution: "C maa hai, aur D nana hai. Toh B unka pota ya natin hoga."},
+{q: "एक महिला की ओर इशारा करते हुए एक आदमी ने कहा, 'उसका भाई मेरे पिता की इकलौती बेटी का पति है।' वह महिला उस आदमी की क्या है?", options: ["बहन", "पत्नी", "साली", "भाभी"], answer: "साली", solution: "Aadmi ke pita ki beti (behen) ka pati (jija). Jija ki behen hai."},
+{q: "राजन ने कहा, 'यह लड़की मेरे पिता की पत्नी की पोती है।' राजन का उस लड़की से क्या रिश्ता है?", options: ["भाई", "चाचा", "पिता", "दादा"], answer: "पिता", solution: "Pita ki patni (Maa) ki poti (Beti)."},
+{q: "M, N का बेटा है। O, N का पिता है। P, M का भाई है। P का O से क्या रिश्ता है?", options: ["पोता", "बेटा", "भाई", "पिता"], answer: "पोता", solution: "O, N ka pita hai aur M-P, N ke bete hain. Isliye O dada hai."},
+{q: "एक आदमी ने कहा, 'यह महिला मेरी माँ के पोते की माँ है।' वह महिला कौन है?", options: ["दादी", "पत्नी", "बहन", "चाची"], answer: "पत्नी", solution: "Maa ka pota (Beta), bete ki maa (Patni)."},
+{q: "एक व्यक्ति उत्तर की ओर 10 किमी चलता है, फिर दक्षिण की ओर 6 किमी चलता है, फिर पूर्व की ओर 3 किमी चलता है। अब वह शुरुआती बिंदु से कितनी दूर है?", options: ["5 किमी", "7 किमी", "10 किमी", "4 किमी"], answer: "5 किमी", solution: "Net North = 4, East = 3. Distance = √(4²+3²) = 5."},
+{q: "सूर्य उदय के समय, यदि आपकी पीठ सूर्य की ओर है, तो आपका बायां हाथ किस दिशा में होगा?", options: ["उत्तर", "दक्षिण", "पूर्व", "पश्चिम"], answer: "उत्तर", solution: "Suraj East mein hai, pith East mein toh munh West mein hoga. Left hand North dikhayega."},
+{q: "एक चूहा पूर्व की ओर 20 दौड़ता है, दाएँ मुड़कर 10 दौड़ता है, फिर दाएँ मुड़कर 9 दौड़ता है। अब उसका मुख किस दिशा में है?", options: ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], answer: "पश्चिम", solution: "Do baar daaye (right) mudne par direction opposite ho jati hai (East se West)."},
+{q: "शाम 5 बजे, राम की छाया उसके बाईं ओर पड़ रही है। राम का मुख किस दिशा में है?", options: ["उत्तर", "दक्षिण", "पूर्व", "पश्चिम"], answer: "उत्तर", solution: "Sham ko suraj West mein hota hai, chhaya East mein. Chhaya left tab hogi jab munh North hoga."},
+{q: "यदि दक्षिण-पूर्व, उत्तर हो जाए, तो पश्चिम क्या होगा?", options: ["उत्तर-पूर्व", "दक्षिण-पूर्व", "उत्तर-पश्चिम", "दक्षिण-पश्चिम"], answer: "दक्षिण-पूर्व", solution: "Directions ko 135 degree rotate kiya gaya hai."},
+{q: "कथन: सभी पेन पेंसिल हैं। सभी पेंसिल रबर हैं। निष्कर्ष: I. सभी पेन रबर हैं। II. कुछ रबर पेन हैं।", options: ["केवल I", "केवल II", "दोनों सही", "कोई नहीं"], answer: "दोनों सही", solution: "Venn diagram ke anusar dono nishkarsh sahi hain."},
+{q: "कथन: कुछ मेज कुर्सियां हैं। कुछ कुर्सियां अलमारी हैं। निष्कर्ष: I. कुछ मेज अलमारी हैं। II. कोई मेज अलमारी नहीं है।", options: ["केवल I", "केवल II", "या तो I या II", "दोनों गलत"], answer: "या तो I या II", solution: "Jab relation clear na ho aur Positive/Negative dono ho, toh 'Either-Or' lagta hai."},
+{q: "कथन: कोई कुत्ता बिल्ली नहीं है। सभी बिल्लियाँ सफेद हैं। निष्कर्ष: कुछ सफेद बिल्लियाँ हैं।", options: ["सही", "गलत", "कहा नहीं जा सकता", "दोनों सही"], answer: "सही", solution: "Sari billiyan safed hain, toh kuch safed part bilyon ka hoga hi."},
+{q: "कथन: सभी कारें बसें हैं। कुछ बसें ट्रक हैं। निष्कर्ष: सभी कारें ट्रक हैं।", options: ["सही", "गलत", "संभव है", "डेटा कम है"], answer: "गलत", solution: "Car aur Truck ka koi direct link nahi diya gaya hai."},
+{q: "कथन: कुछ किताबें कॉपी हैं। सभी कॉपी कागज़ हैं। निष्कर्ष: कुछ किताबें कागज़ हैं।", options: ["सही", "गलत", "शायद", "इनमें से कोई नहीं"], answer: "सही", solution: "Jo kitabe copy hain, wo apne aap kagaz bhi ho jayengi."},
+{q: "30 छात्रों की कक्षा में, राम का स्थान ऊपर से 11वाँ है। नीचे से उसका स्थान क्या होगा?", options: ["19वाँ", "20वाँ", "21वाँ", "22वाँ"], answer: "20वाँ", solution: "Total+1 - Position = 31 - 11 = 20."},
+{q: "मनोज, नवीन से बड़ा है। नवीन, अमित से छोटा है। अमित, मनोज से छोटा है। सबसे बड़ा कौन है?", options: ["मनोज", "नवीन", "अमित", "डेटा कम है"], answer: "मनोज", solution: "Order: Manoj > Amit > Naveen."},
+{q: "पेड़ों की एक पंक्ति में, एक पेड़ दोनों सिरों से 7वाँ है। पंक्ति में कुल कितने पेड़ हैं?", options: ["14", "13", "15", "12"], answer: "13", solution: "(7 + 7) - 1 = 13."},
+{q: "P, Q, R, S में S, P से बड़ा है। R, P से छोटा है लेकिन Q से बड़ा है। सबसे छोटा कौन है?", options: ["P", "Q", "R", "S"], answer: "Q", solution: "Order: S > P > R > Q."},
+{q: "कक्षा में रीता का स्थान ऊपर से 4 और नीचे से 26 है। कुल कितने छात्र हैं?", options: ["30", "29", "31", "28"], answer: "29", solution: "4 + 26 - 1 = 29."},
+{q: "यदि आज शनिवार है, तो 60 दिन बाद कौन सा दिन होगा?", options: ["गुरुवार", "शुक्रवार", "बुधवार", "मंगलवार"], answer: "बुधवार", solution: "60 को 7 से भाग देने पर शेष (Remainder) 4 आता है। Sat + 4 = Wed."},
+{q: "10:30 बजे घड़ी की दोनों सुइयों के बीच कितने डिग्री का कोण होगा?", options: ["135°", "120°", "105°", "90°"], answer: "135°", solution: "Formula: |30h - 11m/2| = |300 - 165| = 135."},
+{q: "वर्ष 2024 कैसा वर्ष है?", options: ["साधारण वर्ष", "लीप वर्ष", "शताब्दी वर्ष", "कोई नहीं"], answer: "लीप वर्ष", solution: "2024, 4 से पूरी तरह विभाजित होता है, इसलिए यह लीप वर्ष है."},
+{q: "बीते हुए कल से पहला दिन रविवार था, तो आने वाले कल के बाद का दिन क्या होगा?", options: ["गुरुवार", "शुक्रवार", "शनिवार", "बुधवार"], answer: "गुरुवार", solution: "Yesterday-1 = Sun, so Yesterday = Mon, Today = Tue, Tomorrow = Wed, Tomorrow+1 = Thu."},
+{q: "घड़ी में 3 बजे हैं। यदि मिनट की सुई उत्तर-पूर्व दिशा में है, तो घंटे की सुई किस दिशा में होगी?", options: ["दक्षिण-पूर्व", "उत्तर-पश्चिम", "दक्षिण-पश्चिम", "उत्तर"], answer: "दक्षिण-पूर्व", solution: "Angle logic se rotate kiya gaya hai."},
+{q: "शिक्षक, लेखक और संगीतकार के बीच संबंध दिखाएं:", options: ["अलग-अलग वृत्त", "आपस में काटते हुए तीन वृत्त", "एक के अंदर एक", "दो एक के अंदर"], answer: "आपस में काटते हुए तीन वृत्त", solution: "एक व्यक्ति तीनों (शिक्षक, लेखक, संगीतकार) हो सकता है."},
+{q: "विषम चुनें: वर्ग, आयत, त्रिभुज, घन (Cube)", options: ["वर्ग", "आयत", "त्रिभुज", "घन"], answer: "घन", solution: "घन (Cube) 3D आकृति है, बाकी सब 2D हैं."},
+{q: "स्त्री, माँ, डॉक्टर के लिए सबसे अच्छा आरेख कौन सा है?", options: ["माँ पूरी तरह स्त्री के अंदर", "तीनों अलग", "डॉक्टर बाहर", "कोई नहीं"], answer: "माँ पूरी तरह स्त्री के अंदर", solution: "सभी माँ स्त्रियां होती हैं, और कुछ माँ/स्त्री डॉक्टर हो सकती हैं."},
+{q: "एक टोकरी में 12 सेब हैं। आपने 4 ले लिए। आपके पास कितने सेब हैं?", options: ["12", "8", "4", "0"], answer: "4", solution: "Simple logic: jitne aapne liye wahi aapke paas hain."},
+{q: "विषम शब्द पहचानें: शिमला, ऊटी, नैनीताल, अमृतसर", options: ["शिमला", "ऊटी", "नैनीताल", "अमृतसर"], answer: "अमृतसर", solution: "बाकी सब हिल स्टेशन हैं."},
+{q: "यदि 'A' = 1, 'B' = 2... तो 'K' का स्थान क्या होगा?", options: ["10", "11", "12", "13"], answer: "11", solution: "K 11th alphabet hai."},
+{q: "नीचे दी गई श्रृंखला में कितने 8 ऐसे हैं जिनके ठीक पहले 6 है?", options: ["685682", "1", "2", "3"], answer: "2", solution: "Upar di gayi imaginary string mein '68' do baar aaya hai."},
+{q: "विषम चुनें: आँख, कान, नाक, हाथ", options: ["आँख", "कान", "नाक", "हाथ"], answer: "हाथ", solution: "आँख, कान, नाक ज्ञानेन्द्रियां (Sense organs) हैं."},
+{q: "एक परिवार में 2 पिता और 2 बेटे हैं। कम से कम कितने लोग होने चाहिए?", options: ["4", "3", "2", "5"], answer: "3", solution: "दादा, पिता और बेटा (कुल 3 लोग) में 2 पिता और 2 बेटे की शर्त पूरी होती है."},
+{q: "अक्षर 'E' का विपरीत (opposite) अक्षर क्या होता है?", options: ["V", "U", "W", "T"], answer: "V", solution: "Alphabetical order mein E aage se 5 aur V peeche se 5 par hai (EV - Evening)."},	
 ];
 
 let currentIndex=0,answers={},visited={};
@@ -483,6 +494,7 @@ function clearResult(){
 
 </body>
 </html>
+
 
 
 
