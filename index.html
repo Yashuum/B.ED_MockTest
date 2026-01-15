@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 
     <style>
-        /* --- ORIGINAL COLOR PALETTE --- */
         :root {
             --color-primary: #1a2a6c;
             --color-secondary: #2575fc;
@@ -32,20 +31,16 @@
 
         @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* Bubbles Background */
         .bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
         @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
 
-        /* --- BLUR OVERLAY --- */
         #pageOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: none; z-index: 1500; transition: 0.3s;
+            display: none; z-index: 1500;
         }
 
-        /* --- TIME BAR (Full Width) --- */
         .time-bar {
             width: 98%; margin: 15px auto 0;
             padding: 12px 30px; background: rgba(255, 255, 255, 0.1);
@@ -55,12 +50,7 @@
             z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        /* --- WRAPPER (Changed to Full Width) --- */
-        .wrapper { 
-            width: 98%; /* Edge to Edge with minor padding */
-            position: relative; z-index: 2; padding: 10px 20px 40px 20px; 
-            transition: filter 0.3s; 
-        }
+        .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 40px 20px; }
 
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); 
@@ -70,42 +60,47 @@
         
         .welcome .brand { 
             font-family: 'Marck Script', cursive; 
-            font-size: 64px; color: #fff; margin-top: 5px;
-            text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+            font-size: 64px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
         }
 
-        /* Dashboard Grid covering full screen */
-        .dashboard { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 25px; 
-            width: 100%;
-        }
-
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; width: 100%; }
         .column { display: flex; flex-direction: column; gap: 25px; }
 
+        /* --- SMOOTH SCROLL REVEAL (SLOW SPEED) --- */
         .card { 
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); 
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; 
             padding: 30px; display: flex; flex-direction: column; 
-            justify-content: space-between; min-height: 180px; transition: 0.5s; 
+            justify-content: space-between; min-height: 180px; 
+            
+            /* Animation Time increased to 1.2s for "Feel" */
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
+            
             position: relative; 
+            opacity: 0;
+            transform: translateX(-80px); /* Started from further left for better sweep */
         }
-        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .card h3 { font-size: 24px; color: #fff; margin-bottom: 12px; }
-        .card p { font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.5; }
 
-        .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; vertical-align: middle; display: none; }
+        /* Visible state class */
+        .card.reveal {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.4s; }
+        
+        .card h3 { font-size: 24px; color: #fff; margin-bottom: 12px; }
+
+        .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; display: none; }
         .badge-new { background: #f2994a; color: #fff; animation: blink 1.5s infinite; }
         .badge-done { background: #16a34a; color: #fff; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
-        .score-text { font-size: 12px; color: #4ade80; margin-top: 8px; font-weight: 600; display: block; }
+        .score-text { font-size: 13px; color: #4ade80; margin-top: 8px; font-weight: 700; display: block; }
 
         .btn { margin-top: 20px; padding: 16px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
-        .btn:hover { opacity: 0.9; transform: scale(1.01); box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4); }
+        .btn:hover { opacity: 0.9; transform: scale(1.01); }
 
-        /* --- ROBOT FAB --- */
         .floating-fab {
             position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
             background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px);
@@ -122,29 +117,18 @@
             100% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
         }
 
-        /* --- CRYSTAL POPUP --- */
         .help-popup {
             position: fixed; bottom: 110px; right: 30px; width: 300px;
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 30px;
             display: none; flex-direction: column; z-index: 2000;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #fff; padding: 25px; text-align: center;
         }
 
-        .email-btn {
-            display: block; margin-top: 10px; padding: 14px;
-            background: white; color: #1a2a6c;
-            text-decoration: none; border-radius: 15px;
-            font-size: 15px; font-weight: 700;
-            transition: 0.3s; border: none;
-        }
-        .email-btn:hover { background: #f0f0f0; transform: translateY(-2px); }
+        .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
 
-        /* Mobile Adjustments */
         @media(max-width:900px){ 
             .dashboard { grid-template-columns: 1fr; } 
-            .wrapper { width: 95%; }
             .welcome .brand { font-size: 48px; }
         }
     </style>
@@ -163,7 +147,7 @@
         <div id="live-clock" style="font-family: monospace; font-size: 18px;">00:00:00 AM</div>
     </div>
 
-    <div class="wrapper" id="mainWrapper">
+    <div class="wrapper">
         <div class="welcome">
             <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
             <div class="brand">NishuAbhyasi</div>
@@ -173,19 +157,19 @@
             <div class="column">
                 <div class="card">
                     <h3>📘 English <span id="badge-English" class="badge"></span></h3>
-                    <p>Master Grammar, comprehension and vocabulary through interactive practice sets.</p>
+                    <p>Grammar, comprehension and vocabulary practice sets.</p>
                     <span id="score-English" class="score-text"></span>
                     <a href="tests/English.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
-                    <p>Sharpen your logical reasoning and quantitative aptitude skills.</p>
+                    <p>Sharpen your logical reasoning and aptitude skills.</p>
                     <span id="score-Reasoning" class="score-text"></span>
                     <a href="tests/reasoning.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
-                    <p>Deep dive into Pedagogy and modern teaching methodology questions.</p>
+                    <p>Deep dive into Pedagogy and teaching methodology.</p>
                     <span id="score-Teaching" class="score-text"></span>
                     <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
                 </div>
@@ -194,26 +178,26 @@
             <div class="column">
                 <div class="card">
                     <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
-                    <p>Complete Vyakaran, comprehension and language skills for competitive exams.</p>
+                    <p>Complete Vyakaran and language skills for exams.</p>
                     <span id="score-Hindi" class="score-text"></span>
                     <a href="tests/Hindi.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
-                    <p>Daily Current Affairs, Static GK and General Knowledge updates.</p>
+                    <p>Static GK, current affairs and general basics.</p>
                     <span id="score-Awareness" class="score-text"></span>
                     <a href="tests/General_Awareness.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
-                    <p>The Ultimate Challenge! Mixed mock questions from all subjects.</p>
+                    <p>Ultimate Challenge! Mixed questions from all subjects.</p>
                     <span id="score-AllInOne" class="score-text"></span>
                     <a href="tests/all_in_one.html" class="btn">Start Mega Test</a>
                 </div>
             </div>
         </div>
 
-        <div class="footer" style="margin-top:60px; text-align:center; color:#fff; opacity:0.7; padding-bottom:30px; letter-spacing: 1px;">
+        <div class="footer" style="margin-top:60px; text-align:center; color:#fff; opacity:0.7; padding-bottom:30px;">
             © 2025 NishuAbhyasi | Designed for Excellence
         </div>
     </div>
@@ -223,12 +207,11 @@
     </div>
 
     <div id="helpBox" class="help-popup">
-        <h4 style="margin-bottom: 12px; font-size: 18px;">Help & Feedback 💡</h4>
-        <p style="font-size: 14px; opacity: 0.9; margin-bottom: 20px;">Facing technical issues or have suggestions? - Ping Yashwant</p>
+        <h4 style="margin-bottom: 12px; font-size: 18px;">Need to update Yashwant on any feedback / technical issue , please -</h4>
         <div style="background: rgba(255,255,255,0.08); padding: 15px; border-radius: 20px;">
             <a href="mailto:singhyashwant559@gmail.com" class="email-btn">Send Email</a>
         </div>
-        <button onclick="toggleHelp()" style="margin-top: 20px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 13px; font-weight: 600;">Dismiss</button>
+        <button onclick="toggleHelp()" style="margin-top: 20px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 13px;">Dismiss</button>
     </div>
 
     <script>
@@ -248,14 +231,8 @@
             const box = document.getElementById('helpBox');
             const overlay = document.getElementById('pageOverlay');
             const isVisible = box.style.display === 'flex';
-
-            if (isVisible) {
-                box.style.display = 'none';
-                overlay.style.display = 'none';
-            } else {
-                box.style.display = 'flex';
-                overlay.style.display = 'block';
-            }
+            box.style.display = isVisible ? 'none' : 'flex';
+            overlay.style.display = isVisible ? 'none' : 'block';
         }
 
         function updateDashboard() {
@@ -278,9 +255,32 @@
             });
         }
 
+        /* --- SMOOTH SCROLL REVEAL SCRIPT --- */
+        const revealCards = () => {
+            const observerOptions = {
+                threshold: 0.1, // Trigger as soon as 10% is visible
+                rootMargin: "0px 0px -20px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal');
+                    } else {
+                        // For reverse animation when scrolling up
+                        entry.target.classList.remove('reveal');
+                    }
+                });
+            }, observerOptions);
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => observer.observe(card));
+        };
+
         window.onload = () => {
             updateDashboard();
             updateClock();
+            revealCards(); 
             setInterval(updateClock, 1000);
         };
     </script>
