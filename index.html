@@ -38,9 +38,20 @@
         .bubble:nth-child(4) { left: 70%; width: 30px; height: 30px; animation-delay: 8s; }
         .bubble:nth-child(5) { left: 90%; width: 50px; height: 50px; animation-delay: 3s; }
 
+        /* --- NEW AESTHETIC TIME BAR --- */
+        .time-bar {
+            width: 95%; max-width: 1100px; margin: 15px auto 0;
+            padding: 10px 25px; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
+            border-radius: 50px; display: flex; justify-content: space-between;
+            align-items: center; color: white; font-size: 14px; font-weight: 600;
+            z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .clock-live { color: var(--color-accent); font-family: 'Courier New', monospace; font-size: 16px; }
+
         /* Dashboard & Layout */
         .wrapper { width: 100%; max-width: 1100px; position: relative; z-index: 2; padding: 20px; }
-        .welcome { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 35px; padding: 35px; text-align: center; margin-top: 20px; margin-bottom: 30px; }
+        .welcome { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 35px; padding: 35px; text-align: center; margin-top: 15px; margin-bottom: 30px; }
         .welcome .brand { font-size: 38px; font-weight: 900; color: #fff; }
 
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
@@ -83,6 +94,7 @@
         @media(max-width:768px){ 
             .dashboard { grid-template-columns: 1fr; } 
             .welcome .brand { font-size: 30px; }
+            .time-bar { flex-direction: column; gap: 5px; border-radius: 20px; text-align: center; }
         }
     </style>
 </head>
@@ -91,6 +103,13 @@
 
     <div class="bubbles-container">
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    </div>
+
+    <div class="time-bar">
+        <div>
+            <span id="live-date">...</span> | <span id="live-day">...</span>
+        </div>
+        <div id="live-clock" class="clock-live">00:00:00 AM</div>
     </div>
 
     <div class="wrapper">
@@ -166,7 +185,6 @@
     </div>
 
     <script>
-        // --- DASHBOARD CONFIG & UNIQUE KEY LOGIC ---
         const TEST_CONFIG = {
             "English": "ENG_SET_02",
             "Reasoning": "REA_SET_01",
@@ -175,6 +193,17 @@
             "Awareness": "GKA_SET_01",
             "AllInOne": "AIO_SET_01"
         };
+
+        function updateClock() {
+            const now = new Date();
+            const date = now.toLocaleDateString('en-GB').replace(/\//g, '-');
+            const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+
+            document.getElementById('live-date').innerText = date;
+            document.getElementById('live-day').innerText = day;
+            document.getElementById('live-clock').innerText = time;
+        }
 
         function updateDashboard() {
             Object.keys(TEST_CONFIG).forEach(sub => {
@@ -193,8 +222,6 @@
                 } else {
                     badge.innerText = "UPDATED 🔥";
                     badge.className = "badge badge-new";
-                    
-                    // Cleanup old drafts if version changed
                     const lastID = localStorage.getItem(`last_id_${sub}`);
                     if(lastID && lastID !== currentID) {
                         localStorage.removeItem(`inProgress_${sub}`);
@@ -205,17 +232,16 @@
             });
         }
 
-        // --- STABLE TOGGLE LOGIC ---
         function toggleHelp() {
             const box = document.getElementById('helpBox');
-            if (box.style.display === 'flex') {
-                box.style.display = 'none';
-            } else {
-                box.style.display = 'flex';
-            }
+            box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
         }
 
-        window.onload = updateDashboard;
+        window.onload = () => {
+            updateDashboard();
+            updateClock();
+            setInterval(updateClock, 1000);
+        };
     </script>
 </body>
 </html>
