@@ -209,8 +209,6 @@ const MY_SUBJECT = "English";
 const MY_TEST_ID = "ENG_SET_02";
 
 const questions = [
-
-  
 {q: "Passage: 'Plastic pollution is one of the most pressing environmental issues, as rapidly increasing production of disposable plastic products overwhelms the world’s ability to deal with them. Plastic takes hundreds of years to decompose, harming marine life and entering the human food chain.' Question: What is the main theme of the passage?", options: ["The history of plastic", "The benefits of disposal products", "The crisis of plastic pollution", "How to make plastic"], answer: "The crisis of plastic pollution", solution: "The passage discusses the environmental threat and long-lasting damage caused by plastic."},
 {q: "Passage: 'Plastic pollution is one of the most pressing environmental issues, as rapidly increasing production of disposable plastic products overwhelms the world’s ability to deal with them. Plastic takes hundreds of years to decompose, harming marine life and entering the human food chain.' Question: Which of the following is a result of plastic pollution mentioned in the text?", options: ["It dissolves in water quickly", "It harms marine life", "It makes the food chain safer", "It decomposes in 10 years"], answer: "It harms marine life", solution: "The text explicitly states it harms marine life and enters the food chain."},
 {q: "Passage: 'Plastic pollution is one of the most pressing environmental issues, as rapidly increasing production of disposable plastic products overwhelms the world’s ability to deal with them. Plastic takes hundreds of years to decompose, harming marine life and entering the human food chain.' Question: Choose a suitable summary for the passage.", options: ["Plastic is a durable material", "Increased plastic production is causing an environmental disaster", "Oceans are full of fish", "Recycling is very easy"], answer: "Increased plastic production is causing an environmental disaster", solution: "The summary captures the essence of the pollution crisis described."},
@@ -241,8 +239,6 @@ const questions = [
 {q: "Identify the part of speech: 'He runs FAST.'", options: ["Noun", "Verb", "Adverb", "Adjective"], answer: "Adverb", solution: "'Fast' here describes the verb 'runs', so it is an adverb."},
 {q: "Fill in the blank: 'He jumped ____ the river.'", options: ["in", "into", "on", "to"], answer: "into", solution: "'Into' is used to show movement towards the inside of something."},
 {q: "Select the synonym of 'COURAGE':", options: ["Fear", "Bravery", "Weakness", "Humility"], answer: "Bravery", solution: "Courage and Bravery both mean having the strength to face danger."}
-
-
 ];
 
 let currentIndex=0, answers={}, visited={};
@@ -317,7 +313,8 @@ function nextQ(){ if(currentIndex<questions.length-1){currentIndex++;renderQuest
 function prevQ(){ if(currentIndex>0){currentIndex--;renderQuestion();} }
 
 function saveProgress(){
-  localStorage.setItem("inProgress",JSON.stringify({
+  // ✅ UNIQUE KEY FOR PROGRESS
+  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
     name:displayName.textContent, answers, visited, currentIndex, totalSeconds, startTime
   }));
 }
@@ -325,7 +322,9 @@ function saveProgress(){
 function submitQuiz(){
   if(!confirm("Are you sure?")) return;
   clearInterval(timerInterval);
-  localStorage.removeItem("inProgress");
+  
+  // ✅ REMOVE ONLY THIS SUBJECT'S PROGRESS
+  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
   
   let correct=0, attempted=0;
   let detailHtml="<h2>Detailed Analysis</h2>";
@@ -361,7 +360,9 @@ function submitQuiz(){
   `;
 
   const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+  
+  // ✅ UNIQUE KEY FOR RESULT
+  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
   // --- EMAIL ---
   emailjs.send("service_wq5yoyp", "template_doegpcp", {
@@ -383,8 +384,11 @@ function submitQuiz(){
 window.onload=function(){
   document.getElementById("totalQDisplay").textContent = questions.length;
   document.getElementById("testTime").value = questions.length;
-  const final=localStorage.getItem("finalResult");
-  const progress=localStorage.getItem("inProgress");
+  
+  // ✅ CHECK ONLY THIS SUBJECT'S DATA
+  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
+  
   if(final){
     const d=JSON.parse(final);
     startScreen.style.display="none"; topBar.style.display="flex";
@@ -400,9 +404,13 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(confirm("New test? Previous data will be lost.")){ localStorage.clear(); location.reload(); }
+  if(confirm("New test? Previous data for this subject will be lost.")){ 
+    // ✅ ONLY CLEAR THIS SUBJECT
+    localStorage.removeItem(`finalResult_${MY_SUBJECT}`); 
+    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+    location.reload(); 
+  }
 }
 </script>
 </body>
 </html>
-
