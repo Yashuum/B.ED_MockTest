@@ -144,7 +144,6 @@ button:hover{ transform: scale(1.05); }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
 
-/* Solution Box Styling */
 .sol-box {
   margin-top:12px; 
   padding:12px; 
@@ -169,7 +168,7 @@ button:hover{ transform: scale(1.05); }
 <div class="container">
 
 <h1>Target Test- Hindi 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 15 Jan, 2026 - 12:38</p>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 15 Jan, 2026 - 18:38</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
@@ -207,66 +206,56 @@ button:hover{ transform: scale(1.05); }
 </div>
 
 <script>
-// --- CONFIGURATION ---
+// --- UNIQUE ID CONFIG ---
 const MY_SUBJECT = "Hindi";
 const MY_TEST_ID = "HIN_SET_01"; 
 
 const questions = [
 
-{q: "‘मिठास’ शब्द में कौन सी संज्ञा है?", options: ["जातिवाचक", "व्यक्तिवाचक", "भाववाचक", "समूहवाचक"], answer: "भाववाचक", solution: "मिठास एक गुण या स्वाद का अनुभव है, जिसे छुआ नहीं जा सकता, इसलिए यह भाववाचक संज्ञा है।"},
-{q: "‘कुत्ता’ शब्द किस संज्ञा का उदाहरण है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "जातिवाचक", solution: "यह संपूर्ण कुत्ता जाति का बोध कराता है।"},
-{q: "‘महात्मा बुद्ध’ शब्द में कौन सी संज्ञा है?", options: ["जातिवाचक", "व्यक्तिवाचक", "समूहवाचक", "भाववाचक"], answer: "व्यक्तिवाचक", solution: "किसी विशेष व्यक्ति का नाम होने के कारण यह व्यक्तिवाचक संज्ञा है।"},
-{q: "‘घी’ और ‘तेल’ किस संज्ञा के अंतर्गत आते हैं?", options: ["जातिवाचक", "द्रव्यवाचक", "भाववाचक", "समूहवाचक"], answer: "द्रव्यवाचक", solution: "मापने या तोलने वाली वस्तुओं को द्रव्यवाचक संज्ञा कहते हैं।"},
-{q: "‘सेना’ या ‘पुलिस’ शब्द में कौन सी संज्ञा है?", options: ["भाववाचक", "व्यक्तिवाचक", "समूहवाचक", "जातिवाचक"], answer: "समूहवाचक", solution: "ये शब्द व्यक्तियों के समूह का बोध कराते हैं।"},
-{q: "‘बचपन’ किस संज्ञा का उदाहरण है?", options: ["जातिवाचक", "व्यक्तिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "भाववाचक", solution: "बचपन जीवन की एक अवस्था का नाम है।"},
-{q: "‘हिमालय’ शब्द में कौन सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "समूहवाचक", "द्रव्यवाचक"], answer: "व्यक्तिवाचक", solution: "एक विशेष पर्वत का नाम होने के कारण यह व्यक्तिवाचक है।"},
-{q: "‘फल’ शब्द में कौन सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "जातिवाचक", solution: "फल संपूर्ण फलों की जाति का बोध कराता है।"},
-{q: "‘लोहा’ और ‘सोना’ किस संज्ञा के भेद हैं?", options: ["द्रव्यवाचक", "जातिवाचक", "व्यक्तिवाचक", "भाववाचक"], answer: "द्रव्यवाचक", solution: "धातुओं के नाम द्रव्यवाचक संज्ञा में आते हैं।"},
-{q: "‘सुंदरता’ शब्द में कौन सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "समूहवाचक"], answer: "भाववाचक", solution: "सुंदरता एक भाव या गुण का नाम है।"},
-{q: "‘पुस्तकालय’ शब्द में कौन सी संज्ञा है?", options: ["समूहवाचक", "जातिवाचक", "व्यक्तिवाचक", "भाववाचक"], answer: "समूहवाचक", solution: "पुस्तकों के संग्रह या समूह के स्थान को पुस्तकालय कहते हैं।"},
-{q: "‘शहर’ शब्द किस संज्ञा का बोध कराता है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "समूहवाचक"], answer: "जातिवाचक", solution: "यह किसी भी सामान्य शहर के लिए प्रयुक्त हो सकता है।"},
-{q: "‘कालिदास भारत के शेक्सपियर हैं’—यहाँ ‘शेक्सपियर’ में कौन सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "समूहवाचक"], answer: "जातिवाचक", solution: "जब किसी व्यक्ति के नाम का प्रयोग गुणों की तुलना के लिए हो, तो वह जातिवाचक बन जाता है।"},
-{q: "‘द्रव्यवाचक संज्ञा’ का उदाहरण कौन सा है?", options: ["गुच्छा", "पानी", "लड़का", "क्रोध"], answer: "पानी", solution: "पानी एक द्रव्य (तरल पदार्थ) है।"},
-{q: "‘मित्रता’ शब्द का संज्ञा भेद क्या है?", options: ["भाववाचक", "जातिवाचक", "व्यक्तिवाचक", "समूहवाचक"], answer: "भाववाचक", solution: "मित्र होने का भाव ही मित्रता है।"},
-{q: "‘वृक्ष से पत्ता गिरा’—इसमें कौन सा कारक है?", options: ["करण", "अपादान", "अधिकरण", "कर्म"], answer: "अपादान", solution: "अलग होने (Separation) के अर्थ में ‘से’ अपादान कारक की विभक्ति है।"},
-{q: "‘राम ने रावण को मारा’—यहाँ ‘रावण को’ में कौन सा कारक है?", options: ["कर्ता", "कर्म", "करण", "सम्प्रदान"], answer: "कर्म", solution: "क्रिया का प्रभाव जिस पर पड़े, उसे कर्म कारक कहते हैं।"},
-{q: "‘सीता चाकू से फल काटती है’—यहाँ ‘चाकू से’ में कौन सा कारक है?", options: ["अपादान", "करण", "सम्प्रदान", "अधिकरण"], answer: "करण", solution: "साधन (Instrument) के रूप में ‘से’ का प्रयोग करण कारक में होता है।"},
-{q: "‘गरीबों को अन्न दो’—इस वाक्य में कौन सा कारक है?", options: ["कर्म", "करण", "सम्प्रदान", "अपादान"], answer: "सम्प्रदान", solution: "जब किसी को कुछ प्रदान किया जाए, तो वह सम्प्रदान कारक होता है।"},
-{q: "‘छत पर बिल्ली बैठी है’—यहाँ ‘छत पर’ में कौन सा कारक है?", options: ["करण", "अपादान", "अधिकरण", "संबोधन"], answer: "अधिकरण", solution: "आधार (Location) का बोध कराने वाले को अधिकरण कारक कहते हैं।"},
-{q: "‘हे राम! रक्षा करो’—वाक्य में कौन सा कारक है?", options: ["संबोधन", "अपादान", "सम्प्रदान", "संबंध"], answer: "संबोधन", solution: "पुकारने या संबोधित करने के लिए संबोधन कारक का प्रयोग होता है।"},
-{q: "‘यह सोहन का घर है’—वाक्य में ‘का’ किस कारक का चिह्न है?", options: ["कर्ता", "संबंध", "करण", "अपादान"], answer: "संबंध", solution: "दो संज्ञाओं के बीच संबंध दिखाने के लिए संबंध कारक प्रयुक्त होता है।"},
-{q: "‘मोहन ने पाठ पढ़ा’—इसमें ‘ने’ किस कारक की विभक्ति है?", options: ["कर्ता", "कर्म", "करण", "सम्प्रदान"], answer: "कर्ता", solution: "क्रिया करने वाले को कर्ता कारक कहते हैं।"},
-{q: "‘वह पाँच मिनट में आएगा’—यहाँ कौन सा कारक है?", options: ["अधिकरण", "करण", "अपादान", "सम्प्रदान"], answer: "अधिकरण", solution: "समय की अवधि या स्थान बताने के लिए अधिकरण का प्रयोग होता है।"},
-{q: "‘गंगा हिमालय से निकलती है’—यहाँ कौन सा कारक है?", options: ["करण", "अपादान", "कर्म", "संबंध"], answer: "अपादान", solution: "उद्गम स्थल से अलग होने के अर्थ में अपादान कारक है।"},
-{q: "‘लड़का कुल्हाड़ी से पेड़ काटता है’—यहाँ ‘कुल्हाड़ी से’ में कारक है:", options: ["अपादान", "करण", "कर्म", "कर्ता"], answer: "करण", solution: "कुल्हाड़ी यहाँ काटने का साधन है।"},
-{q: "‘अरे! तुम यहाँ कब आए?’—वाक्य में कौन सा कारक है?", options: ["संबोधन", "अधिकरण", "अपादान", "करण"], answer: "संबोधन", solution: "‘अरे’ शब्द आश्चर्य या संबोधन प्रकट कर रहा है।"},
-{q: "‘राजा ने ब्राह्मण को दान दिया’—इसमें कौन सा कारक है?", options: ["कर्म", "सम्प्रदान", "संबंध", "अधिकरण"], answer: "सम्प्रदान", solution: "दान देने की क्रिया सम्प्रदान कारक के अंतर्गत आती है।"},
-{q: "‘मेज से कलम गिर गई’—यहाँ कौन सा कारक है?", options: ["करण", "अपादान", "अधिकरण", "कर्ता"], answer: "अपादान", solution: "कलम मेज से अलग हो गई है।"},
-{q: "‘राम की पुस्तक अच्छी है’—यहाँ ‘की’ किस कारक को दर्शाता है?", options: ["संबंध", "सम्प्रदान", "करण", "कर्ता"], answer: "संबंध", solution: "राम और पुस्तक के बीच संबंध बताया जा रहा है।"},
-{q: "‘पशुता’ किस प्रकार की संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "भाववाचक", solution: "पशु से बना भाववाचक शब्द ‘पशुता’ है।"},
-{q: "‘भीड़’ संज्ञा के किस भेद का उदाहरण है?", options: ["भाववाचक", "समूहवाचक", "जातिवाचक", "व्यक्तिवाचक"], answer: "समूहवाचक", solution: "भीड़ व्यक्तियों का एक समूह है।"},
-{q: "‘तेल’ किस प्रकार की संज्ञा है?", options: ["द्रव्यवाचक", "जातिवाचक", "व्यक्तिवाचक", "समूहवाचक"], answer: "द्रव्यवाचक", solution: "तरल पदार्थों के नाम द्रव्यवाचक होते हैं।"},
-{q: "‘यमुना’ में कौन सी संज्ञा है?", options: ["जातिवाचक", "व्यक्तिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "व्यक्तिवाचक", solution: "एक विशिष्ट नदी का नाम।"},
-{q: "‘ईमानदारी’ किस संज्ञा का बोध कराती है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "समूहवाचक"], answer: "भाववाचक", solution: "यह एक मानवीय गुण या भाव है।"},
-{q: "‘विद्यार्थी’ शब्द में कौन सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "जातिवाचक", solution: "संपूर्ण विद्यार्थी वर्ग का बोध कराता है।"},
-{q: "‘कोयला’ संज्ञा का कौन सा भेद है?", options: ["द्रव्यवाचक", "जातिवाचक", "भाववाचक", "व्यक्तिवाचक"], answer: "द्रव्यवाचक", solution: "खनिज पदार्थ द्रव्यवाचक में आते हैं।"},
-{q: "‘गरीबी’ किस संज्ञा के अंतर्गत आती है?", options: ["जातिवाचक", "भाववाचक", "द्रव्यवाचक", "व्यक्तिवाचक"], answer: "भाववाचक", solution: "एक आर्थिक अवस्था का नाम।"},
-{q: "‘परिवार’ शब्द संज्ञा का कौन सा प्रकार है?", options: ["समूहवाचक", "जातिवाचक", "भाववाचक", "व्यक्तिवाचक"], answer: "समूहवाचक", solution: "सदस्यों के समूह को परिवार कहते हैं।"},
-{q: "‘चाकू’ शब्द किस संज्ञा का उदाहरण है?", options: ["व्यक्तिवाचक", "जातिवाचक", "द्रव्यवाचक", "भाववाचक"], answer: "जातिवाचक", solution: "संपूर्ण चाकू वर्ग का बोध।"},
-{q: "‘अपादान कारक’ का विभक्ति चिह्न क्या है?", options: ["ने", "को", "से (अलग होना)", "के लिए"], answer: "से (अलग होना)", solution: "अपादान के लिए ‘से’ का प्रयोग अलगाव में होता है।"},
-{q: "‘कर्ता कारक’ का चिह्न कौन सा है?", options: ["ने", "को", "से", "में"], answer: "ने", solution: "कर्ता ने..."},
-{q: "‘करण कारक’ की विभक्ति क्या है?", options: ["ने", "को", "से (द्वारा)", "में"], answer: "से (द्वारा)", solution: "करण से (साधन के द्वारा)।"},
-{q: "‘अधिकरण कारक’ का चिह्न पहचानें:", options: ["को", "से", "में/पर", "हे/अरे"], answer: "में/पर", solution: "अधिकरण में/पर।"},
-{q: "‘सम्प्रदान कारक’ का चिह्न क्या है?", options: ["ने", "को/के लिए", "से", "का/की"], answer: "को/के लिए", solution: "सम्प्रदान को/के लिए।"}
+
+{q: "‘बुढ़ापा’ शब्द में कौन सी संज्ञा है?", options: ["जातिवाचक", "व्यक्तिवाचक", "भाववाचक", "समूहवाचक"], answer: "भाववाचक", solution: "बुढ़ापा एक अवस्था का नाम है, इसलिए यह भाववाचक संज्ञा है।"},
+{q: "‘मैं खुद चला जाऊंगा’—इस वाक्य में ‘खुद’ कौन सा सर्वनाम है?", options: ["पुरुषवाचक", "निश्चयवाचक", "निजवाचक", "संबंधवाचक"], answer: "निजवाचक", solution: "स्वयं या खुद के लिए प्रयुक्त होने वाले शब्द निजवाचक सर्वनाम कहलाते हैं।"},
+{q: "‘पानी’ शब्द में कौन सी संज्ञा है?", options: ["द्रव्यवाचक", "जातिवाचक", "भाववाचक", "व्यक्तिवाचक"], answer: "द्रव्यवाचक", solution: "तरल पदार्थों और धातुओं को द्रव्यवाचक संज्ञा में रखा जाता है।"},
+{q: "‘शायद कमरे में कोई छिपा है’—यहाँ ‘कोई’ कैसा सर्वनाम है?", options: ["निश्चयवाचक", "अनिश्चयवाचक", "प्रश्नवाचक", "निजवाचक"], answer: "अनिश्चयवाचक", solution: "जहाँ निश्चित व्यक्ति या वस्तु का बोध न हो, वहाँ अनिश्चयवाचक सर्वनाम होता है।"},
+{q: "‘मिठास’ शब्द व्याकरण की दृष्टि से क्या है?", options: ["विशेषण", "संज्ञा", "सर्वनाम", "क्रिया"], answer: "संज्ञा", solution: "मिठास एक भाववाचक संज्ञा है (मीठा विशेषण होता है)।"},
+{q: "‘सभा’ शब्द में कौन सी संज्ञा है?", options: ["समूहवाचक", "जातिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "समूहवाचक", solution: "सभा व्यक्तियों के समूह का बोध कराती है।"},
+{q: "‘जैसी करनी वैसी भरनी’—यहाँ ‘जैसी-वैसी’ कौन सा सर्वनाम है?", options: ["निश्चयवाचक", "संबंधवाचक", "निजवाचक", "पुरुषवाचक"], answer: "संबंधवाचक", solution: "दो वाक्यों या पदों के बीच संबंध बताने वाले शब्दों को संबंधवाचक सर्वनाम कहते हैं।"},
+{q: "‘वह बहुत सुंदर है’—इस वाक्य में ‘सुंदर’ क्या है?", options: ["संज्ञा", "विशेषण", "सर्वनाम", "प्रविशेषण"], answer: "विशेषण", solution: "सुंदर शब्द विशेषता बता रहा है, इसलिए यह विशेषण है।"},
+{q: "‘दो किलो दूध’—इसमें कौन सा विशेषण है?", options: ["गुणवाचक", "संख्यावाचक", "परिमाणवाचक", "सार्वनामिक"], answer: "परिमाणवाचक", solution: "नाप-तौल का बोध कराने वाले शब्द परिमाणवाचक विशेषण कहलाते हैं।"},
+{q: "‘यह लड़का बहुत बुद्धिमान है’—यहाँ ‘यह’ क्या है?", options: ["संज्ञा", "सार्वनामिक विशेषण", "गुणवाचक विशेषण", "क्रिया"], answer: "सार्वनामिक विशेषण", solution: "जब सर्वनाम शब्द संज्ञा से पहले आकर उसकी विशेषता बताए, तो वह सार्वनामिक विशेषण होता है।"},
+{q: "‘हिमालय से गंगा निकलती है’—यहाँ कौन सा कारक है?", options: ["करण", "अपादान", "सम्प्रदान", "अधिकरण"], answer: "अपादान", solution: "अलग होने (अलगाव) के अर्थ में अपादान कारक ('से') प्रयुक्त होता है।"},
+{q: "‘राम ने रावण को मारा’—यहाँ ‘को’ किस कारक का चिह्न है?", options: ["कर्ता", "कर्म", "करण", "अपादान"], answer: "कर्म", solution: "क्रिया का फल जिस पर पड़ता है उसे कर्म कारक कहते हैं।"},
+{q: "‘मेज पर पुस्तक रखी है’—यहाँ ‘पर’ कौन सा कारक है?", options: ["करण", "अपादान", "अधिकरण", "सम्प्रदान"], answer: "अधिकरण", solution: "आधार या स्थान बताने के लिए अधिकरण कारक का प्रयोग होता है।"},
+{q: "‘वह चाकू से फल काटता है’—यहाँ कौन सा कारक है?", options: ["करण", "अपादान", "कर्ता", "अधिकरण"], answer: "करण", solution: "साधन (Tool) के रूप में करण कारक ('से') का प्रयोग होता है।"},
+{q: "‘हे प्रभो! रक्षा करो’—इसमें कौन सा कारक है?", options: ["अधिकरण", "संबोधन", "संबंध", "अपादान"], answer: "संबोधन", solution: "पुकारने के लिए संबोधन कारक का प्रयोग किया जाता है।"},
+{q: "‘गरीबों को वस्त्र दो’—इस वाक्य में कौन सा कारक है?", options: ["कर्म", "सम्प्रदान", "करण", "अपादान"], answer: "सम्प्रदान", solution: "दान देने या किसी के लिए कुछ करने के अर्थ में सम्प्रदान कारक होता है।"},
+{q: "‘सीता की बहन बीमार है’—यहाँ ‘की’ क्या है?", options: ["कर्ता", "संबंध", "अधिकरण", "करण"], answer: "संबंध", solution: "संबंध बताने के लिए का, की, के का प्रयोग होता है।"},
+{q: "‘अपादान कारक’ का विभक्ति चिह्न क्या है?", options: ["ने", "को", "से (अलग होना)", "के लिए"], answer: "से (अलग होना)", solution: "अपादान का अर्थ अलगाव से है।"},
+{q: "‘कुल्हाड़ी से पेड़ गिरता है’—यहाँ ‘कुल्हाड़ी से’ में कारक है:", options: ["करण", "अपादान", "कर्म", "अधिकरण"], answer: "करण", solution: "साधन के रूप में कुल्हाड़ी का उपयोग हो रहा है।"},
+{q: "‘लड़का छत से गिर पड़ा’—यहाँ ‘से’ में कारक बताइए:", options: ["करण", "अपादान", "सम्प्रदान", "संबंध"], answer: "अपादान", solution: "छत से अलग होने के कारण अपादान कारक है।"},
+{q: "‘सोना’ (Gold) शब्द में कौन सी संज्ञा है?", options: ["जातिवाचक", "द्रव्यवाचक", "व्यक्तिवाचक", "भाववाचक"], answer: "द्रव्यवाचक", solution: "धातु होने के कारण द्रव्यवाचक संज्ञा है।"},
+{q: "‘क्रोध’ शब्द किस संज्ञा का भेद है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "समूहवाचक"], answer: "भाववाचक", solution: "क्रोध एक मानसिक भाव है।"},
+{q: "‘हम’ कैसा सर्वनाम है?", options: ["उत्तम पुरुष", "मध्यम पुरुष", "अन्य पुरुष", "निजवाचक"], answer: "उत्तम पुरुष", solution: "बोलने वाला (वक्ता) उत्तम पुरुष ('मैं', 'हम') होता है।"},
+{q: "‘कोई आ रहा है’—वाक्य में ‘कोई’ क्या है?", options: ["संज्ञा", "विशेषण", "सर्वनाम", "क्रिया"], answer: "सर्वनाम", solution: "यह एक अनिश्चयवाचक सर्वनाम है।"},
+{q: "‘विशेषण’ के कितने मुख्य भेद होते हैं?", options: ["3", "4", "5", "6"], answer: "4", solution: "विशेषण के 4 भेद हैं: गुणवाचक, संख्यावाचक, परिमाणवाचक और सार्वनामिक।"},
+{q: "‘थोड़ा पानी दो’—इसमें ‘थोड़ा’ कैसा विशेषण है?", options: ["निश्चित परिमाणवाचक", "अनिश्चित परिमाणवाचक", "संख्यावाचक", "गुणवाचक"], answer: "अनिश्चित परिमाणवाचक", solution: "मात्रा निश्चित नहीं है, इसलिए अनिश्चित परिमाणवाचक।"},
+{q: "‘गंगा’ शब्द में कौन सी संज्ञा है?", options: ["जातिवाचक", "व्यक्तिवाचक", "समूहवाचक", "द्रव्यवाचक"], answer: "व्यक्तिवाचक", solution: "विशेष नदी का नाम होने के कारण।"},
+{q: "‘संज्ञा’ के स्थान पर प्रयुक्त होने वाले शब्दों को क्या कहते हैं?", options: ["विशेषण", "क्रिया", "सर्वनाम", "अव्यय"], answer: "सर्वनाम", solution: "परिभाषा के अनुसार सर्वनाम संज्ञा की जगह आते हैं।"},
+{q: "‘सम्प्रदान कारक’ का चिह्न पहचानें:", options: ["को", "से", "के लिए", "पर"], answer: "के लिए", solution: "सम्प्रदान = के लिए।"},
+{q: "‘अरे! तुम अभी यहीं हो’—यहाँ कौन सा कारक है?", options: ["अधिकरण", "संबोधन", "संबंध", "करण"], answer: "संबोधन", solution: "संबोधन चिह्न (!) और शब्द से स्पष्ट है।"},
+{q: "‘मैदान में बच्चे खेल रहे हैं’—यहाँ ‘में’ कारक है:", options: ["अधिकरण", "अपादान", "करण", "सम्प्रदान"], answer: "अधिकरण", solution: "स्थान का बोध कराने वाला।"},
+{q: "‘वह’ किस प्रकार का सर्वनाम है?", options: ["निश्चयवाचक", "निजवाचक", "संबंधवाचक", "प्रश्नवाचक"], answer: "निश्चयवाचक", solution: "निश्चित वस्तु या व्यक्ति की ओर संकेत करने वाला।"},
+{q: "‘परिवार’ शब्द में कौन सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "समूहवाचक", "भाववाचक"], answer: "समूहवाचक", solution: "व्यक्तियों के समूह का बोध।"},
+{q: "‘चार लीटर तेल’—इसमें विशेषण है:", options: ["संख्यावाचक", "गुणवाचक", "परिमाणवाचक", "सार्वनामिक"], answer: "परिमाणवाचक", solution: "तौल (लीटर) का बोध कराने वाला।"},
+{q: "‘राम की बहन’—यहाँ ‘की’ कारक चिह्न है:", options: ["अपादान", "संबंध", "करण", "अधिकरण"], answer: "संबंध", solution: "संबंध बताने वाला विभक्ति चिह्न।"}
+
+  
 ];
 
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
-  if(localStorage.getItem("finalResult")){
-    alert("Test already submitted"); return;
-  }
   if(!candidateName.value || !testTime.value) {
     alert("Please enter Name and Time"); return;
   }
@@ -284,7 +273,6 @@ function startTest(){
 }
 
 function startTimer(){
-  updateTimer();
   timerInterval=setInterval(()=>{
     totalSeconds--;
     updateTimer();
@@ -342,7 +330,7 @@ function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuesti
 function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
 function saveProgress(){
-  localStorage.setItem("inProgress",JSON.stringify({
+  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
     name:displayName.textContent,
     answers,visited,currentIndex,totalSeconds,startTime
   }));
@@ -351,7 +339,7 @@ function saveProgress(){
 function submitQuiz(){
   if(!confirm("Are you sure you want to submit the Hindi test?")) return;
   clearInterval(timerInterval);
-  localStorage.removeItem("inProgress");
+  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
   let correct=0, attempted=0;
   let detailHtml="<h2>Detailed Analysis</h2>";
   
@@ -364,7 +352,7 @@ function submitQuiz(){
         <p><b>Q${i+1}.</b> ${q.q}</p>
         <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
         <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Solution not available for this question."}
+          <b>Logic:</b> ${q.solution || "Solution not available."}
         </div>
       </div>`;
   });
@@ -372,10 +360,8 @@ function submitQuiz(){
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
   const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-  // --- DASHBOARD SYNC LOGIC (Added as requested) ---
   localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
   localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
-  // --------------------------------------------------
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
@@ -391,10 +377,9 @@ function submitQuiz(){
   `;
 
   const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem("finalResult", JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
-  // ================= EMAIL NOTIFICATION =================
-  const emailParams = {
+  emailjs.send("service_wq5yoyp", "template_doegpcp", {
     candidate_name: displayName.textContent,
     subject: MY_SUBJECT,
     score: correct,
@@ -403,61 +388,41 @@ function submitQuiz(){
     accuracy: accuracy + "%",
     time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
     test_date: new Date().toLocaleString("en-IN")
-  };
+  });
 
-  emailjs.send("service_wq5yoyp", "template_doegpcp", emailParams)
-  .then(res => console.log("✅ Email sent"), err => console.error("❌ Email failed", err));
-
-  quizArea.innerHTML="";
-  palette.style.display="none"; 
-  navBtns.style.display="none";
-  submitBtn.style.display="none";
-  result.style.display="block";
-  result.innerHTML=finalHtml;
-  clearBtn.style.display="block";
-  window.scrollTo(0,0);
+  quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
+  submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
+  clearBtn.style.display="block"; window.scrollTo(0,0);
 }
 
 window.onload=function(){
   document.getElementById("totalQDisplay").textContent = questions.length;
   document.getElementById("testTime").value = questions.length;
 
-  const final=localStorage.getItem("finalResult");
-  const progress=localStorage.getItem("inProgress");
+  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
   
   if(final){
     const d=JSON.parse(final);
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    displayName.textContent=d.name;
-    result.style.display="block";
-    result.innerHTML=d.html;
+    startScreen.style.display="none"; topBar.style.display="flex";
+    displayName.textContent=d.name; result.style.display="block"; result.innerHTML=d.html;
     clearBtn.style.display="block";
   } else if(progress){
     const p=JSON.parse(progress);
-    displayName.textContent=p.name;
-    answers=p.answers||{};
-    visited=p.visited||{};
-    currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0;
-    startTime=p.startTime||Date.now();
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    palette.style.display="flex";
-    navBtns.style.display="flex";
-    submitBtn.style.display="block";
-    startTimer();
-    renderQuestion();
+    displayName.textContent=p.name; answers=p.answers||{}; visited=p.visited||{};
+    currentIndex=p.currentIndex||0; totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
+    startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex";
+    navBtns.style.display="flex"; submitBtn.style.display="block"; startTimer(); renderQuestion();
   }
 };
 
 function clearResult(){
-  if(confirm("Start new test? All previous results will be cleared.")){ 
-    localStorage.clear(); 
+  if(confirm("Start new test? Hindi results will be cleared.")){ 
+    localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
+    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
     location.reload(); 
   }
 }
 </script>
-
 </body>
 </html>
