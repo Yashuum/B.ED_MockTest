@@ -372,6 +372,7 @@ function submitQuiz(){
 
   // Track Progress for Dashboard
   localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
+  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
 
   if (accuracy >= 50) {
     const certData = {
@@ -398,6 +399,7 @@ function submitQuiz(){
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
       </div>
+      <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
     </div>
   `;
 
