@@ -326,7 +326,7 @@ const questions = [
 {q: "NCF 2005 का मुख्य सूत्र क्या है?", options: ["शिक्षा बिना बोझ के", "शिक्षा सबके लिए", "कठोर शिक्षा", "रोजगार शिक्षा"], answer: "शिक्षा बिना बोझ के"},
 {q: "ऑपरेशन ब्लैकबोर्ड किससे संबंधित है?", options: ["प्राथमिक शिक्षा", "माध्यमिक शिक्षा", "उच्च शिक्षा", "महिला शिक्षा"], answer: "प्राथमिक शिक्षा"},
 {q: "खेल विधि के प्रतिपादक कौन हैं?", options: ["कुल्डवेल कुक", "फ्रॉबेल", "पियाजे", "स्किनर"], answer: "कुल्डवेल कुक"},
-{q: "दृश्य-श्रव्य सामग्री का उदाहरण है:", options: ["रे디오", "टेलीविजन", "चार्ट", "ब्लैकबोर्ड"], answer: "टेलीविजन"},
+{q: "दृश्य-श्रव्य सामग्री का उदाहरण है:", options: ["रेडियो", "टेलीविजन", "चार्ट", "ब्लैकबोर्ड"], answer: "टेलीविजन"},
 {q: "शिक्षक को समाज में क्या कहा जाता है?", options: ["राष्ट्र निर्माता", "नौकर", "अधिकारी", "उपदेशक"], answer: "राष्ट्र निर्माता"},
 {q: "बालक का प्रथम विद्यालय कौन सा है?", options: ["घर/परिवार", "स्कूल", "समाज", "आँगनबाड़ी"], answer: "घर/परिवार"},
 {q: "प्रोजेक्ट विधि के जन्मदाता कौन हैं?", options: ["किलपैट्रिक", "अरस्तू", "सुकरात", "प्लेटो"], answer: "किलपैट्रिक"},
@@ -441,8 +441,10 @@ function submitQuiz(){
   const timeTaken = Math.floor((Date.now() - startTime) / 1000);
   const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
 
-  // Track Progress for Dashboard
+  // --- DASHBOARD SYNC LOGIC (Added) ---
   localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
+  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
+  // ------------------------------------
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
@@ -453,6 +455,7 @@ function submitQuiz(){
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
       </div>
+      <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
     </div>
   `;
 
