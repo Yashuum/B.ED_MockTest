@@ -209,10 +209,13 @@
                 } else {
                     badge.innerText = "UPDATED 🔥";
                     badge.className = "badge badge-new";
+                    
+                    // --- UNIQUE KEY FIX ---
+                    // अगर SET ID बदल गई है, तो सिर्फ उस सब्जेक्ट का ड्राफ्ट साफ़ करो
                     const lastSessionID = localStorage.getItem(`last_id_${sub}`);
                     if(lastSessionID && lastSessionID !== currentID) {
-                        localStorage.removeItem("finalResult");
-                        localStorage.removeItem("inProgress");
+                        // पुराने कॉमन कीज़ को यहाँ से नहीं हटाएंगे क्योंकि वो अब सब्जेक्ट स्पेसिफिक होंगे
+                        localStorage.removeItem(`inProgress_${sub}`); 
                     }
                     localStorage.setItem(`last_id_${sub}`, currentID);
                 }
@@ -281,4 +284,3 @@
     </script>
 </body>
 </html>
-
