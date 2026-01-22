@@ -1,427 +1,429 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mock Test – English by Yash</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NishuAbhyasi – English by Yash</title>
+    <style>
+        :root{
+            --color-primary: #1a2a6c;
+            --color-secondary: #2575fc;
+            --color-accent: #f2994a;
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --success: #16a34a;
+            --danger: #ef4444;
+            --review: #8b5cf6;
+            --challenge: #f59e0b;
+        }
+        *{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        body{
+            min-height:100vh;
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+            background-size: 300% 300%;
+            animation: dynamicFlow 18s ease-in-out infinite;
+            color: #fff;
+            padding: 20px 10px;
+        }
+        @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+        h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-<style>
-/* Professional Glassmorphism Theme */
-:root{
-  --color-primary: #1a2a6c;
-  --color-secondary: #2575fc;
-  --color-accent: #f2994a;
-  --glass: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --success: #16a34a;
-  --danger: #ef4444;
-}
+        .start-screen{ background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); padding: 40px 20px; border-radius: 30px; text-align:center; margin-top: 50px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .input-row { display: flex; gap: 15px; width: 100%; max-width: 600px; justify-content: center; }
+        .start-screen input, .start-screen select { 
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); 
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; outline: none; 
+        }
+		.start-screen input::placeholder { color: white !important; opacity: 1; }
+        .start-screen option { color: #000; }
+        
+        .q-count-sticker { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
+        
+        button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        button:hover{ transform: scale(1.05); }
+        .btn-secondary { background: rgba(255,255,255,0.15); }
+        .btn-review { background: var(--review); }
+        .btn-challenge { background: var(--challenge); }
+        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; }
 
-*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
+        .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
+        
+        #palette{ display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; justify-content: center; padding: 10px; }
+        .palette span{ width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px; }
+        .palette .visited{ border: 2px solid var(--color-secondary); }
+        .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .palette .marked-review{ background: var(--review); }
+        .palette .challenged{ background: var(--challenge); }
 
-body{
-  min-height:100vh;
-  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
-  background-size: 300% 300%;
-  animation: dynamicFlow 18s ease-in-out infinite;
-  color: #fff;
-  padding: 20px 10px;
-}
-
-@keyframes dynamicFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
-
-h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-/* START SCREEN */
-.start-screen{
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  padding: 40px 20px;
-  border-radius: 30px;
-  text-align:center;
-  margin-top: 50px;
-}
-
-.start-screen input {
-  width: 100%;
-  max-width: 300px;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 15px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff !important;
-  font-size: 16px;
-  outline: none;
-}
-
-.start-screen input::placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.q-count-sticker {
-  margin: 5px auto 15px;
-  width: fit-content;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 20px;
-  border-radius: 50px;
-  border: 1px solid var(--glass-border);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #4facfe;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
-}
-
-button{
-  padding: 14px 28px;
-  border: none;
-  border-radius: 15px;
-  background: linear-gradient(135deg, #ff9800, #ff5722);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  transition: 0.3s;
-}
-button:hover{ transform: scale(1.05); }
-
-.top-bar{
-  display:none; justify-content:space-between; align-items:center;
-  padding:15px 25px; background: var(--glass);
-  backdrop-filter: blur(15px);
-  border:1px solid var(--glass-border); border-radius:50px;
-  position:sticky; top:10px; z-index:100; margin-bottom:15px;
-}
-.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
-
-#palette{ 
-  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
-  justify-content: center; padding: 10px;
-}
-.palette span{
-  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
-  border-radius:10px; background: rgba(255,255,255,0.1); 
-  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
-}
-.palette .visited{ background: var(--color-secondary); }
-.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
-
-.quiz-card{
-  background: var(--glass); border:1px solid var(--glass-border);
-  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
-}
-.options label{
-  display:flex; align-items: center; gap:12px; padding:14px; 
-  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
-  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
-}
-.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
-
-.nav{ display:flex; justify-content:space-between; margin-top:20px; }
-.btn-secondary { background: rgba(255,255,255,0.15); }
-
-.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
-.correct{ color: #4ade80; font-weight:bold; }
-.wrong{ color: #f87171; font-weight:bold; }
-
-.sol-box {
-  margin-top:12px; 
-  padding:12px; 
-  background:rgba(242, 153, 74, 0.15); 
-  border-radius:12px; 
-  font-size:14px; 
-  color:#ffcc80;
-  border: 1px dashed var(--color-accent);
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init("L8kGW-X7JOiYaycH5");
-  })();
-</script>
+        .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; }
+        .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s; }
+        .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
+        
+        .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
+        .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+        .correct{ color: #4ade80; font-weight:bold; }
+        .wrong{ color: #f87171; font-weight:bold; }
+        .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script> (function () { emailjs.init("L8kGW-X7JOiYaycH5"); })(); </script>
 </head>
-
 <body>
-
 <div class="container">
-  <h1>Target Test- English 2026</h1>
-  <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 21 Jan 2026 - 11:17</p>
-
-  <div class="start-screen" id="startScreen">
-    <input id="candidateName" placeholder="Enter your name">
-    <input id="testTime" type="number" placeholder="Time (minutes)">
+    <h1>Target Test- English 2026</h1>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026 - 01:59 PM</p>
     
-    <div class="q-count-sticker">
-      <span class="pulse-dot"></span>
-      <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+    <div class="start-screen" id="startScreen">
+        <div class="input-row">
+            <input id="candidateName" placeholder="Enter your name">
+            <input id="testTime" type="number" placeholder="Minutes">
+        </div>
+        
+        <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
+            <option value="easy">Level: Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+
+        <div class="q-count-sticker">
+            <span class="pulse-dot"></span>
+            <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <button onclick="startTest()">Start Test</button>
+            <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+        </div>
     </div>
 
-    <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-      <button onclick="startTest()">Start Test</button>
-      <button type="button" class="btn-secondary" onclick="window.location.href='../index.html'">Go Back</button>
+    <div class="top-bar" id="topBar">
+        <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
+        <div class="timer" id="timer">00:00</div>
     </div>
-  </div>
 
-  <div class="top-bar" id="topBar">
-    <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
-    <div class="timer" id="timer">00:00</div>
-  </div>
+    <div id="palette" class="palette"></div>
+    <div id="quizArea"></div>
 
-  <div id="palette" class="palette"></div>
-  <div id="quizArea"></div>
+    <div class="nav" id="navBtns">
+        <button class="btn-secondary" onclick="prevQ()">← Prev</button>
+        <button class="btn-review" onclick="markForReview()">Review</button>
+        <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
+        <button onclick="nextQ()">Next →</button>
+    </div>
 
-  <div class="nav" id="navBtns" style="display:none">
-    <button class="btn-secondary" onclick="prevQ()">← Previous</button>
-    <button onclick="nextQ()">Next Question →</button>
-  </div>
-
-  <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
-
-  <div id="result" class="result" style="display:none"></div>
-  <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
+    <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
+    <div id="result" class="result" style="display:none"></div>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
 </div>
 
 <script>
-// --- AUTOMATION CONFIG ---
-const MY_SUBJECT = "English";
-const MY_TEST_ID = "ENG_SET_04;
+    const MY_SUBJECT = "English";
+    const MY_TEST_ID = "ENG_SET_06";
 
-const questions = [
+    const allQuestionsBank = {
+easy: [
 
-{q: "Passage: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Many people give up when they are just a step away from their goal. Persistence and hard work are the two pillars of achievement. One must learn from mistakes rather than being discouraged by them.' Question: What actually counts according to the passage?", options: ["Success", "Failure", "The courage to continue", "Final goals"], answer: "The courage to continue", solution: "The first sentence states that the courage to continue is what counts."},
-{q: "Passage: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Many people give up when they are just a step away from their goal. Persistence and hard work are the two pillars of achievement. One must learn from mistakes rather than being discouraged by them.' Question: When do many people give up?", options: ["When they fail once", "When they are far from the goal", "When they are just a step away from the goal", "When they are tired"], answer: "When they are just a step away from the goal", solution: "The passage mentions people give up when they are very close (just a step away)."},
-{q: "Passage: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Many people give up when they are just a step away from their goal. Persistence and hard work are the two pillars of achievement. One must learn from mistakes rather than being discouraged by them.' Question: What are the two pillars of achievement?", options: ["Luck and Money", "Persistence and hard work", "Success and Failure", "Mistakes and Courage"], answer: "Persistence and hard work", solution: "The passage explicitly names persistence and hard work as the two pillars."},
-{q: "Passage: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Many people give up when they are just a step away from their goal. Persistence and hard work are the two pillars of achievement. One must learn from mistakes rather than being discouraged by them.' Question: What should one do with mistakes?", options: ["Be discouraged by them", "Forget them", "Learn from them", "Avoid them"], answer: "Learn from them", solution: "The last sentence advises to learn from mistakes."},
-{q: "Passage: 'Success is not final, failure is not fatal: it is the courage to continue that counts. Many people give up when they are just a step away from their goal. Persistence and hard work are the two pillars of achievement. One must learn from mistakes rather than being discouraged by them.' Question: Which word in the passage means 'causing death' or 'serious'?", options: ["Final", "Fatal", "Counts", "Pillars"], answer: "Fatal", solution: "Fatal means causing death or leading to failure/disaster."},
-{q: "Passage: 'Technology has changed the way we communicate. Social media allows us to connect with people globally in seconds. However, it also leads to a decrease in face-to-face interactions. It is essential to find a balance between the digital world and real-life relationships.' Question: How has technology affected communication?", options: ["It stopped communication", "It changed the way we communicate", "It made it slower", "It has no effect"], answer: "It changed the way we communicate", solution: "The first sentence confirms technology changed our way of communication."},
-{q: "Passage: 'Technology has changed the way we communicate. Social media allows us to connect with people globally in seconds. However, it also leads to a decrease in face-to-face interactions. It is essential to find a balance between the digital world and real-life relationships.' Question: What is a disadvantage mentioned in the passage?", options: ["Global connection", "Fast communication", "Decrease in face-to-face interactions", "Better relationships"], answer: "Decrease in face-to-face interactions", solution: "The passage highlights the decrease in physical interaction as a downside."},
-{q: "Passage: 'Technology has changed the way we communicate. Social media allows us to connect with people globally in seconds. However, it also leads to a decrease in face-to-face interactions. It is essential to find a balance between the digital world and real-life relationships.' Question: What is essential according to the text?", options: ["To delete social media", "To avoid technology", "To find a balance", "To live only digitally"], answer: "To find a balance", solution: "The last sentence emphasizes finding a balance between digital and real life."},
-{q: "Passage: 'Technology has changed the way we communicate. Social media allows us to connect with people globally in seconds. However, it also leads to a decrease in face-to-face interactions. It is essential to find a balance between the digital world and real-life relationships.' Question: Which platform is mentioned for global connection?", options: ["Television", "Social media", "Newspapers", "Radio"], answer: "Social media", solution: "The text says social media allows global connection in seconds."},
-{q: "Passage: 'Technology has changed the way we communicate. Social media allows us to connect with people globally in seconds. However, it also leads to a decrease in face-to-face interactions. It is essential to find a balance between the digital world and real-life relationships.' Question: What does 'globally' mean?", options: ["In a small area", "In one country", "Across the whole world", "In a village"], answer: "Across the whole world", solution: "Globally refers to the entire world."},
-{q: "Choose the correct article: 'He is ____ European.'", options: ["a", "an", "the", "No article"], answer: "a", solution: "'European' starts with a consonant 'y' sound, so we use 'a'."},
-{q: "Fill in the blank: 'She has been studying ____ 6:00 AM.'", options: ["for", "since", "from", "at"], answer: "since", solution: "'Since' is used for a specific point in time."},
-{q: "Identify the synonym of 'ENORMOUS':", options: ["Tiny", "Huge", "Weak", "Soft"], answer: "Huge", solution: "Enormous means very large or huge."},
-{q: "What is the antonym of 'VAGUE'?", options: ["Unclear", "Clear", "Dull", "Dark"], answer: "Clear", solution: "Vague means unclear; its opposite is clear."},
-{q: "Select the correctly spelt word:", options: ["Maintanance", "Maintenance", "Maintenence", "Maintainance"], answer: "Maintenance", solution: "The correct spelling is M-A-I-N-T-E-N-A-N-C-E."},
-{q: "Choose the correct preposition: 'The book is ____ the table.'", options: ["in", "on", "at", "into"], answer: "on", solution: "'On' is used for position on a surface."},
-{q: "Fill in the blank: 'Either he or I ____ going to the market.'", options: ["is", "am", "are", "were"], answer: "am", solution: "With 'either/or', the verb agrees with the nearest subject ('I')."},
-{q: "Change into Passive Voice: 'They are playing football.'", options: ["Football is played by them.", "Football is being played by them.", "Football was played by them.", "Football being played by them."], answer: "Football is being played by them.", solution: "Present Continuous changes to 'is/am/are + being + V3'."},
-{q: "One word substitution: 'A person who eats too much.'", options: ["Glutton", "Gourmet", "Omnivorous", "Carnivorous"], answer: "Glutton", solution: "A glutton is someone who eats excessively."},
-{q: "Identify the part of speech for 'LOUDLY' in 'He speaks loudly.'", options: ["Noun", "Adjective", "Adverb", "Verb"], answer: "Adverb", solution: "Loudly describes how he speaks (the verb)."},
-{q: "Choose the correct verb form: 'Water ____ at 100 degrees Celsius.'", options: ["boil", "boils", "boiling", "boiled"], answer: "boils", solution: "Scientific truths take the simple present tense."},
-{q: "What is the plural of 'Mouse'?", options: ["Mouses", "Mice", "Mices", "Mouse"], answer: "Mice", solution: "The irregular plural of mouse is mice."},
-{q: "Idiom: 'To smell a rat' means:", options: ["To catch a rat", "To suspect something wrong", "To be a detective", "To see a bad dream"], answer: "To suspect something wrong", solution: "This idiom means to suspect deception or trickery."},
-{q: "Fill in the blank: 'I ____ finished my work yet.'", options: ["did not", "have not", "has not", "was not"], answer: "have not", solution: "With 'yet', we usually use the Present Perfect tense."},
-{q: "Antonym of 'MODERN' is:", options: ["New", "Ancient", "Current", "Recent"], answer: "Ancient", solution: "Ancient is the opposite of modern."},
-{q: "Choose the correct word: 'A life history of a person written by himself.'", options: ["Biography", "Autobiography", "History", "Novel"], answer: "Autobiography", solution: "Written by oneself is an 'Auto' biography."},
-{q: "Fill in the blank: 'He died ____ cancer.'", options: ["by", "with", "of", "from"], answer: "of", solution: "One dies 'of' a disease."},
-{q: "Select the synonym of 'ABANDON':", options: ["Keep", "Leave", "Carry", "Join"], answer: "Leave", solution: "To abandon is to leave or desert."},
-{q: "Find the error: 'Ram is(A) / elder than(B) / Shyam(C). / No error(D)'", options: ["A", "B", "C", "D"], answer: "B", solution: "'Elder' is followed by 'to', not 'than'. It should be 'elder to'."},
-{q: "Choose the correct Indirect speech: He said, 'I can do it.'", options: ["He said that he can do it.", "He said that he could do it.", "He said he can do it.", "He said that I could do it."], answer: "He said that he could do it.", solution: "'Can' changes to 'could' in indirect speech."},
-{q: "Fill in the blank: 'Physics ____ a difficult subject.'", options: ["is", "are", "were", "have"], answer: "is", solution: "Subjects like Physics, Mathematics are singular."},
-{q: "Identify the gender of 'Teacher':", options: ["Masculine", "Feminine", "Common", "Neuter"], answer: "Common", solution: "Teacher can be either male or female."},
-{q: "What is the synonym of 'BRIEF'?", options: ["Long", "Short", "Large", "Hard"], answer: "Short", solution: "Brief means short or concise."},
-{q: "Fill in the blank: 'Look! The baby ____.'", options: ["sleep", "is sleeping", "sleeps", "slept"], answer: "is sleeping", solution: "'Look!' indicates an ongoing action in the present."},
-{q: "Idiom: 'A red letter day' means:", options: ["A dangerous day", "An important day", "A holiday", "A bad day"], answer: "An important day", solution: "It refers to a very important or memorable day."}
+{q: "Choose the correct article: 'I saw ___ elephant at the zoo.'", options: ["a", "an", "the", "no article"], answer: "an", solution: "Elephant starts with a vowel sound (e), so 'an' is used."},
+{q: "What is the plural of 'Mouse'?", options: ["Mouses", "Mice", "Mices", "Mouse"], answer: "Mice", solution: "Mouse has an irregular plural form, which is 'Mice'."},
+{q: "Synonym of 'Happy':", options: ["Sad", "Joyful", "Angry", "Brave"], answer: "Joyful", solution: "Joyful means the same as happy."},
+{q: "Antonym of 'Cold':", options: ["Ice", "Hot", "Wet", "Dry"], answer: "Hot", solution: "The opposite of cold is hot."},
+{q: "Identify the noun: 'The boy is running.'", options: ["boy", "is", "running", "the"], answer: "boy", solution: "Boy is a person, hence it is a noun."},
+{q: "Fill in the blank: 'She ___ a doctor.'", options: ["am", "is", "are", "be"], answer: "is", solution: "With singular third-person (She), 'is' is used."},
+{q: "Correct spelling:", options: ["Apple", "Apel", "Appel", "Aple"], answer: "Apple", solution: "The correct spelling is Apple."},
+{q: "Past tense of 'Eat' is:", options: ["Eats", "Eating", "Ate", "Eaten"], answer: "Ate", solution: "Eat (V1), Ate (V2), Eaten (V3)."},
+{q: "Opposite of 'Big':", options: ["Small", "Large", "Huge", "Tall"], answer: "Small", solution: "The opposite of big is small."},
+{q: "Identify the verb: 'They play football.'", options: ["They", "play", "football", "them"], answer: "play", solution: "Play is an action word, so it's a verb."},
+{q: "Choose the pronoun: 'Rahul is late because he missed the bus.'", options: ["Rahul", "late", "he", "bus"], answer: "he", solution: "He is used in place of the noun Rahul."},
+{q: "Plural of 'Box' is:", options: ["Boxs", "Boxies", "Boxes", "Boxe"], answer: "Boxes", solution: "Words ending in 'x' take 'es' in plural."},
+{q: "A person who teaches is a:", options: ["Doctor", "Teacher", "Pilot", "Farmer"], answer: "Teacher", solution: "Teaching is the profession of a teacher."},
+{q: "Opposite of 'Rich':", options: ["Poor", "Wealthy", "Strong", "Kind"], answer: "Poor", solution: "The antonym of rich is poor."},
+{q: "Fill in: '___ are you going?'", options: ["What", "Where", "Which", "Who"], answer: "Where", solution: "Where is used to ask about a place/destination."},
+{q: "The sun ___ in the east.", options: ["rise", "rises", "rising", "rose"], answer: "rises", solution: "Universal truths use Simple Present tense (singular verb with s/es)."},
+{q: "Which one is a fruit?", options: ["Carrot", "Mango", "Onion", "Potato"], answer: "Mango", solution: "Mango is a fruit, others are vegetables."},
+{q: "Plural of 'Knife' is:", options: ["Knifes", "Knive", "Knives", "Knife"], answer: "Knives", solution: "Words ending in 'f' or 'fe' change to 'ves'."},
+{q: "Synonym of 'Beautiful':", options: ["Ugly", "Pretty", "Small", "Fast"], answer: "Pretty", solution: "Pretty means attractive or beautiful."},
+{q: "Antonym of 'Up':", options: ["High", "Above", "Down", "Below"], answer: "Down", solution: "The opposite of up is down."},
+{q: "Identify the adjective: 'It is a red car.'", options: ["It", "is", "red", "car"], answer: "red", solution: "Red describes the noun car, so it is an adjective."},
+{q: "He ___ going to school.", options: ["am", "is", "are", "have"], answer: "is", solution: "Singular subject 'He' takes 'is'."},
+{q: "Meaning of 'Quick':", options: ["Slow", "Fast", "Lazy", "Weak"], answer: "Fast", solution: "Quick means moving with speed."},
+{q: "Plural of 'City':", options: ["Citys", "Cities", "Cityes", "Citis"], answer: "Cities", solution: "Words ending in consonant + 'y' change 'y' to 'ies'."},
+{q: "Opposite of 'Thin':", options: ["Fat", "Tall", "Short", "Small"], answer: "Fat", solution: "The opposite of thin is fat."},
+{q: "Identify the adverb: 'He runs fast.'", options: ["He", "runs", "fast", "run"], answer: "fast", solution: "Fast describes how he runs, so it is an adverb."},
+{q: "I ___ a student.", options: ["is", "am", "are", "be"], answer: "am", solution: "First person 'I' always takes 'am' in present tense."},
+{q: "Antonym of 'Day':", options: ["Night", "Morning", "Evening", "Sun"], answer: "Night", solution: "Day's opposite is Night."},
+{q: "Synonym of 'Begin':", options: ["Stop", "End", "Start", "Finish"], answer: "Start", solution: "To begin means to start."},
+{q: "Which is a animal?", options: ["Rose", "Table", "Tiger", "Pen"], answer: "Tiger", solution: "Tiger is an animal."},
+{q: "Plural of 'Foot':", options: ["Foots", "Feets", "Feet", "Footes"], answer: "Feet", solution: "Foot changes to Feet in plural."},
+{q: "___ is your name?", options: ["How", "Why", "What", "Which"], answer: "What", solution: "What is used to ask for information."},
+{q: "Identify the noun: 'Delhi is a big city.'", options: ["Delhi", "big", "is", "very"], answer: "Delhi", solution: "Delhi is a name of a place, hence a noun."},
+{q: "Opposite of 'Hard':", options: ["Soft", "Difficult", "Strong", "Tough"], answer: "Soft", solution: "The antonym of hard is soft."},
+{q: "Past tense of 'Go':", options: ["Goes", "Going", "Gone", "Went"], answer: "Went", solution: "Go (V1), Went (V2)."}
+ 
+ ],
+medium: [
 
-  
-];
+{q: "Choose the correct preposition: 'The cat jumped ___ the table.'", options: ["on", "upon", "in", "at"], answer: "upon", solution: "We use 'upon' when there is motion involved (jumping) towards a surface."},
+{q: "Identify the correct sentence:", options: ["He don't like tea.", "He doesn't likes tea.", "He doesn't like tea.", "He not like tea."], answer: "He doesn't like tea.", solution: "With 'does', we use the base form of the verb without 's/es'."},
+{q: "Choose the synonym of 'GIGANTIC':", options: ["Small", "Huge", "Weak", "Frail"], answer: "Huge", solution: "Gigantic means extremely large."},
+{q: "Antonym of 'OPTIMIST' is:", options: ["Hopeful", "Pessimist", "Idealist", "Realist"], answer: "Pessimist", solution: "Optimist is one who looks at the bright side; pessimist looks at the dark side."},
+{q: "Fill in the blank: 'Neither of the boys ___ present.'", options: ["was", "were", "are", "have"], answer: "was", solution: "Words like 'Neither', 'Either', 'Each' take a singular verb."},
+{q: "Select the correctly spelt word:", options: ["Occurence", "Occurrence", "Occurance", "Ocurence"], answer: "Occurrence", solution: "It has double 'c' and double 'r'."},
+{q: "Passive Voice: 'Who wrote this book?'", options: ["By whom was this book written?", "Who was written this book?", "This book was written by who?", "By whom is this book written?"], answer: "By whom was this book written?", solution: "Interrogative 'Who' changes to 'By whom' and past tense uses 'was + V3'."},
+{q: "Identify the error: 'The furniture (A) / in this room (B) / are (C) / very old (D).'", options: ["A", "B", "C", "D"], answer: "C", solution: "Furniture is an uncountable noun and always takes a singular verb ('is')."},
+{q: "Choose the correct meaning of the idiom: 'A piece of cake'", options: ["A sweet dish", "Something very easy", "Something very expensive", "A difficult task"], answer: "Something very easy", solution: "'A piece of cake' refers to a task that can be done without much effort."},
+{q: "He is senior ___ me in service.", options: ["than", "to", "from", "with"], answer: "to", solution: "Adjectives like senior, junior, superior, inferior are always followed by 'to'."},
+{q: "Select the antonym of 'REVEAL':", options: ["Show", "Hide", "Tell", "Disclose"], answer: "Hide", solution: "Reveal means to show; hide means to conceal."},
+{q: "Fill in: 'I have been living here ___ 2010.'", options: ["for", "since", "from", "to"], answer: "since", solution: "We use 'since' for a specific point in time."},
+{q: "Plural of 'Thesis' is:", options: ["Thesiss", "Thesises", "Theses", "Thesis"], answer: "Theses", solution: "Words ending in 'is' usually change to 'es' in plural."},
+{q: "Identify the part of speech of the underlined word: 'This is a **fast** car.'", options: ["Noun", "Verb", "Adjective", "Adverb"], answer: "Adjective", solution: "Here 'fast' describes the noun 'car', so it is an adjective."},
+{q: "One who cannot read or write is called:", options: ["Illiterate", "Insolvent", "Blind", "Dumb"], answer: "Illiterate", solution: "A person unable to read/write is illiterate."},
+{q: "Change to Direct Speech: 'He said that he was busy.'", options: ["He said, 'I am busy.'", "He says, 'I am busy.'", "He said, 'He is busy.'", "He told, 'I was busy.'"], answer: "He said, 'I am busy.'", solution: "Past simple in indirect was present simple in direct."},
+{q: "Identify the correct article: 'He is ___ S.D.O.'", options: ["a", "an", "the", "no article"], answer: "an", solution: "S.D.O starts with a vowel sound 'Es', so 'an' is used."},
+{q: "Antonym of 'HOSTILE' is:", options: ["Enemy", "Friendly", "Angry", "Cruel"], answer: "Friendly", solution: "Hostile means showing opposition; friendly is the opposite."},
+{q: "Fill in: 'If I ___ a bird, I would fly.'", options: ["am", "was", "were", "will be"], answer: "were", solution: "In imaginary/hypothetical sentences, 'were' is used with all subjects."},
+{q: "Meaning of 'Calamity':", options: ["Peace", "Disaster", "Happiness", "Growth"], answer: "Disaster", solution: "Calamity means a sudden event causing great damage."},
+{q: "Select the correct spelling:", options: ["Receive", "Recieve", "Receve", "Reseive"], answer: "Receive", solution: "The rule is 'i' before 'e' except after 'c'."},
+{q: "A group of lions is called a:", options: ["Herd", "Pack", "Pride", "Flock"], answer: "Pride", solution: "Collective noun for lions is 'Pride'."},
+{q: "Choose the correct verb: 'Physics ___ my favorite subject.'", options: ["is", "are", "were", "am"], answer: "is", solution: "Subjects ending in 's' like Physics, Mathematics are singular."},
+{q: "Meaning of the idiom: 'Under the weather'", options: ["To be raining", "To feel unwell", "To be happy", "To travel"], answer: "To feel unwell", solution: "If you are under the weather, you are feeling sick."},
+{q: "Choose the correct word: 'I don't have ___ money.'", options: ["many", "much", "few", "some"], answer: "much", solution: "Money is uncountable, so 'much' is used."},
+{q: "Which word is a conjunction?", options: ["But", "Fast", "She", "Slowly"], answer: "But", solution: "'But' is a coordinating conjunction."},
+{q: "Past participle of 'Fly' is:", options: ["Flied", "Flew", "Flown", "Flying"], answer: "Flown", solution: "Fly (V1), Flew (V2), Flown (V3)."},
+{q: "Identify the error: 'Each of the (A) / students (B) / have (C) / a book (D).'", options: ["A", "B", "C", "D"], answer: "C", solution: "'Each of' is always followed by a singular verb ('has')."},
+{q: "Meaning of 'Fragile':", options: ["Hard", "Strong", "Easily broken", "Flexible"], answer: "Easily broken", solution: "Fragile items break easily."},
+{q: "Choose the correct article: '___ Ganga is a holy river.'", options: ["A", "An", "The", "No article"], answer: "The", solution: "We use 'The' before names of rivers."},
+{q: "One who looks at the bright side of things:", options: ["Pessimist", "Optimist", "Atheist", "Theist"], answer: "Optimist", solution: "Optimist is the correct one-word substitute."},
+{q: "Select the synonym of 'ABANDON':", options: ["Keep", "Leave", "Stay", "Hold"], answer: "Leave", solution: "To abandon means to leave or give up."},
+{q: "Fill in: 'They ___ playing since morning.'", options: ["are", "have been", "were", "had"], answer: "have been", solution: "Perfect continuous tense uses 'have been' for duration with since/for."},
+{q: "Antonym of 'GUILTY' is:", options: ["Criminal", "Innocent", "Bad", "True"], answer: "Innocent", solution: "The opposite of guilty is innocent."},
+{q: "Meaning of 'Boon':", options: ["Curse", "Blessing", "Stone", "Wind"], answer: "Blessing", solution: "Boon means something helpful or beneficial (blessing)."}			
 
-let currentIndex=0, answers={}, visited={};
-let totalSeconds=0, timerInterval, startTime;
+],
+hard: [
 
-function startTest(){
-  if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
-  displayName.textContent=candidateName.value;
-  startScreen.style.display="none";
-  topBar.style.display="flex";
-  palette.style.display="flex"; 
-  navBtns.style.display="flex";
-  submitBtn.style.display="block";
-  totalSeconds=testTime.value*60;
-  startTime=Date.now();
-  saveProgress();
-  startTimer();
-  renderQuestion();
-}
+{q: "Choose the correct option: 'If he ___ more carefully, he would have avoided the accident.'", options: ["drove", "had driven", "would drive", "has driven"], answer: "had driven", solution: "This is a Type 3 conditional: If + Past Perfect, would have + V3."},
+{q: "Identify the figure of speech: 'The camel is the ship of the desert.'", options: ["Simile", "Metaphor", "Personification", "Oxymoron"], answer: "Metaphor", solution: "A direct comparison without using 'as' or 'like' is a metaphor."},
+{q: "What is the synonym of 'EPHEMERAL'?", options: ["Eternal", "Short-lived", "Colossal", "Transparent"], answer: "Short-lived", solution: "Ephemeral means lasting for a very short time."},
+{q: "Choose the correct meaning of the idiom: 'To bark up the wrong tree.'", options: ["To shout at a dog", "To accuse the wrong person", "To climb a tree", "To work hard"], answer: "To accuse the wrong person", solution: "It means to pursue a mistaken line of thought or course of action."},
+{q: "Identify the error: 'Hardly had I (A) / reached the station (B) / than the train (C) / left (D).'", options: ["A", "B", "C", "D"], answer: "C", solution: "The pair for 'Hardly/Scarcely' is 'when', not 'than'."},
+{q: "Antonym of 'ABSTAIN' is:", options: ["Refrain", "Indulge", "Avoid", "Sustain"], answer: "Indulge", solution: "Abstain means to stay away from; indulge means to allow oneself to enjoy."},
+{q: "One who hates mankind is called:", options: ["Misanthrope", "Misogynist", "Philanthropist", "Optimist"], answer: "Misanthrope", solution: "Mis (hate) + Anthropos (man/mankind)."},
+{q: "Change into Indirect Speech: 'He said, 'Bravo! You have done well.'", options: ["He said Bravo that I did well.", "He applauded him saying that he had done well.", "He exclaimed with joy that he did well.", "He told him Bravo."], answer: "He applauded him saying that he had done well.", solution: "'Bravo' is usually changed to 'applauded' in indirect speech."},
+{q: "Fill in the blank: 'The committee ___ divided in their opinion.'", options: ["is", "are", "was", "has"], answer: "are", solution: "When a collective noun acts as individuals (showing division), it takes a plural verb."},
+{q: "What is the meaning of 'GREGARIOUS'?", options: ["Anti-social", "Sociable", "Aggressive", "Clumsy"], answer: "Sociable", solution: "Gregarious refers to a person/animal fond of company."},
+{q: "Select the correctly spelt word:", options: ["Millionnaire", "Millionaire", "Millionare", "Miliionaire"], answer: "Millionaire", solution: "The correct spelling is 'Millionaire'."},
+{q: "The word 'In toto' means:", options: ["In part", "Entirely", "In summary", "In disguise"], answer: "Entirely", solution: "'In toto' is a Latin phrase meaning 'in total' or 'completely'."},
+{q: "Choose the correct preposition: 'He is oblivious ___ his surroundings.'", options: ["of", "to", "at", "with"], answer: "of", solution: "'Oblivious' is followed by the preposition 'of'."},
+{q: "Identify the sentence: 'Having finished his work, he went home.'", options: ["Simple", "Complex", "Compound", "Interrogative"], answer: "Simple", solution: "It has only one finite verb and a participle phrase, making it a simple sentence."},
+{q: "Meaning of the idiom: 'To leave no stone unturned.'", options: ["To get tired", "To try every possible way", "To play with stones", "To give up"], answer: "To try every possible way", solution: "It means to do everything possible to achieve a goal."},
+{q: "Antonym of 'Lethargic' is:", options: ["Lazy", "Energetic", "Dull", "Sluggish"], answer: "Energetic", solution: "Lethargic means lazy/slow; energetic is the opposite."},
+{q: "What is a 'Cacophony'?", options: ["Sweet sound", "Harsh sound", "Silence", "Music"], answer: "Harsh sound", solution: "Caco (bad) + phony (sound)."},
+{q: "Fill in: 'Neither the principal nor the teachers ___ present.'", options: ["was", "is", "are", "has"], answer: "are", solution: "In 'neither-nor', the verb agrees with the nearest subject (teachers)."},
+{q: "A person who is recoverning from illness:", options: ["Convalescent", "Invalid", "Patient", "Senile"], answer: "Convalescent", solution: "The recovery period is called convalescence."},
+{q: "Meaning of 'Enigma':", options: ["Clear", "Mystery", "Simple", "Fear"], answer: "Mystery", solution: "An enigma is something puzzling or mysterious."},
+{q: "Identify the part of speech: 'The **fast** held by him lasted a week.'", options: ["Adjective", "Adverb", "Noun", "Verb"], answer: "Noun", solution: "Here 'fast' refers to the act of not eating, hence it's a noun."},
+{q: "Choose the correct tag: 'She hardly ever goes out, ___?'", options: ["doesn't she", "does she", "is she", "has she"], answer: "does she", solution: "'Hardly' is a negative word, so the question tag must be positive."},
+{q: "What is the synonym of 'PRUDENT'?", options: ["Careless", "Wise", "Foolish", "Wealthy"], answer: "Wise", solution: "Prudent means showing care and thought for the future."},
+{q: "Meaning of the idiom: 'A bolt from the blue.'", options: ["A sudden surprise", "A blue bolt", "A thunderstorm", "A planned event"], answer: "A sudden surprise", solution: "Something unexpected and unpleasant."},
+{q: "Which of these is a 'Palidrome' word?", options: ["Level", "School", "Water", "Paper"], answer: "Level", solution: "A palindrome reads the same backwards as forwards."},
+{q: "Fill in: 'I am used to ___ early in the morning.'", options: ["get up", "getting up", "got up", "gets up"], answer: "getting up", solution: "After 'used to' (meaning accustomed to), we use the -ing form (gerund)."},
+{q: "Identify the error: 'Unless you do not (A) / work hard (B) / you cannot (C) / pass (D).'", options: ["A", "B", "C", "D"], answer: "A", solution: "'Unless' is itself negative; using 'do not' with it is a redundancy error."},
+{q: "Meaning of 'Altruism':", options: ["Selfishness", "Selflessness", "Hostility", "Pride"], answer: "Selflessness", solution: "Altruism is the practice of disinterested concern for others."},
+{q: "Select the synonym of 'ADMONISH':", options: ["Praise", "Warn", "Escape", "Help"], answer: "Warn", solution: "To admonish is to warn or reprimand someone firmly."},
+{q: "The plural of 'Alumnus' is:", options: ["Alumni", "Alumnuses", "Alumnae", "Alumnas"], answer: "Alumni", solution: "Alumnus (singular) -> Alumni (plural)."},
+{q: "What is an 'Atheist'?", options: ["Believer in God", "Non-believer in God", "Lover of God", "Priest"], answer: "Non-believer in God", solution: "A person who disbelieves or lacks belief in God."}
+ 
+  ]
+    };
 
-function startTimer(){
-  timerInterval=setInterval(()=>{
-    totalSeconds--;
-    updateTimer();
-    saveProgress();
-    if(totalSeconds<=0) submitQuiz();
-  },1000);
-}
+    let questions = [];
+    let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
+    let totalSeconds=0, timerInterval, startTime;
 
-function updateTimer(){
-  timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+String(totalSeconds%60).padStart(2,'0');
-}
+    function syncCountAndTime() {
+        const level = document.getElementById("difficultyLevel").value;
+        const count = allQuestionsBank[level].length;
+        document.getElementById("totalQDisplay").textContent = count;
+        document.getElementById("testTime").value = count;
+    }
 
-function renderQuestion(){
-  visited[currentIndex]=true;
-  const q=questions[currentIndex];
-  quizArea.innerHTML=`
-    <div class="quiz-card">
-      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-      <div class="options">
-        ${q.options.map(o=>`
-          <label>
-            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')">
-            ${o}
-          </label>
-        `).join("")}
-      </div>
-    </div>`;
-  renderPalette();
-  saveProgress();
-}
+    function startTest(){
+        const level = document.getElementById("difficultyLevel").value;
+        questions = allQuestionsBank[level];
+        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+        displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
+        startScreen.style.display="none";
+        topBar.style.display="flex";
+        palette.style.display="flex";
+        navBtns.style.display="flex";
+        submitBtn.style.display="block";
+        totalSeconds=testTime.value*60;
+        startTime=Date.now();
+        saveProgress(level);
+        startTimer();
+        renderQuestion();
+    }
 
-function selectAnswer(val){
-  answers[currentIndex]=val;
-  saveProgress();
-  renderPalette();
-}
+    function startTimer(){
+        timerInterval=setInterval(()=>{
+            totalSeconds--;
+            updateTimerDisplay();
+            saveProgress();
+            if(totalSeconds<=0) submitQuiz();
+        },1000);
+    }
 
-function renderPalette(){
-  palette.innerHTML="";
-  questions.forEach((_,i)=>{
-    const s=document.createElement("span");
-    s.textContent=i+1;
-    if(visited[i]) s.classList.add("visited");
-    if(answers[i]) s.classList.add("attempted");
-    s.onclick=()=>{currentIndex=i;renderQuestion()};
-    palette.appendChild(s);
-  });
-}
+    function updateTimerDisplay(){
+        timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+ String(totalSeconds%60).padStart(2,'0');
+    }
 
-function nextQ(){ if(currentIndex<questions.length-1){currentIndex++;renderQuestion();} }
-function prevQ(){ if(currentIndex>0){currentIndex--;renderQuestion();} }
+    function renderQuestion(){
+        visited[currentIndex]=true;
+        const q=questions[currentIndex];
+        quizArea.innerHTML=`
+            <div class="quiz-card">
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+                </div>
+                <div class="options">
+                    ${q.options.map(o=>`
+                        <label>
+                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
+                        </label>
+                    `).join("")}
+                </div>
+                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+            </div>`;
+        renderPalette();
+    }
 
-function saveProgress(){
-  // ✅ UNIQUE KEY FOR PROGRESS
-  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
-    name:displayName.textContent, answers, visited, currentIndex, totalSeconds, startTime
-  }));
-}
+    function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
+    function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
+    function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
+    function challengeQuestion(){
+        if(answers[currentIndex]){ alert("Already answered!"); return; }
+        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
+    }
 
-function submitQuiz(){
-  if(!confirm("Are you sure?")) return;
-  clearInterval(timerInterval);
-  
-  // ✅ REMOVE ONLY THIS SUBJECT'S PROGRESS
-  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-  
-  let correct=0, attempted=0;
-  let detailHtml="<h2>Detailed Analysis</h2>";
-  
-  questions.forEach((q,i)=>{
-    if(answers[i]) attempted++;
-    if(answers[i] == q.answer) correct++;
-    detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
-      <p><b>Q${i+1}.</b> ${q.q}</p>
-      <p>Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
-      <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
-    </div>`;
-  });
+    function renderPalette(){
+        palette.innerHTML="";
+        questions.forEach((_,i)=>{
+            const s=document.createElement("span");
+            s.textContent=i+1;
+            if(visited[i]) s.classList.add("visited");
+            if(answers[i]) s.classList.add("attempted");
+            if(reviewMarks[i]) s.classList.add("marked-review");
+            if(challenges[i]) s.classList.add("challenged");
+            s.onclick=()=>{currentIndex=i;renderQuestion()};
+            palette.appendChild(s);
+        });
+    }
 
-  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+    function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+    function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-  // --- DASHBOARD SYNC ---
-  localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
-  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
+    function saveProgress(lvl){
+        const level = lvl || JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}`) || '{"level":"easy"}').level;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
+            name:displayName.textContent.split(' (')[0],
+            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+        }));
+    }
 
-  const summaryBox = `
-    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-      </div>
-      <button onclick="window.location.href='../index.html'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
-    </div>
-  `;
+    function submitQuiz(){
+        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
+        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
+        if(!confirm("Are you sure you want to submit?")) return;
+        
+        clearInterval(timerInterval);
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+        
+        let correct=0, attempted=0, challCount=0;
+        let detailHtml="<h2>Detailed Analysis</h2>";
+        
+        questions.forEach((q,i)=>{
+            let isCorrect = false;
+            let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
 
-  const finalHtml = summaryBox + detailHtml;
-  
-  // ✅ UNIQUE KEY FOR RESULT
-  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+            if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
+            else if(answers[i] === q.answer) { isCorrect = true; }
+            
+            if(answers[i]) attempted++;
+            if(isCorrect) correct++;
 
-  // --- EMAIL ---
-  emailjs.send("service_wq5yoyp", "template_doegpcp", {
-    candidate_name: displayName.textContent,
-    subject: MY_SUBJECT,
-    score: correct,
-    total: questions.length,
-    attempted: attempted,
-    accuracy: accuracy + "%",
-    time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-    test_date: new Date().toLocaleString("en-IN")
-  });
+            detailHtml+=`
+                <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                    <p><b>Q${i+1}.</b> ${q.q}</p>
+                    <p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                    <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
+                </div>`;
+        });
 
-  quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
-  submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
-  clearBtn.style.display="block"; window.scrollTo(0,0);
-}
+        // Dashboard Storage logic
+        const currentLvl = document.getElementById("difficultyLevel").value.toUpperCase();
+        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
 
-window.onload=function(){
-  document.getElementById("totalQDisplay").textContent = questions.length;
-  document.getElementById("testTime").value = questions.length;
-  
-  // ✅ CHECK ONLY THIS SUBJECT'S DATA
-  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
-  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
-  
-  if(final){
-    const d=JSON.parse(final);
-    startScreen.style.display="none"; topBar.style.display="flex";
-    displayName.textContent=d.name; result.style.display="block"; result.innerHTML=d.html;
-    clearBtn.style.display="block";
-  } else if(progress){
-    const p=JSON.parse(progress);
-    displayName.textContent=p.name; answers=p.answers; visited=p.visited;
-    currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime;
-    startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex";
-    navBtns.style.display="flex"; submitBtn.style.display="block"; startTimer(); renderQuestion();
-  }
-};
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
+        
+        const summaryBox = `
+            <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+                <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                </div>
+                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
+            </div>`;
 
-function clearResult(){
-  if(confirm("New test? Previous data for this subject will be lost.")){ 
-    // ✅ ONLY CLEAR THIS SUBJECT
-    localStorage.removeItem(`finalResult_${MY_SUBJECT}`); 
-    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-    location.reload(); 
-  }
-}
+        const finalHtml = summaryBox + detailHtml;
+        result.style.display="block";
+        result.innerHTML = finalHtml;
+        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
+        clearBtn.style.display="block"; window.scrollTo(0,0);
+        
+        localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+
+        emailjs.send("service_wq5yoyp", "template_doegpcp", {
+            candidate_name: displayName.textContent,
+            subject: MY_SUBJECT,
+            score: correct,
+            total: questions.length,
+            attempted: attempted,
+            accuracy: accuracy + "%",
+            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+            test_date: new Date().toLocaleString("en-IN")
+        });
+    }
+
+    window.onload=function(){
+        syncCountAndTime();
+        const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
+        const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+        if(final){
+            const d=JSON.parse(final);
+            result.style.display="block"; result.innerHTML=d.html; clearBtn.style.display="block";
+            startScreen.style.display="none";
+        } else if(progress){
+            const p=JSON.parse(progress);
+            questions = allQuestionsBank[p.level];
+            displayName.textContent=p.name + ` (${p.level.toUpperCase()})`;
+            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime; reviewMarks=p.reviewMarks; challenges=p.challenges;
+            startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex"; navBtns.style.display="flex"; submitBtn.style.display="block";
+            startTimer(); renderQuestion();
+        }
+    };
+
+    function clearResult(){ if(confirm("Clear result?")) { localStorage.clear(); location.reload(); } }
 </script>
 </body>
 </html>
-
-
-
