@@ -1,436 +1,433 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NishuAbhyasi – Hindi by Yash</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NishuAbhyasi – Hindi by Yash</title>
+    <style>
+        :root{
+            --color-primary: #1a2a6c;
+            --color-secondary: #2575fc;
+            --color-accent: #f2994a;
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --success: #16a34a;
+            --danger: #ef4444;
+            --review: #8b5cf6;
+            --challenge: #f59e0b;
+        }
+        *{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        body{
+            min-height:100vh;
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+            background-size: 300% 300%;
+            animation: dynamicFlow 18s ease-in-out infinite;
+            color: #fff;
+            padding: 20px 10px;
+        }
+        @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+        h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-<style>
-/* Professional Glassmorphism Theme */
-:root{
-  --color-primary: #1a2a6c;
-  --color-secondary: #2575fc;
-  --color-accent: #f2994a;
-  --glass: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --success: #16a34a;
-  --danger: #ef4444;
-}
+        .start-screen{ background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); padding: 40px 20px; border-radius: 30px; text-align:center; margin-top: 50px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .input-row { display: flex; gap: 15px; width: 100%; max-width: 600px; justify-content: center; }
+        .start-screen input, .start-screen select { 
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); 
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; outline: none; 
+        }
+		.start-screen input::placeholder { color: white !important; opacity: 1; }
+        .start-screen option { color: #000; }
+        
+        .q-count-sticker { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
+        
+        button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        button:hover{ transform: scale(1.05); }
+        .btn-secondary { background: rgba(255,255,255,0.15); }
+        .btn-review { background: var(--review); }
+        .btn-challenge { background: var(--challenge); }
+        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; }
 
-*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
+        .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
+        
+        #palette{ display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; justify-content: center; padding: 10px; }
+        .palette span{ width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px; }
+        .palette .visited{ border: 2px solid var(--color-secondary); }
+        .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .palette .marked-review{ background: var(--review); }
+        .palette .challenged{ background: var(--challenge); }
 
-body{
-  min-height:100vh;
-  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
-  background-size: 300% 300%;
-  animation: dynamicFlow 18s ease-in-out infinite;
-  color: #fff;
-  padding: 20px 10px;
-}
-
-@keyframes dynamicFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
-
-h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-/* START SCREEN */
-.start-screen{
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  padding: 40px 20px;
-  border-radius: 30px;
-  text-align:center;
-  margin-top: 50px;
-}
-
-.start-screen input {
-  width: 100%;
-  max-width: 300px;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 15px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff !important;
-  font-size: 16px;
-  outline: none;
-}
-
-.start-screen input::placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.q-count-sticker {
-  margin: 5px auto 15px;
-  width: fit-content;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 20px;
-  border-radius: 50px;
-  border: 1px solid var(--glass-border);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #4facfe;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
-}
-
-button{
-  padding: 14px 28px;
-  border: none;
-  border-radius: 15px;
-  background: linear-gradient(135deg, #ff9800, #ff5722);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  transition: 0.3s;
-}
-button:hover{ transform: scale(1.05); }
-
-.top-bar{
-  display:none; justify-content:space-between; align-items:center;
-  padding:15px 25px; background: var(--glass);
-  backdrop-filter: blur(15px);
-  border:1px solid var(--glass-border); border-radius:50px;
-  position:sticky; top:10px; z-index:100; margin-bottom:15px;
-}
-.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
-
-#palette{ 
-  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
-  justify-content: center; padding: 10px;
-}
-.palette span{
-  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
-  border-radius:10px; background: rgba(255,255,255,0.1); 
-  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
-}
-.palette .visited{ background: var(--color-secondary); }
-.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
-
-.quiz-card{
-  background: var(--glass); border:1px solid var(--glass-border);
-  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
-}
-.options label{
-  display:flex; align-items: center; gap:12px; padding:14px; 
-  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
-  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
-}
-.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
-
-.nav{ display:flex; justify-content:space-between; margin-top:20px; }
-.btn-secondary { background: rgba(255,255,255,0.15); }
-
-.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
-.correct{ color: #4ade80; font-weight:bold; }
-.wrong{ color: #f87171; font-weight:bold; }
-
-.sol-box {
-  margin-top:12px; 
-  padding:12px; 
-  background:rgba(242, 153, 74, 0.15); 
-  border-radius:12px; 
-  font-size:14px; 
-  color:#ffcc80;
-  border: 1px dashed var(--color-accent);
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init("L8kGW-X7JOiYaycH5");
-  })();
-</script>
+        .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; }
+        .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s; }
+        .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
+        
+        .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
+        .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+        .correct{ color: #4ade80; font-weight:bold; }
+        .wrong{ color: #f87171; font-weight:bold; }
+        .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script> (function () { emailjs.init("L8kGW-X7JOiYaycH5"); })(); </script>
 </head>
-
 <body>
-
 <div class="container">
+    <h1>Target Test- Hindi 2026</h1>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026</p>
+    
+    <div class="start-screen" id="startScreen">
+        <div class="input-row">
+            <input id="candidateName" placeholder="Enter your name">
+            <input id="testTime" type="number" placeholder="Minutes">
+        </div>
+        
+        <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
+            <option value="easy">Level: Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
 
-<h1>Target Test- Hindi 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026 - 12:42</p>
+        <div class="q-count-sticker">
+            <span class="pulse-dot"></span>
+            <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+        </div>
 
-<div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name">
-  <input id="testTime" type="number" placeholder="Time (minutes)">
-  
-  <div class="q-count-sticker">
-    <span class="pulse-dot"></span>
-    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
-  </div>
+        <div style="display:flex; gap:10px;">
+            <button onclick="startTest()">Start Test</button>
+            <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+        </div>
+    </div>
 
-  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-    <button onclick="startTest()">Start Test</button>
-    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
-  </div>
-</div>
+    <div class="top-bar" id="topBar">
+        <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
+        <div class="timer" id="timer">00:00</div>
+    </div>
 
-<div class="top-bar" id="topBar">
-  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
-  <div class="timer" id="timer">00:00</div>
-</div>
+    <div id="palette" class="palette"></div>
+    <div id="quizArea"></div>
 
-<div id="palette" class="palette"></div>
-<div id="quizArea"></div>
+    <div class="nav" id="navBtns">
+        <button class="btn-secondary" onclick="prevQ()">← Prev</button>
+        <button class="btn-review" onclick="markForReview()">Review</button>
+        <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
+        <button onclick="nextQ()">Next →</button>
+    </div>
 
-<div class="nav" id="navBtns" style="display:none">
-  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
-  <button onclick="nextQ()">Next Question →</button>
-</div>
-
-<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
-
-<div id="result" class="result" style="display:none"></div>
-<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
-
+    <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
+    <div id="result" class="result" style="display:none"></div>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
 </div>
 
 <script>
-// --- UNIQUE ID CONFIG ---
-const MY_SUBJECT = "Hindi";
-const MY_TEST_ID = "HIN_SET_04"; 
+    const MY_SUBJECT = "Hindi";
+	const MY_TEST_ID = "HIN_SET_04"; 
 
-const questions = [
+    const allQuestionsBank = {
+easy: [
 
-{q: "‘पवन’ का सही संधि-विच्छेद क्या होगा?", options: ["प + वन", "पो + अन", "पौ + अन", "पव + न"], answer: "पो + अन", solution: "अयादि संधि के नियमानुसार 'ओ + अ' मिलकर 'अव' हो जाता है।"},
-{q: "‘यथाशक्ति’ में कौन-सा समास है?", options: ["तत्पुरुष", "अव्ययीभाव", "द्विगु", "बहुव्रीहि"], answer: "अव्ययीभाव", solution: "जिसका पहला पद अव्यय हो (यथा), वह अव्ययीभाव समास कहलाता है।"},
-{q: "‘लंबोदर’ में कौन-सा समास है?", options: ["बहुव्रीहि", "द्वंद्व", "तत्पुरुष", "कर्मधारय"], answer: "बहुव्रीहि", solution: "लंबा है उदर जिनका अर्थात् 'गणेश' - जहाँ तीसरा अर्थ प्रधान हो।"},
-{q: "‘वृक्ष से पत्ते गिरते हैं’—वाक्य में ‘से’ किस कारक की विभक्ति है?", options: ["करण", "अपादान", "अधिकरण", "कर्म"], answer: "अपादान", solution: "अलगाव (Separation) के अर्थ में अपादान कारक 'से' का प्रयोग होता है।"},
-{q: "शुद्ध वर्तनी वाला शब्द चुनें:", options: ["आर्शीवाद", "अशीर्वाद", "आशीर्वाद", "आशिर्वाद"], answer: "आशीर्वाद", solution: "आशीर्वाद में 'व' के ऊपर रेफ (र) की मात्रा आती है।"},
-{q: "‘अनल’ का सही पर्यायवाची शब्द क्या है?", options: ["वायु", "अग्नि", "जल", "आकाश"], answer: "अग्नि", solution: "अनल का अर्थ आग होता है, जबकि अनिल का अर्थ हवा होता है।"},
-{q: "‘स्थावर’ का विलोम शब्द क्या होगा?", options: ["जंगम", "चेतन", "सचल", "चंचल"], answer: "जंगम", solution: "स्थावर (जो स्थिर रहे) का विलोम जंगम (जो चल सके) होता है।"},
-{q: "‘अंगूठा दिखाना’ मुहावरे का सही अर्थ क्या है?", options: ["चिढ़ाना", "देने से मना करना", "प्यार जताना", "धोखा देना"], answer: "देने से मना करना", solution: "वक्त पर किसी चीज को देने से मना कर देना ही अंगूठा दिखाना है।"},
-{q: "‘जो बहुत बोलता हो’—वाक्यांश के लिए एक शब्द है:", options: ["वाचाल", "मितभाषी", "वक्ता", "मृदुभाषी"], answer: "वाचाल", solution: "अधिक बोलने वाले को वाचाल और कम बोलने वाले को मितभाषी कहते हैं।"},
-{q: "हिंदी भाषा की लिपि कौन-सी है?", options: ["रोमन", "देवनागरी", "गुरुमुखी", "फारसी"], answer: "देवनागरी", solution: "हिंदी देवनागरी लिपि में लिखी जाती है।"},
-{q: "‘कारक’ के कुल कितने भेद होते हैं?", options: ["6", "7", "8", "9"], answer: "8", solution: "हिंदी में कर्ता से लेकर संबोधन तक कुल 8 कारक होते हैं।"},
-{q: "‘चौपाई’ के प्रत्येक चरण में कितनी मात्राएँ होती हैं?", options: ["11", "13", "16", "24"], answer: "16", solution: "चौपाई एक सम मात्रिक छंद है जिसके हर चरण में 16 मात्राएँ होती हैं।"},
-{q: "‘नाक कटना’ मुहावरे का अर्थ क्या है?", options: ["चोट लगना", "प्रतिष्ठा नष्ट होना", "सर्जरी होना", "बदनाम होना"], answer: "प्रतिष्ठा नष्ट होना", solution: "इज्जत जाना या बेइज्जती होना ही नाक कटना है।"},
-{q: "निम्नलिखित में से कौन-सा शब्द ‘तत्सम’ है?", options: ["आग", "सूरज", "अग्नि", "घर"], answer: "अग्नि", solution: "संस्कृत के मूल शब्द जो हिंदी में प्रयुक्त होते हैं, तत्सम कहलाते हैं।"},
-{q: "‘उज्ज्वल’ की शुद्ध वर्तनी क्या है?", options: ["उज्वल", "उज्जवल", "उज्ज्वल", "ऊज्ज्वल"], answer: "उज्ज्वल", solution: "इसमें दोनों 'ज' आधे होते हैं (उत् + ज्वल)।"},
-{q: "‘वीर रस’ का स्थायी भाव क्या है?", options: ["क्रोध", "उत्साह", "शोक", "भय"], answer: "उत्साह", solution: "वीर रस का स्थायी भाव उत्साह है।"},
-{q: "‘दोहा’ का उल्टा छंद कौन-सा होता है?", options: ["चौपाई", "सोरठा", "रोला", "बरवै"], answer: "सोरठा", solution: "दोहा (13,11) का उल्टा सोरठा (11,13) होता है।"},
-{q: "‘पंकज’ शब्द किस प्रकार का शब्द है?", options: ["रूढ़", "यौगिक", "योगरूढ़", "विदेशी"], answer: "योगरूढ़", solution: "पंकज (कीचड़ में जनमने वाला) केवल 'कमल' के लिए रूढ़ हो गया है।"},
-{q: "‘अनु’ उपसर्ग से बना शब्द कौन-सा है?", options: ["अनपढ़", "अनुचर", "अनागत", "अटल"], answer: "अनुचर", solution: "अनु + चर = अनुचर (पीछे चलने वाला/सेवक)।"},
-{q: "‘मिठास’ शब्द में कौन-सा प्रत्यय लगा है?", options: ["मिठ", "आस", "स", "आसक"], answer: "आस", solution: "मीठा + आस = मिठास।"},
-{q: "‘दशानन’ में कौन-सा समास है?", options: ["द्विगु", "बहुव्रीहि", "तत्पुरुष", "कर्मधारय"], answer: "बहुव्रीहि", solution: "दस सिर वाला अर्थात रावण।"},
-{q: "‘अमृत’ का पर्यायवाची शब्द कौन-सा नहीं है?", options: ["सुधा", "अमिय", "पीयूष", "रसाल"], answer: "रसाल", solution: "रसाल आम का पर्यायवाची है।"},
-{q: "‘आवाहन’ का सही विलोम शब्द क्या है?", options: ["विसर्जन", "परोक्ष", "तिरोभाव", "विग्रह"], answer: "विसर्जन", solution: "आवाहन (बुलाना) का विलोम विसर्जन (विदा करना) है।"},
-{q: "‘तरणि’ (छोटी इ) का सही अर्थ क्या है?", options: ["सूर्य", "नाव", "युवती", "नदी"], answer: "सूर्य", solution: "तरणि का अर्थ सूर्य और तरणी (बड़ी ई) का अर्थ नाव होता है।"},
-{q: "‘यशोदा’ में कौन-सी संधि है?", options: ["स्वर", "व्यंजन", "विसर्ग", "गुण"], answer: "विसर्ग", solution: "यशः + दा = यशोदा।"},
-{q: "‘रामचरितमानस’ की भाषा क्या है?", options: ["ब्रज", "अवधि", "मैथिली", "खड़ी बोली"], answer: "अवधि", solution: "तुलसीदास जी ने इसे अवधि भाषा में लिखा था।"},
-{q: "‘अंधेर नगरी’ नाटक के लेखक कौन हैं?", options: ["जयशंकर प्रसाद", "भारतेंदु हरिश्चंद्र", "प्रेमचंद", "निराला"], answer: "भारतेंदु हरिश्चंद्र", solution: "यह प्रसिद्ध नाटक भारतेंदु हरिश्चंद्र का है।"},
-{q: "‘सर्वनाम’ के कुल कितने भेद होते हैं?", options: ["4", "5", "6", "8"], answer: "6", solution: "पुरुषवाचक, निजवाचक, निश्चयवाचक आदि कुल 6 भेद हैं।"},
-{q: "‘विशेषण’ जिसकी विशेषता बताता है, उसे क्या कहते हैं?", options: ["विशेष्य", "प्रविशेषण", "कारक", "अव्यय"], answer: "विशेष्य", solution: "जिस संज्ञा/सर्वनाम की विशेषता बताई जाए वह विशेष्य है।"},
-{q: "‘कनक कनक ते सौ गुनी’ में कौन-सा अलंकार है?", options: ["अनुप्रास", "यमक", "श्लेष", "उपमा"], answer: "यमक", solution: "यहाँ कनक शब्द दो बार आया है और अर्थ (सोना, धतूरा) अलग हैं।"},
-{q: "‘प्रत्युत्पन्नमति’ शब्द में कौन-सा उपसर्ग है?", options: ["प्र", "प्रति", "प्रत्यु", "प्रत"], answer: "प्रति", solution: "प्रति + उत्पन्न + मति = प्रत्युत्पन्नमति।"},
-{q: "‘ऊँट के मुँह में जीरा’ का अर्थ क्या है?", options: ["ऊँट को बीमारी", "आवश्यकता से बहुत कम मिलना", "दाना खिलाना", "पेट खराब होना"], answer: "आवश्यकता से बहुत कम मिलना", solution: "बड़ी जरूरत के लिए बहुत छोटी मात्रा।"},
-{q: "‘दिगंबर’ का सही संधि-विच्छेद क्या है?", options: ["दिग + अंबर", "दिक् + अंबर", "दि + गंबर", "दिगं + बर"], answer: "दिक् + अंबर", solution: "व्यंजन संधि के नियमानुसार क का ग हो जाता है।"},
-{q: "‘चरण कमल बंदौ हरिराई’ में कौन-सा अलंकार है?", options: ["उपमा", "रूपक", "उत्प्रेक्षा", "अतिशयोक्ति"], answer: "रूपक", solution: "चरणों को ही कमल मान लिया गया है (अभेद आरोप)।"},
-{q: "‘लड़का’ कौन सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "जातिवाचक", solution: "यह पूरी लड़का जाति का बोध कराता है।"},
-{q: "‘नायक’ का सही संधि-विच्छेद क्या है?", options: ["न + अक", "ने + अक", "नै + अक", "ना + यक"], answer: "नै + अक", solution: "अयादि संधि: ऐ + अ = आय।"},
-{q: "‘त्रिनेत्र’ में कौन-सा समास है?", options: ["द्विगु", "बहुव्रीहि", "द्वंद्व", "तत्पुरुष"], answer: "बहुव्रीहि", solution: "तीन नेत्र हैं जिसके अर्थात शिव।"},
-{q: "‘आँखें फेर लेना’ मुहावरे का अर्थ है:", options: ["अंधा होना", "प्रतिकूल होना", "गुस्सा करना", "धोखा देना"], answer: "प्रतिकूल होना", solution: "पहले जैसा व्यवहार न करना या मुकर जाना।"},
-{q: "‘घृणा’ शब्द का विलोम क्या है?", options: ["नफरत", "प्रेम", "ईर्ष्या", "क्रोध"], answer: "प्रेम", solution: "घृणा का विलोम प्रेम होता है।"},
-{q: "‘हिंदी दिवस’ कब मनाया जाता है?", options: ["14 सितंबर", "10 जनवरी", "15 अगस्त", "26 जनवरी"], answer: "14 सितंबर", solution: "भारत में 14 सितंबर को हिंदी दिवस मनाया जाता है।"}
+{q: "हिन्दी वर्णमाला में स्वरों की कुल संख्या कितनी है?", options: ["10", "11", "12", "13"], answer: "11", solution: "हिन्दी में मुख्य रूप से 11 स्वर (अ से औ तक) माने जाते हैं।"},
+{q: "‘क’ वर्ग का उच्चारण स्थान क्या है?", options: ["तालु", "कण्ठ", "मूर्धा", "दन्त"], answer: "कण्ठ", solution: "क, ख, ग, घ का उच्चारण कण्ठ से होता है।"},
+{q: "‘हिमालय’ का सही संधि-विच्छेद क्या है?", options: ["हिम + लय", "हिमल + आय", "हिम + आलय", "हिमा + लय"], answer: "हिम + आलय", solution: "अ + आ मिलकर 'आ' हो जाता है (दीर्घ संधि)।"},
+{q: "‘लंबोदर’ में कौन-सा समास है?", options: ["तत्पुरुष", "द्विगु", "बहुव्रीहि", "द्वंद्व"], answer: "बहुव्रीहि", solution: "लंबा है उदर जिनका अर्थात् 'गणेश' (तीसरा अर्थ प्रधान)।"},
+{q: "‘माता-पिता’ में कौन-सा समास है?", options: ["द्वंद्व", "द्विगु", "कर्मधारय", "अव्ययीभाव"], answer: "द्वंद्व", solution: "जहाँ दोनों पद प्रधान हों और बीच में योजक चिह्न हो।"},
+{q: "‘कमल’ का पर्यायवाची शब्द है:", options: ["जलद", "जलज", "नीरज", "B और C दोनों"], answer: "B और C दोनों", solution: "जलज और नीरज दोनों ही कमल के पर्यायवाची हैं।"},
+{q: "‘अंधे की लाठी’ मुहावरे का अर्थ है:", options: ["मजबूत सहारा", "एकमात्र सहारा", "अंधे व्यक्ति की मदद", "लाठी मारना"], answer: "एकमात्र सहारा", solution: "असहाय व्यक्ति के लिए अकेला सहारा होना।"},
+{q: "शुद्ध वर्तनी का चयन कीजिए:", options: ["आर्शीवाद", "अशीर्वाद", "आशीर्वाद", "आशिर्वाद"], answer: "आशीर्वाद", solution: "आशीर्वाद में 'व' के ऊपर रेफ (र) की मात्रा आती है।"},
+{q: "‘आकाश’ का विलोम शब्द क्या है?", options: ["धरती", "पाताल", "अम्बर", "नभ"], answer: "पाताल", solution: "आकाश का विपरीतार्थक शब्द पाताल होता है।"},
+{q: "‘जो पढ़ा-लिखा न हो’ के लिए एक शब्द है:", options: ["विद्वान", "अनपढ़", "अशिक्षित", "अज्ञानी"], answer: "अनपढ़", solution: "पढ़े-लिखे न होने वाले व्यक्ति को अनपढ़ या निरक्षर कहते हैं।"},
+{q: "संज्ञा के कितने भेद होते हैं?", options: ["3", "4", "5", "6"], answer: "5", solution: "व्यक्तिवाचक, जातिवाचक, भाववाचक, समूहवाचक और द्रव्यवाचक।"},
+{q: "‘सूर्य’ का पर्यायवाची शब्द नहीं है:", options: ["दिनकर", "रवि", "निशाकर", "भास्कर"], answer: "निशाकर", solution: "निशाकर चंद्रमा का पर्यायवाची है।"},
+{q: "‘कनक कनक ते सौ गुनी’ में कौन-सा अलंकार है?", options: ["अनुप्रास", "यमक", "श्लेष", "उपमा"], answer: "यमक", solution: "एक ही शब्द के अलग-अलग अर्थ (सोना और धतूरा) होने पर यमक अलंकार होता है।"},
+{q: "‘प्रत्येक’ का संधि-विच्छेद क्या है?", options: ["प्रत + एक", "प्रति + एक", "प्रती + एक", "प्रत्य + एक"], answer: "प्रति + एक", solution: "इ + ए मिलकर 'ये' हो जाता है (यण संधि)।"},
+{q: "‘त्रिफला’ में कौन-सा समास है?", options: ["द्वंद्व", "तत्पुरुष", "द्विगु", "कर्मधारय"], answer: "द्विगु", solution: "पहला पद संख्यावाचक (त्रि = तीन) है।"},
+{q: "‘न आँखों से देखा, न कानों से सुना’—वाक्य में ‘से’ कौन-सा कारक है?", options: ["कर्ता", "कर्म", "करण", "अपादान"], answer: "करण", solution: "क्रिया के साधन के रूप में 'से' का प्रयोग करण कारक कहलाता है।"},
+{q: "‘आम’ कौन-सा शब्द है?", options: ["तत्सम", "तद्भव", "देशज", "विदेशज"], answer: "तद्भव", solution: "इसका तत्सम रूप 'आम्र' होता है।"},
+{q: "‘मिठास’ कौन-सी संज्ञा है?", options: ["व्यक्तिवाचक", "जातिवाचक", "भाववाचक", "द्रव्यवाचक"], answer: "भाववाचक", solution: "मिठास एक गुण या भाव का बोध कराती है।"},
+{q: "‘अनु’ उपसर्ग से बना शब्द है:", options: ["अनपढ़", "अनुचर", "अधिकार", "अधम"], answer: "अनुचर", solution: "अनु + चर = अनुचर।"},
+{q: "‘लिखावट’ में कौन-सा प्रत्यय है?", options: ["लिख", "वट", "आवट", "ट"], answer: "आवट", solution: "लिख + आवट = लिखावट।"},
+{q: "‘पवन’ का संधि विच्छेद है:", options: ["प + वन", "पो + अन", "पौ + अन", "पव + न"], answer: "पो + अन", solution: "अयादि संधि के अनुसार ओ + अ = अव।"},
+{q: "‘नाक कटना’ मुहावरे का सही अर्थ है:", options: ["चोट लगना", "इज्जत जाना", "बीमार होना", "झगड़ा करना"], answer: "इज्जत जाना", solution: "प्रतिष्ठा धूमिल होना ही नाक कटना है।"},
+{q: "‘वीर’ का विलोम शब्द क्या है?", options: ["बहादुर", "कायर", "शक्तिशाली", "डर"], answer: "कायर", solution: "वीर का उल्टा डरपोक या कायर होता है।"},
+{q: "‘वह स्कूल जाता है’—वाक्य में ‘वह’ क्या है?", options: ["संज्ञा", "सर्वनाम", "विशेषण", "क्रिया"], answer: "सर्वनाम", solution: "नाम के स्थान पर प्रयुक्त होने वाले शब्द सर्वनाम कहलाते हैं।"},
+{q: "‘राम ने रोटी खाई’ में ‘ने’ कौन-सा कारक है?", options: ["कर्ता", "कर्म", "करण", "संप्रदान"], answer: "कर्ता", solution: "कर्ता कारक की विभक्ति 'ने' है।"},
+{q: "‘घड़ा’ का तत्सम रूप क्या है?", options: ["घोटक", "घट", "घृत", "गृह"], answer: "घट", solution: "संस्कृत में घड़े को 'घट' कहा जाता है।"},
+{q: "‘साप्ताहिक’ शब्द में कौन-सा प्रत्यय है?", options: ["स", "साह", "इक", "क"], answer: "इक", solution: "सप्ताह + इक = साप्ताहिक।"},
+{q: "‘सज्जन’ का विलोम शब्द क्या है?", options: ["दुर्जन", "अधम", "खल", "बुरा"], answer: "दुर्जन", solution: "सज्जन (अच्छा आदमी) का विलोम दुर्जन (बुरा आदमी) है।"},
+{q: "‘यथाशक्ति’ में कौन-सा समास है?", options: ["अव्ययीभाव", "तत्पुरुष", "द्वंद्व", "द्विगु"], answer: "अव्ययीभाव", solution: "पहला पद 'यथा' अव्यय है।"},
+{q: "हिन्दी दिवस कब मनाया जाता है?", options: ["14 सितंबर", "10 जनवरी", "15 अगस्त", "26 जनवरी"], answer: "14 सितंबर", solution: "14 सितंबर 1949 को हिन्दी को राजभाषा स्वीकार किया गया था।"},
+{q: "‘हाथ मलना’ का अर्थ क्या है?", options: ["हाथ साफ करना", "पछताना", "मेहनत करना", "मालिश करना"], answer: "पछताना", solution: "अवसर निकल जाने पर दुखी होना।"},
+{q: "‘पानी’ कौन-सी संज्ञा है?", options: ["जातिवाचक", "द्रव्यवाचक", "समूहवाचक", "भाववाचक"], answer: "द्रव्यवाचक", solution: "तरल पदार्थों का बोध कराने वाली संज्ञा द्रव्यवाचक होती है।"},
+{q: "‘कमल’ का पर्यायवाची शब्द नहीं है:", options: ["पंकज", "राजीव", "अम्बुज", "अम्बुद"], answer: "अम्बुद", solution: "अम्बुद बादल का पर्यायवाची है।"},
+{q: "‘अनल’ का सही अर्थ क्या है?", options: ["हवा", "आग", "पानी", "आकाश"], answer: "आग", solution: "अनल मतलब आग और अनिल मतलब हवा।"},
+{q: "‘विद्यालय’ में कौन-सी संधि है?", options: ["गुण", "वृद्धि", "दीर्घ", "यण"], answer: "दीर्घ", solution: "विद्या + आलय (आ + आ = आ) दीर्घ संधि है।"}
 
+ ],
+medium: [
 
-  
-];
+{q: "‘उज्ज्वल’ का सही संधि-विच्छेद क्या है?", options: ["उत + जवल", "उत् + ज्वल", "उद + ज्वल", "उज + ज्वल"], answer: "उत् + ज्वल", solution: "यह व्यंजन संधि है, जहाँ 'त्' के बाद 'ज्' आने पर 'त्' भी 'ज्' में बदल जाता है।"},
+{q: "‘चिड़िया’ शब्द का बहुवचन रूप क्या होगा?", options: ["चिड़ियाँ", "चिड़िये", "चिड़िओं", "चिड़ियाएँ"], answer: "चिड़ियाँ", solution: "इयांत शब्दों के अंत में चन्द्रबिंदु लगाकर बहुवचन बनाया जाता है।"},
+{q: "‘पंकज’ शब्द किस प्रकार का शब्द है?", options: ["रूढ़", "यौगिक", "योगरूढ़", "विदेशी"], answer: "योगरूढ़", solution: "वे शब्द जो सामान्य अर्थ छोड़कर विशेष अर्थ (कमल) प्रकट करते हैं।"},
+{q: "‘लड़का पेड़ से गिरा’—वाक्य में कौन-सा कारक है?", options: ["करण", "अपादान", "संप्रदान", "अधिकरण"], answer: "अपादान", solution: "जहाँ अलगाव (Separation) का बोध हो, वहाँ अपादान कारक होता है।"},
+{q: "‘पीताम्बर’ में कौन-सा समास है?", options: ["बहुव्रीहि", "द्वंद्व", "तत्पुरुष", "द्विगु"], answer: "बहुव्रीहि", solution: "पीला है अम्बर जिनका अर्थात् कृष्ण/विष्णु।"},
+{q: "‘अन्वेषण’ का संधि-विच्छेद क्या है?", options: ["अनु + एषण", "अन + वेषण", "अन्वे + षण", "अन्व + एषण"], answer: "अनु + एषण", solution: "उ + ए मिलकर 'वे' हो जाता है (यण संधि)।"},
+{q: "‘जो किए गए उपकार को मानता हो’—वाक्यांश के लिए एक शब्द:", options: ["कृतघ्न", "कृतज्ञ", "उपकारी", "आभारी"], answer: "कृतज्ञ", solution: "उपकार मानने वाला कृतज्ञ और न मानने वाला कृतघ्न कहलाता है।"},
+{q: "‘अलंकार’ का शाब्दिक अर्थ क्या है?", options: ["वस्त्र", "भूषण", "वर्ण", "सुंदरता"], answer: "भूषण", solution: "काव्य की शोभा बढ़ाने वाले तत्वों को अलंकार (आभूषण) कहते हैं।"},
+{q: "‘प्रत्युत्पन्नमति’ शब्द में कौन-सा उपसर्ग है?", options: ["प्र", "प्रति", "प्रत्यु", "प्रत्य"], answer: "प्रति", solution: "प्रति + उत्पन्न + मति।"},
+{q: "‘घूँघट’ किस प्रकार का शब्द है?", options: ["तत्सम", "तद्भव", "देशज", "विदेशज"], answer: "देशज", solution: "वे शब्द जिनकी उत्पत्ति का पता नहीं चलता, स्थानीय भाषाओं से आए हैं।"},
+{q: "‘तरणि’ और ‘तरणी’ शब्द युग्म का सही अर्थ क्या है?", options: ["नाव-सूर्य", "सूर्य-नाव", "नदी-नाव", "युवती-नदी"], answer: "सूर्य-नाव", solution: "तरणि (छोटी इ) = सूर्य, तरणी (बड़ी ई) = नाव।"},
+{q: "‘अपेक्षा’ का विलोम शब्द क्या होगा?", options: ["सापेक्षा", "उपेक्षा", "निरपेक्षा", "अनुपेक्षा"], answer: "उपेक्षा", solution: "अपेक्षा (उम्मीद) का विपरीत उपेक्षा (नजरअंदाज) है।"},
+{q: "‘मनोयोग’ में कौन-सी संधि है?", options: ["स्वर", "व्यंजन", "विसर्ग", "यण"], answer: "विसर्ग", solution: "मनः + योग = मनोयोग।"},
+{q: "‘काली घटा का घमंड घटा’—में कौन-सा अलंकार है?", options: ["अनुप्रास", "यमक", "श्लेष", "रूपक"], answer: "यमक", solution: "यहाँ 'घटा' शब्द दो बार आया है और दोनों के अर्थ (बादल और कम होना) अलग हैं।"},
+{q: "‘पुरस्कार’ में कौन-सी संधि है?", options: ["स्वर", "व्यंजन", "विसर्ग", "दीर्घ"], answer: "विसर्ग", solution: "पुरः + कार = पुरस्कार।"},
+{q: "‘दशानन’ में कौन-सा समास है?", options: ["द्विगु", "बहुव्रीहि", "कर्मधारय", "तत्पुरुष"], answer: "बहुव्रीहि", solution: "दस हैं आनन जिसके अर्थात् रावण।"},
+{q: "‘खिचड़ी’ कैसा शब्द है?", options: ["तत्सम", "तद्भव", "देशज", "विदेशी"], answer: "देशज", solution: "यह लोकभाषा का शब्द है।"},
+{q: "‘आह्लाद’ का सही विलोम क्या है?", options: ["हर्ष", "विषाद", "दुख", "पीड़ा"], answer: "विषाद", solution: "आह्लाद (खुशी) का विलोम विषाद (दुख) होता है।"},
+{q: "‘पावक’ का संधि-विच्छेद क्या होगा?", options: ["पो + अक", "पौ + अक", "पा + वक", "पाव + क"], answer: "पौ + अक", solution: "अयादि संधि के अनुसार औ + अ = आव।"},
+{q: "‘चौपाई’ के प्रत्येक चरण में कितनी मात्राएँ होती हैं?", options: ["11", "13", "16", "24"], answer: "16", solution: "चौपाई एक सम मात्रिक छंद है।"},
+{q: "‘आस्तीन का साँप’ मुहावरे का अर्थ है:", options: ["दोस्ती करना", "कपटी मित्र", "पालतू साँप", "दुश्मनी मोल लेना"], answer: "कपटी मित्र", solution: "साथ रहकर धोखा देने वाला व्यक्ति।"},
+{q: "‘स्थावर’ का विलोम शब्द क्या है?", options: ["सचल", "जंगम", "चेतन", "स्थिर"], answer: "जंगम", solution: "स्थावर (स्थिर) का विलोम जंगम (चलायमान) है।"},
+{q: "‘बंदर’ का तत्सम रूप क्या है?", options: ["कपि", "वानर", "मर्कट", "शाखामृग"], answer: "वानर", solution: "बंदर तद्भव है और वानर इसका तत्सम।"},
+{q: "‘घृणा’ शब्द का विलोम शब्द है:", options: ["नफरत", "प्रेम", "ईर्ष्या", "क्रोध"], answer: "प्रेम", solution: "घृणा का विपरीतार्थक प्रेम है।"},
+{q: "‘प्रत्येक’ में कौन-सा समास है?", options: ["तत्पुरुष", "द्विगु", "अव्ययीभाव", "द्वंद्व"], answer: "अव्ययीभाव", solution: "प्रति + एक (पहला पद अव्यय)।"},
+{q: "‘दिगंबर’ का संधि-विच्छेद क्या है?", options: ["दिग + अंबर", "दिक् + अंबर", "दि + गंबर", "दिगं + बर"], answer: "दिक् + अंबर", solution: "व्यंजन संधि: क का ग में परिवर्तन।"},
+{q: "‘गगनचुंबी’ में कौन-सा समास है?", options: ["कर्म तत्पुरुष", "करण तत्पुरुष", "अपादान तत्पुरुष", "द्विगु"], answer: "कर्म तत्पुरुष", solution: "गगन को चूमने वाला (को विभक्ति का लोप)।"},
+{q: "‘अनल’ और ‘अनिल’ का सही अर्थ क्या है?", options: ["हवा-आग", "आग-हवा", "पानी-हवा", "आकाश-आग"], answer: "आग-हवा", solution: "अनल = आग, अनिल = हवा।"},
+{q: "‘निश्चल’ का सही संधि-विच्छेद क्या है?", options: ["निश + चल", "निः + चल", "निर + चल", "निस + चल"], answer: "निः + चल", solution: "विसर्ग संधि के नियमानुसार विसर्ग 'श' में बदल जाता है।"},
+{q: "‘जो मापा न जा सके’ के लिए एक शब्द है:", options: ["अपरिमेय", "अमापित", "अनुपमेय", "अपरिमित"], answer: "अपरिमेय", solution: "जिसका मापन संभव न हो।"},
+{q: "‘परोक्ष’ का विलोम शब्द क्या है?", options: ["प्रत्यक्ष", "अपरोक्ष", "स्थूल", "दृष्टव्य"], answer: "प्रत्यक्ष", solution: "परोक्ष (आँखों से दूर) का विलोम प्रत्यक्ष (आँखों के सामने) है।"},
+{q: "‘चरण कमल बंदौ हरिराई’ में कौन-सा अलंकार है?", options: ["उपमा", "रूपक", "उत्प्रेक्षा", "यमक"], answer: "रूपक", solution: "जहाँ उपमेय में उपमान का अभेद आरोप हो।"},
+{q: "‘बहिष्कार’ का संधि-विच्छेद क्या है?", options: ["बहि + कार", "बहिः + कार", "बहिर् + कार", "बही + कार"], answer: "बहिः + कार", solution: "यह विसर्ग संधि का उदाहरण है।"},
+{q: "‘तपोवन’ में कौन-सी संधि है?", options: ["स्वर", "व्यंजन", "विसर्ग", "गुण"], answer: "विसर्ग", solution: "तपः + वन = तपोवन।"},
+{q: "‘खग’ का पर्यायवाची शब्द है:", options: ["मृग", "विहग", "नभ", "धरती"], answer: "विहग", solution: "खग और विहग दोनों का अर्थ पक्षी होता है।"}
 
-let currentIndex=0,answers={},visited={};
-let totalSeconds=0,timerInterval,startTime;
+],
+hard: [
 
-function startTest(){
-  if(!candidateName.value || !testTime.value) {
-    alert("Please enter Name and Time"); return;
-  }
-  displayName.textContent=candidateName.value;
-  startScreen.style.display="none";
-  topBar.style.display="flex";
-  palette.style.display="flex"; 
-  navBtns.style.display="flex";
-  submitBtn.style.display="block";
-  totalSeconds=testTime.value*60;
-  startTime=Date.now();
-  saveProgress();
-  startTimer();
-  renderQuestion();
-}
+{q: "‘उद्धरण’ का सही संधि-विच्छेद क्या है?", options: ["उत + धरण", "उत् + हरण", "उद + धरण", "उद् + हरण"], answer: "उत् + हरण", solution: "व्यंजन संधि के नियमानुसार 'त्' के बाद 'ह' आने पर 'त्' का 'द्' और 'ह' का 'ध्' हो जाता है।"},
+{q: "‘अन्वेषण’ में कौन-सी संधि है?", options: ["यण", "गुण", "वृद्धि", "अयादि"], answer: "यण", solution: "अनु + एषण (उ + ए = वे)।"},
+{q: "‘कनक कनक ते सौ गुनी मादकता अधिकाय’—में कौन-सा अलंकार है?", options: ["यमक", "श्लेष", "अनुप्रास", "उपमा"], answer: "यमक", solution: "यहाँ एक 'कनक' का अर्थ सोना और दूसरे का धतूरा है।"},
+{q: "‘सच्चिदानंद’ का सही संधि-विच्छेद है:", options: ["सत् + चित + आनंद", "सच्चि + दानंद", "सत + चिद + आनंद", "सच्चिद + आनंद"], answer: "सत् + चित + आनंद", solution: "यह दोहरी व्यंजन संधि का उदाहरण है।"},
+{q: "‘मृगनयनी’ में कौन-सा समास है?", options: ["तत्पुरुष", "कर्मधारय", "बहुव्रीहि", "द्विगु"], answer: "कर्मधारय", solution: "मृग के समान नयन (उपमा-उपमेय का संबंध)।"},
+{q: "‘अधिष्ठाता’ का संधि-विच्छेद क्या है?", options: ["अधि + ठाता", "अधि + स्थाता", "अधिष + ठाता", "अध + स्थाता"], answer: "अधि + स्थाता", solution: "व्यंजन संधि के नियमानुसार 'इ' के बाद 'स्था' आने पर 'स्था' का 'ष्ठा' हो जाता है।"},
+{q: "‘पाश्चात्य’ का विलोम शब्द क्या है?", options: ["प्रतिची", "प्राची", "पौर्वात्य", "प्रत्यक्ष"], answer: "पौर्वात्य", solution: "पाश्चात्य (Western) का विलोम पौर्वात्य (Eastern) होता है।"},
+{q: "‘रहिमन पानी राखिये, बिन पानी सब सून’—में कौन-सा अलंकार है?", options: ["यमक", "श्लेष", "रूपक", "उत्प्रेक्षा"], answer: "श्लेष", solution: "यहाँ 'पानी' शब्द के तीन अर्थ (चमक, सम्मान, जल) निकले हैं।"},
+{q: "‘अब्ज’ का सही अर्थ क्या है?", options: ["कमल", "बादल", "आकाश", "समुद्र"], answer: "कमल", solution: "अप (पानी) + ज (जन्म लेने वाला) = अब्ज।"},
+{q: "‘अमृत’ का पर्यायवाची शब्द कौन-सा नहीं है?", options: ["अमिय", "सुधा", "पीयूष", "अंबुद"], answer: "अंबुद", solution: "अंबुद बादल का पर्यायवाची है।"},
+{q: "‘प्रत्युत्पन्नमति’ का अर्थ क्या है?", options: ["जो बहुत बोलता हो", "जिसकी बुद्धि तुरंत उत्तर दे सके", "जो फिर से उत्पन्न हुआ हो", "जो मौन रहता हो"], answer: "जिसकी बुद्धि तुरंत उत्तर दे सके", solution: "प्रति + उत्पन्न + मति (तुरंत सोचने वाली बुद्धि)।"},
+{q: "‘वागर्थ’ में कौन-सी संधि है?", options: ["स्वर", "व्यंजन", "विसर्ग", "यण"], answer: "व्यंजन", solution: "वाक् + अर्थ (क् का ग् हो जाना)।"},
+{q: "‘युधिष्ठिर’ में कौन-सा समास है?", options: ["तत्पुरुष", "बहुव्रीहि", "अलुक् तत्पुरुष", "द्विगु"], answer: "अलुक् तत्पुरुष", solution: "युद्ध में स्थिर रहने वाला; इसमें विभक्ति का लोप नहीं होता।"},
+{q: "‘उन्मीलन’ का विलोम शब्द क्या है?", options: ["अवमीलन", "निमीलन", "अनुमीलन", "प्रमीलन"], answer: "निमीलन", solution: "उन्मीलन मतलब खिलना, निमीलन मतलब बंद होना।"},
+{q: "‘कौमुदी’ किसका पर्यायवाची है?", options: ["चाँदनी", "चंद्रमा", "रात", "तारा"], answer: "चाँदनी", solution: "चाँदनी को ज्योत्स्ना या कौमुदी भी कहते हैं।"},
+{q: "‘उच्छ्वास’ का सही संधि-विच्छेद है:", options: ["उत + वास", "उत + श्वास", "उद + श्वास", "उच्छ + वास"], answer: "उत + श्वास", solution: "त् + श मिलकर 'च्छ' हो जाता है।"},
+{q: "‘धूसर’ किसका पर्यायवाची है?", options: ["अश्व", "मेघ", "गर्दभ", "अजा"], answer: "गर्दभ", solution: "धूसर गधे (गर्दभ) का पर्यायवाची है।"},
+{q: "‘मूक’ का विलोम शब्द क्या है?", options: ["अल्पभाषी", "वाचाल", "मृदुभाषी", "कटुभाषी"], answer: "वाचाल", solution: "मूक (न बोलने वाला) का विलोम वाचाल है।"},
+{q: "‘कलेजे पर साँप लोटना’ मुहावरे का अर्थ क्या है?", options: ["दुखी होना", "ईर्ष्या से जल उठना", "डर जाना", "बीमार होना"], answer: "ईर्ष्या से जल उठना", solution: "किसी की प्रगति देखकर जलन होना।"},
+{q: "‘महोष्म’ का संधि विच्छेद क्या होगा?", options: ["महो + उष्ण", "महा + उष्ण", "महा + ओष्ण", "मह + उष्ण"], answer: "महा + उष्ण", solution: "आ + उ = ओ (गुण संधि)।"},
+{q: "‘धनुर्बाण’ में कौन-सा समास है?", options: ["तत्पुरुष", "बहुव्रीहि", "द्वंद्व", "कर्मधारय"], answer: "द्वंद्व", solution: "धनुष और बाण (दोनों पद प्रधान)।"},
+{q: "‘व्युत्पत्ति’ का संधि-विच्छेद है:", options: ["व्युत् + पत्ति", "वि + उत्पत्ति", "व्यु + उत्पत्ति", "वि + उत्पति"], answer: "वि + उत्पत्ति", solution: "इ + उ = यु (यण संधि)।"},
+{q: "‘हलाहल’ का विलोम शब्द है:", options: ["गरल", "विष", "सुधा", "अमृत"], answer: "सुधा", solution: "हलाहल का अर्थ जहर होता है, इसका विलोम सुधा (अमृत) है।"},
+{q: "‘जो इंद्रियों द्वारा न जाना जा सके’:", options: ["अगोचर", "अजेय", "अतींद्रिय", "A और C दोनों"], answer: "A और C दोनों", solution: "अगोचर और अतींद्रिय दोनों का अर्थ इंद्रियों से परे है।"},
+{q: "‘अधम’ का विलोम शब्द क्या है?", options: ["नीच", "उत्तम", "बुरा", "नारद"], answer: "उत्तम", solution: "अधम मतलब नीच, उत्तम मतलब श्रेष्ठ।"},
+{q: "‘नीलोत्पलम’ में कौन-सा समास है?", options: ["अव्ययीभाव", "तत्पुरुष", "कर्मधारय", "बहुव्रीहि"], answer: "कर्मधारय", solution: "नीला है जो उत्पल (कमल)।"},
+{q: "‘इति-ईति’ शब्द युग्म का सही अर्थ है:", options: ["समाप्ति-दुख", "प्रारंभ-विघ्न", "समाप्ति-विघ्न", "पूर्ण-अपूर्ण"], answer: "समाप्ति-विघ्न", solution: "इति = समाप्ति, ईति = दैविक बाधा या विघ्न।"},
+{q: "‘सत्याग्रह’ में कौन-सी संधि है?", options: ["दीर्घ", "गुण", "वृद्धि", "यण"], answer: "दीर्घ", solution: "सत्य + आग्रह (अ + आ = आ)।"},
+{q: "‘अज्ञ’ का विलोम शब्द क्या है?", options: ["विज्ञ", "सर्वज्ञ", "अल्पज्ञ", "अभिज्ञ"], answer: "विज्ञ", solution: "अज्ञ (न जानने वाला) का विलोम विज्ञ (जानकार) है।"},
+{q: "‘कूपमंडूक होना’ मुहावरे का अर्थ है:", options: ["कुएँ में गिरना", "मूर्ख होना", "अत्यंत सीमित ज्ञान होना", "घमंडी होना"], answer: "अत्यंत सीमित ज्ञान होना", solution: "बाहरी दुनिया का पता न होना।"},
+{q: "‘निर्लेप’ का संधि-विच्छेद क्या है?", options: ["निर् + लेप", "निः + लेप", "नि + लेप", "नी + लेप"], answer: "निः + लेप", solution: "विसर्ग संधि का उदाहरण।"},
+{q: "‘हाथ कंगन को आरसी क्या’ लोकोक्ति का अर्थ है:", options: ["गहने पहनना", "प्रत्यक्ष को प्रमाण की आवश्यकता नहीं", "अमीर होना", "सुंदर दिखना"], answer: "प्रत्यक्ष को प्रमाण की आवश्यकता नहीं", solution: "जो सामने है उसे साबित करने की जरूरत नहीं।"},
+{q: "‘अनल’ किसका पर्यायवाची है?", options: ["जल", "वायु", "अग्नि", "पृथ्वी"], answer: "अग्नि", solution: "अनल = आग।"},
+{q: "‘अनागत’ का विलोम शब्द है:", options: ["वर्तमान", "भूतकाल", "आगत", "विगत"], answer: "आगत", solution: "अनागत (जो न आया हो) का विलोम आगत (आया हुआ) है।"},
+{q: "‘चौराहा’ में कौन-सा समास है?", options: ["द्विगु", "द्वंद्व", "तत्पुरुष", "कर्मधारय"], answer: "द्विगु", solution: "चार राहों का समूह (प्रथम पद संख्यावाचक)।"}
 
-function startTimer(){
-  timerInterval=setInterval(()=>{
-    totalSeconds--;
-    updateTimer();
-    saveProgress();
-    if(totalSeconds<=0)submitQuiz();
-  },1000);
-}
+  ]
+    };
 
-function updateTimer(){
-  timer.textContent=
-    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
-    String(totalSeconds%60).padStart(2,'0');
-}
+    let questions = [];
+    let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
+    let totalSeconds=0, timerInterval, startTime;
 
-function renderQuestion(){
-  visited[currentIndex]=true;
-  const q=questions[currentIndex];
-  quizArea.innerHTML=`
-    <div class="quiz-card">
-      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-      <div class="options">
-        ${q.options.map(o=>`
-          <label>
-            <input type="radio" name="opt"
-              ${answers[currentIndex]==o?'checked':''}
-              onchange="selectAnswer('${o}')">
-            ${o}
-          </label>
-        `).join("")}
-      </div>
-    </div>`;
-  renderPalette();
-  saveProgress();
-}
+    function syncCountAndTime() {
+        const level = document.getElementById("difficultyLevel").value;
+        const count = allQuestionsBank[level].length;
+        document.getElementById("totalQDisplay").textContent = count;
+        document.getElementById("testTime").value = count;
+    }
 
-function selectAnswer(val){
-  answers[currentIndex]=val;
-  saveProgress();
-  renderPalette();
-}
+    function startTest(){
+        const level = document.getElementById("difficultyLevel").value;
+        questions = allQuestionsBank[level];
+        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+        displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
+        startScreen.style.display="none";
+        topBar.style.display="flex";
+        palette.style.display="flex";
+        navBtns.style.display="flex";
+        submitBtn.style.display="block";
+        totalSeconds=testTime.value*60;
+        startTime=Date.now();
+        saveProgress(level);
+        startTimer();
+        renderQuestion();
+    }
 
-function renderPalette(){
-  palette.innerHTML="";
-  questions.forEach((_,i)=>{
-    const s=document.createElement("span");
-    s.textContent=i+1;
-    if(visited[i])s.classList.add("visited");
-    if(answers[i])s.classList.add("attempted");
-    s.onclick=()=>{currentIndex=i;renderQuestion()};
-    palette.appendChild(s);
-  });
-}
+    function startTimer(){
+        timerInterval=setInterval(()=>{
+            totalSeconds--;
+            updateTimerDisplay();
+            saveProgress();
+            if(totalSeconds<=0) submitQuiz();
+        },1000);
+    }
 
-function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
-function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+    function updateTimerDisplay(){
+        timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+ String(totalSeconds%60).padStart(2,'0');
+    }
 
-function saveProgress(){
-  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
-    name:displayName.textContent,
-    answers,visited,currentIndex,totalSeconds,startTime
-  }));
-}
+    function renderQuestion(){
+        visited[currentIndex]=true;
+        const q=questions[currentIndex];
+        quizArea.innerHTML=`
+            <div class="quiz-card">
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+                </div>
+                <div class="options">
+                    ${q.options.map(o=>`
+                        <label>
+                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
+                        </label>
+                    `).join("")}
+                </div>
+                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+            </div>`;
+        renderPalette();
+    }
 
-function submitQuiz(){
-  if(!confirm("Are you sure you want to submit the Hindi test?")) return;
-  clearInterval(timerInterval);
-  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-  let correct=0, attempted=0;
-  let detailHtml="<h2>Detailed Analysis</h2>";
-  
-  questions.forEach((q,i)=>{
-    if(answers[i]) attempted++;
-    if(answers[i] == q.answer) correct++;
-    
-    detailHtml+=`
-      <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
-        <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
-        <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Solution not available."}
-        </div>
-      </div>`;
-  });
+    function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
+    function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
+    function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
+    function challengeQuestion(){
+        if(answers[currentIndex]){ alert("Already answered!"); return; }
+        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
+    }
 
-  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+    function renderPalette(){
+        palette.innerHTML="";
+        questions.forEach((_,i)=>{
+            const s=document.createElement("span");
+            s.textContent=i+1;
+            if(visited[i]) s.classList.add("visited");
+            if(answers[i]) s.classList.add("attempted");
+            if(reviewMarks[i]) s.classList.add("marked-review");
+            if(challenges[i]) s.classList.add("challenged");
+            s.onclick=()=>{currentIndex=i;renderQuestion()};
+            palette.appendChild(s);
+        });
+    }
 
-  localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
-  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
+    function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+    function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-  const summaryBox = `
-    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Hindi Performance Report</h3>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-      </div>
-      <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
-    </div>
-  `;
+    function saveProgress(lvl){
+        const level = lvl || JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}`) || '{"level":"easy"}').level;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
+            name:displayName.textContent.split(' (')[0],
+            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+        }));
+    }
 
-  const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+    function submitQuiz(){
+        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
+        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
+        if(!confirm("Are you sure you want to submit?")) return;
+        
+        clearInterval(timerInterval);
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+        
+        let correct=0, attempted=0, challCount=0;
+        let detailHtml="<h2>Detailed Analysis</h2>";
+        
+        questions.forEach((q,i)=>{
+            let isCorrect = false;
+            let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
 
-  emailjs.send("service_wq5yoyp", "template_doegpcp", {
-    candidate_name: displayName.textContent,
-    subject: MY_SUBJECT,
-    score: correct,
-    total: questions.length,
-    attempted: attempted,
-    accuracy: accuracy + "%",
-    time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-    test_date: new Date().toLocaleString("en-IN")
-  });
+            if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
+            else if(answers[i] === q.answer) { isCorrect = true; }
+            
+            if(answers[i]) attempted++;
+            if(isCorrect) correct++;
 
-  quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
-  submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
-  clearBtn.style.display="block"; window.scrollTo(0,0);
-}
+            detailHtml+=`
+                <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                    <p><b>Q${i+1}.</b> ${q.q}</p>
+                    <p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                    <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
+                </div>`;
+        });
 
-window.onload=function(){
-  document.getElementById("totalQDisplay").textContent = questions.length;
-  document.getElementById("testTime").value = questions.length;
+        // Dashboard Storage logic
+        const currentLvl = document.getElementById("difficultyLevel").value.toUpperCase();
+        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
 
-  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
-  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
-  
-  if(final){
-    const d=JSON.parse(final);
-    startScreen.style.display="none"; topBar.style.display="flex";
-    displayName.textContent=d.name; result.style.display="block"; result.innerHTML=d.html;
-    clearBtn.style.display="block";
-  } else if(progress){
-    const p=JSON.parse(progress);
-    displayName.textContent=p.name; answers=p.answers||{}; visited=p.visited||{};
-    currentIndex=p.currentIndex||0; totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
-    startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex";
-    navBtns.style.display="flex"; submitBtn.style.display="block"; startTimer(); renderQuestion();
-  }
-};
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
+        
+        const summaryBox = `
+            <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+                <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                </div>
+                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
+            </div>`;
 
-function clearResult(){
-  if(confirm("Start new test? Hindi results will be cleared.")){ 
-    localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
-    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-    location.reload(); 
-  }
-}
+        const finalHtml = summaryBox + detailHtml;
+        result.style.display="block";
+        result.innerHTML = finalHtml;
+        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
+        clearBtn.style.display="block"; window.scrollTo(0,0);
+        
+        localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+
+        emailjs.send("service_wq5yoyp", "template_doegpcp", {
+            candidate_name: displayName.textContent,
+            subject: MY_SUBJECT,
+            score: correct,
+            total: questions.length,
+            attempted: attempted,
+            accuracy: accuracy + "%",
+            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+            test_date: new Date().toLocaleString("en-IN")
+        });
+    }
+
+    window.onload=function(){
+        syncCountAndTime();
+        const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
+        const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+        if(final){
+            const d=JSON.parse(final);
+            result.style.display="block"; result.innerHTML=d.html; clearBtn.style.display="block";
+            startScreen.style.display="none";
+        } else if(progress){
+            const p=JSON.parse(progress);
+            questions = allQuestionsBank[p.level];
+            displayName.textContent=p.name + ` (${p.level.toUpperCase()})`;
+            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime; reviewMarks=p.reviewMarks; challenges=p.challenges;
+            startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex"; navBtns.style.display="flex"; submitBtn.style.display="block";
+            startTimer(); renderQuestion();
+        }
+    };
+
+    function clearResult(){ if(confirm("Clear result?")) { localStorage.clear(); location.reload(); } }
 </script>
 </body>
 </html>
-
-
-
