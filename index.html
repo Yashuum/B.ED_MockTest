@@ -52,31 +52,32 @@
 
         .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 40px 20px; }
 
-        /* --- BIGGER LOGO & WELCOME SECTION --- */
+        /* --- CLEAN WELCOME SECTION WITH ZOOMED LOGO --- */
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); 
             border: 1px solid var(--glass-border); border-radius: 35px; 
-            padding: 50px; margin-top: 15px; margin-bottom: 30px; 
+            padding: 30px 50px; margin-top: 15px; margin-bottom: 30px; 
             display: flex; align-items: center; justify-content: flex-start;
-            gap: 60px; text-align: left;
-            min-height: 350px; /* Kaafi bada space logo ke liye */
+            gap: 20px; text-align: left;
+            overflow: hidden; /* Taki logo bahar na jaye */
         }
         
         .welcome-logo {
-            width: 400px; /* Ab width kaafi badha di hai */
-            max-width: 45%; /* Taki text ke liye bhi jagah bache */
-            height: auto; 
+            height: 180px; /* Base height */
+            width: auto;
+            transform: scale(1.4); /* Logo ko zoom karke bada dikhayega */
+            transform-origin: center;
             object-fit: contain;
-            filter: drop-shadow(0px 15px 30px rgba(0,0,0,0.4));
+            filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.2));
+            margin-right: 40px; /* Text se thoda door */
         }
 
-        .welcome-text-content { display: flex; flex-direction: column; }
+        .welcome-text-content { display: flex; flex-direction: column; z-index: 5; }
 
         .welcome .brand { 
             font-family: 'Marck Script', cursive; 
-            font-size: 85px; /* Super Bold Look */
-            color: #fff; text-shadow: 2px 2px 20px rgba(0,0,0,0.3);
-            line-height: 1;
+            font-size: 68px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+            line-height: 1.1;
         }
 
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; width: 100%; }
@@ -131,16 +132,9 @@
 
         .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
 
-        /* RESPONSIVE: Tablet and Phone */
-        @media(max-width:1100px){
-            .welcome { gap: 40px; padding: 40px; min-height: auto; }
-            .welcome-logo { width: 300px; }
-            .welcome .brand { font-size: 65px; }
-        }
-
-        @media(max-width:768px){ 
-            .welcome { flex-direction: column; text-align: center; justify-content: center; gap: 20px; padding: 40px 20px; }
-            .welcome-logo { width: 180px; max-width: 80%; } /* Phone par decent size */
+        @media(max-width:900px){ 
+            .welcome { flex-direction: column; text-align: center; justify-content: center; gap: 10px; padding: 30px 20px; }
+            .welcome-logo { height: 100px; transform: scale(1.2); margin-right: 0; margin-bottom: 10px; }
             .dashboard { grid-template-columns: 1fr; } 
             .welcome .brand { font-size: 48px; }
         }
@@ -164,7 +158,7 @@
         <div class="welcome">
             <img src="NishuAbhyasi.png" alt="Logo" class="welcome-logo">
             <div class="welcome-text-content">
-                <div style="color:rgba(255,255,255,0.7); font-size:20px; letter-spacing: 3px; margin-bottom:10px;">WELCOME TO</div>
+                <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
                 <div class="brand">NishuAbhyasi</div>
             </div>
         </div>
@@ -285,23 +279,14 @@
         }
 
         const revealCards = () => {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: "0px 0px -20px 0px"
-            };
-
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -20px 0px" };
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('reveal');
-                    } else {
-                        entry.target.classList.remove('reveal');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('reveal');
+                    else entry.target.classList.remove('reveal');
                 });
             }, observerOptions);
-
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => observer.observe(card));
+            document.querySelectorAll('.card').forEach(card => observer.observe(card));
         };
 
         window.onload = () => {
