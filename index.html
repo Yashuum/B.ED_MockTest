@@ -52,43 +52,42 @@
 
         .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 40px 20px; }
 
+        /* Updated Welcome Section for Logo on Left */
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); 
             border: 1px solid var(--glass-border); border-radius: 35px; 
-            padding: 40px; text-align: center; margin-top: 15px; margin-bottom: 30px; 
+            padding: 40px; margin-top: 15px; margin-bottom: 30px; 
+            display: flex; align-items: center; justify-content: flex-start;
+            gap: 40px; text-align: left;
         }
         
+        .welcome-logo {
+            width: 150px; height: 150px; object-fit: contain;
+            filter: drop-shadow(2px 4px 10px rgba(0,0,0,0.3));
+        }
+
+        .welcome-text-content { display: flex; flex-direction: column; }
+
         .welcome .brand { 
             font-family: 'Marck Script', cursive; 
             font-size: 64px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+            line-height: 1.1;
         }
 
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; width: 100%; }
         .column { display: flex; flex-direction: column; gap: 25px; }
 
-        /* --- SMOOTH SCROLL REVEAL (SLOW SPEED) --- */
         .card { 
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); 
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; 
             padding: 30px; display: flex; flex-direction: column; 
             justify-content: space-between; min-height: 180px; 
-            
-            /* Animation Time increased to 1.2s for "Feel" */
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
-            
-            position: relative; 
-            opacity: 0;
-            transform: translateX(-80px); /* Started from further left for better sweep */
+            position: relative; opacity: 0; transform: translateX(-80px); 
         }
 
-        /* Visible state class */
-        .card.reveal {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
+        .card.reveal { opacity: 1; transform: translateX(0); }
         .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.4s; }
-        
         .card h3 { font-size: 24px; color: #fff; margin-bottom: 12px; }
 
         .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; display: none; }
@@ -128,6 +127,8 @@
         .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
 
         @media(max-width:900px){ 
+            .welcome { flex-direction: column; text-align: center; justify-content: center; gap: 20px; }
+            .welcome-logo { width: 120px; height: 120px; }
             .dashboard { grid-template-columns: 1fr; } 
             .welcome .brand { font-size: 48px; }
         }
@@ -149,8 +150,11 @@
 
     <div class="wrapper">
         <div class="welcome">
-            <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
-            <div class="brand">NishuAbhyasi</div>
+            <img src="NishuAbhyasi.png" alt="Logo" class="welcome-logo">
+            <div class="welcome-text-content">
+                <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
+                <div class="brand">NishuAbhyasi</div>
+            </div>
         </div>
 
         <div class="dashboard">
@@ -236,45 +240,41 @@
         }
 
         function updateDashboard() {
-    Object.keys(TEST_CONFIG).forEach(sub => {
-        const badge = document.getElementById(`badge-${sub}`);
-        const scoreLabel = document.getElementById(`score-${sub}`);
-        if (!badge) return;
+            Object.keys(TEST_CONFIG).forEach(sub => {
+                const badge = document.getElementById(`badge-${sub}`);
+                const scoreLabel = document.getElementById(`score-${sub}`);
+                if (!badge) return;
 
-        const currentID = TEST_CONFIG[sub];
-        const levels = ['EASY', 'MEDIUM', 'HARD'];
-        let completedLevels = [];
-        let scoreDetails = [];
+                const currentID = TEST_CONFIG[sub];
+                const levels = ['EASY', 'MEDIUM', 'HARD'];
+                let completedLevels = [];
+                let scoreDetails = [];
 
-        // Har level ke liye check karega
-        levels.forEach(lvl => {
-            const isDone = localStorage.getItem(`done_${sub}_${currentID}_${lvl}`);
-            const score = localStorage.getItem(`score_${currentID}_${lvl}`);
-            if (isDone === "true") {
-                completedLevels.push(lvl);
-                scoreDetails.push(`${lvl}: ${score}`);
-            }
-        });
+                levels.forEach(lvl => {
+                    const isDone = localStorage.getItem(`done_${sub}_${currentID}_${lvl}`);
+                    const score = localStorage.getItem(`score_${currentID}_${lvl}`);
+                    if (isDone === "true") {
+                        completedLevels.push(lvl);
+                        scoreDetails.push(`${lvl}: ${score}`);
+                    }
+                });
 
-        if (completedLevels.length > 0) {
-            // Agar saare levels ho gaye toh GREEN badge, warna Orange "In Progress"
-            badge.innerText = completedLevels.length === 3 ? "ALL LEVELS DONE ✅" : "IN PROGRESS ⏳";
-            badge.className = "badge badge-done";
-            scoreLabel.innerHTML = scoreDetails.join(" | ");
-        } else {
-            // Agar abhi tak ek bhi level nahi kiya
-            badge.innerText = "UPDATED 🔥";
-            badge.className = "badge badge-new";
-            scoreLabel.innerText = "";
+                if (completedLevels.length > 0) {
+                    badge.innerText = completedLevels.length === 3 ? "ALL LEVELS DONE ✅" : "IN PROGRESS ⏳";
+                    badge.className = "badge badge-done";
+                    scoreLabel.innerHTML = scoreDetails.join(" | ");
+                } else {
+                    badge.innerText = "UPDATED 🔥";
+                    badge.className = "badge badge-new";
+                    scoreLabel.innerText = "";
+                }
+                badge.style.display = "inline-block";
+            });
         }
-        badge.style.display = "inline-block";
-    });
-}
 
-        /* --- SMOOTH SCROLL REVEAL SCRIPT --- */
         const revealCards = () => {
             const observerOptions = {
-                threshold: 0.1, // Trigger as soon as 10% is visible
+                threshold: 0.1,
                 rootMargin: "0px 0px -20px 0px"
             };
 
@@ -283,7 +283,6 @@
                     if (entry.isIntersecting) {
                         entry.target.classList.add('reveal');
                     } else {
-                        // For reverse animation when scrolling up
                         entry.target.classList.remove('reveal');
                     }
                 });
@@ -302,11 +301,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
