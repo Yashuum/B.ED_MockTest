@@ -44,7 +44,9 @@
         .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
         
         button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        button:hover{ transform: scale(1.05); }
+        button:hover:not(:disabled){ transform: scale(1.05); }
+        button:disabled{ opacity: 0.5; cursor: not-allowed; }
+        
         .btn-secondary { background: rgba(255,255,255,0.15); }
         .btn-review { background: var(--review); }
         .btn-challenge { background: var(--challenge); }
@@ -76,7 +78,7 @@
 <body>
 <div class="container">
     <h1>Target Test- English 2026</h1>
-    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026 - 01:59 PM</p>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026 - 08:51 PM</p>
     
     <div class="start-screen" id="startScreen">
         <div class="input-row">
@@ -110,10 +112,13 @@
     <div id="quizArea"></div>
 
     <div class="nav" id="navBtns">
-        <button class="btn-secondary" onclick="prevQ()">← Prev</button>
+        <button class="btn-secondary" onclick="prevQ()" id="prevBtn">← Prev</button>
         <button class="btn-review" onclick="markForReview()">Review</button>
         <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
-        <button onclick="nextQ()">Next →</button>
+        <div style="display:flex; flex-direction:column; align-items:center;">
+            <button onclick="nextQ()" id="nextBtn">Next →</button>
+            <span id="lastQMsg" style="font-size:10px; color:var(--color-accent); margin-top:5px; display:none;">Last question, submit test now</span>
+        </div>
     </div>
 
     <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
@@ -123,121 +128,100 @@
 
 <script>
     const MY_SUBJECT = "English";
-    const MY_TEST_ID = "ENG_SET_06";
+    const MY_TEST_ID = "ENG_SET_07";
 
     const allQuestionsBank = {
 easy: [
 
-{q: "Choose the correct article: 'I saw ___ elephant at the zoo.'", options: ["a", "an", "the", "no article"], answer: "an", solution: "Elephant starts with a vowel sound (e), so 'an' is used."},
-{q: "What is the plural of 'Mouse'?", options: ["Mouses", "Mice", "Mices", "Mouse"], answer: "Mice", solution: "Mouse has an irregular plural form, which is 'Mice'."},
-{q: "Synonym of 'Happy':", options: ["Sad", "Joyful", "Angry", "Brave"], answer: "Joyful", solution: "Joyful means the same as happy."},
-{q: "Antonym of 'Cold':", options: ["Ice", "Hot", "Wet", "Dry"], answer: "Hot", solution: "The opposite of cold is hot."},
-{q: "Identify the noun: 'The boy is running.'", options: ["boy", "is", "running", "the"], answer: "boy", solution: "Boy is a person, hence it is a noun."},
-{q: "Fill in the blank: 'She ___ a doctor.'", options: ["am", "is", "are", "be"], answer: "is", solution: "With singular third-person (She), 'is' is used."},
-{q: "Correct spelling:", options: ["Apple", "Apel", "Appel", "Aple"], answer: "Apple", solution: "The correct spelling is Apple."},
-{q: "Past tense of 'Eat' is:", options: ["Eats", "Eating", "Ate", "Eaten"], answer: "Ate", solution: "Eat (V1), Ate (V2), Eaten (V3)."},
-{q: "Opposite of 'Big':", options: ["Small", "Large", "Huge", "Tall"], answer: "Small", solution: "The opposite of big is small."},
-{q: "Identify the verb: 'They play football.'", options: ["They", "play", "football", "them"], answer: "play", solution: "Play is an action word, so it's a verb."},
-{q: "Choose the pronoun: 'Rahul is late because he missed the bus.'", options: ["Rahul", "late", "he", "bus"], answer: "he", solution: "He is used in place of the noun Rahul."},
-{q: "Plural of 'Box' is:", options: ["Boxs", "Boxies", "Boxes", "Boxe"], answer: "Boxes", solution: "Words ending in 'x' take 'es' in plural."},
-{q: "A person who teaches is a:", options: ["Doctor", "Teacher", "Pilot", "Farmer"], answer: "Teacher", solution: "Teaching is the profession of a teacher."},
-{q: "Opposite of 'Rich':", options: ["Poor", "Wealthy", "Strong", "Kind"], answer: "Poor", solution: "The antonym of rich is poor."},
-{q: "Fill in: '___ are you going?'", options: ["What", "Where", "Which", "Who"], answer: "Where", solution: "Where is used to ask about a place/destination."},
-{q: "The sun ___ in the east.", options: ["rise", "rises", "rising", "rose"], answer: "rises", solution: "Universal truths use Simple Present tense (singular verb with s/es)."},
-{q: "Which one is a fruit?", options: ["Carrot", "Mango", "Onion", "Potato"], answer: "Mango", solution: "Mango is a fruit, others are vegetables."},
-{q: "Plural of 'Knife' is:", options: ["Knifes", "Knive", "Knives", "Knife"], answer: "Knives", solution: "Words ending in 'f' or 'fe' change to 'ves'."},
-{q: "Synonym of 'Beautiful':", options: ["Ugly", "Pretty", "Small", "Fast"], answer: "Pretty", solution: "Pretty means attractive or beautiful."},
-{q: "Antonym of 'Up':", options: ["High", "Above", "Down", "Below"], answer: "Down", solution: "The opposite of up is down."},
-{q: "Identify the adjective: 'It is a red car.'", options: ["It", "is", "red", "car"], answer: "red", solution: "Red describes the noun car, so it is an adjective."},
-{q: "He ___ going to school.", options: ["am", "is", "are", "have"], answer: "is", solution: "Singular subject 'He' takes 'is'."},
-{q: "Meaning of 'Quick':", options: ["Slow", "Fast", "Lazy", "Weak"], answer: "Fast", solution: "Quick means moving with speed."},
-{q: "Plural of 'City':", options: ["Citys", "Cities", "Cityes", "Citis"], answer: "Cities", solution: "Words ending in consonant + 'y' change 'y' to 'ies'."},
-{q: "Opposite of 'Thin':", options: ["Fat", "Tall", "Short", "Small"], answer: "Fat", solution: "The opposite of thin is fat."},
-{q: "Identify the adverb: 'He runs fast.'", options: ["He", "runs", "fast", "run"], answer: "fast", solution: "Fast describes how he runs, so it is an adverb."},
-{q: "I ___ a student.", options: ["is", "am", "are", "be"], answer: "am", solution: "First person 'I' always takes 'am' in present tense."},
-{q: "Antonym of 'Day':", options: ["Night", "Morning", "Evening", "Sun"], answer: "Night", solution: "Day's opposite is Night."},
-{q: "Synonym of 'Begin':", options: ["Stop", "End", "Start", "Finish"], answer: "Start", solution: "To begin means to start."},
-{q: "Which is a animal?", options: ["Rose", "Table", "Tiger", "Pen"], answer: "Tiger", solution: "Tiger is an animal."},
-{q: "Plural of 'Foot':", options: ["Foots", "Feets", "Feet", "Footes"], answer: "Feet", solution: "Foot changes to Feet in plural."},
-{q: "___ is your name?", options: ["How", "Why", "What", "Which"], answer: "What", solution: "What is used to ask for information."},
-{q: "Identify the noun: 'Delhi is a big city.'", options: ["Delhi", "big", "is", "very"], answer: "Delhi", solution: "Delhi is a name of a place, hence a noun."},
-{q: "Opposite of 'Hard':", options: ["Soft", "Difficult", "Strong", "Tough"], answer: "Soft", solution: "The antonym of hard is soft."},
-{q: "Past tense of 'Go':", options: ["Goes", "Going", "Gone", "Went"], answer: "Went", solution: "Go (V1), Went (V2)."}
- 
+  {q: "Choose the correct Article: 'He is ___ honest man.'", options: ["a", "an", "the", "no article"], answer: "an", solution: "'Honest' starts with a silent 'H' and a vowel sound 'O', so we use 'an'."},
+  {q: "Select the Synonym of 'HAPPY':", options: ["Sad", "Joyful", "Angry", "Brave"], answer: "Joyful", solution: "Joyful means the same as happy; the others are opposites or unrelated."},
+  {q: "What is the plural of 'CHILD'?", options: ["Childs", "Childrens", "Children", "Childes"], answer: "Children", solution: "Child has an irregular plural form which is 'children'."},
+  {q: "Choose the Antonym of 'FAST':", options: ["Quick", "Slow", "Swift", "Rapid"], answer: "Slow", solution: "Slow is the opposite of fast."},
+  {q: "Identify the Noun in the sentence: 'Ram is playing football.'", options: ["Ram", "Playing", "Is", "Fast"], answer: "Ram", solution: "Ram is the name of a person, hence it is a Noun."},
+  {q: "Fill in the blank: 'The cat is sitting ___ the table.'", options: ["in", "on", "between", "into"], answer: "on", solution: "'On' is used to show a position on a surface."},
+  {q: "Choose the correctly spelt word:", options: ["Believe", "Beleive", "Belive", "Belleve"], answer: "Believe", solution: "The rule is 'i' before 'e' except after 'c'."},
+  {q: "Fill in the blank: 'I ___ a student.'", options: ["is", "am", "are", "was"], answer: "am", solution: "With the pronoun 'I', we always use 'am' in the present tense."},
+  {q: "What is the past tense of 'GO'?", options: ["Goed", "Gone", "Went", "Going"], answer: "Went", solution: "Go is an irregular verb (Go - Went - Gone)."},
+  {q: "A person who teaches is called a:", options: ["Doctor", "Teacher", "Driver", "Farmer"], answer: "Teacher", solution: "A teacher is one who provides education."},
+  {q: "Choose the correct Article: 'I saw ___ elephant in the zoo.'", options: ["a", "an", "the", "no article"], answer: "an", solution: "'Elephant' starts with a vowel sound (E)."},
+  {q: "Find the odd one out:", options: ["Apple", "Mango", "Banana", "Potato"], answer: "Potato", solution: "Potato is a vegetable, others are fruits."},
+  {q: "Which word is an Adjective?", options: ["Run", "Beautiful", "Quickly", "He"], answer: "Beautiful", solution: "Beautiful describes a noun, so it is an adjective."},
+  {q: "Meaning of the idiom: 'Piece of cake'", options: ["Very difficult", "Very easy", "Something sweet", "A birthday party"], answer: "Very easy", solution: "'Piece of cake' means a task that is very simple to do."},
+  {q: "Opposite of 'BEAUTIFUL' is:", options: ["Pretty", "Ugly", "Nice", "Clean"], answer: "Ugly", solution: "Ugly is the antonym of beautiful."},
+  {q: "Fill in the blank: 'She ___ her work daily.'", options: ["do", "does", "doing", "done"], answer: "does", solution: "Third-person singular (She) takes 'does' in Simple Present tense."},
+  {q: "One word substitution: 'A place where books are kept'", options: ["Gym", "Library", "Kitchen", "Park"], answer: "Library", solution: "A library is a collection of books for reading."},
+  {q: "Identify the Verb: 'They sing a song.'", options: ["They", "Sing", "A", "Song"], answer: "Sing", solution: "'Sing' is an action word, which is a verb."},
+  {q: "Correct the spelling:", options: ["Recieve", "Receive", "Receve", "Reseive"], answer: "Receive", solution: "In 'Receive', 'e' comes before 'i' because of the letter 'c'."},
+  {q: "What is the feminine of 'KING'?", options: ["Woman", "Queen", "Girl", "Princess"], answer: "Queen", solution: "Queen is the female counterpart of a King."},
+  {q: "Fill in: 'They ___ playing in the park.'", options: ["is", "am", "are", "has"], answer: "are", solution: "Plural subject (They) takes 'are' in the present continuous tense."},
+  {q: "Antonym of 'RICH':", options: ["Poor", "Wealthy", "Kind", "Strong"], answer: "Poor", solution: "Poor is the opposite of rich."},
+  {q: "Meaning of 'COLD':", options: ["Hot", "Chilly", "Sunny", "Warm"], answer: "Chilly", solution: "Chilly is a synonym for cold."},
+  {q: "Choose the correct Preposition: 'The book is ___ the bag.'", options: ["in", "on", "to", "at"], answer: "in", solution: "We use 'in' to show something is inside a container or space."},
+  {q: "A group of lions is called a:", options: ["Pack", "Herd", "Pride", "Flock"], answer: "Pride", solution: "Collective noun for lions is 'Pride'."},
+  {q: "Synonym of 'FAST':", options: ["Slow", "Quick", "Lazy", "Quiet"], answer: "Quick", solution: "Quick and fast have similar meanings."},
+  {q: "Identify the Pronoun: 'He is my friend.'", options: ["He", "Friend", "Is", "My"], answer: "He", solution: "'He' replaces a noun, so it is a pronoun."},
+  {q: "Fill in: 'Sun rises in ___ East.'", options: ["a", "an", "the", "no article"], answer: "the", solution: "We use 'the' before unique things and directions (The Sun, The East)."},
+  {q: "Plural of 'BUS' is:", options: ["Buses", "Buss", "Busess", "Bus"], answer: "Buses", solution: "Words ending in 's' take 'es' to become plural."},
+  {q: "Meaning of 'Brave':", options: ["Coward", "Fearless", "Weak", "Tired"], answer: "Fearless", solution: "Brave means having no fear."}
+
  ],
 medium: [
 
-{q: "Choose the correct preposition: 'The cat jumped ___ the table.'", options: ["on", "upon", "in", "at"], answer: "upon", solution: "We use 'upon' when there is motion involved (jumping) towards a surface."},
-{q: "Identify the correct sentence:", options: ["He don't like tea.", "He doesn't likes tea.", "He doesn't like tea.", "He not like tea."], answer: "He doesn't like tea.", solution: "With 'does', we use the base form of the verb without 's/es'."},
-{q: "Choose the synonym of 'GIGANTIC':", options: ["Small", "Huge", "Weak", "Frail"], answer: "Huge", solution: "Gigantic means extremely large."},
-{q: "Antonym of 'OPTIMIST' is:", options: ["Hopeful", "Pessimist", "Idealist", "Realist"], answer: "Pessimist", solution: "Optimist is one who looks at the bright side; pessimist looks at the dark side."},
-{q: "Fill in the blank: 'Neither of the boys ___ present.'", options: ["was", "were", "are", "have"], answer: "was", solution: "Words like 'Neither', 'Either', 'Each' take a singular verb."},
-{q: "Select the correctly spelt word:", options: ["Occurence", "Occurrence", "Occurance", "Ocurence"], answer: "Occurrence", solution: "It has double 'c' and double 'r'."},
-{q: "Passive Voice: 'Who wrote this book?'", options: ["By whom was this book written?", "Who was written this book?", "This book was written by who?", "By whom is this book written?"], answer: "By whom was this book written?", solution: "Interrogative 'Who' changes to 'By whom' and past tense uses 'was + V3'."},
-{q: "Identify the error: 'The furniture (A) / in this room (B) / are (C) / very old (D).'", options: ["A", "B", "C", "D"], answer: "C", solution: "Furniture is an uncountable noun and always takes a singular verb ('is')."},
-{q: "Choose the correct meaning of the idiom: 'A piece of cake'", options: ["A sweet dish", "Something very easy", "Something very expensive", "A difficult task"], answer: "Something very easy", solution: "'A piece of cake' refers to a task that can be done without much effort."},
-{q: "He is senior ___ me in service.", options: ["than", "to", "from", "with"], answer: "to", solution: "Adjectives like senior, junior, superior, inferior are always followed by 'to'."},
-{q: "Select the antonym of 'REVEAL':", options: ["Show", "Hide", "Tell", "Disclose"], answer: "Hide", solution: "Reveal means to show; hide means to conceal."},
-{q: "Fill in: 'I have been living here ___ 2010.'", options: ["for", "since", "from", "to"], answer: "since", solution: "We use 'since' for a specific point in time."},
-{q: "Plural of 'Thesis' is:", options: ["Thesiss", "Thesises", "Theses", "Thesis"], answer: "Theses", solution: "Words ending in 'is' usually change to 'es' in plural."},
-{q: "Identify the part of speech of the underlined word: 'This is a **fast** car.'", options: ["Noun", "Verb", "Adjective", "Adverb"], answer: "Adjective", solution: "Here 'fast' describes the noun 'car', so it is an adjective."},
-{q: "One who cannot read or write is called:", options: ["Illiterate", "Insolvent", "Blind", "Dumb"], answer: "Illiterate", solution: "A person unable to read/write is illiterate."},
-{q: "Change to Direct Speech: 'He said that he was busy.'", options: ["He said, 'I am busy.'", "He says, 'I am busy.'", "He said, 'He is busy.'", "He told, 'I was busy.'"], answer: "He said, 'I am busy.'", solution: "Past simple in indirect was present simple in direct."},
-{q: "Identify the correct article: 'He is ___ S.D.O.'", options: ["a", "an", "the", "no article"], answer: "an", solution: "S.D.O starts with a vowel sound 'Es', so 'an' is used."},
-{q: "Antonym of 'HOSTILE' is:", options: ["Enemy", "Friendly", "Angry", "Cruel"], answer: "Friendly", solution: "Hostile means showing opposition; friendly is the opposite."},
-{q: "Fill in: 'If I ___ a bird, I would fly.'", options: ["am", "was", "were", "will be"], answer: "were", solution: "In imaginary/hypothetical sentences, 'were' is used with all subjects."},
-{q: "Meaning of 'Calamity':", options: ["Peace", "Disaster", "Happiness", "Growth"], answer: "Disaster", solution: "Calamity means a sudden event causing great damage."},
-{q: "Select the correct spelling:", options: ["Receive", "Recieve", "Receve", "Reseive"], answer: "Receive", solution: "The rule is 'i' before 'e' except after 'c'."},
-{q: "A group of lions is called a:", options: ["Herd", "Pack", "Pride", "Flock"], answer: "Pride", solution: "Collective noun for lions is 'Pride'."},
-{q: "Choose the correct verb: 'Physics ___ my favorite subject.'", options: ["is", "are", "were", "am"], answer: "is", solution: "Subjects ending in 's' like Physics, Mathematics are singular."},
-{q: "Meaning of the idiom: 'Under the weather'", options: ["To be raining", "To feel unwell", "To be happy", "To travel"], answer: "To feel unwell", solution: "If you are under the weather, you are feeling sick."},
-{q: "Choose the correct word: 'I don't have ___ money.'", options: ["many", "much", "few", "some"], answer: "much", solution: "Money is uncountable, so 'much' is used."},
-{q: "Which word is a conjunction?", options: ["But", "Fast", "She", "Slowly"], answer: "But", solution: "'But' is a coordinating conjunction."},
-{q: "Past participle of 'Fly' is:", options: ["Flied", "Flew", "Flown", "Flying"], answer: "Flown", solution: "Fly (V1), Flew (V2), Flown (V3)."},
-{q: "Identify the error: 'Each of the (A) / students (B) / have (C) / a book (D).'", options: ["A", "B", "C", "D"], answer: "C", solution: "'Each of' is always followed by a singular verb ('has')."},
-{q: "Meaning of 'Fragile':", options: ["Hard", "Strong", "Easily broken", "Flexible"], answer: "Easily broken", solution: "Fragile items break easily."},
-{q: "Choose the correct article: '___ Ganga is a holy river.'", options: ["A", "An", "The", "No article"], answer: "The", solution: "We use 'The' before names of rivers."},
-{q: "One who looks at the bright side of things:", options: ["Pessimist", "Optimist", "Atheist", "Theist"], answer: "Optimist", solution: "Optimist is the correct one-word substitute."},
-{q: "Select the synonym of 'ABANDON':", options: ["Keep", "Leave", "Stay", "Hold"], answer: "Leave", solution: "To abandon means to leave or give up."},
-{q: "Fill in: 'They ___ playing since morning.'", options: ["are", "have been", "were", "had"], answer: "have been", solution: "Perfect continuous tense uses 'have been' for duration with since/for."},
-{q: "Antonym of 'GUILTY' is:", options: ["Criminal", "Innocent", "Bad", "True"], answer: "Innocent", solution: "The opposite of guilty is innocent."},
-{q: "Meaning of 'Boon':", options: ["Curse", "Blessing", "Stone", "Wind"], answer: "Blessing", solution: "Boon means something helpful or beneficial (blessing)."}			
+  {q: "Fill in the blank: 'Neither of the two candidates ___ suitable.'", options: ["are", "is", "were", "have"], answer: "is", solution: "'Neither' is always singular, so it takes a singular verb 'is'."},
+  {q: "Choose the correct synonym of 'OBSTINATE':", options: ["Flexible", "Stubborn", "Gentle", "Helpful"], answer: "Stubborn", solution: "Obstinate means refusing to change one's opinion; stubborn."},
+  {q: "Change to Passive Voice: 'The boy killed the snake.'", options: ["The snake was killed by the boy.", "The snake is killed by the boy.", "The snake had killed by the boy.", "A boy killed a snake."], answer: "The snake was killed by the boy.", solution: "Simple Past (V2) changes to 'was/were + V3' in passive voice."},
+  {q: "Select the correctly spelt word:", options: ["Occurence", "Occurrence", "Ocurence", "Occurance"], answer: "Occurrence", solution: "The correct spelling has double 'c' and double 'r'."},
+  {q: "Meaning of the idiom: 'At the eleventh hour'", options: ["At 11:00 AM", "At the very last moment", "Early in the morning", "Too late"], answer: "At the very last moment", solution: "Doing something just before the deadline."},
+  {q: "Fill in the blank: 'He is junior ___ me in service.'", options: ["than", "to", "from", "with"], answer: "to", solution: "Words like junior, senior, superior, inferior take 'to' instead of 'than'."},
+  {q: "Choose the correct Antonym of 'ADVERSITY':", options: ["Prosperity", "Misfortune", "Difficulty", "Poverty"], answer: "Prosperity", solution: "Adversity means hardship; its opposite is prosperity (wealth/success)."},
+  {q: "Fill in: 'The police ___ investigating the case.'", options: ["is", "are", "has", "was"], answer: "are", solution: "'Police' is a collective noun that is always treated as plural."},
+  {q: "One word substitution: 'A person who looks at the bright side of things'", options: ["Pessimist", "Optimist", "Atheist", "Theist"], answer: "Optimist", solution: "Optimist is a hopeful person; Pessimist is the opposite."},
+  {q: "Fill in: 'If I ___ a bird, I would fly.'", options: ["am", "was", "were", "had"], answer: "were", solution: "In imaginary/hypothetical sentences, 'were' is used with all subjects."},
+  {q: "Choose the correctly punctuated sentence:", options: ["He said, I am busy.", "He said \"I am busy.\"", "He said, \"I am busy.\"", "He said \"I am busy\"."], answer: "He said, \"I am busy.\"", solution: "Commas and quotation marks are necessary for direct speech."},
+  {q: "Synonym of 'ABANDON':", options: ["Keep", "Forsake", "Adopt", "Hold"], answer: "Forsake", solution: "Abandon and forsake both mean to leave or give up."},
+  {q: "Fill in the blank: 'Rice and curry ___ my favorite dish.'", options: ["are", "is", "were", "have"], answer: "is", solution: "When two nouns represent one idea/dish, we use a singular verb."},
+  {q: "Meaning of the idiom: 'To cry over spilt milk'", options: ["To be happy", "To regret uselessly", "To clean the floor", "To be noisy"], answer: "To regret uselessly", solution: "Worrying about a mistake that cannot be undone."},
+  {q: "Identify the part of speech: 'She speaks 'fluently' English.'", options: ["Noun", "Adjective", "Adverb", "Verb"], answer: "Adverb", solution: "Fluently describes the verb 'speaks', so it is an adverb."},
+  {q: "What is the plural of 'Phenomenon'?", options: ["Phenomenons", "Phenomena", "Phenomenas", "Phenomeni"], answer: "Phenomena", solution: "It is a Greek plural form where 'on' changes to 'a'."},
+  {q: "Fill in: 'He has been ill ___ Monday.'", options: ["for", "since", "from", "by"], answer: "since", solution: "'Since' is used for a specific point in time (Monday)."},
+  {q: "Choose the correct spelling:", options: ["Committee", "Comittee", "Commitee", "Committe"], answer: "Committee", solution: "It has double 'm', double 't', and double 'e'."},
+  {q: "Change to Indirect Speech: 'He said, \"I am happy.\"'", options: ["He said that he is happy.", "He said that he was happy.", "He told he was happy.", "He says he was happy."], answer: "He said that he was happy.", solution: "Present Simple changes to Past Simple in indirect speech."},
+  {q: "Select the Antonym of 'FRAGILE':", options: ["Weak", "Strong", "Brittle", "Delicate"], answer: "Strong", solution: "Fragile means easily broken; its opposite is strong or sturdy."},
+  {q: "Fill in: 'The ship ___ in the ocean.'", options: ["drowned", "sank", "sunk", "drown"], answer: "sank", solution: "'Drown' is for living beings; 'Sink' is for non-living objects."},
+  {q: "One word substitution: 'A child whose parents are dead'", options: ["Widow", "Orphan", "Infant", "Handicapped"], answer: "Orphan", solution: "A child without parents is called an orphan."},
+  {q: "Choose the correct Preposition: 'I prefer tea ___ coffee.'", options: ["than", "to", "over", "for"], answer: "to", solution: "The verb 'prefer' is followed by the preposition 'to'."},
+  {q: "Meaning of 'A hard nut to crack':", options: ["A delicious nut", "A difficult problem", "A strong person", "Easy task"], answer: "A difficult problem", solution: "Refers to a situation or person that is hard to deal with."},
+  {q: "Fill in the blank: 'Bread and butter ___ necessary for life.'", options: ["is", "are", "were", "have"], answer: "is", solution: "Considered as a single unit of food/livelihood."}
 
 ],
 hard: [
 
-{q: "Choose the correct option: 'If he ___ more carefully, he would have avoided the accident.'", options: ["drove", "had driven", "would drive", "has driven"], answer: "had driven", solution: "This is a Type 3 conditional: If + Past Perfect, would have + V3."},
-{q: "Identify the figure of speech: 'The camel is the ship of the desert.'", options: ["Simile", "Metaphor", "Personification", "Oxymoron"], answer: "Metaphor", solution: "A direct comparison without using 'as' or 'like' is a metaphor."},
-{q: "What is the synonym of 'EPHEMERAL'?", options: ["Eternal", "Short-lived", "Colossal", "Transparent"], answer: "Short-lived", solution: "Ephemeral means lasting for a very short time."},
-{q: "Choose the correct meaning of the idiom: 'To bark up the wrong tree.'", options: ["To shout at a dog", "To accuse the wrong person", "To climb a tree", "To work hard"], answer: "To accuse the wrong person", solution: "It means to pursue a mistaken line of thought or course of action."},
-{q: "Identify the error: 'Hardly had I (A) / reached the station (B) / than the train (C) / left (D).'", options: ["A", "B", "C", "D"], answer: "C", solution: "The pair for 'Hardly/Scarcely' is 'when', not 'than'."},
-{q: "Antonym of 'ABSTAIN' is:", options: ["Refrain", "Indulge", "Avoid", "Sustain"], answer: "Indulge", solution: "Abstain means to stay away from; indulge means to allow oneself to enjoy."},
-{q: "One who hates mankind is called:", options: ["Misanthrope", "Misogynist", "Philanthropist", "Optimist"], answer: "Misanthrope", solution: "Mis (hate) + Anthropos (man/mankind)."},
-{q: "Change into Indirect Speech: 'He said, 'Bravo! You have done well.'", options: ["He said Bravo that I did well.", "He applauded him saying that he had done well.", "He exclaimed with joy that he did well.", "He told him Bravo."], answer: "He applauded him saying that he had done well.", solution: "'Bravo' is usually changed to 'applauded' in indirect speech."},
-{q: "Fill in the blank: 'The committee ___ divided in their opinion.'", options: ["is", "are", "was", "has"], answer: "are", solution: "When a collective noun acts as individuals (showing division), it takes a plural verb."},
-{q: "What is the meaning of 'GREGARIOUS'?", options: ["Anti-social", "Sociable", "Aggressive", "Clumsy"], answer: "Sociable", solution: "Gregarious refers to a person/animal fond of company."},
-{q: "Select the correctly spelt word:", options: ["Millionnaire", "Millionaire", "Millionare", "Miliionaire"], answer: "Millionaire", solution: "The correct spelling is 'Millionaire'."},
-{q: "The word 'In toto' means:", options: ["In part", "Entirely", "In summary", "In disguise"], answer: "Entirely", solution: "'In toto' is a Latin phrase meaning 'in total' or 'completely'."},
-{q: "Choose the correct preposition: 'He is oblivious ___ his surroundings.'", options: ["of", "to", "at", "with"], answer: "of", solution: "'Oblivious' is followed by the preposition 'of'."},
-{q: "Identify the sentence: 'Having finished his work, he went home.'", options: ["Simple", "Complex", "Compound", "Interrogative"], answer: "Simple", solution: "It has only one finite verb and a participle phrase, making it a simple sentence."},
-{q: "Meaning of the idiom: 'To leave no stone unturned.'", options: ["To get tired", "To try every possible way", "To play with stones", "To give up"], answer: "To try every possible way", solution: "It means to do everything possible to achieve a goal."},
-{q: "Antonym of 'Lethargic' is:", options: ["Lazy", "Energetic", "Dull", "Sluggish"], answer: "Energetic", solution: "Lethargic means lazy/slow; energetic is the opposite."},
-{q: "What is a 'Cacophony'?", options: ["Sweet sound", "Harsh sound", "Silence", "Music"], answer: "Harsh sound", solution: "Caco (bad) + phony (sound)."},
-{q: "Fill in: 'Neither the principal nor the teachers ___ present.'", options: ["was", "is", "are", "has"], answer: "are", solution: "In 'neither-nor', the verb agrees with the nearest subject (teachers)."},
-{q: "A person who is recoverning from illness:", options: ["Convalescent", "Invalid", "Patient", "Senile"], answer: "Convalescent", solution: "The recovery period is called convalescence."},
-{q: "Meaning of 'Enigma':", options: ["Clear", "Mystery", "Simple", "Fear"], answer: "Mystery", solution: "An enigma is something puzzling or mysterious."},
-{q: "Identify the part of speech: 'The **fast** held by him lasted a week.'", options: ["Adjective", "Adverb", "Noun", "Verb"], answer: "Noun", solution: "Here 'fast' refers to the act of not eating, hence it's a noun."},
-{q: "Choose the correct tag: 'She hardly ever goes out, ___?'", options: ["doesn't she", "does she", "is she", "has she"], answer: "does she", solution: "'Hardly' is a negative word, so the question tag must be positive."},
-{q: "What is the synonym of 'PRUDENT'?", options: ["Careless", "Wise", "Foolish", "Wealthy"], answer: "Wise", solution: "Prudent means showing care and thought for the future."},
-{q: "Meaning of the idiom: 'A bolt from the blue.'", options: ["A sudden surprise", "A blue bolt", "A thunderstorm", "A planned event"], answer: "A sudden surprise", solution: "Something unexpected and unpleasant."},
-{q: "Which of these is a 'Palidrome' word?", options: ["Level", "School", "Water", "Paper"], answer: "Level", solution: "A palindrome reads the same backwards as forwards."},
-{q: "Fill in: 'I am used to ___ early in the morning.'", options: ["get up", "getting up", "got up", "gets up"], answer: "getting up", solution: "After 'used to' (meaning accustomed to), we use the -ing form (gerund)."},
-{q: "Identify the error: 'Unless you do not (A) / work hard (B) / you cannot (C) / pass (D).'", options: ["A", "B", "C", "D"], answer: "A", solution: "'Unless' is itself negative; using 'do not' with it is a redundancy error."},
-{q: "Meaning of 'Altruism':", options: ["Selfishness", "Selflessness", "Hostility", "Pride"], answer: "Selflessness", solution: "Altruism is the practice of disinterested concern for others."},
-{q: "Select the synonym of 'ADMONISH':", options: ["Praise", "Warn", "Escape", "Help"], answer: "Warn", solution: "To admonish is to warn or reprimand someone firmly."},
-{q: "The plural of 'Alumnus' is:", options: ["Alumni", "Alumnuses", "Alumnae", "Alumnas"], answer: "Alumni", solution: "Alumnus (singular) -> Alumni (plural)."},
-{q: "What is an 'Atheist'?", options: ["Believer in God", "Non-believer in God", "Lover of God", "Priest"], answer: "Non-believer in God", solution: "A person who disbelieves or lacks belief in God."}
- 
+  {q: "Choose the correct form: 'If he ___ harder, he would have passed the exam.'", options: ["studied", "had studied", "would study", "has studied"], answer: "had studied", solution: "Third Conditional Rule: If + Past Perfect, would + have + V3."},
+  {q: "Identify the correct meaning of 'PRAGMATIC':", options: ["Idealistic", "Practical", "Arrogant", "Uncertain"], answer: "Practical", solution: "Pragmatic means dealing with things sensibly and realistically."},
+  {q: "Find the error: 'The furniture(A) in this room(B) are(C) very old(D).'", options: ["A", "B", "C", "D"], answer: "C", solution: "'Furniture' is an uncountable noun and always takes a singular verb 'is'."},
+  {q: "One word substitution: 'A person who is recovered from illness'", options: ["Convalescent", "Altruist", "Invigilator", "Stoic"], answer: "Convalescent", solution: "Convalescent is someone recovering from a major illness or operation."},
+  {q: "Choose the correct preposition: 'He was acquitted ___ all the charges.'", options: ["from", "of", "off", "with"], answer: "of", solution: "'Acquitted' (meaning declared innocent) is always followed by 'of'."},
+  {q: "What is the antonym of 'EPHEMERAL'?", options: ["Short-lived", "Eternal", "Brief", "Sudden"], answer: "Eternal", solution: "Ephemeral means lasting for a very short time; its opposite is eternal or permanent."},
+  {q: "Choose the correct spelling:", options: ["Entrepreneur", "Enterprenure", "Entreprenure", "Enterpreneur"], answer: "Entrepreneur", solution: "The correct French-origin spelling is Entrepreneur."},
+  {q: "Fill in the blank: 'Scarcely had he gone out ___ it began to rain.'", options: ["than", "then", "when", "while"], answer: "when", solution: "Correlative Conjunction: 'Scarcely/Hardly' is followed by 'when', and 'No sooner' is followed by 'than'."},
+  {q: "Meaning of the idiom: 'To bark up the wrong tree'", options: ["To shout at a dog", "To accuse the wrong person", "To climb a tree", "To be very angry"], answer: "To accuse the wrong person", solution: "To pursue a mistaken line of thought or course of action."},
+  {q: "Change to Indirect Speech: 'He said to me, \"Wait here until I come.\"'", options: ["He told me to wait there until he came.", "He asked me wait here until he comes.", "He said me to wait there until he came.", "He told me wait there until I come."], answer: "He told me to wait there until he came.", solution: "Imperative sentences use 'to + V1'. 'Here' changes to 'there' and 'come' (V1) to 'came' (V2)."},
+  {q: "Identify the part of speech of the underlined word: 'This is a **fast** train.'", options: ["Noun", "Verb", "Adverb", "Adjective"], answer: "Adjective", solution: "Here 'fast' describes the noun 'train', so it is an adjective. (Note: In 'He runs fast', it would be an adverb)."},
+  {q: "Select the synonym of 'METICULOUS':", options: ["Careless", "Careful", "Forgetful", "Destructive"], answer: "Careful", solution: "Meticulous means showing great attention to detail; very careful."},
+  {q: "Choose the correct phrasal verb: 'The meeting was ___ due to bad weather.'", options: ["called off", "called out", "called for", "called in"], answer: "called off", solution: "'Call off' means to cancel something."},
+  {q: "Fill in the blank: 'He behaves as if he ___ the boss.'", options: ["is", "was", "were", "had been"], answer: "were", solution: "After 'as if' or 'as though', we use 'were' to show an unreal or imaginary condition."},
+  {q: "Choose the correct voice: 'It is time to take tea.'", options: ["It is time for tea to be taken.", "It is time tea taken.", "Tea should be taken on time.", "It was time to take tea."], answer: "It is time for tea to be taken.", solution: "Structure: It is time + for + object + to be + V3."},
+  {q: "What is a 'Cacography'?", options: ["Good handwriting", "Bad handwriting", "Study of maps", "Writing of novels"], answer: "Bad handwriting", solution: "Caco (bad) + graphy (writing). Opposite is Calligraphy."},
+  {q: "Antonym of 'VAGUE':", options: ["Unclear", "Precise", "Dull", "Dim"], answer: "Precise", solution: "Vague means not clear; Precise means exact and clear."},
+  {q: "Fill in the blank: 'A pair of spectacles ___ lying on the table.'", options: ["are", "is", "were", "have"], answer: "is", solution: "While 'spectacles' is plural, 'A pair of' makes the subject singular."},
+  {q: "Choose the correct meaning of the idiom: 'A wild goose chase'", options: ["To hunt a goose", "A useless search", "A profitable deal", "To be very brave"], answer: "A useless search", solution: "A search that is completely unsuccessful and a waste of time."},
+  {q: "Choose the correct word: 'The ___ of the school is very strict.'", options: ["Principal", "Principle", "Prince", "Principality"], answer: "Principal", solution: "Principal refers to the head of an institution; Principle means a rule or belief."},
+  {q: "Fill in: 'Neither the teacher nor the students ___ present.'", options: ["is", "was", "are", "has"], answer: "are", solution: "With 'Neither-nor', the verb agrees with the nearest subject (students - plural)."},
+  {q: "Synonym of 'PLACID':", options: ["Violent", "Calm", "Noisy", "Angry"], answer: "Calm", solution: "Placid means peaceful and not easily upset."},
+  {q: "Identify the tense: 'By next June, I will have been living here for ten years.'", options: ["Future Perfect", "Future Continuous", "Future Perfect Continuous", "Present Perfect"], answer: "Future Perfect Continuous", solution: "Structure: will + have + been + V1 + ing."},
+  {q: "One word for: 'The study of ancient societies'", options: ["History", "Anthropology", "Archaeology", "Etymology"], answer: "Archaeology", solution: "Archaeology is the study of human history through the excavation of sites."},
+  {q: "Choose the correct question tag: 'You are coming, ___?'", options: ["aren't you", "don't you", "isn't it", "won't you"], answer: "aren't you", solution: "Positive sentence takes a negative tag using the same auxiliary verb."}
+
   ]
     };
 
@@ -255,17 +239,12 @@ hard: [
     function startTest(){
         const level = document.getElementById("difficultyLevel").value;
         questions = allQuestionsBank[level];
-
         if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
         
-        // Check if this specific level is already completed
-        const final = localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`);
-        if(final){
-            if(!confirm("You have already completed the " + level.toUpperCase() + " level. Do you want to re-attempt? (Previous score will be overwritten)")) {
-                return;
-            } else {
-                localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
-            }
+        const existingResult = localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`);
+        if(existingResult) {
+            if(!confirm("You have already completed the " + level.toUpperCase() + " level. Re-attempt?")) return;
+            else localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
         }
 
         displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
@@ -274,16 +253,14 @@ hard: [
         palette.style.display="flex";
         navBtns.style.display="flex";
         submitBtn.style.display="block";
-        
-        // Load progress for this specific level if exists
+
         const progress = localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`);
-        if(progress){
+        if(progress) {
             const p = JSON.parse(progress);
             answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; 
             totalSeconds=p.totalSeconds; startTime=p.startTime; 
             reviewMarks=p.reviewMarks; challenges=p.challenges;
         } else {
-            // Fresh start for this level
             answers={}; visited={}; currentIndex=0; reviewMarks={}; challenges={};
             totalSeconds=testTime.value*60;
             startTime=Date.now();
@@ -324,6 +301,21 @@ hard: [
                 </div>
                 ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
             </div>`;
+        
+        // Disable Next button on last question and show message
+        const nextBtn = document.getElementById("nextBtn");
+        const lastQMsg = document.getElementById("lastQMsg");
+        if(currentIndex === questions.length - 1) {
+            nextBtn.disabled = true;
+            lastQMsg.style.display = "block";
+        } else {
+            nextBtn.disabled = false;
+            lastQMsg.style.display = "none";
+        }
+
+        // Disable Prev button on first question
+        document.getElementById("prevBtn").disabled = (currentIndex === 0);
+
         renderPalette();
     }
 
@@ -366,7 +358,8 @@ hard: [
         if(!confirm("Are you sure you want to submit?")) return;
         
         clearInterval(timerInterval);
-        localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+        const level = document.getElementById("difficultyLevel").value;
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
         
         let correct=0, attempted=0, challCount=0;
         let detailHtml="<h2>Detailed Analysis</h2>";
@@ -374,51 +367,29 @@ hard: [
         questions.forEach((q,i)=>{
             let isCorrect = false;
             let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
-
             if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
             else if(answers[i] === q.answer) { isCorrect = true; }
-            
             if(answers[i]) attempted++;
             if(isCorrect) correct++;
-
-            detailHtml+=`
-                <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
-                    <p><b>Q${i+1}.</b> ${q.q}</p>
-                    <p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
-                    <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
-                </div>`;
+            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}"><p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p><div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
         });
 
-        // Dashboard Storage logic
-        const currentLvl = document.getElementById("difficultyLevel").value.toUpperCase();
+        const currentLvl = level.toUpperCase();
         localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
         localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
 
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
         
-        const summaryBox = `
-            <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-                <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
-                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
-                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div>
-                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-                </div>
-                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
-            </div>`;
+        const summaryBox = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);"><h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;"><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div></div><button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button></div>`;
 
         const finalHtml = summaryBox + detailHtml;
-        result.style.display="block";
-        result.innerHTML = finalHtml;
+        result.style.display="block"; result.innerHTML = finalHtml;
         quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
         clearBtn.style.display="block"; window.scrollTo(0,0);
         
-		const currentLvl = document.getElementById("difficultyLevel").value;
-        localStorage.setItem(`finalResult_${MY_SUBJECT}_${currentLvl}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
-		
         emailjs.send("service_wq5yoyp", "template_doegpcp", {
             candidate_name: displayName.textContent,
             subject: MY_SUBJECT,
@@ -433,24 +404,16 @@ hard: [
 
     window.onload=function(){
         syncCountAndTime();
-        // We don't auto-load results here anymore to avoid blocking other levels.
-        // Result check will now happen when user selects a level and clicks 'Start'.
     };
 
-function clearResult(){ 
+    function clearResult(){ 
         const level = document.getElementById("difficultyLevel").value;
-        if(confirm(`Clear result for ${level.toUpperCase()} level?`)) { 
+        if(confirm(`Clear result for ${level.toUpperCase()}?`)) { 
             localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
             localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
-            // Dashboard score clear karne ke liye (Optional):
-            const currentLvl = level.toUpperCase();
-            localStorage.removeItem(`score_${MY_TEST_ID}_${currentLvl}`);
-            localStorage.removeItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`);
             location.reload(); 
         } 
     }
-	
 </script>
 </body>
 </html>
-
