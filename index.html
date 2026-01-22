@@ -52,26 +52,30 @@
 
         .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 40px 20px; }
 
-        /* Updated Welcome Section for Logo on Left */
+        /* Welcome Section - Desktop Optimization */
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); 
             border: 1px solid var(--glass-border); border-radius: 35px; 
-            padding: 40px; margin-top: 15px; margin-bottom: 30px; 
+            padding: 40px 60px; margin-top: 15px; margin-bottom: 30px; 
             display: flex; align-items: center; justify-content: flex-start;
-            gap: 40px; text-align: left;
+            gap: 50px; text-align: left;
+            min-height: 280px; /* Thoda height badhaya taki bada logo fit ho */
         }
         
         .welcome-logo {
-            width: 150px; height: 150px; object-fit: contain;
-            filter: drop-shadow(2px 4px 10px rgba(0,0,0,0.3));
+            width: auto;
+            max-width: 300px; /* Web par bada dikhega */
+            height: 200px; /* Highlighted area ke hisab se */
+            object-fit: contain;
+            filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.3));
         }
 
         .welcome-text-content { display: flex; flex-direction: column; }
 
         .welcome .brand { 
             font-family: 'Marck Script', cursive; 
-            font-size: 64px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
-            line-height: 1.1;
+            font-size: 72px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+            line-height: 1;
         }
 
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; width: 100%; }
@@ -126,11 +130,18 @@
 
         .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
 
-        @media(max-width:900px){ 
-            .welcome { flex-direction: column; text-align: center; justify-content: center; gap: 20px; }
-            .welcome-logo { width: 120px; height: 120px; }
+        /* Media Queries for Tablet and Phone */
+        @media(max-width:1024px){
+            .welcome { gap: 30px; padding: 30px; min-height: auto; }
+            .welcome-logo { max-width: 200px; height: 150px; }
+            .welcome .brand { font-size: 56px; }
+        }
+
+        @media(max-width:768px){ 
+            .welcome { flex-direction: column; text-align: center; justify-content: center; gap: 15px; padding: 30px 20px; }
+            .welcome-logo { max-width: 150px; height: 120px; } /* Mobile par chota aur set */
             .dashboard { grid-template-columns: 1fr; } 
-            .welcome .brand { font-size: 48px; }
+            .welcome .brand { font-size: 44px; }
         }
     </style>
 </head>
@@ -152,7 +163,7 @@
         <div class="welcome">
             <img src="NishuAbhyasi.png" alt="Logo" class="welcome-logo">
             <div class="welcome-text-content">
-                <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
+                <div style="color:rgba(255,255,255,0.7); font-size:18px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
                 <div class="brand">NishuAbhyasi</div>
             </div>
         </div>
