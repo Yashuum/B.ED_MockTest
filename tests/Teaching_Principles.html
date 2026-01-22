@@ -1,208 +1,124 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NishuAbhyasi – Teaching principles by Yash</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NishuAbhyasi – Teaching Principles by Yash</title>
+    <style>
+        :root{
+            --color-primary: #1a2a6c;
+            --color-secondary: #2575fc;
+            --color-accent: #f2994a;
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --success: #16a34a;
+            --danger: #ef4444;
+            --review: #8b5cf6;
+            --challenge: #f59e0b;
+        }
+        *{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        body{
+            min-height:100vh;
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+            background-size: 300% 300%;
+            animation: dynamicFlow 18s ease-in-out infinite;
+            color: #fff;
+            padding: 20px 10px;
+        }
+        @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+        h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-<style>
-/* Professional Glassmorphism Theme */
-:root{
-  --color-primary: #1a2a6c;
-  --color-secondary: #2575fc;
-  --color-accent: #f2994a;
-  --glass: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --success: #16a34a;
-  --danger: #ef4444;
-}
+        .start-screen{ background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); padding: 40px 20px; border-radius: 30px; text-align:center; margin-top: 50px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .input-row { display: flex; gap: 15px; width: 100%; max-width: 600px; justify-content: center; }
+        .start-screen input, .start-screen select { 
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); 
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; outline: none; 
+        }
+		.start-screen input::placeholder { color: white !important; opacity: 1; }
+        .start-screen option { color: #000; }
+        
+        .q-count-sticker { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
+        
+        button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        button:hover{ transform: scale(1.05); }
+        .btn-secondary { background: rgba(255,255,255,0.15); }
+        .btn-review { background: var(--review); }
+        .btn-challenge { background: var(--challenge); }
+        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; }
 
-*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
+        .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
+        
+        #palette{ display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; justify-content: center; padding: 10px; }
+        .palette span{ width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px; }
+        .palette .visited{ border: 2px solid var(--color-secondary); }
+        .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .palette .marked-review{ background: var(--review); }
+        .palette .challenged{ background: var(--challenge); }
 
-body{
-  min-height:100vh;
-  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
-  background-size: 300% 300%;
-  animation: dynamicFlow 18s ease-in-out infinite;
-  color: #fff;
-  padding: 20px 10px;
-}
-
-@keyframes dynamicFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
-
-h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-/* START SCREEN */
-.start-screen{
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  padding: 40px 20px;
-  border-radius: 30px;
-  text-align:center;
-  margin-top: 50px;
-}
-
-.start-screen input {
-  width: 100%;
-  max-width: 300px;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 15px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff !important;
-  font-size: 16px;
-  outline: none;
-}
-
-.start-screen input::placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.q-count-sticker {
-  margin: 5px auto 15px;
-  width: fit-content;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 20px;
-  border-radius: 50px;
-  border: 1px solid var(--glass-border);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #4facfe;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
-}
-
-button{
-  padding: 14px 28px;
-  border: none;
-  border-radius: 15px;
-  background: linear-gradient(135deg, #ff9800, #ff5722);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  transition: 0.3s;
-}
-button:hover{ transform: scale(1.05); }
-
-.top-bar{
-  display:none; justify-content:space-between; align-items:center;
-  padding:15px 25px; background: var(--glass);
-  backdrop-filter: blur(15px);
-  border:1px solid var(--glass-border); border-radius:50px;
-  position:sticky; top:10px; z-index:100; margin-bottom:15px;
-}
-.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
-
-#palette{ 
-  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
-  justify-content: center; padding: 10px;
-}
-.palette span{
-  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
-  border-radius:10px; background: rgba(255,255,255,0.1); 
-  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
-}
-.palette .visited{ background: var(--color-secondary); }
-.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
-
-.quiz-card{
-  background: var(--glass); border:1px solid var(--glass-border);
-  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
-}
-.options label{
-  display:flex; align-items: center; gap:12px; padding:14px; 
-  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
-  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
-}
-.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
-
-.nav{ display:flex; justify-content:space-between; margin-top:20px; }
-.btn-secondary { background: rgba(255,255,255,0.15); }
-
-.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
-.correct{ color: #4ade80; font-weight:bold; }
-.wrong{ color: #f87171; font-weight:bold; }
-
-.sol-box {
-  margin-top:12px; 
-  padding:12px; 
-  background:rgba(242, 153, 74, 0.15); 
-  border-radius:12px; 
-  font-size:14px; 
-  color:#ffcc80;
-  border: 1px dashed var(--color-accent);
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init("L8kGW-X7JOiYaycH5");
-  })();
-</script>
+        .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; }
+        .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s; }
+        .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
+        
+        .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
+        .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+        .correct{ color: #4ade80; font-weight:bold; }
+        .wrong{ color: #f87171; font-weight:bold; }
+        .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script> (function () { emailjs.init("L8kGW-X7JOiYaycH5"); })(); </script>
 </head>
-
 <body>
-
 <div class="container">
+    <h1>Target Test- Teaching Principles 2026</h1>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026 - 02:41 PM</p>
+    
+    <div class="start-screen" id="startScreen">
+        <div class="input-row">
+            <input id="candidateName" placeholder="Enter your name">
+            <input id="testTime" type="number" placeholder="Minutes">
+        </div>
+        
+        <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
+            <option value="easy">Level: Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
 
-<h1>Target Test- Teaching principles 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 13 Jan, 2026 - 20:58</p>
+        <div class="q-count-sticker">
+            <span class="pulse-dot"></span>
+            <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+        </div>
 
-<div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name">
-  <input id="testTime" type="number" placeholder="Time (minutes)">
-  
-  <div class="q-count-sticker">
-    <span class="pulse-dot"></span>
-    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
-  </div>
+        <div style="display:flex; gap:10px;">
+            <button onclick="startTest()">Start Test</button>
+            <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+        </div>
+    </div>
 
-  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-    <button onclick="startTest()">Start Test</button>
-    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
-  </div>
-</div>
+    <div class="top-bar" id="topBar">
+        <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
+        <div class="timer" id="timer">00:00</div>
+    </div>
 
-<div class="top-bar" id="topBar">
-  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
-  <div class="timer" id="timer">00:00</div>
-</div>
+    <div id="palette" class="palette"></div>
+    <div id="quizArea"></div>
 
-<div id="palette" class="palette"></div>
-<div id="quizArea"></div>
+    <div class="nav" id="navBtns">
+        <button class="btn-secondary" onclick="prevQ()">← Prev</button>
+        <button class="btn-review" onclick="markForReview()">Review</button>
+        <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
+        <button onclick="nextQ()">Next →</button>
+    </div>
 
-<div class="nav" id="navBtns" style="display:none">
-  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
-  <button onclick="nextQ()">Next Question →</button>
-</div>
-
-<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
-
-<div id="result" class="result" style="display:none"></div>
-<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
-
+    <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
+    <div id="result" class="result" style="display:none"></div>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
 </div>
 
 <script>
@@ -210,221 +126,295 @@ button:hover{ transform: scale(1.05); }
 const MY_SUBJECT = "Teaching Aptitude";
 const MY_TEST_ID = "TA_SET_01";
 
-const questions = [
-{q: "शिक्षण का सबसे महत्वपूर्ण उद्देश्य क्या है?", options: ["पाठ्यक्रम पूरा करना", "छात्रों के व्यवहार में परिवर्तन", "परीक्षा में अंक दिलाना", "कक्षा में अनुशासन बनाना"], answer: "छात्रों के व्यवहार में परिवर्तन"},
-{q: "सूक्ष्म शिक्षण (Micro Teaching) के भारतीय मॉडल में कुल कितना समय लगता है?", options: ["30 मिनट", "36 मिनट", "40 मिनट", "45 मिनट"], answer: "36 मिनट"},
-{q: "शिक्षण से अधिगम (Learning) पर बल देने वाला परिवर्तन हो सकता है:", options: ["बाल-केंद्रित शिक्षा पद्धति अपनाकर", "रटने को प्रोत्साहित करके", "अग्रज शिक्षण की तकनीक अपनाकर", "परीक्षा परिणामों पर केंद्रित होकर"], answer: "बाल-केंद्रित शिक्षा पद्धति अपनाकर"},
-{q: "एक प्रभावी शिक्षक वह है जो कर सकता है:", options: ["कक्षा पर नियंत्रण", "कम समय में अधिक सूचना देना", "विद्यार्थियों को सीखने के लिए प्रेरित करना", "दत्त कार्य को ध्यानपूर्वक जांचना"], answer: "विद्यार्थियों को सीखने के लिए प्रेरित करना"},
-{q: "बुनियादी स्तर पर मातृभाषा में शिक्षा देना बेहतर है क्योंकि यह:", options: ["बच्चों में आत्मविश्वास विकसित करता है", "अधिगम को सरल बनाता है", "बौद्धिक विकास में सहायता करता है", "प्राकृतिक वातावरण में बच्चों को सीखने में सहायता करता है"], answer: "प्राकृतिक वातावरण में बच्चों को सीखने में सहायता करता है"},
-{q: "प्रायोजना विधि (Project Method) के प्रतिपादक कौन हैं?", options: ["किल्हपैट्रिक", "फ्रॉबेल", "सुक्रत", "रूसो"], answer: "किल्हपैट्रिक"},
-{q: "शिक्षा के क्षेत्र में 'पाठ्यचर्या' (Curriculum) शब्दावली किसकी ओर संकेत करती है?", options: ["विद्यालय का सम्पूर्ण कार्यक्रम", "मूल्यांकन प्रक्रिया", "कक्षा में प्रयुक्त पाठ्य सामग्री", "शिक्षण पद्धति"], answer: "विद्यालय का सम्पूर्ण कार्यक्रम"},
-{q: "निदानात्मक परीक्षण (Diagnostic Test) का मुख्य उद्देश्य क्या है?", options: ["छात्रों का वर्गीकरण", "कमियों के कारणों का पता लगाना", "अंकों का निर्धारण", "कठिन प्रश्नों का चयन"], answer: "कमियों के कारणों का पता लगाना"},
-{q: "शिक्षण की 'खेल विधि' (Play-way Method) किस पर आधारित है?", options: ["शिक्षण के समाजशास्त्रीय सिद्धांत", "मनोवैज्ञानिक सिद्धांत", "शारीरिक शिक्षा कार्यक्रम", "शिक्षण विधियों के सिद्धांत"], answer: "मनोवैज्ञानिक सिद्धांत"},
-{q: "ब्लूम के वर्गीकरण (Taxonomy) के तीन क्षेत्र कौन से हैं?", options: ["संज्ञानात्मक, भावात्मक, मनोगत्यात्मक", "सामाजिक, आर्थिक, राजनीतिक", "पढ़ना, लिखना, बोलना", "ज्ञान, विज्ञान, तर्क"], answer: "संज्ञानात्मक, भावात्मक, मनोगत्यात्मक"},
-{q: "कक्षा में प्रश्न पूछने का मुख्य उद्देश्य क्या है?", options: ["अनुशासन बनाना", "रुचि और उत्सुकता जगाना", "छात्रों को सजा देना", "समय व्यतीत करना"], answer: "रुचि और उत्सुकता जगाना"},
-{q: "दृश्य-श्रव्य सामग्री (Audio-Visual Aids) का प्रयोग क्यों किया जाता है?", options: ["शिक्षण को रोचक बनाने के लिए", "शिक्षक का भार कम करने के लिए", "कक्षा में शोर कम करने के लिए", "मनोरंजन के लिए"], answer: "शिक्षण को रोचक बनाने के लिए"},
-{q: "शिक्षा का अधिकार अधिनियम (RTE) किस वर्ष लागू हुआ?", options: ["2005", "2009", "2010", "2012"], answer: "2010"},
-{q: "बालक का प्रथम शिक्षक कौन होता है?", options: ["अध्यापक", "माता", "पिता", "समाज"], answer: "माता"},
-{q: "खोज विधि (Heuristic Method) के जन्मदाता कौन हैं?", options: ["आर्मस्ट्रांग", "स्किनर", "अरस्तू", "प्लेटो"], answer: "आर्मस्ट्रांग"},
-{q: "समावेशी शिक्षा (Inclusive Education) का तात्पर्य क्या है?", options: ["केवल विकलांगों की शिक्षा", "जाति आधारित शिक्षा", "सभी बच्चों को एक साथ शिक्षा", "प्रतिभाशाली बच्चों की शिक्षा"], answer: "सभी बच्चों को एक साथ शिक्षा"},
-{q: "श्यामपट्ट (Blackboard) पर लिखते समय सबसे महत्वपूर्ण क्या है?", options: ["अच्छी लिखावट", "लेखन में स्पष्टता", "बड़े अक्षर", "तेजी से लिखना"], answer: "अच्छी लिखावट"},
-{q: "छात्रों में अनुशासन बनाए रखने के लिए शिक्षक को क्या करना चाहिए?", options: ["छात्रों को सजा देना", "छात्रों को जिम्मेदारी सौंपना", "कठोर नियम बनाना", "अभिभावकों से शिकायत करना"], answer: "छात्रों को जिम्मेदारी सौंपना"},
-{q: "क्रियात्मक अनुसंधान (Action Research) का उद्देश्य क्या है?", options: ["नए सिद्धांतों की खोज", "विद्यालय की कार्यप्रणाली में सुधार", "छात्रों की उपलब्धि का मापन", "पाठ्यपुस्तकों का लेखन"], answer: "विद्यालय की कार्यप्रणाली में सुधार"},
-{q: "किंडरगार्टन (Kindergarten) पद्धति के प्रतिपादक कौन हैं?", options: ["मांटेसरी", "फ्रॉबेल", "कुक", "डाल्टन"], answer: "फ्रॉबेल"},
-{q: "शिक्षण के स्तरों का सही क्रम क्या है?", options: ["स्मृति, बोध, चिंतन", "चिंतन, स्मृति, बोध", "बोध, स्मृति, चिंतन", "स्मृति, चिंतन, बोध"], answer: "स्मृति, बोध, चिंतन"},
-{q: "निगमन विधि (Deductive Method) में शिक्षण चलता है:", options: ["सामान्य से विशिष्ट की ओर", "विशिष्ट से सामान्य की ओर", "कठिन से सरल की ओर", "अज्ञात से ज्ञात की ओर"], answer: "सामान्य से विशिष्ट की ओर"},
-{q: "आगमन विधि (Inductive Method) का मुख्य सोपान क्या है?", options: ["नियमन", "उदाहरण", "निष्कर्ष", "परीक्षण"], answer: "उदाहरण"},
-{q: "एक शिक्षक के लिए सबसे बड़ी चुनौती क्या है?", options: ["शिक्षण प्रक्रिया को आनंददायक बनाना", "कक्षा में अनुशासन बनाए रखना", "प्रश्न पत्र तैयार करना", "गृहकार्य जाँचना"], answer: "शिक्षण प्रक्रिया को आनंददायक बनाना"},
-{q: "प्रगतिशील शिक्षा (Progressive Education) के जनक कौन माने जाते हैं?", options: ["जॉन डीवी", "जीन पियाजे", "वाइगोत्सकी", "कोहलर"], answer: "जॉन डीवी"},
-{q: "सीखने का 'प्रयास और त्रुटि' (Trial and Error) सिद्धांत किसने दिया?", options: ["पावलोव", "कोहलर", "थार्नडाइक", "स्किनर"], answer: "थार्नडाइक"},
-{q: "बुद्धि लब्धि (IQ) निकालने का सही सूत्र क्या है?", options: ["MA/CA * 100", "CA/MA * 100", "MA/CA", "MA * 100"], answer: "MA/CA * 100"},
-{q: "राष्ट्रीय पाठ्यचर्या रूपरेखा (NCF) किस वर्ष बनी थी?", options: ["2000", "2005", "2009", "2020"], answer: "2005"},
-{q: "शिक्षण की सबसे पुरानी विधि कौन सी है?", options: ["व्याख्यान विधि", "परियोजना विधि", "प्रयोगशाला विधि", "खोज विधि"], answer: "व्याख्यान विधि"},
-{q: "सतत और व्यापक मूल्यांकन (CCE) में 'व्यापक' का अर्थ क्या है?", options: ["शैक्षिक क्षेत्र", "सह-शैक्षिक क्षेत्र", "शैक्षिक और सह-शैक्षिक दोनों", "केवल परीक्षा"], answer: "शैक्षिक और सह-शैक्षिक दोनों"},
-{q: "मोंटेसरी शिक्षा पद्धति किस पर आधारित है?", options: ["किताबों पर", "इंद्रियों के प्रशिक्षण पर", "भाषण पर", "कठोर अनुशासन पर"], answer: "इंद्रियों के प्रशिक्षण पर"},
-{q: "यदि कोई छात्र कक्षा में देरी से आता है, तो आप क्या करेंगे?", options: ["उसे दंड देंगे", "कारण जानने का प्रयास करेंगे", "उसे कक्षा से बाहर निकाल देंगे", "अभिभावक को सूचित करेंगे"], answer: "कारण जानने का प्रयास करेंगे"},
-{q: "शिक्षण सहानुभूति पूर्ण होना चाहिए, इसका अर्थ है:", options: ["शिक्षक को छात्रों के प्रति दयालु होना चाहिए", "शिक्षक को छात्रों की समस्याओं को समझना चाहिए", "शिक्षक को अंक अधिक देने चाहिए", "शिक्षक को पाठ छोड़ देना चाहिए"], answer: "शिक्षक को छात्रों की समस्याओं को समझना चाहिए"},
-{q: "बुद्धि का 'बहुबुद्धि सिद्धांत' (Multiple Intelligence) किसने दिया?", options: ["स्पीयरमैन", "गार्डनर", "बिने", "टर्मन"], answer: "गार्डनर"},
-{q: "शिक्षण के 'ज्ञात से अज्ञात' सिद्धांत का अर्थ क्या है?", options: ["पूर्व ज्ञान के आधार पर नया ज्ञान देना", "कठिन चीजों को पहले पढ़ाना", "बिना बताए परीक्षा लेना", "पुस्तकों से पढ़ाना"], answer: "पूर्व ज्ञान के आधार पर नया ज्ञान देना"},
-{q: "किशोरावस्था को 'तनाव और तूफान' की अवस्था किसने कहा?", options: ["स्टेनली हॉल", "जेम्स", "वॉटसन", "एड्रलर"], answer: "स्टेनली हॉल"},
-{q: "सीखने की प्रक्रिया में 'अभिप्रेरणा' (Motivation):", options: ["सीखने के प्रति रुचि पैदा करती है", "याददाश्त बढ़ाती है", "पुराने ज्ञान को अलग करती है", "एकाग्रता कम करती है"], answer: "सीखने के प्रति रुचि पैदा करती है"},
-{q: "शिक्षक को समाज में स्थान मिलना चाहिए क्योंकि वह:", options: ["शिक्षित है", "राष्ट्र निर्माता है", "अधिकारी है", "वेतन भोगी है"], answer: "राष्ट्र निर्माता है"},
-{q: "आधुनिक मनोविज्ञान के जनक कौन हैं?", options: ["विलियम जेम्स", "स्किनर", "वॉटसन", "थार्नडाइक"], answer: "विलियम जेम्स"},
-{q: "बालक के विकास की दिशा कैसी होती है?", options: ["सिर से पैर की ओर", "पैर से सिर की ओर", "दाएं से बाएं", "अनिश्चित"], answer: "सिर से पैर की ओर"},
-];
+    const allQuestionsBank = {
+easy: [
 
-let currentIndex=0,answers={},visited={};
-let totalSeconds=0,timerInterval,startTime;
+  {q: "शिक्षण (Teaching) का सबसे मुख्य उद्देश्य क्या है?", options: ["विद्यार्थी को जानकारी देना", "विद्यार्थी के व्यवहार में अपेक्षित परिवर्तन लाना", "सिलेबस पूरा करना", "परीक्षा में पास कराना"], answer: "विद्यार्थी के व्यवहार में अपेक्षित परिवर्तन लाना", solution: "शिक्षा का वास्तविक अर्थ व्यवहार का परिमार्जन है।"},
+  {q: "एक अच्छा शिक्षक वह है जो:", options: ["बहुत अनुशासन प्रिय हो", "छात्रों को प्रेरित करना जानता हो", "कठिन सवाल पूछे", "हमेशा शांत रहे"], answer: "छात्रों को प्रेरित करना जानता हो", solution: "अभिप्रेरणा (Motivation) सीखने का सबसे सशक्त माध्यम है।"},
+  {q: "ज्ञात से अज्ञात (Known to Unknown) क्या है?", options: ["शिक्षण सूत्र", "शिक्षण विधि", "शिक्षण सामग्री", "शिक्षण का लक्ष्य"], answer: "शिक्षण सूत्र", solution: "यह एक बेसिक मैक्सिम (Maxim) है जहाँ पहले पुरानी जानकारी दी जाती है।"},
+  {q: "बाल-केन्द्रित शिक्षा (Child-Centered Education) में प्रमुख स्थान किसका होता है?", options: ["शिक्षक का", "पाठ्य-पुस्तक का", "बालक का", "प्रधानाध्यापक का"], answer: "बालक का", solution: "इसमें बालक की रुचि और क्षमता को प्रधानता दी जाती है।"},
+  {q: "कक्षा में प्रभावी शिक्षण के लिए वातावरण कैसा होना चाहिए?", options: ["सख्त", "डर पैदा करने वाला", "लोकतांत्रिक और सहयोगात्मक", "चुपचाप रहने वाला"], answer: "लोकतांत्रिक और सहयोगात्मक", solution: "खुले वातावरण में बच्चे जल्दी और बेहतर सीखते हैं।"},
+  {q: "क्रियाशीलता का सिद्धांत (Principle of Activity) का अर्थ है:", options: ["हमेशा दौड़ते रहना", "करके सीखना (Learning by doing)", "टीचर का सक्रिय होना", "सिर्फ खेलना"], answer: "करके सीखना (Learning by doing)", solution: "जब बच्चा खुद कार्य करता है, तो ज्ञान स्थाई होता है।"},
+  {q: "शिक्षण की 'खेल विधि' (Play-way Method) किसके लिए सबसे उपयुक्त है?", options: ["उच्च शिक्षा के लिए", "पूर्व-प्राथमिक और प्राथमिक स्तर के लिए", "सिर्फ लड़कों के लिए", "सिर्फ खेल के मैदान में"], answer: "पूर्व-प्राथमिक और प्राथमिक स्तर के लिए", solution: "छोटे बच्चे खेल के माध्यम से सहजता से सीखते हैं।"},
+  {q: "प्रोत्साहन (Reinforcement) कितने प्रकार का होता है?", options: ["एक", "दो", "तीन", "चार"], answer: "दो", solution: "सकारात्मक (Positive) और नकारात्मक (Negative) प्रोत्साहन।"},
+  {q: "शिक्षण में 'रुचि का सिद्धांत' (Principle of Interest) क्यों जरूरी है?", options: ["समय बिताने के लिए", "छात्रों का ध्यान केंद्रित करने के लिए", "स्कूल की फीस लेने के लिए", "टीचर को आराम देने के लिए"], answer: "छात्रों का ध्यान केंद्रित करने के लिए", solution: "रुचि होने पर छात्र जल्दी सीखते हैं।"},
+  {q: "सूक्ष्म शिक्षण (Micro-teaching) का मुख्य उद्देश्य क्या है?", options: ["सिलेबस पढ़ाना", "शिक्षण कौशल विकसित करना", "टेस्ट लेना", "बच्चों को खेल सिखाना"], answer: "शिक्षण कौशल विकसित करना", solution: "यह शिक्षकों की ट्रेनिंग के लिए इस्तेमाल किया जाता है।"},
+  {q: "मूर्त से अमूर्त (Concrete to Abstract) का क्या अर्थ है?", options: ["पहले विचार देना फिर वस्तु", "पहले सामने रखी वस्तु दिखाना फिर विचार देना", "सिर्फ चित्र दिखाना", "सिर्फ भाषण देना"], answer: "पहले सामने रखी वस्तु दिखाना फिर विचार देना", solution: "बच्चे पहले ठोस वस्तुओं को जल्दी समझते हैं।"},
+  {q: "एक शिक्षक के रूप में आपकी पहली प्राथमिकता क्या होगी?", options: ["समय पर आना", "छात्रों की समस्याओं को समझना", "अच्छे नोट्स देना", "बोर्ड पर सुंदर लिखना"], answer: "छात्रों की समस्याओं को समझना", solution: "निदानात्मक शिक्षण ही प्रभावी होता है।"},
+  {q: "नियोजन का सिद्धांत (Principle of Planning) कहता है कि:", options: ["टीचर को बिना तैयारी के जाना चाहिए", "टीचर को पाठ पहले से तैयार करना चाहिए", "छात्रों को घर भेजना चाहिए", "सिर्फ परीक्षा लेनी चाहिए"], answer: "टीचर को पाठ पहले से तैयार करना चाहिए", solution: "बिना योजना के शिक्षण प्रभावी नहीं हो सकता।"},
+  {q: "शिक्षण सहायक सामग्री (TLM) का उपयोग क्यों होता है?", options: ["पढ़ाई को बोझिल बनाने के लिए", "पढ़ाई को सरल और रुचिकर बनाने के लिए", "टीचर का काम बढ़ाने के लिए", "कक्षा सजाने के लिए"], answer: "पढ़ाई को सरल और रुचिकर बनाने के लिए", solution: "दृश्य-श्रव्य सामग्री समझ को गहरा करती है।"},
+  {q: "प्रेरणा (Motivation) शिक्षण का कौन सा पक्ष है?", options: ["आंतरिक", "बाहरी", "दोनों", "कोई नहीं"], answer: "दोनों", solution: "बच्चा अंदर से भी प्रेरित हो सकता है और इनाम द्वारा बाहर से भी।"},
+  {q: "जीवन से जोड़ने का सिद्धांत (Principle of Linking with Life) का अर्थ है:", options: ["कहानियां सुनाना", "किताबी ज्ञान को वास्तविक जीवन से जोड़ना", "घूमने ले जाना", "फिल्म दिखाना"], answer: "किताबी ज्ञान को वास्तविक जीवन से जोड़ना", solution: "ज्ञान तभी सार्थक है जब वह जीवन में काम आए।"},
+  {q: "शिक्षण में 'पुनरावृत्ति' (Recapitulation) क्यों की जाती है?", options: ["समय बर्बाद करने के लिए", "सीखी हुई बात को पक्का करने के लिए", "छात्रों को परेशान करने के लिए", "नए टॉपिक को टालने के लिए"], answer: "सीखी हुई बात को पक्का करने के लिए", solution: "रिवीजन से ज्ञान स्थाई होता है।"},
+  {q: "छात्रों की गलतियाँ शिक्षक के लिए क्या हैं?", options: ["दंड का आधार", "सीखने का संकेत", "नजरअंदाज करने वाली बात", "अक्षमता का प्रमाण"], answer: "सीखने का संकेत", solution: "गलतियाँ बताती हैं कि बच्चा कैसे सीख रहा है।"},
+  {q: "कक्षा में अनुशासन का सबसे अच्छा तरीका क्या है?", options: ["मारना-पीटना", "शिक्षण को रोचक बनाना", "प्रिंसिपल को बुलाना", "छात्रों को डराना"], answer: "शिक्षण को रोचक बनाना", solution: "बच्चा व्यस्त रहेगा तो शरारत नहीं करेगा।"},
+  {q: "व्यक्तित्व विभिन्नता (Individual Differences) का सिद्धांत कहता है कि:", options: ["सब बच्चे एक जैसे होते हैं", "हर बच्चा अपनी क्षमता और गति से सीखता है", "सबको एक ही डंडे से हांकना चाहिए", "सिर्फ होशियार बच्चों पर ध्यान दें"], answer: "हर बच्चा अपनी क्षमता और गति से सीखता है", solution: "शिक्षक को हर बच्चे की अलग जरूरतों का सम्मान करना चाहिए।"},
+  {q: "प्रश्नोत्तर विधि (Question-Answer Method) के जनक कौन हैं?", options: ["रूसो", "सुकरात", "पियाजे", "फ्रॉबेल"], answer: "सुकरात", solution: "सुकरात ने संवाद के माध्यम से शिक्षण पर जोर दिया।"},
+  {q: "शिक्षा का अधिकार (RTE) किस वर्ष लागू हुआ?", options: ["2005", "2009", "2010", "2012"], answer: "2010", solution: "1 अप्रैल 2010 को देशभर में लागू हुआ।"},
+  {q: "उपचारात्मक शिक्षण (Remedial Teaching) का अर्थ है:", options: ["बीमार छात्र का इलाज", "पिछड़े छात्रों की कमियों को दूर करना", "दवा देना", "सिर्फ टेस्ट लेना"], answer: "पिछड़े छात्रों की कमियों को दूर करना", solution: "समस्या का समाधान करना उपचारात्मक शिक्षण है।"},
+  {q: "श्यामपट्ट (Blackboard) का सबसे अच्छा उपयोग है:", options: ["छात्रों को चुप कराने में", "महत्वपूर्ण बिंदुओं को लिखने में", "पर्दे के रूप में", "नाम लिखने में"], answer: "महत्वपूर्ण बिंदुओं को लिखने में", solution: "विजुअल पॉइंट छात्रों को याद रहते हैं।"},
+  {q: "किंडरगार्टन का शाब्दिक अर्थ क्या है?", options: ["स्कूल की इमारत", "बच्चों का बगीचा", "पुस्तकालय", "खेल का मैदान"], answer: "बच्चों का बगीचा", solution: "फ्रॉबेल ने स्कूल को एक बगीचा और शिक्षक को एक माली माना है।"},
+  {q: "शिक्षण (Teaching) क्या है?", options: ["सिर्फ एक कला", "सिर्फ एक विज्ञान", "कला और विज्ञान दोनों", "सिर्फ एक व्यवसाय"], answer: "कला और विज्ञान दोनों", solution: "इसमें रचनात्मकता (कला) और व्यवस्थित विधि (विज्ञान) दोनों हैं।"},
+  {q: "प्रेरणा का 'पुरस्कार और दंड' सिद्धांत किसने दिया?", options: ["पावलोव", "बी.एफ. स्किनर", "थार्नडाइक", "कोहलर"], answer: "बी.एफ. स्किनर", solution: "ऑपरेंट कंडीशनिंग में रिइंफोर्समेंट पर जोर दिया गया है।"},
+  {q: "सीखने की प्रक्रिया में 'पठार' (Plateau) क्या दर्शाता है?", options: ["तेजी से सीखना", "सीखने में कोई सुधार न होना", "सीखना बंद हो जाना", "थकान"], answer: "सीखने में कोई सुधार न होना", solution: "जब कुछ समय तक प्रगति रुक जाए उसे पठार कहते हैं।"},
+  {q: "सह-पाठ्यगामी क्रियाएँ (Co-curricular Activities) क्यों जरूरी हैं?", options: ["सिर्फ खेल के लिए", "सर्वांगीण विकास के लिए", "छुट्टी के लिए", "फीस बढ़ाने के लिए"], answer: "सर्वांगीण विकास के लिए", solution: "मानसिक और शारीरिक दोनों विकास जरूरी हैं।"},
+  {q: "एक शिक्षक को अपने छात्र का क्या होना चाहिए?", options: ["मालिक", "पथ-प्रदर्शक", "कठोर अधिकारी", "सिर्फ एक अजनबी"], answer: "पथ-प्रदर्शक", solution: "मार्गदर्शक (Guide) बनकर ही शिक्षक सही दिशा दे सकता है।"}
+   
+ ],
+medium: [
 
-function startTest(){
-  if(!candidateName.value || !testTime.value) {
-    alert("Please enter Name and Time"); return;
-  }
-  displayName.textContent=candidateName.value;
-  startScreen.style.display="none";
-  topBar.style.display="flex";
-  palette.style.display="flex"; 
-  navBtns.style.display="flex";
-  submitBtn.style.display="block";
-  totalSeconds=testTime.value*60;
-  startTime=Date.now();
-  saveProgress();
-  startTimer();
-  renderQuestion();
-}
-
-function startTimer(){
-  timerInterval=setInterval(()=>{
-    totalSeconds--;
-    updateTimer();
-    saveProgress();
-    if(totalSeconds<=0)submitQuiz();
-  },1000);
-}
-
-function updateTimer(){
-  timer.textContent=
-    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
-    String(totalSeconds%60).padStart(2,'0');
-}
-
-function renderQuestion(){
-  visited[currentIndex]=true;
-  const q=questions[currentIndex];
-  quizArea.innerHTML=`
-    <div class="quiz-card">
-      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-      <div class="options">
-        ${q.options.map(o=>`
-          <label>
-            <input type="radio" name="opt"
-              ${answers[currentIndex]==o?'checked':''}
-              onchange="selectAnswer('${o}')">
-            ${o}
-          </label>
-        `).join("")}
-      </div>
-    </div>`;
-  renderPalette();
-  saveProgress();
-}
-
-function selectAnswer(val){
-  answers[currentIndex]=val;
-  saveProgress();
-  renderPalette();
-}
-
-function renderPalette(){
-  palette.innerHTML="";
-  questions.forEach((_,i)=>{
-    const s=document.createElement("span");
-    s.textContent=i+1;
-    if(visited[i])s.classList.add("visited");
-    if(answers[i])s.classList.add("attempted");
-    s.onclick=()=>{currentIndex=i;renderQuestion()};
-    palette.appendChild(s);
-  });
-}
-
-function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
-function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
-
-function saveProgress(){
-  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
-    name:displayName.textContent,
-    answers,visited,currentIndex,totalSeconds,startTime
-  }));
-}
-
-function submitQuiz(){
-  if(!confirm("Are you sure you want to submit the Teaching principles test?")) return;
-  clearInterval(timerInterval);
-  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-  let correct=0, attempted=0;
-  let detailHtml="<h2>Detailed Analysis</h2>";
+  {q: "कक्षा में 'व्यक्तिगत विभिन्नता' (Individual Differences) को संभालने का सबसे सटीक तरीका क्या है?", options: ["सभी के लिए एक जैसा होमवर्क देना", "विभिन्न शिक्षण विधियों का उपयोग करना", "कमजोर छात्रों को अलग बैठाना", "सिर्फ मेधावी छात्रों पर ध्यान देना"], answer: "विभिन्न शिक्षण विधियों का उपयोग करना", solution: "हर बच्चे की सीखने की क्षमता अलग होती है, इसलिए 'Multi-sensory' एप्रोच अपनानी चाहिए।"},
+  {q: "एक छात्र कक्षा में बार-बार अनुशासनहीनता करता है, आप क्या करेंगे?", options: ["उसे स्कूल से निकाल देंगे", "कक्षा के सामने अपमानित करेंगे", "उसके व्यवहार के मूल कारण का पता लगाएंगे", "उसे सबसे कठिन काम देंगे"], answer: "उसके व्यवहार के मूल कारण का पता लगाएंगे", solution: "शिक्षक को एक मनोवैज्ञानिक की तरह व्यवहार के पीछे का 'Reason' खोजना चाहिए।"},
+  {q: "शिक्षण का 'लोकतांत्रिक सिद्धांत' (Democratic Principle) क्या सिखाता है?", options: ["शिक्षक का दबदबा होना", "छात्रों को अपनी बात रखने और प्रश्न पूछने की आजादी देना", "कोई नियम न होना", "सिर्फ मॉनिटर की बात सुनना"], answer: "छात्रों को अपनी बात रखने और प्रश्न पूछने की आजादी देना", solution: "लोकतांत्रिक माहौल में छात्र बिना डरे अपनी जिज्ञासा शांत कर सकते हैं।"},
+  {q: "सूक्ष्म शिक्षण (Micro-teaching) की साइकिल (Cycle) का सही क्रम क्या है?", options: ["योजना - शिक्षण - प्रतिपुष्टि - पुन: योजना", "शिक्षण - प्रतिपुष्टि - योजना", "प्रतिपुष्टि - शिक्षण - योजना", "योजना - प्रतिपुष्टि - शिक्षण"], answer: "योजना - शिक्षण - प्रतिपुष्टि - पुन: योजना", solution: "Plan -> Teach -> Feedback -> Re-plan -> Re-teach -> Re-feedback।"},
+  {q: "'करके सीखना' (Learning by doing) किस दार्शनिक विचारधारा पर आधारित है?", options: ["आदर्शवाद", "प्रयोजनवाद (Pragmatism)", "प्रकृतिवाद", "यथार्थवाद"], answer: "प्रयोजनवाद (Pragmatism)", solution: "जॉन डीवी ने इस पर सबसे अधिक जोर दिया था।"},
+  {q: "निदानात्मक परीक्षण (Diagnostic Test) के बाद कौन-सा कदम उठाना चाहिए?", options: ["अगला पाठ पढ़ाना", "उपचारात्मक शिक्षण (Remedial Teaching)", "परीक्षा रद्द करना", "अभिभावकों को दंड देना"], answer: "उपचारात्मक शिक्षण (Remedial Teaching)", solution: "कमजोरी का पता लगाना 'निदान' है और उसे दूर करना 'उपचार' है।"},
+  {q: "शिक्षण में 'सह-संबंध' (Correlation) का क्या अर्थ है?", options: ["एक विषय को दूसरे विषय से जोड़कर पढ़ाना", "छात्रों के बीच दोस्ती कराना", "प्रिंसिपल से संबंध सुधारना", "सिर्फ एक ही किताब पढ़ाना"], answer: "एक विषय को दूसरे विषय से जोड़कर पढ़ाना", solution: "जैसे भूगोल पढ़ाते समय इतिहास या विज्ञान का संदर्भ देना।"},
+  {q: "ब्लूम के वर्गीकरण (Bloom's Taxonomy) में सबसे उच्च स्तर का उद्देश्य क्या है?", options: ["ज्ञान", "अनुप्रयोग", "मूल्यांकन", "संश्लेषण"], answer: "मूल्यांकन", solution: "Cognitive domain में सबसे ऊपर Evaluation (मूल्यांकन) आता है।"},
+  {q: "प्रभावी शिक्षण के लिए 'प्रतिपुष्टि' (Feedback) क्यों आवश्यक है?", options: ["टीचर की तारीफ के लिए", "शिक्षण-अधिगम प्रक्रिया में सुधार के लिए", "छात्रों को डराने के लिए", "रिपोर्ट कार्ड भरने के लिए"], answer: "शिक्षण-अधिगम प्रक्रिया में सुधार के लिए", solution: "फीडबैक से पता चलता है कि कहाँ कमी रह गई है।"},
+  {q: "एक समावेशी कक्षा (Inclusive Classroom) में शिक्षक की सबसे बड़ी चुनौती क्या है?", options: ["समय पर आना", "विविध आवश्यकताओं वाले छात्रों के लिए रणनीति बनाना", "बोर्ड पर लिखना", "चुपचाप बैठना"], answer: "विविध आवश्यकताओं वाले छात्रों के लिए रणनीति बनाना", solution: "सामान्य और विशेष बच्चों को एक साथ जोड़कर पढ़ाना चुनौतीपूर्ण है।"},
+  {q: "शिक्षण का 'आगमन विधि' (Inductive Method) का सूत्र है:", options: ["नियम से उदाहरण की ओर", "उदाहरण से नियम की ओर", "अमूर्त से मूर्त की ओर", "अज्ञात से ज्ञात की ओर"], answer: "उदाहरण से नियम की ओर", solution: "पहले कई उदाहरण देना फिर एक निष्कर्ष (नियम) निकालना।"},
+  {q: "कक्षा में 'दृश्य-श्रव्य' (Audio-Visual) सामग्री का चयन किस आधार पर होना चाहिए?", options: ["कीमत के आधार पर", "उपलब्धता के आधार पर", "शैक्षिक उद्देश्यों की पूर्ति के आधार पर", "रंग-रूप के आधार पर"], answer: "शैक्षिक उद्देश्यों की पूर्ति के आधार पर", solution: "सामग्री ऐसी हो जो टॉपिक को आसान बनाए।"},
+  {q: "प्रोजेक्ट विधि (Project Method) में शिक्षक की भूमिका होती है:", options: ["एक तानाशाह की", "एक मार्गदर्शक और सुविधादाता (Facilitator) की", "एक दर्शक की", "सिर्फ आदेश देने वाले की"], answer: "एक मार्गदर्शक और सुविधादाता (Facilitator) की", solution: "शिक्षक केवल रास्ता दिखाता है, काम छात्र खुद करते हैं।"},
+  {q: "यदि कोई छात्र कक्षा में ध्यान नहीं दे रहा है, तो आप क्या करेंगे?", options: ["उसे बाहर निकाल देंगे", "उसे डांटेंगे", "अपनी शिक्षण पद्धति में बदलाव करेंगे", "उसकी शिकायत घर करेंगे"], answer: "अपनी शिक्षण पद्धति में बदलाव करेंगे", solution: "ध्यान न देना अक्सर शिक्षण के अरुचिकर होने का संकेत है।"},
+  {q: "क्रियात्मक अनुसंधान (Action Research) का मुख्य उद्देश्य क्या है?", options: ["सिद्धांत बनाना", "कक्षा की तात्कालिक समस्याओं का समाधान करना", "डिग्री प्राप्त करना", "पैसे कमाना"], answer: "कक्षा की तात्कालिक समस्याओं का समाधान करना", solution: "यह एक शिक्षक द्वारा अपनी कक्षा की समस्याओं को सुलझाने के लिए किया जाता है।"},
+  {q: "अभिप्रेरणा का 'आवश्यकता पदानुक्रम' (Hierarchy of Needs) सिद्धांत किसने दिया?", options: ["मैस्लो (Maslow)", "स्किनर", "फ्रायड", "थार्नडाइक"], answer: "मैस्लो (Maslow)", solution: "उन्होंने शारीरिक से लेकर आत्म-सिद्धि तक की 5 आवश्यकताएं बताईं।"},
+  {q: "पाठ योजना (Lesson Plan) का सबसे महत्वपूर्ण चरण क्या है?", options: ["प्रस्तावना (Introduction)", "प्रस्तुतीकरण", "गृहकार्य", "उद्देश्य कथन"], answer: "प्रस्तावना (Introduction)", solution: "अगर शुरुआत अच्छी होगी तो छात्र अंत तक जुड़े रहेंगे।"},
+  {q: "निगमनात्मक विधि (Deductive Method) का प्रयोग मुख्य रूप से किस विषय में होता है?", options: ["साहित्य", "गणित और व्याकरण", "इतिहास", "चित्रकला"], answer: "गणित और व्याकरण", solution: "इसमें पहले फॉर्मूला (नियम) बताया जाता है, फिर सवाल हल किए जाते हैं।"},
+  {q: "शिक्षण में 'प्रबलन' (Reinforcement) का गलत उपयोग क्या है?", options: ["तारीफ करना", "पुरस्कार देना", "हमेशा नकारात्मक टिप्पणियां करना", "उत्साह बढ़ाना"], answer: "हमेशा नकारात्मक टिप्पणियां करना", solution: "लगातार डांटने से छात्र की सीखने की इच्छा मर जाती है।"},
+  {q: "प्रौढ़ शिक्षा (Adult Education) का सफल होना किस पर निर्भर करता है?", options: ["अच्छी बिल्डिंग पर", "शिक्षार्थियों की प्रेरणा और रुचि पर", "सख्त कानून पर", "मुफ्त किताबों पर"], answer: "शिक्षार्थियों की प्रेरणा और रुचि पर", solution: "बड़ों को तभी पढ़ाया जा सकता है जब वे खुद पढ़ना चाहें।"},
+  {q: "शिक्षण के 'स्तर' (Levels of Teaching) का सही क्रम क्या है?", options: ["स्मृति -> बोध -> चिंतन", "चिंतन -> बोध -> स्मृति", "बोध -> स्मृति -> चिंतन", "स्मृति -> चिंतन -> बोध"], answer: "स्मृति -> बोध -> चिंतन", solution: "Memory Level -> Understanding Level -> Reflective Level।"},
+  {q: "NCF 2005 के अनुसार, एक शिक्षक की भूमिका होनी चाहिए:", options: ["अधिनायकवादी", "सुविधादाता (Facilitator)", "अनुमति देने वाला", "कठोर"], answer: "सुविधादाता (Facilitator)", solution: "शिक्षक ज्ञान का स्रोत नहीं, बल्कि ज्ञान के निर्माण में मदद करने वाला है।"},
+  {q: "किशोरावस्था के छात्रों को पढ़ाते समय शिक्षक को विशेष ध्यान देना चाहिए:", options: ["उनके शारीरिक दंड पर", "उनके संवेगात्मक और मानसिक विकास पर", "सिर्फ उनकी ग्रेड पर", "उनके पहनावे पर"], answer: "उनके संवेगात्मक और मानसिक विकास पर", solution: "यह 'तूफान और तनाव' की अवस्था होती है।"},
+  {q: "बहु-बुद्धि सिद्धांत (Multiple Intelligence Theory) किसने दिया?", options: ["गार्डनर", "बिने", "स्पीयरमैन", "टर्मन"], answer: "गार्डनर", solution: "हॉवर्ड गार्डनर ने बताया कि बुद्धि 8-9 प्रकार की होती है।"},
+  {q: "कक्षा में शोर होने पर शिक्षक को क्या करना चाहिए?", options: ["तेज चिल्लाना", "पढ़ाना बंद कर देना", "धीमी आवाज में बात करना या शांत हो जाना", "सबको बेंच पर खड़ा करना"], answer: "धीमी आवाज में बात करना या शांत हो जाना", solution: "शांति शोर को काटने का सबसे प्रभावी हथियार है।"},
+  {q: "सहयोगात्मक अधिगम (Collaborative Learning) में छात्र कैसे सीखते हैं?", options: ["एक-दूसरे से प्रतिस्पर्धा करके", "एक-दूसरे की मदद करके", "सिर्फ टीचर से", "अकेले पढ़कर"], answer: "एक-दूसरे की मदद करके", solution: "ग्रुप वर्क से सामाजिक कौशल भी विकसित होते हैं।"},
+  {q: "CCE (सतत एवं व्यापक मूल्यांकन) में 'व्यापक' (Comprehensive) का क्या अर्थ है?", options: ["सिर्फ पढ़ाई", "शैक्षिक और सह-शैक्षिक दोनों पक्ष", "बड़ी परीक्षा", "पूरे साल का टेस्ट"], answer: "शैक्षिक और सह-शैक्षिक दोनों पक्ष", solution: "इसमें पढ़ाई के साथ खेल, कला और व्यवहार का भी मूल्यांकन होता है।"},
+  {q: "शिक्षा मनोविज्ञान (Educational Psychology) का अध्ययन शिक्षक के लिए क्यों जरूरी है?", options: ["स्वयं को समझने के लिए", "बालकों के स्वभाव और सीखने की प्रक्रिया को समझने के लिए", "प्रिंसिपल को प्रभावित करने के लिए", "नौकरी पक्की करने के लिए"], answer: "बालकों के स्वभाव और सीखने की प्रक्रिया को समझने के लिए", solution: "मनोविज्ञान शिक्षक को छात्रों की मानसिकता समझाता है।"},
+  {q: "एक आदर्श टाइम-टेबल कैसा होना चाहिए?", options: ["कठोर", "लचीला (Flexible)", "बहुत लंबा", "सिर्फ मुख्य विषयों वाला"], answer: "लचीला (Flexible)", solution: "जरूरत पड़ने पर इसमें बदलाव की गुंजाइश होनी चाहिए।"},
+  {q: "शिक्षण प्रक्रिया का अंतिम चरण क्या है?", options: ["योजना", "प्रस्तुतीकरण", "मूल्यांकन", "फीडबैक"], answer: "मूल्यांकन", solution: "यह जांचना कि जो पढ़ाया गया वह छात्रों ने कितना सीखा।"}
   
-  questions.forEach((q,i)=>{
-    if(answers[i]) attempted++;
-    if(answers[i] == q.answer) correct++;
-    
-    detailHtml+=`
-      <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
-        <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
-        <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Education aims for holistic behavioral change."}
-        </div>
-      </div>`;
-  });
+],
+hard: [
 
-  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+  {q: "जीन पियाजे (Jean Piaget) के संज्ञानात्मक विकास सिद्धांत के अनुसार 'वस्तु स्थायित्व' (Object Permanence) किस अवस्था में आता है?", options: ["संवेदी-पेशीय (Sensorimotor)", "पूर्व-संक्रियात्मक", "मूर्त-संक्रियात्मक", "औपचारिक-संक्रियात्मक"], answer: "संवेदी-पेशीय (Sensorimotor)", solution: "यह जन्म से 2 वर्ष की अवस्था में विकसित होता है।"},
+  {q: "किस वर्ष 'विश्वभारती' (शांतिनिकेतन) को केंद्रीय विश्वविद्यालय का दर्जा दिया गया?", options: ["1921", "1951", "1956", "1964"], answer: "1951", solution: "रवींद्रनाथ टैगोर द्वारा स्थापित इस संस्था को 1951 में संसद के अधिनियम द्वारा केंद्रीय विवि बनाया गया।"},
+  {q: "वाइगोत्सकी (Vygotsky) के अनुसार 'ZPD' का पूर्ण रूप क्या है?", options: ["Zone of Proximal Development", "Zone of Primary Development", "Zone of Personal Development", "Zone of Potential Development"], answer: "Zone of Proximal Development", solution: "यह वास्तविक विकास और संभावित विकास के बीच का अंतर है।"},
+  {q: "कोहलर (Kohler) ने अपना प्रसिद्ध प्रयोग किस चिम्पांजी पर किया था और उसका नाम क्या था?", options: ["सुल्तान", "मैक्स", "टाइगर", "बंटी"], answer: "सुल्तान", solution: "कोहलर ने 'अंतर्दृष्टि के सिद्धांत' (Insight Learning) के लिए सुल्तान पर प्रयोग किया था।"},
+  {q: "भारत में 'बुनियादी शिक्षा' (Wardha Scheme) का विचार महात्मा गांधी ने किस वर्ष प्रस्तुत किया?", options: ["1930", "1937", "1942", "1947"], answer: "1937", solution: "इसे 'वर्धा योजना' या 'नई तालीम' भी कहा जाता है।"},
+  {q: "'एमील' (Emile) नामक प्रसिद्ध पुस्तक के लेखक कौन हैं, जिसमें प्रकृतिवादी शिक्षा का वर्णन है?", options: ["प्लेटो", "अरस्तू", "रूसो", "पेस्टालॉजी"], answer: "रूसो", solution: "रूसो ने इस पुस्तक में 'नकारात्मक शिक्षा' की वकालत की है।"},
+  {q: "कोहलबर्ग (Kohlberg) के नैतिक विकास सिद्धांत में कुल कितनी अवस्थाएं (Stages) हैं?", options: ["3", "4", "6", "8"], answer: "6", solution: "इसमें 3 स्तर (Levels) और 6 उप-अवस्थाएं (Stages) हैं।"},
+  {q: "थार्नडाइक (Thorndike) के सीखने के 'मुख्य नियमों' में कौन शामिल नहीं है?", options: ["तत्परता का नियम", "अभ्यास का नियम", "प्रभाव का नियम", "बहु-अनुक्रिया का नियम"], answer: "बहु-अनुक्रिया का नियम", solution: "यह थार्नडाइक का 'गौण नियम' (Secondary Law) है, मुख्य नहीं।"},
+  {q: "यशपाल समिति (1992-93) की रिपोर्ट का मुख्य शीर्षक क्या था?", options: ["शिक्षा का आधुनिकीकरण", "बिना बोझ के सीखना (Learning without Burden)", "तकनीकी शिक्षा", "प्राथमिक शिक्षा का प्रसार"], answer: "बिना बोझ के सीखना (Learning without Burden)", solution: "इसने स्कूल के बस्ते का बोझ कम करने की सिफारिश की थी।"},
+  {q: "बुद्धि का 'द्वि-कारक सिद्धांत' (Two-factor Theory) किसने दिया?", options: ["थर्स्टन", "स्पीयरमैन", "गिल्फोर्ड", "गार्डनर"], answer: "स्पीयरमैन", solution: "उन्होंने 'G' (General) और 'S' (Specific) फैक्टर बताए थे।"},
+  {q: "राष्ट्रीय शिक्षा नीति (NEP 2020) के मसौदा समिति (Drafting Committee) के अध्यक्ष कौन थे?", options: ["के. कस्तूरीरंगन", "यशपाल", "प्रो. जी. राजगोपाल", "संजय धोत्रे"], answer: "के. कस्तूरीरंगन", solution: "वे इसरो (ISRO) के पूर्व प्रमुख रह चुके हैं।"},
+  {q: "इवान पावलोव (Ivan Pavlov) को उनके 'शास्त्रीय अनुबंधन' (Classical Conditioning) के लिए किस वर्ष नोबेल पुरस्कार मिला?", options: ["1901", "1904", "1910", "1920"], answer: "1904", solution: "उन्हें पाचन प्रक्रिया पर शोध के लिए यह सम्मान मिला था।"},
+  {q: "प्रगतिशील शिक्षा (Progressive Education) के जनक माने जाते हैं:", options: ["मोंटेसरी", "जॉन डीवी", "हर्बर्ट स्पेंसर", "फ्रॉबेल"], answer: "जॉन डीवी", solution: "उन्होंने 'लैब स्कूलों' की स्थापना की और प्रजातांत्रिक शिक्षा पर जोर दिया।"},
+  {q: "ऑपरेशन ब्लैकबोर्ड (Operation Blackboard) की शुरुआत किस शिक्षा नीति के तहत हुई थी?", options: ["1968", "1986", "1992", "2020"], answer: "1986", solution: "यह प्राथमिक स्कूलों में न्यूनतम सुविधाएं सुनिश्चित करने के लिए था।"},
+  {q: "इरिक्सन (Erikson) के मनोसामाजिक विकास सिद्धांत में कुल कितने संकट (Crises) बताए गए हैं?", options: ["5", "6", "8", "10"], answer: "8", solution: "इसमें 'Trust vs Mistrust' से लेकर 'Integrity vs Despair' तक 8 चरण हैं।"},
+  {q: "सीखने का 'अंतर्दृष्टि सिद्धांत' (Insight Theory) किस विचारधारा की देन है?", options: ["व्यवहारवाद", "गेस्टाल्टवाद (Gestaltism)", "प्रयोजनवाद", "संरचनावाद"], answer: "गेस्टाल्टवाद (Gestaltism)", solution: "गेस्टाल्ट का अर्थ है 'पूर्ण' या 'समग्र'।"},
+  {q: "हर्बर्ट की पंचपदीय प्रणाली (Herbartian 5-step approach) में कौन-सा पद नहीं है?", options: ["प्रस्तावना", "तुलना", "मूल्यांकन", "सामान्यीकरण"], answer: "मूल्यांकन", solution: "उनके 5 पद हैं: प्रस्तावना, प्रस्तुतीकरण, तुलना, सामान्यीकरण और प्रयोग।"},
+  {q: "शिक्षा के 'त्रि-ध्रुवीय प्रक्रिया' (Tri-polar Process) में तीसरा ध्रुव क्या है? (शिक्षक, छात्र और...)", options: ["समाज", "पाठ्यक्रम (Curriculum)", "इमारत", "अभिभावक"], answer: "पाठ्यक्रम (Curriculum)", solution: "जॉन डीवी के अनुसार शिक्षा में शिक्षक, छात्र और पाठ्यक्रम शामिल हैं।"},
+  {q: "ब्लूम के 'भावात्मक पक्ष' (Affective Domain) का उच्चतम स्तर क्या है?", options: ["आकलन", "संगठन", "चरित्रीकरण (Characterization)", "अनुक्रिया"], answer: "चरित्रीकरण (Characterization)", solution: "यह मूल्यों को अपने व्यक्तित्व में ढालने का अंतिम स्तर है।"},
+  {q: "सर्व शिक्षा अभियान (SSA) किस वर्ष शुरू किया गया था?", options: ["2000-01", "2002-03", "2005-06", "1995-96"], answer: "2000-01", solution: "अटल बिहारी वाजपेयी के समय प्राथमिक शिक्षा के सार्वभौमीकरण के लिए।"},
+  {q: "'स्कैफोल्डिंग' (Scaffolding) शब्द का शिक्षा में सबसे पहले प्रयोग किसने किया?", options: ["वाइगोत्सकी", "ब्रूनर", "स्किनर", "पियाजे"], answer: "ब्रूनर", solution: "हालाँकि यह वाइगोत्सकी के सिद्धांत से जुड़ा है, पर शब्द जेरोम ब्रूनर ने दिया था।"},
+  {q: "पियाजे के अनुसार 'अनुकूलन' (Adaptation) के दो उप-भाग कौन-से हैं?", options: ["आत्मीकरण और समायोजन", "सोचना और समझना", "खेल और पढ़ना", "ज्ञान और बुद्धि"], answer: "आत्मीकरण और समायोजन", solution: "Assimilation (आत्मीकरण) और Accommodation (समायोजन)।"},
+  {q: "मिड-डे मील (MDM) योजना का नाम बदलकर अब क्या कर दिया गया है?", options: ["पीएम भोजन", "पीएम पोषण शक्ति निर्माण", "बाल आहार योजना", "पोषण अभियान"], answer: "पीएम पोषण शक्ति निर्माण", solution: "इसे 2021 में नया नाम दिया गया।"},
+  {q: "व्यवहारवाद (Behaviorism) के जनक कौन माने जाते हैं?", options: ["जे.बी. वॉटसन", "स्किनर", "पावलोव", "थार्नडाइक"], answer: "जे.बी. वॉटसन", solution: "उन्होंने कहा था, 'मुझे एक दर्जन बच्चे दो, मैं उन्हें कुछ भी बना सकता हूँ।'"},
+  {q: "बुद्धि लब्धि (IQ) का सूत्र [MA/CA x 100] में 'MA' का अर्थ क्या है?", options: ["Main Age", "Mental Age", "Memory Age", "Maturity Age"], answer: "Mental Age", solution: "मानसिक आयु / वास्तविक आयु * 100।"},
+  {q: "विश्व साक्षरता दिवस (World Literacy Day) कब मनाया जाता है?", options: ["5 सितंबर", "8 सितंबर", "11 नवंबर", "14 नवंबर"], answer: "8 सितंबर", solution: "यूनेस्को द्वारा घोषित वैश्विक दिवस।"},
+  {q: "राष्ट्रीय ज्ञान आयोग (NKC) के अध्यक्ष कौन थे?", options: ["सैम पित्रोदा", "यशपाल", "डी.एस. कोठारी", "मुदालियर"], answer: "सैम पित्रोदा", solution: "2005 में स्थापित इस आयोग ने ज्ञान आधारित समाज पर जोर दिया।"},
+  {q: "मांटेसरी विधि (Montessori Method) का केंद्र क्या है?", options: ["इंद्रियों का प्रशिक्षण (Training of Senses)", "रटना", "केवल लेखन", "कठोर अनुशासन"], answer: "इंद्रियों का प्रशिक्षण (Training of Senses)", solution: "मारिया मांटेसरी ने ज्ञानेंद्रियों के विकास को सीखने का आधार माना।"},
+  {q: "कोठारी आयोग (1964-66) ने जीडीपी का कितना प्रतिशत शिक्षा पर खर्च करने की सिफारिश की थी?", options: ["3%", "4%", "6%", "10%"], answer: "6%", solution: "आज भी यह लक्ष्य प्राप्त करने की कोशिश की जा रही है।"},
+  {q: "डिस्लेक्सिया (Dyslexia) किससे संबंधित विकार है?", options: ["पढ़ने से", "लिखने से", "गणित से", "व्यवहार से"], answer: "पढ़ने से", solution: "यह एक पठन विकार (Reading Disability) है।"}
 
-  localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
-  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
-
-  const summaryBox = `
-    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-      </div>
-      <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
-    </div>
-  `;
-
-  const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
-
-  emailjs.send("service_wq5yoyp", "template_doegpcp", {
-    candidate_name: displayName.textContent,
-    subject: MY_SUBJECT,
-    score: correct,
-    total: questions.length,
-    attempted: attempted,
-    accuracy: accuracy + "%",
-    time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-    test_date: new Date().toLocaleString("en-IN")
-  });
-
-  quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
-  submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
-  clearBtn.style.display="block"; window.scrollTo(0,0);
-}
-
-window.onload=function(){
-  document.getElementById("totalQDisplay").textContent = questions.length;
-  document.getElementById("testTime").value = questions.length;
-
-  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
-  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
   
-  if(final){
-    const d=JSON.parse(final);
-    startScreen.style.display="none"; topBar.style.display="flex";
-    displayName.textContent=d.name; result.style.display="block"; result.innerHTML=d.html;
-    clearBtn.style.display="block";
-  } else if(progress){
-    const p=JSON.parse(progress);
-    displayName.textContent=p.name; answers=p.answers||{}; visited=p.visited||{};
-    currentIndex=p.currentIndex||0; totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
-    startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex";
-    navBtns.style.display="flex"; submitBtn.style.display="block"; startTimer(); renderQuestion();
-  }
-};
+  ]
+    };
 
-function clearResult(){
-  if(confirm("Start new test? This subject's result will be cleared.")){ 
-    localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
-    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-    location.reload(); 
-  }
-}
+    let questions = [];
+    let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
+    let totalSeconds=0, timerInterval, startTime;
+
+    function syncCountAndTime() {
+        const level = document.getElementById("difficultyLevel").value;
+        const count = allQuestionsBank[level].length;
+        document.getElementById("totalQDisplay").textContent = count;
+        document.getElementById("testTime").value = count;
+    }
+
+    function startTest(){
+        const level = document.getElementById("difficultyLevel").value;
+        questions = allQuestionsBank[level];
+        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+        displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
+        startScreen.style.display="none";
+        topBar.style.display="flex";
+        palette.style.display="flex";
+        navBtns.style.display="flex";
+        submitBtn.style.display="block";
+        totalSeconds=testTime.value*60;
+        startTime=Date.now();
+        saveProgress(level);
+        startTimer();
+        renderQuestion();
+    }
+
+    function startTimer(){
+        timerInterval=setInterval(()=>{
+            totalSeconds--;
+            updateTimerDisplay();
+            saveProgress();
+            if(totalSeconds<=0) submitQuiz();
+        },1000);
+    }
+
+    function updateTimerDisplay(){
+        timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+ String(totalSeconds%60).padStart(2,'0');
+    }
+
+    function renderQuestion(){
+        visited[currentIndex]=true;
+        const q=questions[currentIndex];
+        quizArea.innerHTML=`
+            <div class="quiz-card">
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+                </div>
+                <div class="options">
+                    ${q.options.map(o=>`
+                        <label>
+                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
+                        </label>
+                    `).join("")}
+                </div>
+                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+            </div>`;
+        renderPalette();
+    }
+
+    function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
+    function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
+    function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
+    function challengeQuestion(){
+        if(answers[currentIndex]){ alert("Already answered!"); return; }
+        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
+    }
+
+    function renderPalette(){
+        palette.innerHTML="";
+        questions.forEach((_,i)=>{
+            const s=document.createElement("span");
+            s.textContent=i+1;
+            if(visited[i]) s.classList.add("visited");
+            if(answers[i]) s.classList.add("attempted");
+            if(reviewMarks[i]) s.classList.add("marked-review");
+            if(challenges[i]) s.classList.add("challenged");
+            s.onclick=()=>{currentIndex=i;renderQuestion()};
+            palette.appendChild(s);
+        });
+    }
+
+    function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+    function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+
+    function saveProgress(lvl){
+        const level = lvl || JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}`) || '{"level":"easy"}').level;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
+            name:displayName.textContent.split(' (')[0],
+            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+        }));
+    }
+
+    function submitQuiz(){
+        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
+        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
+        if(!confirm("Are you sure you want to submit?")) return;
+        
+        clearInterval(timerInterval);
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+        
+        let correct=0, attempted=0, challCount=0;
+        let detailHtml="<h2>Detailed Analysis</h2>";
+        
+        questions.forEach((q,i)=>{
+            let isCorrect = false;
+            let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
+
+            if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
+            else if(answers[i] === q.answer) { isCorrect = true; }
+            
+            if(answers[i]) attempted++;
+            if(isCorrect) correct++;
+
+            detailHtml+=`
+                <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                    <p><b>Q${i+1}.</b> ${q.q}</p>
+                    <p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                    <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
+                </div>`;
+        });
+
+        // Dashboard Storage logic
+        const currentLvl = document.getElementById("difficultyLevel").value.toUpperCase();
+        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
+
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
+        
+        const summaryBox = `
+            <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+                <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                </div>
+                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
+            </div>`;
+
+        const finalHtml = summaryBox + detailHtml;
+        result.style.display="block";
+        result.innerHTML = finalHtml;
+        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
+        clearBtn.style.display="block"; window.scrollTo(0,0);
+        
+        localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+
+        emailjs.send("service_wq5yoyp", "template_doegpcp", {
+            candidate_name: displayName.textContent,
+            subject: MY_SUBJECT,
+            score: correct,
+            total: questions.length,
+            attempted: attempted,
+            accuracy: accuracy + "%",
+            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+            test_date: new Date().toLocaleString("en-IN")
+        });
+    }
+
+    window.onload=function(){
+        syncCountAndTime();
+        const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
+        const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+        if(final){
+            const d=JSON.parse(final);
+            result.style.display="block"; result.innerHTML=d.html; clearBtn.style.display="block";
+            startScreen.style.display="none";
+        } else if(progress){
+            const p=JSON.parse(progress);
+            questions = allQuestionsBank[p.level];
+            displayName.textContent=p.name + ` (${p.level.toUpperCase()})`;
+            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime; reviewMarks=p.reviewMarks; challenges=p.challenges;
+            startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex"; navBtns.style.display="flex"; submitBtn.style.display="block";
+            startTimer(); renderQuestion();
+        }
+    };
+
+    function clearResult(){ if(confirm("Clear result?")) { localStorage.clear(); location.reload(); } }
 </script>
-
 </body>
 </html>
