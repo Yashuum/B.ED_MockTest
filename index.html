@@ -33,6 +33,12 @@
 
         .bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
+        .bubble:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 30%; width: 40px; height: 40px; animation-delay: 2s; }
+        .bubble:nth-child(3) { left: 70%; width: 100px; height: 100px; animation-delay: 4s; }
+        .bubble:nth-child(4) { left: 90%; width: 60px; height: 60px; animation-delay: 1s; }
+        .bubble:nth-child(5) { left: 50%; width: 50px; height: 50px; animation-delay: 3s; }
+
         @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
 
         #pageOverlay {
@@ -52,43 +58,52 @@
 
         .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 40px 20px; }
 
+        /* --- LARGE HORIZONTAL WELCOME CARD --- */
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); 
             border: 1px solid var(--glass-border); border-radius: 35px; 
-            padding: 40px; text-align: center; margin-top: 15px; margin-bottom: 30px; 
-        }
-        
-        .welcome .brand { 
-            font-family: 'Marck Script', cursive; 
-            font-size: 64px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+            padding: 30px 40px; margin-top: 15px; margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
 
+        .welcome-flex {
+            display: flex; align-items: center; justify-content: center; gap: 40px;
+        }
+
+        .brand-img-box {
+            width: 180px; height: 140px; background: #fff; padding: 12px; 
+            border-radius: 25px; box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+            animation: floatLogo 4s ease-in-out infinite;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .brand-img-box img { width: 100%; height: 100%; object-fit: contain; }
+
+        @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+        .brand-text-box { text-align: left; }
+
+        .welcome .brand { 
+            font-family: 'Marck Script', cursive; 
+            font-size: 62px; color: #fff; text-shadow: 2px 4px 15px rgba(0,0,0,0.3);
+            line-height: 1; margin: 8px 0;
+        }
+
+        /* DASHBOARD LAYOUT */
         .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; width: 100%; }
         .column { display: flex; flex-direction: column; gap: 25px; }
 
-        /* --- SMOOTH SCROLL REVEAL (SLOW SPEED) --- */
         .card { 
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); 
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; 
             padding: 30px; display: flex; flex-direction: column; 
             justify-content: space-between; min-height: 180px; 
-            
-            /* Animation Time increased to 1.2s for "Feel" */
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
-            
-            position: relative; 
-            opacity: 0;
-            transform: translateX(-80px); /* Started from further left for better sweep */
+            position: relative; opacity: 0; transform: translateX(-80px);
         }
 
-        /* Visible state class */
-        .card.reveal {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
+        .card.reveal { opacity: 1; transform: translateX(0); }
         .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.4s; }
-        
         .card h3 { font-size: 24px; color: #fff; margin-bottom: 12px; }
 
         .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; display: none; }
@@ -97,47 +112,31 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
         .score-text { font-size: 13px; color: #4ade80; margin-top: 8px; font-weight: 700; display: block; }
-
         .btn { margin-top: 20px; padding: 16px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
-        .btn:hover { opacity: 0.9; transform: scale(1.01); }
 
-        .floating-fab {
-            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
-            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 2000; overflow: hidden;
-            animation: robotPulse 2s infinite ease-in-out;
-        }
+        /* FLOATING ACTION BUTTON & POPUP */
+        .floating-fab { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2000; animation: robotPulse 2s infinite ease-in-out; }
         .floating-fab img { width: 70%; height: 70%; object-fit: contain; }
 
-        @keyframes robotPulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.1); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
-        }
+        @keyframes robotPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        .help-popup {
-            position: fixed; bottom: 110px; right: 30px; width: 300px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 30px;
-            display: none; flex-direction: column; z-index: 2000;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #fff; padding: 25px; text-align: center;
-        }
+        .help-popup { position: fixed; bottom: 110px; right: 30px; width: 300px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 30px; display: none; flex-direction: column; z-index: 2000; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #fff; padding: 25px; text-align: center; }
 
         .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
 
+        /* RESPONSIVE DESIGN */
         @media(max-width:900px){ 
             .dashboard { grid-template-columns: 1fr; } 
+            .welcome-flex { flex-direction: column; gap: 15px; text-align: center; }
+            .brand-text-box { text-align: center; }
             .welcome .brand { font-size: 48px; }
+            .brand-img-box { width: 150px; height: 120px; }
         }
     </style>
 </head>
 
 <body>
-
     <div id="pageOverlay" onclick="toggleHelp()"></div>
-
     <div class="bubbles-container">
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     </div>
@@ -149,8 +148,16 @@
 
     <div class="wrapper">
         <div class="welcome">
-            <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
-            <div class="brand">NishuAbhyasi</div>
+            <div class="welcome-flex">
+                <div class="brand-img-box">
+                    <img src="https://drive.google.com/file/d/1ipiAxHjX1Ro_1cTJDzk10hDuI1GDWtrp/view?usp=sharing" alt="NishuAbhyasi Logo">
+                </div>
+                <div class="brand-text-box">
+                    <div style="color:rgba(255,255,255,0.7); font-size:14px; letter-spacing: 3px; font-weight: 600;">WELCOME TO</div>
+                    <div class="brand">NishuAbhyasi</div>
+                    <div style="color:var(--color-accent); font-weight:800; font-size:15px; letter-spacing:1px; margin-top: 5px;">Target B.Ed Entrance 2026</div>
+                </div>
+            </div>
         </div>
 
         <div class="dashboard">
@@ -174,7 +181,6 @@
                     <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
                 </div>
             </div>
-
             <div class="column">
                 <div class="card">
                     <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
@@ -198,7 +204,7 @@
         </div>
 
         <div class="footer" style="margin-top:60px; text-align:center; color:#fff; opacity:0.7; padding-bottom:30px;">
-            © 2025 NishuAbhyasi | Learning Made Modern
+            © 2026 NishuAbhyasi | Learning Made Modern
         </div>
     </div>
 
@@ -207,11 +213,11 @@
     </div>
 
     <div id="helpBox" class="help-popup">
-        <h4 style="margin-bottom: 12px; font-size: 18px;">Need to update Yashwant on any feedback / technical issue , please -</h4>
+        <h4 style="margin-bottom: 12px; font-size: 18px;">Need to update Yashwant on feedback?</h4>
         <div style="background: rgba(255,255,255,0.08); padding: 15px; border-radius: 20px;">
             <a href="mailto:singhyashwant559@gmail.com" class="email-btn">Send Email</a>
         </div>
-        <button onclick="toggleHelp()" style="margin-top: 20px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 13px;">Dismiss</button>
+        <button onclick="toggleHelp()" style="margin-top: 20px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer;">Dismiss</button>
     </div>
 
     <script>
@@ -236,61 +242,39 @@
         }
 
         function updateDashboard() {
-    Object.keys(TEST_CONFIG).forEach(sub => {
-        const badge = document.getElementById(`badge-${sub}`);
-        const scoreLabel = document.getElementById(`score-${sub}`);
-        if (!badge) return;
-
-        const currentID = TEST_CONFIG[sub];
-        const levels = ['EASY', 'MEDIUM', 'HARD'];
-        let completedLevels = [];
-        let scoreDetails = [];
-
-        // Har level ke liye check karega
-        levels.forEach(lvl => {
-            const isDone = localStorage.getItem(`done_${sub}_${currentID}_${lvl}`);
-            const score = localStorage.getItem(`score_${currentID}_${lvl}`);
-            if (isDone === "true") {
-                completedLevels.push(lvl);
-                scoreDetails.push(`${lvl}: ${score}`);
-            }
-        });
-
-        if (completedLevels.length > 0) {
-            // Agar saare levels ho gaye toh GREEN badge, warna Orange "In Progress"
-            badge.innerText = completedLevels.length === 3 ? "ALL LEVELS DONE ✅" : "IN PROGRESS ⏳";
-            badge.className = "badge badge-done";
-            scoreLabel.innerHTML = scoreDetails.join(" | ");
-        } else {
-            // Agar abhi tak ek bhi level nahi kiya
-            badge.innerText = "UPDATED 🔥";
-            badge.className = "badge badge-new";
-            scoreLabel.innerText = "";
-        }
-        badge.style.display = "inline-block";
-    });
-}
-
-        /* --- SMOOTH SCROLL REVEAL SCRIPT --- */
-        const revealCards = () => {
-            const observerOptions = {
-                threshold: 0.1, // Trigger as soon as 10% is visible
-                rootMargin: "0px 0px -20px 0px"
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('reveal');
-                    } else {
-                        // For reverse animation when scrolling up
-                        entry.target.classList.remove('reveal');
+            Object.keys(TEST_CONFIG).forEach(sub => {
+                const badge = document.getElementById(`badge-${sub}`);
+                const scoreLabel = document.getElementById(`score-${sub}`);
+                if (!badge) return;
+                const currentID = TEST_CONFIG[sub];
+                const levels = ['EASY', 'MEDIUM', 'HARD'];
+                let completedLevels = [];
+                let scoreDetails = [];
+                levels.forEach(lvl => {
+                    if (localStorage.getItem(`done_${sub}_${currentID}_${lvl}`) === "true") {
+                        completedLevels.push(lvl);
+                        scoreDetails.push(`${lvl}: ${localStorage.getItem(`score_${currentID}_${lvl}`)}`);
                     }
                 });
-            }, observerOptions);
+                if (completedLevels.length > 0) {
+                    badge.innerText = completedLevels.length === 3 ? "ALL LEVELS DONE ✅" : "IN PROGRESS ⏳";
+                    badge.className = "badge badge-done";
+                    scoreLabel.innerHTML = scoreDetails.join(" | ");
+                } else {
+                    badge.innerText = "UPDATED 🔥";
+                    badge.className = "badge badge-new";
+                }
+                badge.style.display = "inline-block";
+            });
+        }
 
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => observer.observe(card));
+        const revealCards = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('reveal');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.card').forEach(card => observer.observe(card));
         };
 
         window.onload = () => {
@@ -302,12 +286,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
