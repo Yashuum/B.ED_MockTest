@@ -255,16 +255,40 @@ hard: [
     function startTest(){
         const level = document.getElementById("difficultyLevel").value;
         questions = allQuestionsBank[level];
+
         if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+        
+        // Check if this specific level is already completed
+        const final = localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`);
+        if(final){
+            if(!confirm("You have already completed the " + level.toUpperCase() + " level. Do you want to re-attempt? (Previous score will be overwritten)")) {
+                return;
+            } else {
+                localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
+            }
+        }
+
         displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
         startScreen.style.display="none";
         topBar.style.display="flex";
         palette.style.display="flex";
         navBtns.style.display="flex";
         submitBtn.style.display="block";
-        totalSeconds=testTime.value*60;
-        startTime=Date.now();
-        saveProgress(level);
+        
+        // Load progress for this specific level if exists
+        const progress = localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`);
+        if(progress){
+            const p = JSON.parse(progress);
+            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; 
+            totalSeconds=p.totalSeconds; startTime=p.startTime; 
+            reviewMarks=p.reviewMarks; challenges=p.challenges;
+        } else {
+            // Fresh start for this level
+            answers={}; visited={}; currentIndex=0; reviewMarks={}; challenges={};
+            totalSeconds=testTime.value*60;
+            startTime=Date.now();
+        }
+        
         startTimer();
         renderQuestion();
     }
@@ -329,9 +353,9 @@ hard: [
     function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
     function saveProgress(lvl){
-        const level = lvl || JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}`) || '{"level":"easy"}').level;
-        localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
-            name:displayName.textContent.split(' (')[0],
+        const level = lvl || document.getElementById("difficultyLevel").value;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}_${level}`,JSON.stringify({
+            name:candidateName.value,
             level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
         }));
     }
@@ -391,8 +415,10 @@ hard: [
         quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
         clearBtn.style.display="block"; window.scrollTo(0,0);
         
-        localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+		const currentLvl = document.getElementById("difficultyLevel").value;
+        localStorage.setItem(`finalResult_${MY_SUBJECT}_${currentLvl}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
 
+		
         emailjs.send("service_wq5yoyp", "template_doegpcp", {
             candidate_name: displayName.textContent,
             subject: MY_SUBJECT,
@@ -407,23 +433,24 @@ hard: [
 
     window.onload=function(){
         syncCountAndTime();
-        const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
-        const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
-        if(final){
-            const d=JSON.parse(final);
-            result.style.display="block"; result.innerHTML=d.html; clearBtn.style.display="block";
-            startScreen.style.display="none";
-        } else if(progress){
-            const p=JSON.parse(progress);
-            questions = allQuestionsBank[p.level];
-            displayName.textContent=p.name + ` (${p.level.toUpperCase()})`;
-            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime; reviewMarks=p.reviewMarks; challenges=p.challenges;
-            startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex"; navBtns.style.display="flex"; submitBtn.style.display="block";
-            startTimer(); renderQuestion();
-        }
+        // We don't auto-load results here anymore to avoid blocking other levels.
+        // Result check will now happen when user selects a level and clicks 'Start'.
     };
 
-    function clearResult(){ if(confirm("Clear result?")) { localStorage.clear(); location.reload(); } }
+function clearResult(){ 
+        const level = document.getElementById("difficultyLevel").value;
+        if(confirm(`Clear result for ${level.toUpperCase()} level?`)) { 
+            localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
+            localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
+            // Dashboard score clear karne ke liye (Optional):
+            const currentLvl = level.toUpperCase();
+            localStorage.removeItem(`score_${MY_TEST_ID}_${currentLvl}`);
+            localStorage.removeItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`);
+            location.reload(); 
+        } 
+    }
+	
 </script>
 </body>
 </html>
+
