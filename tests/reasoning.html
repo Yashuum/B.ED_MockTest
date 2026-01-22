@@ -1,442 +1,433 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mock Test – Reasoning by Yash</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NishuAbhyasi – Reasoning by Yash</title>
+    <style>
+        :root{
+            --color-primary: #1a2a6c;
+            --color-secondary: #2575fc;
+            --color-accent: #f2994a;
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --success: #16a34a;
+            --danger: #ef4444;
+            --review: #8b5cf6;
+            --challenge: #f59e0b;
+        }
+        *{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        body{
+            min-height:100vh;
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+            background-size: 300% 300%;
+            animation: dynamicFlow 18s ease-in-out infinite;
+            color: #fff;
+            padding: 20px 10px;
+        }
+        @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+        h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-<style>
-/* Professional Glassmorphism Theme */
-:root{
-  --color-primary: #1a2a6c;
-  --color-secondary: #2575fc;
-  --color-accent: #f2994a;
-  --glass: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --success: #16a34a;
-  --danger: #ef4444;
-}
+        .start-screen{ background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); padding: 40px 20px; border-radius: 30px; text-align:center; margin-top: 50px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .input-row { display: flex; gap: 15px; width: 100%; max-width: 600px; justify-content: center; }
+        .start-screen input, .start-screen select { 
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); 
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; outline: none; 
+        }
+		.start-screen input::placeholder { color: white !important; opacity: 1; }
+        .start-screen option { color: #000; }
+        
+        .q-count-sticker { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
+        
+        button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        button:hover{ transform: scale(1.05); }
+        .btn-secondary { background: rgba(255,255,255,0.15); }
+        .btn-review { background: var(--review); }
+        .btn-challenge { background: var(--challenge); }
+        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; }
 
-*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
+        .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
+        
+        #palette{ display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; justify-content: center; padding: 10px; }
+        .palette span{ width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px; }
+        .palette .visited{ border: 2px solid var(--color-secondary); }
+        .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .palette .marked-review{ background: var(--review); }
+        .palette .challenged{ background: var(--challenge); }
 
-body{
-  min-height:100vh;
-  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
-  background-size: 300% 300%;
-  animation: dynamicFlow 18s ease-in-out infinite;
-  color: #fff;
-  padding: 20px 10px;
-}
-
-@keyframes dynamicFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
-
-h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-.start-screen{
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  padding: 40px 20px;
-  border-radius: 30px;
-  text-align:center;
-  margin-top: 50px;
-}
-
-.start-screen input {
-  width: 100%;
-  max-width: 300px;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 15px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff !important;
-  font-size: 16px;
-  outline: none;
-}
-
-.start-screen input::placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.q-count-sticker {
-  margin: 5px auto 15px;
-  width: fit-content;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 20px;
-  border-radius: 50px;
-  border: 1px solid var(--glass-border);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #4facfe;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
-}
-
-button{
-  padding: 14px 28px;
-  border: none;
-  border-radius: 15px;
-  background: linear-gradient(135deg, #ff9800, #ff5722);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  transition: 0.3s;
-}
-button:hover{ transform: scale(1.05); }
-
-.top-bar{
-  display:none; justify-content:space-between; align-items:center;
-  padding:15px 25px; background: var(--glass);
-  backdrop-filter: blur(15px);
-  border:1px solid var(--glass-border); border-radius:50px;
-  position:sticky; top:10px; z-index:100; margin-bottom:15px;
-}
-.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
-
-#palette{ 
-  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
-  justify-content: center; padding: 10px;
-}
-.palette span{
-  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
-  border-radius:10px; background: rgba(255,255,255,0.1); 
-  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
-}
-.palette .visited{ background: var(--color-secondary); }
-.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
-
-.quiz-card{
-  background: var(--glass); border:1px solid var(--glass-border);
-  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
-}
-.options label{
-  display:flex; align-items: center; gap:12px; padding:14px; 
-  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
-  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
-}
-.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
-
-.nav{ display:flex; justify-content:space-between; margin-top:20px; }
-.btn-secondary { background: rgba(255,255,255,0.15); }
-
-.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
-.correct{ color: #4ade80; font-weight:bold; }
-.wrong{ color: #f87171; font-weight:bold; }
-
-.sol-box {
-  margin-top:12px; 
-  padding:12px; 
-  background:rgba(242, 153, 74, 0.15); 
-  border-radius:12px; 
-  font-size:14px; 
-  color:#ffcc80;
-  border: 1px dashed var(--color-accent);
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init("L8kGW-X7JOiYaycH5");
-  })();
-</script>
-
+        .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; }
+        .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s; }
+        .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
+        
+        .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
+        .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+        .correct{ color: #4ade80; font-weight:bold; }
+        .wrong{ color: #f87171; font-weight:bold; }
+        .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script> (function () { emailjs.init("L8kGW-X7JOiYaycH5"); })(); </script>
 </head>
-
 <body>
-
 <div class="container">
+    <h1>Target Test- Reasoning 2026</h1>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026</p>
+    
+    <div class="start-screen" id="startScreen">
+        <div class="input-row">
+            <input id="candidateName" placeholder="Enter your name">
+            <input id="testTime" type="number" placeholder="Minutes">
+        </div>
+        
+        <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
+            <option value="easy">Level: Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
 
-<h1>Target Test- Reasoning 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated - 16 Jan, 2026 - 09:00</p>
+        <div class="q-count-sticker">
+            <span class="pulse-dot"></span>
+            <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+        </div>
 
-<div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name">
-  <input id="testTime" type="number" placeholder="Time (minutes)" value="45">
-  
-  <div class="q-count-sticker">
-    <span class="pulse-dot"></span>
-    <span>Questions Loaded: <b id="totalQDisplay">45</b></span>
-  </div>
+        <div style="display:flex; gap:10px;">
+            <button onclick="startTest()">Start Test</button>
+            <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+        </div>
+    </div>
 
-  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-    <button onclick="startTest()">Start Test</button>
-    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
-  </div>
-</div>
+    <div class="top-bar" id="topBar">
+        <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
+        <div class="timer" id="timer">00:00</div>
+    </div>
 
-<div class="top-bar" id="topBar">
-  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
-  <div class="timer" id="timer">00:00</div>
-</div>
+    <div id="palette" class="palette"></div>
+    <div id="quizArea"></div>
 
-<div id="palette" class="palette"></div>
-<div id="quizArea"></div>
+    <div class="nav" id="navBtns">
+        <button class="btn-secondary" onclick="prevQ()">← Prev</button>
+        <button class="btn-review" onclick="markForReview()">Review</button>
+        <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
+        <button onclick="nextQ()">Next →</button>
+    </div>
 
-<div class="nav" id="navBtns" style="display:none">
-  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
-  <button onclick="nextQ()">Next Question →</button>
-</div>
-
-<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
-
-<div id="result" class="result" style="display:none"></div>
-<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
-
+    <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
+    <div id="result" class="result" style="display:none"></div>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
 </div>
 
 <script>
-// Dashboard Settings
 const MY_SUBJECT = "Reasoning";
-const MY_TEST_ID = "REASONING_SET_02";
+const MY_TEST_ID = "REASONING_SET_03";
 
-const questions = [
+    const allQuestionsBank = {
+easy: [
 
-  
-{q: "श्रृंखला को पूरा करें: 12, 15, 21, 30, 42, ?", options: ["54", "55", "57", "60"], answer: "57", solution: "Logic: +3, +6, +9, +12, ab +15 hoga. 42 + 15 = 57."},
-{q: "लुप्त संख्या ज्ञात करें: 2, 9, 28, 65, ?", options: ["121", "126", "101", "125"], answer: "126", solution: "Logic: n^3 + 1 (1^3+1, 2^3+1, 3^3+1, 4^3+1, ab 5^3+1 = 126)."},
-{q: "अक्षर श्रृंखला: B, D, G, K, P, ?", options: ["T", "V", "W", "U"], answer: "V", solution: "Logic: +2, +3, +4, +5, ab +6 hoga. P(16) + 6 = 22 (V)."},
-{q: "सादृश्यता पूर्ण करें: 'न्यायाधीश' : 'न्याय' :: 'डॉक्टर' : ?", options: ["अस्पताल", "दवाई", "इलाज", "मरीज"], answer: "इलाज", solution: "जिस प्रकार न्यायाधीश का कार्य न्याय करना है, उसी प्रकार डॉक्टर का कार्य इलाज करना है।"},
-{q: "विषम चुनें (Odd One Out):", options: ["जनवरी", "जुलाई", "अगस्त", "नवंबर"], answer: "नवंबर", solution: "नवंबर में 30 दिन होते हैं, बाकी सब में 31 दिन होते हैं।"},
-{q: "श्रृंखला: 100, 81, 64, 49, ?", options: ["36", "25", "40", "30"], answer: "36", solution: "यह घटते क्रम में वर्ग संख्याएँ हैं: 10², 9², 8², 7², ab 6² = 36."},
-{q: "यदि 5 : 25 :: 7 : ?", options: ["35", "45", "49", "50"], answer: "49", solution: "Logic: n : n² (5 का वर्ग 25 है, तो 7 का वर्ग 49 होगा)।"},
-{q: "विषम चुनें:", options: ["पटना", "लखनऊ", "इंदौर", "रांची"], answer: "इंदौर", solution: "बाकी सभी राजधानियाँ हैं, इंदौर एक शहर है पर राजधानी नहीं।"},
-{q: "अक्षर समूह: ACE, GIK, ?", options: ["MOP", "MOQ", "MNP", "LNP"], answer: "MOQ", solution: "Logic: प्रत्येक अक्षर में +6 किया गया है (A+6=G, C+6=I, E+6=K)."},
-{q: "श्रृंखला: 5, 11, 23, 47, ?", options: ["94", "95", "96", "100"], answer: "95", solution: "Logic: (n * 2) + 1 (5*2+1=11, 11*2+1=23...)."},
-{q: "यदि 'MAN' को 'NBO' लिखा जाता है, तो 'SKY' को क्या लिखेंगे?", options: ["TLZ", "TKZ", "ULZ", "SLZ"], answer: "TLZ", solution: "Logic: प्रत्येक अक्षर में +1 किया गया है।"},
-{q: "यदि 'RED' का कोड 27 है, तो 'BLUE' का कोड क्या होगा?", options: ["35", "40", "45", "50"], answer: "40", solution: "Logic: अक्षरों के स्थान का योग (B=2, L=12, U=21, E=5 = 40)."},
-{q: "यदि किसी भाषा में 'CAT' को '3120' लिखा जाता है, तो 'DOG' को क्या लिखेंगे?", options: ["4157", "4158", "5167", "4147"], answer: "4157", solution: "Logic: अक्षरों की स्थिति का सीधा अंक (D=4, O=15, G=7)."},
-{q: "यदि 'TABLE' को 'ELBAT' लिखा जाता है, तो 'CHAIR' को क्या लिखेंगे?", options: ["RIAHC", "RAIHC", "ARIHC", "HCIAR"], answer: "RIAHC", solution: "शब्द को उल्टे क्रम में लिखा गया है।"},
-{q: "यदि 'APPLE' को '50' लिखा जाता है, तो 'A' का मान क्या होगा?", options: ["1", "5", "10", "2"], answer: "1", solution: "वर्णमाला क्रम में A पहले स्थान पर आता है।"},
-{q: "यदि सफेद को काला, काले को लाल और लाल को पीला कहा जाए, तो दूध का रंग क्या होगा?", options: ["सफेद", "काला", "लाल", "पीला"], answer: "काला", solution: "दूध सफेद होता है और प्रश्न में सफेद को 'काला' कहा गया है।"},
-{q: "यदि 'BOY' = 42, तो 'GIRL' = ?", options: ["45", "46", "48", "50"], answer: "46", solution: "G(7)+I(9)+R(18)+L(12) = 46."},
-{q: "A, B का भाई है। C, A की माता है। D, C का पिता है। B का D से क्या संबंध है?", options: ["बेटा", "पोता/नातिन", "भाई", "पिता"], answer: "पोता/नातिन", solution: "C माँ है और D नाना है, तो B पोता या नातिन होगा।"},
-{q: "एक आदमी 5 किमी उत्तर जाता है, फिर दाएं मुड़कर 3 किमी चलता है। अब वह किस दिशा में है?", options: ["उत्तर", "पूर्व", "उत्तर-पूर्व", "पश्चिम"], answer: "उत्तर-पूर्व", solution: "शुरुआती बिंदु से वह उत्तर-पूर्व की ओर है।"},
-{q: "तस्वीर में एक महिला की ओर इशारा करते हुए विजय ने कहा, 'वह मेरी माँ की इकलौती बेटी है।' महिला का विजय से क्या संबंध है?", options: ["माँ", "बेटी", "बहन", "पत्नी"], answer: "बहन", solution: "माँ की इकलौती बेटी बहन होती है।"},
-{q: "यदि कल सोमवार था, तो कल के बाद कौन सा दिन होगा?", options: ["बुधवार", "गुरुवार", "मंगलवार", "शुक्रवार"], answer: "बुधवार", solution: "कल सोमवार था, तो आज मंगलवार है। कल के बाद बुधवार होगा।"},
-{q: "राम दक्षिण की ओर मुख करके खड़ा है। वह 90 डिग्री बाएं मुड़ता है। अब उसका मुख किस दिशा में है?", options: ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], answer: "पूर्व", solution: "दक्षिण से 90 डिग्री बाएं मुड़ने पर पूर्व दिशा आती है।"},
-{q: "X, Y का पिता है और Z, X की पत्नी है। Z का Y से क्या संबंध है?", options: ["बहन", "चाची", "माँ", "दादी"], answer: "माँ", solution: "पिता की पत्नी माँ होती है।"},
-{q: "सूर्य छिपते समय (Sunset) यदि राम की छाया उसके बाएं है, तो उसका मुख किधर है?", options: ["उत्तर", "दक्षिण", "पूर्व", "पश्चिम"], answer: "दक्षिण", solution: "शाम को सूरज पश्चिम में होता है, छाया पूर्व में बनेगी। यदि छाया बाएं है, तो मुख दक्षिण होगा।"},
-{q: "5 मित्र एक पंक्ति में बैठे हैं। A, B के दाएं है पर C के बाएं है। सबसे बीच में कौन है?", options: ["A", "B", "C", "डेटा कम है"], answer: "A", solution: "क्रम: B - A - C. बीच में A है।"},
-{q: "कथन: सभी पेन पेंसिल हैं। सभी पेंसिल कागज़ हैं। निष्कर्ष: क्या सभी पेन कागज़ हैं?", options: ["हाँ", "नहीं", "कहा नहीं जा सकता", "कुछ ही"], answer: "हाँ", solution: "Venn diagram के अनुसार यदि सभी A, B हैं और सभी B, C हैं, तो सभी A, C होंगे।"},
-{q: "एक कक्षा में सोहन ऊपर से 10वें और नीचे से 20वें स्थान पर है। कुल कितने छात्र हैं?", options: ["30", "29", "31", "28"], answer: "29", solution: "(10 + 20) - 1 = 29."},
-{q: "विषम चुनें: वर्ग, आयत, त्रिभुज, गोला (Sphere)", options: ["वर्ग", "आयत", "त्रिभुज", "गोला"], answer: "गोला", solution: "गोला (Sphere) एक 3D आकृति है, बाकी सब 2D हैं।"},
-{q: "शब्द 'TEACHER' से कौन सा शब्द नहीं बनाया जा सकता?", options: ["REACH", "TEA", "CHAIR", "CHEER"], answer: "CHAIR", solution: "TEACHER में 'I' अक्षर नहीं है, इसलिए CHAIR नहीं बन सकता।"},
-{q: "4:00 बजे घड़ी की दोनों सुइयों के बीच कितने डिग्री का कोण होगा?", options: ["90", "120", "150", "100"], answer: "120", solution: "Logic: 1 घंटा = 30 डिग्री। तो 4 घंटा = 4 * 30 = 120 डिग्री।"},
-{q: "कथन: कुछ बिल्ली चूहे हैं। सभी चूहे कुत्ते हैं। निष्कर्ष: क्या कुछ बिल्ली कुत्ते हैं?", options: ["हाँ", "नहीं", "संभव नहीं", "डेटा कम है"], answer: "हाँ", solution: "चूंकि कुछ बिल्ली चूहे हैं और वे सभी चूहे कुत्ते हैं, तो वे बिल्लियाँ भी कुत्ते होंगी।"},
-{q: "यदि 2+3=13, 3+4=25, तो 4+5=?", options: ["41", "30", "20", "45"], answer: "41", solution: "Logic: a^2 + b^2 (4^2 + 5^2 = 16 + 25 = 41)."},
-{q: "लुप्त पद: 1, 8, 27, 64, ?", options: ["100", "125", "216", "81"], answer: "125", solution: "यह घन (Cube) श्रृंखला है: 1, 2, 3, 4, 5 का घन = 125."},
-{q: "एक व्यक्ति पूर्व की ओर मुख करके खड़ा है। वह 180 डिग्री मुड़ जाता है। अब उसका मुख किधर है?", options: ["उत्तर", "दक्षिण", "पूर्व", "पश्चिम"], answer: "पश्चिम", solution: "180 डिग्री का मतलब है एकदम विपरीत दिशा।"},
-{q: "अंग्रेजी वर्णमाला में बाएं से 10वाँ अक्षर कौन सा है?", options: ["H", "I", "J", "K"], answer: "J", solution: "EJOTY सूत्र के अनुसार 10वाँ अक्षर J है।"}
+{q: "Sries: 2, 4, 6, 8, 10, ?", options: ["11", "12", "13", "14"], answer: "12", solution: "Har number mein 2 joda ja raha hai (+2 pattern)."},
+{q: "Agar 'BOY' ko 'CPZ' likha jata hai, to 'GIRL' ko kya likha jayega?", options: ["HJSM", "HISM", "HJSK", "HKTM"], answer: "HJSM", solution: "Har letter ko ek sthan aage badhaya gaya hai (+1 pattern)."},
+{q: "Odd one out (Visham chunein):", options: ["January", "March", "May", "April"], answer: "April", solution: "April mein 30 din hote hain, baki sab mein 31."},
+{q: "A, B ka bhai hai. C, A ki mata hai. B ka C se kya sambandh hai?", options: ["Beta", "Beti", "Beta ya Beti", "Chacha"], answer: "Beta ya Beti", solution: "B ka gender clear nahi hai, isliye wo beta ya beti kuch bhi ho sakta hai."},
+{q: "Series: A, C, E, G, ?", options: ["H", "I", "J", "K"], answer: "I", solution: "Ek letter chhod kar agla letter (+2 pattern)."},
+{q: "Agar kal mangalwar tha, to aaj kaun sa din hai?", options: ["Somwar", "Budhwar", "Guruwar", "Shukrawar"], answer: "Budhwar", solution: "Kal mangalwar tha to aaj budhwar hoga."},
+{q: "Doctor : Hospital :: Teacher : ?", options: ["Office", "School", "House", "Garden"], answer: "School", solution: "Jaise doctor hospital mein kaam karta hai, waise hi teacher school mein."},
+{q: "Odd one out:", options: ["Car", "Bus", "Train", "Boat"], answer: "Boat", solution: "Boat pani mein chalti hai, baki sab zameen par."},
+{q: "Series: 10, 20, 30, 40, ?", options: ["45", "50", "55", "60"], answer: "50", solution: "+10 ka gap hai."},
+{q: "Agar 'CAT' ko '3120' likha jata hai, to 'DOG' ko kya likha jayega?", options: ["4157", "4158", "5168", "4167"], answer: "4157", solution: "Alphabet positions: D=4, O=15, G=7."},
+{q: "Mata : Beti :: Pita : ?", options: ["Bhai", "Beta", "Dada", "Mama"], answer: "Beta", solution: "Jaise mata ki santan beti (female), pita ki santan beta (male) ka relation hai."},
+{q: "Odd one out:", options: ["Square", "Rectangle", "Triangle", "Circle"], answer: "Circle", solution: "Circle mein koi corners/bhujaen nahi hoti, baki sab polygons hain."},
+{q: "Series: 5, 10, 15, 20, ?", options: ["22", "25", "28", "30"], answer: "25", solution: "5 ki table chal rahi hai."},
+{q: "Agar 1st January ko Ravivar hai, to 8th January ko kya hoga?", options: ["Somwar", "Shanivar", "Ravivar", "Mangalwar"], answer: "Ravivar", solution: "Har 7 din baad wahi din repeat hota hai."},
+{q: "Bird : Fly :: Fish : ?", options: ["Walk", "Swim", "Run", "Jump"], answer: "Swim", solution: "Bird udti hai, fish tairti (swim) hai."},
+{q: "Odd one out:", options: ["Patna", "Lucknow", "Mumbai", "Indore"], answer: "Indore", solution: "Indore kisi rajya ki rajdhani nahi hai, baki sab rajdhania hain."},
+{q: "Series: Z, Y, X, W, ?", options: ["V", "U", "T", "S"], answer: "V", solution: "Alphabet reverse order mein hai (-1)."},
+{q: "Pen : Write :: Knife : ?", options: ["Eat", "Cut", "Cook", "Sharp"], answer: "Cut", solution: "Pen likhne ke kaam aata hai, knife katne ke."},
+{q: "Odd one out:", options: ["Eyes", "Ears", "Nose", "Legs"], answer: "Legs", solution: "Legs gyanendriya (sense organs) nahi hain, baki sab hain."},
+{q: "Series: 1, 4, 9, 16, ?", options: ["20", "25", "30", "36"], answer: "25", solution: "Natural numbers ka square (1², 2², 3², 4², 5²)."},
+{q: "Agar 'RED' ko 'DER' likha jata hai, to 'SKY' ko kya likha jayega?", options: ["YKS", "YSK", "KSY", "SKY"], answer: "YKS", solution: "Reverse spelling likhi gayi hai."},
+{q: "Cow : Calf :: Hen : ?", options: ["Puppy", "Kitten", "Chick", "Cub"], answer: "Chick", solution: "Murgi ke bacche ko chick kehte hain."},
+{q: "Odd one out:", options: ["Apple", "Orange", "Banana", "Potato"], answer: "Potato", solution: "Potato sabzi hai, baki phal hain."},
+{q: "Series: 100, 90, 80, 70, ?", options: ["65", "60", "55", "50"], answer: "60", solution: "Har baar 10 ghataya ja raha hai (-10)."},
+{q: "Agar 'SUN' ko 'T VO' likha jaye, to 'MOON' ko?", options: ["NPPO", "N P P O", "N Q Q O", "N O O P"], answer: "NPPO", solution: "Next letter logic (+1)."},
+{q: "Father : Son :: Mother : ?", options: ["Sister", "Aunt", "Daughter", "Niece"], answer: "Daughter", solution: "Gender based family relation."},
+{q: "Odd one out:", options: ["Bhopal", "Panaji", "Kolkata", "Punjab"], answer: "Punjab", solution: "Punjab ek rajya hai, baki sab shehar/rajdhani hain."},
+{q: "Series: 11, 22, 33, 44, ?", options: ["50", "55", "60", "66"], answer: "55", solution: "11 ki table (+11)."},
+{q: "Book : Pages :: Wall : ?", options: ["Bricks", "Cement", "Sand", "Water"], answer: "Bricks", solution: "Jaise book pages se banti hai, deewar bricks (eeton) se banti hai."},
+{q: "Odd one out:", options: ["Cricket", "Football", "Hockey", "Chess"], answer: "Chess", solution: "Chess indoor game hai, baki outdoor."},
+{q: "Series: 2, 3, 5, 7, ?", options: ["8", "9", "10", "11"], answer: "11", solution: "Prime numbers (Abhajya sankhya) ki series hai."},
+{q: "Agar 'NORTH' ko 'SOUTH' kahein, to 'EAST' ko kya kahenge?", options: ["WEST", "NORTH", "SOUTH", "UP"], answer: "WEST", solution: "Opposite direction logic."},
+{q: "Rain : Umbrella :: Sun : ?", options: ["Sunglasses", "Water", "Cloud", "Night"], answer: "Sunglasses", solution: "Barish se bachne ke liye umbrella, dhoop se bachne ke liye sunglasses."},
+{q: "Odd one out:", options: ["Addition", "Subtraction", "Multiplication", "Fraction"], answer: "Fraction", solution: "Baki sab basic mathematical operations hain."},
+{q: "Series: 1, 3, 5, 7, ?", options: ["8", "9", "10", "11"], answer: "9", solution: "Odd numbers (visham sankhya) ki series."}
 
+ ],
+medium: [
 
-];
+{q: "Series: 7, 25, 61, 121, ?", options: ["210", "211", "212", "209"], answer: "211", solution: "Logic: (n^3 - 3) pattern -> 2^3-1, 3^3-2, 4^3-3, 5^3-4... No, wait: 2^3-1=7, 3^3-2=25... 6^3-5 = 216-5 = 211."},
+{q: "Agar 'STOVE' को 'EVOTS' likha jata hai, to 'CANDLE' ko kya likha jayega?", options: ["ELDNAC", "ELNADC", "ELDANC", "EDLNAC"], answer: "ELDNAC", solution: "Pura word reverse order mein likha gaya hai."},
+{q: "Kathan: Kuch Pen Pencil hain. Sabhi Pencil Paper hain. Nishkarsh: 1. Kuch Pen Paper hain. 2. Sabhi Paper Pencil hain.", options: ["Sirf 1 sahi hai", "Sirf 2 sahi hai", "Dono sahi hain", "Dono galat hain"], answer: "Sirf 1 sahi hai", solution: "Venn diagram ke hisab se Pen ka kuch hissa Paper ke andar zaroor aayega."},
+{q: "Ek aadmi ne ek mahila se kaha, 'Tumhare bhai ka akela beta meri patni ka bhai hai.' Us mahila ka us aadmi se kya sambandh hai?", options: ["Mata", "Behen", "Saas", "Sasur ki behen"], answer: "Sasur ki behen", solution: "Mahila ka bhai = Aadmi ka sasur. To mahila sasur ki behen hui."},
+{q: "Series: 1, 2, 6, 21, 88, ?", options: ["445", "441", "440", "435"], answer: "445", solution: "Logic: (1*1)+1, (2*2)+2, (6*3)+3, (21*4)+4, (88*5)+5 = 445."},
+{q: "Agar A=1, FAT=27, to FAITH = ?", options: ["44", "45", "40", "42"], answer: "44", solution: "Alphabet positions ka sum: 6+1+9+20+8 = 44."},
+{q: "Direction: Ek vyakti uttar ki or 4km chalta hai, phir baayein (left) mudkar 3km chalta hai. Ab wo shuruati bindu se kitni door hai?", options: ["7km", "5km", "1km", "12km"], answer: "5km", solution: "Pythagoras Theorem: √(4² + 3²) = √25 = 5km."},
+{q: "Odd one out (Visham chunein):", options: ["27", "64", "125", "144"], answer: "144", solution: "144 square hai (12²), baki sab cubes hain (3³, 4³, 5³)."},
+{q: "Agar '+' ka arth '*', '-' ka arth '/', '*' ka arth '+' aur '/' ka arth '-' hai, to 20+5-10/2*4 = ?", options: ["12", "15", "10", "8"], answer: "12", solution: "Equation: 20*5/10 - 2 + 4 = 10 - 2 + 4 = 12."},
+{q: "Series: BDF, HJL, NPR, ?", options: ["TVX", "TUV", "STU", "VWX"], answer: "TVX", solution: "Har letter mein +2 ka gap hai aur set ke beech mein bhi +2 ka gap hai."},
+{q: "Agar kal ke baad ka din guruwar hai, to kal se pehle ka din kya tha?", options: ["Ravivar", "Somwar", "Mangalwar", "Shanivar"], answer: "Ravivar", solution: "Parso Guru -> Kal Budh -> Aaj Mangal -> Kal(past) Som -> Parso(past) Ravivar."},
+{q: "6:222 :: 7 : ?", options: ["350", "343", "336", "210"], answer: "350", solution: "Logic: n³ + n -> 6³+6 = 222, 7³+7 = 350."},
+{q: "Clock: 4:30 baje ghadi ki dono suiyon ke beech ka kon (angle) kya hoga?", options: ["45°", "60°", "30°", "15°"], answer: "45°", solution: "Formula: |30h - 5.5m| = |30(4) - 5.5(30)| = |120 - 165| = 45°."},
+{q: "Series: 0, 6, 24, 60, 120, ?", options: ["210", "200", "180", "240"], answer: "210", solution: "Logic: n³ - n -> 1³-1, 2³-2, 3³-3, 4³-4, 5³-5, 6³-6 = 210."},
+{q: "Kishore ne kaha, 'Ye ladki meri maa ke pote ki patni hai.' Kishore ka us ladki se kya rishta hai?", options: ["Pita", "Sasur", "Pati", "Chacha"], answer: "Sasur", solution: "Maa ka pota = Kishore ka beta. Bete ki patni = Bahu. To Kishore Sasur hua."},
+{q: "Agar 'WATER' ko 'XCVGT' likha jata hai, to 'FIRE' ko kya likha jayega?", options: ["HKTG", "GKTG", "GKTH", "GJSF"], answer: "GKTG", solution: "Logic: +1, +2, +1, +2 pattern chal raha hai."},
+{q: "Odd one out:", options: ["81", "121", "169", "221"], answer: "221", solution: "221 abhajya (prime) nahi hai, lekin baki sab perfect squares hain (9², 11², 13²)."},
+{q: "Series: 2, 5, 11, 23, 47, ?", options: ["95", "94", "96", "90"], answer: "95", solution: "Logic: (n * 2) + 1."},
+{q: "Direction: Ramu dakshin (South) ki or 20m chalta hai, phir daayein (right) mudkar 10m chalta hai, phir baayein (left) mudkar 10m chalta hai. Wo kis disha mein ja raha hai?", options: ["Dakshin", "Uttar", "Poorv", "Pashchim"], answer: "Dakshin", solution: "Final direction South hi hogi."},
+{q: "Agar 5*4 = 15, 7*8 = 49 hai, to 6*5 = ?", options: ["24", "25", "30", "35"], answer: "24", solution: "Logic: (a * b) - b -> (5*4)-5=15... No, (a-1)*b -> (5-1)*4=16 (logic failed). Wait: a*(b-1) -> 5*3=15, 7*7=49, 6*4=24."},
+{q: "Odd one out:", options: ["Mouth", "Organ", "Eye", "Lung"], answer: "Organ", solution: "Baki sab specific organs hain, 'Organ' ek general category hai."},
+{q: "Series: 1, 8, 27, 64, ?", options: ["125", "100", "81", "150"], answer: "125", solution: "Cubes of natural numbers (1³, 2³, 3³, 4³, 5³)."},
+{q: "Agar 'GIVE' = 5137 aur 'BAT' = 924 hai, to 'GATE' = ?", options: ["5247", "5427", "2547", "5274"], answer: "5247", solution: "Direct letter coding: G=5, A=2, T=4, E=7."},
+{q: "Dice: Ek paase ki do sthitiyan di gayi hain. Agar 3 upar hai to niche kya hoga? (Pos 1: 3,5,1. Pos 2: 3,2,4)", options: ["6", "2", "5", "1"], answer: "6", solution: "3 common hai, baki numbers 1,2,4,5 hain. To bacha hua number 6 hoga."},
+{q: "Series: 3, 10, 29, 66, ?", options: ["127", "125", "130", "129"], answer: "127", solution: "Logic: n³ + 2 -> 1³+2, 2³+2, 3³+2, 4³+2, 5³+2 = 127."},
+{q: "Blood Relation: A, B ka pita hai par B, A ka beta nahi hai. To B, A ka kya hai?", options: ["Beti", "Bhai", "Patni", "Dada"], answer: "Beti", solution: "Agar beta nahi hai to beti hi hogi."},
+{q: "Odd one out:", options: ["Tomato", "Ginger", "Carrot", "Potato"], answer: "Tomato", solution: "Tomato zameen ke upar ugta hai, baki sab zameen ke niche (roots/tubers)."},
+{q: "Agar 'HE' = 13, 'SHE' = 32 hai, to 'THEY' = ?", options: ["58", "60", "62", "64"], answer: "58", solution: "Sum of positions: T(20)+H(8)+E(5)+Y(25) = 58."},
+{q: "Series: AZ, CX, EV, GT, ?", options: ["IR", "HS", "KP", "JQ"], answer: "IR", solution: "First letter +2, second letter opposite pair (A-Z, C-X...)."},
+{q: "Calendar: 15 August 1947 ko kaun sa din tha?", options: ["Shukrawar", "Shanivar", "Somwar", "Guruwar"], answer: "Shukrawar", solution: "Standard calendar calculation se Friday aata hai."},
+{q: "Syllogism: Sabhi Sher Billi hain. Sabhi Billi Sherni hain. Nishkarsh: Sabhi Sher Sherni hain.", options: ["Sahi", "Galat", "Keh nahi sakte", "Dono galat"], answer: "Sahi", solution: "Transitive relation: A=B, B=C then A=C."},
+{q: "Agar ek koot bhasha mein 123 ka arth 'Garam Chaye', 245 ka 'Chaye aur Doodh' hai, to 'Chaye' ka code kya hai?", options: ["2", "1", "3", "4"], answer: "2", solution: "Dono sentences mein 'Chaye' aur number '2' common hain."},
+{q: "Series: 5, 6, 9, 14, 21, ?", options: ["30", "28", "31", "32"], answer: "30", solution: "Gap: +1, +3, +5, +7, +9... 21+9 = 30."},
+{q: "Missing Number: 4, 9, 20, 43, ?", options: ["90", "84", "86", "92"], answer: "90", solution: "Logic: (n * 2) + 1, (n * 2) + 2, (n * 2) + 3... (43*2)+4 = 90."},
+{q: "Direction: Ek ladki apne ghar se pashchim (West) mein 5km jati hai, phir daayein (right) mudkar 5km jati hai. Ab wo kis disha mein dekh rahi hai?", options: ["Uttar", "Dakshin", "Poorv", "Pashchim"], answer: "Uttar", solution: "West ke baad right turn North disha deta hai."}
 
+],
+hard: [
 
+{q: "Series: 12, 13, 28, 87, 352, ?", options: ["1765", "1760", "1755", "1770"], answer: "1765", solution: "Logic: (12*1)+1, (13*2)+2, (28*3)+3, (87*4)+4, (352*5)+5 = 1765."},
+{q: "Syllogism: Kathan - Keval kuch A, B hain. Kuch B, C nahi hain. Nishkarsh - I. Sabhi A ke B hone ki sambhavna hai. II. Kuch C, A ho sakte hain.", options: ["Sirf I", "Sirf II", "I aur II dono", "Koi nahi"], answer: "Sirf II", solution: "'Keval kuch A, B hain' ka matlab hai kuch A, B nahi bhi hain, isliye sabhi A kabhi B nahi ho sakte. II ek sambhavna (possibility) hai jo sahi ho sakti hai."},
+{q: "Puzzle: 7 log A, B, C, D, E, F, G ek ke upar ek box rakhte hain. A aur B ke beech 3 box hain. G, A ke theek upar hai. B sabse niche hai. F aur E ke beech 2 box hain. Sabse upar kaun hai?", options: ["G", "A", "F", "D"], answer: "G", solution: "Order (Top to Bottom): G, A, D, F, C, E, B. Sabse upar G hai."},
+{q: "Agar 'STRENGTH' ko 'RGSFMGTH' likha jata hai, to 'BRIGHT' ko kya likhenge?", options: ["AQHFIG", "ASJHIU", "AQHGHS", "ASHGHS"], answer: "AQHGHS", solution: "Logic: Consonants ko -1 aur vowels ko +1 (ya positions ka complex shift)."},
+{q: "Clock: Ek ghadi 1 baje ek baar, 2 baje do baar bajti hai. 24 ghante mein kul kitni baar bajegi?", options: ["156", "78", "300", "144"], answer: "156", solution: "12 ghante ka yog: (12*13)/2 = 78. 24 ghante ke liye: 78 * 2 = 156."},
+{q: "Blood Relation: P @ Q matlab P, Q ka beta hai. P # Q matlab P, Q ki behen hai. P * Q matlab P, Q ka pati hai. To A # B @ C * D mein A ka D se kya rishta hai?", options: ["Beti", "Bahu", "Behen", "Mata"], answer: "Beti", solution: "A behen hai B ki, B beta hai C ka, C pati hai D ka. To A, D ki beti hui."},
+{q: "Input-Output: Input '43 12 56 09 22'. Step 1 '56 43 12 09 22'. Step 2 '56 43 22 12 09'. Ye kaun sa logic hai?", options: ["Ascending", "Descending", "Even-Odd", "Vowel-Consonant"], answer: "Descending", solution: "Numbers ko bade se chote kram mein lagaya gaya hai."},
+{q: "Seating: 5 dost A, B, C, D, E ek ghere mein baithe hain. A, D ke baayein hai. B, E aur C के beech mein hai. A aur C ke beech D hai. E ke turant daayein (right) kaun hai?", options: ["A", "B", "C", "D"], answer: "B", solution: "Ghere ka kram: A, D, C, B, E (A, E ke baayein hai). E ke daayein B hoga."},
+{q: "Series: 2, 10, 30, 68, 130, ?", options: ["222", "210", "240", "190"], answer: "222", solution: "Logic: n^3 + n (1^3+1, 2^3+2... 6^3+6 = 222)."},
+{q: "Missing Number: 7, 15, 31, 63, 127, ?", options: ["255", "254", "250", "256"], answer: "255", solution: "Logic: (n * 2) + 1."},
+{q: "Agar 1 January 2005 ko Somwar tha, to 1 January 2009 ko kya hoga?", options: ["Guruwar", "Shukrawar", "Shanivar", "Budhwar"], answer: "Shanivar", solution: "Total odd days: 1 (2005) + 1 (2006) + 1 (2007) + 2 (2008) = 5 din aage. Somwar + 5 = Shanivar."},
+{q: "Coding: 'Work is Worship' = 'jk rt nm', 'Worship God' = 'rt ps', 'God is Great' = 'ps jk lo'. 'Work' ka code kya hai?", options: ["jk", "rt", "nm", "lo"], answer: "nm", solution: "Elimination method se: Worship=rt, is=jk, isliye Work=nm."},
+{q: "Direction: A 10m North jata hai, 10m East jata hai, phir har baar left mudkar 5m, 15m aur 15m chalta hai. Ab wo shuruati bindu se kitni door hai?", options: ["5m", "10m", "0m", "20m"], answer: "5m", solution: "Diagram banakar check karne par wo starting point se 5m ki doori par aayega."},
+{q: "Calendar: Kisi mahine ki 3 tarikh ko mangalwar hai, to us mahine ki 29 tarikh ko kya hoga?", options: ["Budhwar", "Mangalwar", "Somwar", "Guruwar"], answer: "Budhwar", solution: "29 - 3 = 26 din. 26/7 ka sheshphal 5. Mangal + 5 = Budhwar."},
+{q: "Logic: 8 : 81 :: 64 : ?", options: ["625", "125", "512", "729"], answer: "625", solution: "Logic: 2^3 : 3^4 :: 4^3 : 5^4 (5^4 = 625)."},
+{q: "Dice: Ek paase mein 1 ke viprit 6 hai, 2 ke viprit 5 hai. To 3 ke viprit kya hoga?", options: ["4", "1", "2", "6"], answer: "4", solution: "Standard dice mein viprit satah ka yog 7 hota hai."},
+{q: "Series: 0, 4, 18, 48, 100, ?", options: ["180", "150", "200", "210"], answer: "180", solution: "Logic: n^3 - n^2 (1^3-1^2=0, 2^3-2^2=4... 6^3-6^2 = 216-36 = 180)."},
+{q: "Ranking: 40 baccho ki kaksha mein A upar se 13th hai. B niche se 9th hai. A aur B ke beech kitne bacche hain?", options: ["18", "19", "20", "17"], answer: "18", solution: "Total - (Top + Bottom) = 40 - (13 + 9) = 18."},
+{q: "Matrix: Row 1: (2, 4, 20), Row 2: (3, 9, 90), Row 3: (1, 5, ?)", options: ["26", "25", "30", "20"], answer: "26", solution: "Logic: a^2 + b^2 = c. (1^2 + 5^2 = 1+25 = 26)."},
+{q: "Alphabet: 'CREATIVE' mein aise kitne akshar yugm hain jinke beech utne hi akshar hain jitne varnamala mein?", options: ["3", "2", "4", "1"], answer: "3", solution: "C-E, E-V, T-V are the pairs."},
+{q: "Venn Diagram: 'Doctor, Aadmi, Abhineta' ko kaun darshata hai?", options: ["Intersecting circles", "Separate circles", "One inside another", "None"], answer: "Intersecting circles", solution: "Ek aadmi doctor aur abhineta dono ho sakta hai."},
+{q: "Series: 3, 7, 16, 35, ?", options: ["74", "70", "72", "75"], answer: "74", solution: "Logic: (n * 2) + 1, (n * 2) + 2, (n * 2) + 3... (35*2)+4 = 74."},
+{q: "Math: Ek pinjre mein kuch tota aur kuch bakriyaan hain. Kul sir 20 hain aur pair 52 hain. Toton ki sankhya batayein?", options: ["14", "6", "10", "12"], answer: "14", solution: "4-pair wale (Bakri) = (Pair/2) - Sir = (52/2)-20 = 26-20 = 6. Tota = 20-6 = 14."},
+{q: "Agar 'A' ka arth 'x', 'B' ka arth '+', 'C' ka arth '/' hai, to (10 C 2) A 5 B 3 = ?", options: ["28", "25", "30", "20"], answer: "28", solution: "(10/2) * 5 + 3 = 5*5 + 3 = 28."},
+{q: "Coding: 'APPLE' = 50, 'ORANGE' = ?", options: ["60", "63", "70", "75"], answer: "60", solution: "Sum of positions: O(15)+R(18)+A(1)+N(14)+G(7)+E(5) = 60."},
+{q: "Odd one out:", options: ["343", "512", "729", "1000"], answer: "729", solution: "729 square bhi hai (27^2) aur cube bhi (9^3), baki sirf cubes hain. (Thoda deep logic)."},
+{q: "Series: C4X, F9U, I16R, ?", options: ["L25O", "L25P", "K25O", "M25N"], answer: "L25O", solution: "C+3=F, F+3=I, I+3=L. Numbers: 2^2, 3^2, 4^2, 5^2=25. Last letter reverse alphabet shift."},
+{q: "Mirror Image: Agar ghadi mein 3:15 baj rahe hain, to darpan (mirror) mein kya dikhega?", options: ["8:45", "9:45", "8:15", "9:15"], answer: "8:45", solution: "11:60 mein se ghatao: 11:60 - 3:15 = 8:45."},
+{q: "Blood Relation: Mere pita ki behen ke akele bhai ki patni meri kya lagegi?", options: ["Mata", "Chachi", "Mami", "Dadi"], answer: "Mata", solution: "Pita ki behen (Bua), Bua ka akela bhai (Pita), Pita ki patni (Mata)."},
+{q: "Syllogism: Sabhi Chaye Coffee hain. Kuch Coffee Thanda hai. Nishkarsh: Kuch Chaye Thanda hai.", options: ["Sahi", "Galat", "Keh nahi sakte", "Dono sahi"], answer: "Keh nahi sakte", solution: "Chaye aur Thanda ke beech koi direct relation nahi hai."},
+{q: "Statement-Assumptions: 'Sharif bano, duniya bahut zaalim hai'. Assumption: 1. Log sharif nahi hain. 2. Duniya zaalim hai.", options: ["Sirf 1", "Sirf 2", "Dono", "Koi nahi"], answer: "Sirf 2", solution: "Statement jo kehta hai wahi assume kiya jata hai."},
+{q: "Series: 1, 5, 14, 30, 55, ?", options: ["91", "85", "90", "100"], answer: "91", solution: "Squares ka yog: 1^2, 1^2+2^2, 1^2+2^2+3^2... 1^2+2^2+3^2+4^2+5^2+6^2 = 91."},
+{q: "Paper Folding: Ek kagaz ko mod kar chhed kiya gaya (O), kholne par wo 4 kone mein dikhta hai. Ye kaun sa fold tha?", options: ["Quarter fold", "Half fold", "No fold", "Triangle fold"], answer: "Quarter fold", solution: "Charo kone mein dikhne ka matlab 1/4th fold tha."},
+{q: "Analogy: Power : Watt :: Pressure : ?", options: ["Pascal", "Newton", "Joule", "Henry"], answer: "Pascal", solution: "Pressure ki SI unit Pascal hai."},
+{q: "Mathematical: Ek party mein 10 log hain, har koi ek dusre se haath milata hai. Kul kitni baar haath milaye gaye?", options: ["45", "90", "100", "50"], answer: "45", solution: "Formula: n(n-1)/2 = 10(9)/2 = 45."}
 
-let currentIndex=0,answers={},visited={};
-let totalSeconds=0,timerInterval,startTime;
+  ]
+    };
 
-function startTest(){
-  if(localStorage.getItem(`finalResult_${MY_SUBJECT}`)){
-    alert("Test already submitted"); return;
-  }
-  if(!candidateName.value || !testTime.value) {
-    alert("Please enter Name and Time"); return;
-  }
-  displayName.textContent=candidateName.value;
-  startScreen.style.display="none";
-  topBar.style.display="flex";
-  palette.style.display="flex"; 
-  navBtns.style.display="flex";
-  submitBtn.style.display="block";
-  totalSeconds=testTime.value*60;
-  startTime=Date.now();
-  saveProgress();
-  startTimer();
-  renderQuestion();
-}
+    let questions = [];
+    let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
+    let totalSeconds=0, timerInterval, startTime;
 
-function startTimer(){
-  updateTimer();
-  timerInterval=setInterval(()=>{
-    totalSeconds--;
-    updateTimer();
-    saveProgress();
-    if(totalSeconds<=0)submitQuiz();
-  },1000);
-}
+    function syncCountAndTime() {
+        const level = document.getElementById("difficultyLevel").value;
+        const count = allQuestionsBank[level].length;
+        document.getElementById("totalQDisplay").textContent = count;
+        document.getElementById("testTime").value = count;
+    }
 
-function updateTimer(){
-  timer.textContent=
-    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
-    String(totalSeconds%60).padStart(2,'0');
-}
+    function startTest(){
+        const level = document.getElementById("difficultyLevel").value;
+        questions = allQuestionsBank[level];
+        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+        displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
+        startScreen.style.display="none";
+        topBar.style.display="flex";
+        palette.style.display="flex";
+        navBtns.style.display="flex";
+        submitBtn.style.display="block";
+        totalSeconds=testTime.value*60;
+        startTime=Date.now();
+        saveProgress(level);
+        startTimer();
+        renderQuestion();
+    }
 
-function renderQuestion(){
-  visited[currentIndex]=true;
-  const q=questions[currentIndex];
-  quizArea.innerHTML=`
-    <div class="quiz-card">
-      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-      <div class="options">
-        ${q.options.map(o=>`
-          <label>
-            <input type="radio" name="opt"
-              ${answers[currentIndex]==o?'checked':''}
-              onchange="selectAnswer('${o}')">
-            ${o}
-          </label>
-        `).join("")}
-      </div>
-    </div>`;
-  renderPalette();
-  saveProgress();
-}
+    function startTimer(){
+        timerInterval=setInterval(()=>{
+            totalSeconds--;
+            updateTimerDisplay();
+            saveProgress();
+            if(totalSeconds<=0) submitQuiz();
+        },1000);
+    }
 
-function selectAnswer(val){
-  answers[currentIndex]=val;
-  saveProgress();
-  renderPalette();
-}
+    function updateTimerDisplay(){
+        timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+ String(totalSeconds%60).padStart(2,'0');
+    }
 
-function renderPalette(){
-  palette.innerHTML="";
-  questions.forEach((_,i)=>{
-    const s=document.createElement("span");
-    s.textContent=i+1;
-    if(visited[i])s.classList.add("visited");
-    if(answers[i])s.classList.add("attempted");
-    s.onclick=()=>{currentIndex=i;renderQuestion()};
-    palette.appendChild(s);
-  });
-}
+    function renderQuestion(){
+        visited[currentIndex]=true;
+        const q=questions[currentIndex];
+        quizArea.innerHTML=`
+            <div class="quiz-card">
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+                </div>
+                <div class="options">
+                    ${q.options.map(o=>`
+                        <label>
+                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
+                        </label>
+                    `).join("")}
+                </div>
+                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+            </div>`;
+        renderPalette();
+    }
 
-function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
-function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+    function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
+    function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
+    function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
+    function challengeQuestion(){
+        if(answers[currentIndex]){ alert("Already answered!"); return; }
+        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
+    }
 
-function saveProgress(){
-  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
-    name:displayName.textContent,
-    answers,visited,currentIndex,totalSeconds,startTime
-  }));
-}
+    function renderPalette(){
+        palette.innerHTML="";
+        questions.forEach((_,i)=>{
+            const s=document.createElement("span");
+            s.textContent=i+1;
+            if(visited[i]) s.classList.add("visited");
+            if(answers[i]) s.classList.add("attempted");
+            if(reviewMarks[i]) s.classList.add("marked-review");
+            if(challenges[i]) s.classList.add("challenged");
+            s.onclick=()=>{currentIndex=i;renderQuestion()};
+            palette.appendChild(s);
+        });
+    }
 
-function submitQuiz(){
-  if(!confirm("Are you sure you want to submit the Reasoning test?")) return;
-  clearInterval(timerInterval);
-  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-  let correct=0, attempted=0;
-  let detailHtml="<h2>Detailed Analysis</h2>";
-  
-  questions.forEach((q,i)=>{
-    if(answers[i]) attempted++;
-    if(answers[i] == q.answer) correct++;
-    
-    detailHtml+=`
-      <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
-        <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
-        <div class="sol-box">
-          <b>Logic:</b> ${q.solution || "Solution not available."}
-        </div>
-      </div>`;
-  });
+    function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+    function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+    function saveProgress(lvl){
+        const level = lvl || JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}`) || '{"level":"easy"}').level;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
+            name:displayName.textContent.split(' (')[0],
+            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+        }));
+    }
 
-  // Track Progress for Dashboard
-  localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
-  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
+    function submitQuiz(){
+        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
+        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
+        if(!confirm("Are you sure you want to submit?")) return;
+        
+        clearInterval(timerInterval);
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+        
+        let correct=0, attempted=0, challCount=0;
+        let detailHtml="<h2>Detailed Analysis</h2>";
+        
+        questions.forEach((q,i)=>{
+            let isCorrect = false;
+            let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
 
-  const summaryBox = `
-    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Reasoning Performance Report</h3>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-      </div>
-      <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
-    </div>
-  `;
+            if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
+            else if(answers[i] === q.answer) { isCorrect = true; }
+            
+            if(answers[i]) attempted++;
+            if(isCorrect) correct++;
 
-  const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+            detailHtml+=`
+                <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                    <p><b>Q${i+1}.</b> ${q.q}</p>
+                    <p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                    <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
+                </div>`;
+        });
 
-  quizArea.innerHTML="";
-  palette.style.display="none"; 
-  navBtns.style.display="none";
-  submitBtn.style.display="none";
-  result.style.display="block";
-  result.innerHTML=finalHtml;
-  clearBtn.style.display="block";
-  window.scrollTo(0,0);
-}
+        // Dashboard Storage logic
+        const currentLvl = document.getElementById("difficultyLevel").value.toUpperCase();
+        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
 
-window.onload=function(){
-  document.getElementById("totalQDisplay").textContent = questions.length;
-  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
-  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
-  
-  if(final){
-    const d=JSON.parse(final);
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    displayName.textContent=d.name;
-    result.style.display="block";
-    result.innerHTML=d.html;
-    clearBtn.style.display="block";
-  } else if(progress){
-    const p=JSON.parse(progress);
-    displayName.textContent=p.name;
-    answers=p.answers||{};
-    visited=p.visited||{};
-    currentIndex=p.currentIndex||0;
-    totalSeconds=p.totalSeconds||0;
-    startTime=p.startTime||Date.now();
-    startScreen.style.display="none";
-    topBar.style.display="flex";
-    palette.style.display="flex";
-    navBtns.style.display="flex";
-    submitBtn.style.display="block";
-    startTimer();
-    renderQuestion();
-  }
-};
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
+        
+        const summaryBox = `
+            <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+                <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                </div>
+                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
+            </div>`;
 
-function clearResult(){
-  if(confirm("Start new test? All previous results will be cleared.")){ 
-    localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
-    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-    location.reload(); 
-  }
-}
+        const finalHtml = summaryBox + detailHtml;
+        result.style.display="block";
+        result.innerHTML = finalHtml;
+        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
+        clearBtn.style.display="block"; window.scrollTo(0,0);
+        
+        localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+
+        emailjs.send("service_wq5yoyp", "template_doegpcp", {
+            candidate_name: displayName.textContent,
+            subject: MY_SUBJECT,
+            score: correct,
+            total: questions.length,
+            attempted: attempted,
+            accuracy: accuracy + "%",
+            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+            test_date: new Date().toLocaleString("en-IN")
+        });
+    }
+
+    window.onload=function(){
+        syncCountAndTime();
+        const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
+        const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+        if(final){
+            const d=JSON.parse(final);
+            result.style.display="block"; result.innerHTML=d.html; clearBtn.style.display="block";
+            startScreen.style.display="none";
+        } else if(progress){
+            const p=JSON.parse(progress);
+            questions = allQuestionsBank[p.level];
+            displayName.textContent=p.name + ` (${p.level.toUpperCase()})`;
+            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime; reviewMarks=p.reviewMarks; challenges=p.challenges;
+            startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex"; navBtns.style.display="flex"; submitBtn.style.display="block";
+            startTimer(); renderQuestion();
+        }
+    };
+
+    function clearResult(){ if(confirm("Clear result?")) { localStorage.clear(); location.reload(); } }
 </script>
-
 </body>
 </html>
-
-
