@@ -1,451 +1,433 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NishuAbhyasi – General Awareness by Yash</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NishuAbhyasi – General Awareness by Yash</title>
+    <style>
+        :root{
+            --color-primary: #1a2a6c;
+            --color-secondary: #2575fc;
+            --color-accent: #f2994a;
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --success: #16a34a;
+            --danger: #ef4444;
+            --review: #8b5cf6;
+            --challenge: #f59e0b;
+        }
+        *{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        body{
+            min-height:100vh;
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+            background-size: 300% 300%;
+            animation: dynamicFlow 18s ease-in-out infinite;
+            color: #fff;
+            padding: 20px 10px;
+        }
+        @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
+        h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-<style>
-/* Professional Glassmorphism Theme */
-:root{
-  --color-primary: #1a2a6c;
-  --color-secondary: #2575fc;
-  --color-accent: #f2994a;
-  --glass: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.25);
-  --success: #16a34a;
-  --danger: #ef4444;
-}
+        .start-screen{ background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); padding: 40px 20px; border-radius: 30px; text-align:center; margin-top: 50px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .input-row { display: flex; gap: 15px; width: 100%; max-width: 600px; justify-content: center; }
+        .start-screen input, .start-screen select { 
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); 
+            background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; outline: none; 
+        }
+		.start-screen input::placeholder { color: white !important; opacity: 1; }
+        .start-screen option { color: #000; }
+        
+        .q-count-sticker { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
+        
+        button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        button:hover{ transform: scale(1.05); }
+        .btn-secondary { background: rgba(255,255,255,0.15); }
+        .btn-review { background: var(--review); }
+        .btn-challenge { background: var(--challenge); }
+        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; }
 
-*{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif;}
+        .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
+        .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
+        
+        #palette{ display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; justify-content: center; padding: 10px; }
+        .palette span{ width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px; }
+        .palette .visited{ border: 2px solid var(--color-secondary); }
+        .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .palette .marked-review{ background: var(--review); }
+        .palette .challenged{ background: var(--challenge); }
 
-body{
-  min-height:100vh;
-  background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
-  background-size: 300% 300%;
-  animation: dynamicFlow 18s ease-in-out infinite;
-  color: #fff;
-  padding: 20px 10px;
-}
-
-@keyframes dynamicFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
-
-h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-
-/* START SCREEN */
-.start-screen{
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  padding: 40px 20px;
-  border-radius: 30px;
-  text-align:center;
-  margin-top: 50px;
-}
-
-.start-screen input {
-  width: 100%;
-  max-width: 300px;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 15px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff !important;
-  font-size: 16px;
-  outline: none;
-}
-
-.start-screen input::placeholder {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.q-count-sticker {
-  margin: 5px auto 15px;
-  width: fit-content;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 20px;
-  border-radius: 50px;
-  border: 1px solid var(--glass-border);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #4facfe;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
-}
-
-button{
-  padding: 14px 28px;
-  border: none;
-  border-radius: 15px;
-  background: linear-gradient(135deg, #ff9800, #ff5722);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  transition: 0.3s;
-}
-button:hover{ transform: scale(1.05); }
-
-.top-bar{
-  display:none; justify-content:space-between; align-items:center;
-  padding:15px 25px; background: var(--glass);
-  backdrop-filter: blur(15px);
-  border:1px solid var(--glass-border); border-radius:50px;
-  position:sticky; top:10px; z-index:100; margin-bottom:15px;
-}
-.timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
-
-#palette{ 
-  display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; 
-  justify-content: center; padding: 10px;
-}
-.palette span{
-  width:38px; height:38px; display:flex; align-items:center; justify-content:center;
-  border-radius:10px; background: rgba(255,255,255,0.1); 
-  border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px;
-}
-.palette .visited{ background: var(--color-secondary); }
-.palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
-
-.quiz-card{
-  background: var(--glass); border:1px solid var(--glass-border);
-  backdrop-filter: blur(20px); border-radius:25px; padding:30px;
-}
-.options label{
-  display:flex; align-items: center; gap:12px; padding:14px; 
-  background: rgba(255,255,255,0.05); border:1px solid var(--glass-border);
-  border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s;
-}
-.options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
-
-.nav{ display:flex; justify-content:space-between; margin-top:20px; }
-.btn-secondary { background: rgba(255,255,255,0.15); }
-
-.result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
-.correct{ color: #4ade80; font-weight:bold; }
-.wrong{ color: #f87171; font-weight:bold; }
-
-.sol-box {
-  margin-top:12px; 
-  padding:12px; 
-  background:rgba(242, 153, 74, 0.15); 
-  border-radius:12px; 
-  font-size:14px; 
-  color:#ffcc80;
-  border: 1px dashed var(--color-accent);
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init("L8kGW-X7JOiYaycH5");
-  })();
-</script>
+        .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; }
+        .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s; }
+        .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
+        
+        .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
+        .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
+        .correct{ color: #4ade80; font-weight:bold; }
+        .wrong{ color: #f87171; font-weight:bold; }
+        .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script> (function () { emailjs.init("L8kGW-X7JOiYaycH5"); })(); </script>
 </head>
-
 <body>
-
 <div class="container">
+    <h1>Target Test- General Awareness 2026</h1>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026</p>
+    
+    <div class="start-screen" id="startScreen">
+        <div class="input-row">
+            <input id="candidateName" placeholder="Enter your name">
+            <input id="testTime" type="number" placeholder="Minutes">
+        </div>
+        
+        <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
+            <option value="easy">Level: Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
 
-<h1>Target Test- General Awareness 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 21 Jan, 2026 - 11:33</p>
+        <div class="q-count-sticker">
+            <span class="pulse-dot"></span>
+            <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
+        </div>
 
-<div class="start-screen" id="startScreen">
-  <input id="candidateName" placeholder="Enter your name">
-  <input id="testTime" type="number" placeholder="Time (minutes)">
-  
-  <div class="q-count-sticker">
-    <span class="pulse-dot"></span>
-    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
-  </div>
+        <div style="display:flex; gap:10px;">
+            <button onclick="startTest()">Start Test</button>
+            <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
+        </div>
+    </div>
 
-  <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
-    <button onclick="startTest()">Start Test</button>
-    <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
-  </div>
-</div>
+    <div class="top-bar" id="topBar">
+        <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
+        <div class="timer" id="timer">00:00</div>
+    </div>
 
-<div class="top-bar" id="topBar">
-  <div><small style="opacity:0.9;">CANDIDATE:</small><br><b id="displayName"></b></div>
-  <div class="timer" id="timer">00:00</div>
-</div>
+    <div id="palette" class="palette"></div>
+    <div id="quizArea"></div>
 
-<div id="palette" class="palette"></div>
-<div id="quizArea"></div>
+    <div class="nav" id="navBtns">
+        <button class="btn-secondary" onclick="prevQ()">← Prev</button>
+        <button class="btn-review" onclick="markForReview()">Review</button>
+        <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
+        <button onclick="nextQ()">Next →</button>
+    </div>
 
-<div class="nav" id="navBtns" style="display:none">
-  <button class="btn-secondary" onclick="prevQ()">← Previous</button>
-  <button onclick="nextQ()">Next Question →</button>
-</div>
-
-<button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
-
-<div id="result" class="result" style="display:none"></div>
-<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
-
+    <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
+    <div id="result" class="result" style="display:none"></div>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
 </div>
 
 <script>
-// --- UNIQUE ID CONFIG ---
-const MY_SUBJECT = "Awareness";
-const MY_TEST_ID = "GKA_SET_03"; 
+    const MY_SUBJECT = "Awareness";
+	const MY_TEST_ID = "GKA_SET_04";
 
-const questions = [
+    const allQuestionsBank = {
+easy: [
 
-{q: "‘कथक’ (Kathak) किस क्षेत्र का प्रमुख शास्त्रीय नृत्य है?", options: ["उत्तर भारत", "केरल", "आंध्र प्रदेश", "तमिलनाडु"], answer: "उत्तर भारत", solution: "कथक उत्तर प्रदेश और उत्तर भारत का प्रसिद्ध शास्त्रीय नृत्य है।"},
-{q: "स्वतंत्र भारत के प्रथम राष्ट्रपति डॉ. राजेंद्र प्रसाद बिहार के किस जिले से थे?", options: ["पटना", "सिवान", "छपरा", "भोजपुर"], answer: "सिवान", solution: "डॉ. राजेंद्र प्रसाद का जन्म सिवान जिले के जीरादेई गाँव में हुआ था।"},
-{q: "सिक्किम की राजधानी का नाम बताइए:", options: ["गंगटोक", "शिलॉन्ग", "कोहिमा", "दिसपुर"], answer: "गंगटोक", solution: "गंगटोक सिक्किम का सबसे बड़ा शहर और राजधानी है।"},
-{q: "जैन धर्म के 24वें तीर्थंकर भगवान महावीर का जन्म कहाँ हुआ था?", options: ["पावापुरी", "कुंडलवन", "कुंडग्राम", "गया"], answer: "कुंडग्राम", solution: "भगवान महावीर का जन्म वैशाली के निकट कुंडग्राम में हुआ था।"},
-{q: "‘गिद्दा’ और ‘भांगड़ा’ किस राज्य के प्रसिद्ध नृत्य हैं?", options: ["हरियाणा", "राजस्थान", "पंजाब", "हिमाचल प्रदेश"], answer: "पंजाब", solution: "गिद्दा महिलाओं द्वारा और भांगड़ा पुरुषों द्वारा किया जाने वाला पंजाब का लोक नृत्य है।"},
-{q: "बिहार में 'किसान सभा' की स्थापना किसके द्वारा की गई थी?", options: ["स्वामी सहजानंद सरस्वती", "श्री कृष्ण सिंह", "गंगा शरण सिन्हा", "रामनंदन मिश्रा"], answer: "स्वामी सहजानंद सरस्वती", solution: "1929 में स्वामी सहजानंद सरस्वती ने प्रांतीय किसान सभा की स्थापना की थी।"},
-{q: "तेलंगाना की राजधानी का नाम क्या है?", options: ["अमरावती", "हैदराबाद", "बेंगलुरु", "चेन्नई"], answer: "हैदराबाद", solution: "हैदराबाद वर्तमान में तेलंगाना की राजधानी है।"},
-{q: "प्रसिद्ध 'नालंदा विश्वविद्यालय' को किसने नष्ट किया था?", options: ["अलाउद्दीन खिलजी", "कुतुबुद्दीन ऐबक", "बख्तियार खिलजी", "मोहम्मद गौरी"], answer: "बख्तियार खिलजी", solution: "12वीं शताब्दी के अंत में बख्तियार खिलजी ने नालंदा विश्वविद्यालय को जलाकर नष्ट कर दिया था।"},
-{q: "‘भरतनाट्यम’ मुख्य रूप से किस राज्य से संबंधित है?", options: ["केरल", "कर्नाटक", "तमिलनाडु", "ओडिशा"], answer: "तमिलनाडु", solution: "भरतनाट्यम भारत का सबसे पुराना शास्त्रीय नृत्य है जो तमिलनाडु में विकसित हुआ।"},
-{q: "बंगाल का विभाजन किस वर्ष हुआ था?", options: ["1905", "1911", "1915", "1920"], answer: "1905", solution: "लॉर्ड कर्जन के समय 1905 में बंगाल का विभाजन हुआ था।"},
-{q: "गोवा की राजधानी कौन सी है?", options: ["वास्को डी गामा", "पणजी", "मडगाँव", "मापुसा"], answer: "पणजी", solution: "पणजी मांडवी नदी के किनारे स्थित गोवा की राजधानी है।"},
-{q: "अशोक के शिलालेखों को सर्वप्रथम किसने पढ़ा था?", options: ["कनिंघम", "जेम्स प्रिंसेप", "मैक्स मूलर", "विलियम जोन्स"], answer: "जेम्स प्रिंसेप", solution: "1837 में जेम्स प्रिंसेप ने पहली बार सम्राट अशोक के ब्राह्मी लिपि वाले शिलालेखों को पढ़ा था।"},
-{q: "‘क्षत्रिया’ (Sattriya) किस राज्य का शास्त्रीय नृत्य है?", options: ["मणिपुर", "असम", "पश्चिम बंगाल", "ओडिशा"], answer: "असम", solution: "क्षत्रिया को वर्ष 2000 में शास्त्रीय नृत्य का दर्जा मिला, यह असम का नृत्य है।"},
-{q: "शेरशाह सूरी का मकबरा कहाँ स्थित है?", options: ["दिल्ली", "आगरा", "सासाराम", "रोहतासगढ़"], answer: "सासाराम", solution: "शेरशाह सूरी का मकबरा सासाराम (बिहार) में एक झील के बीच बना हुआ है।"},
-{q: "अरुणाचल प्रदेश की राजधानी कहाँ है?", options: ["दिसपुर", "ईटानगर", "कोहिमा", "शिलॉन्ग"], answer: "ईटानगर", solution: "ईटानगर अरुणाचल प्रदेश की राजधानी है।"},
-{q: "सिंधु घाटी सभ्यता का प्रसिद्ध बंदरगाह शहर कौन सा था?", options: ["हड़प्पा", "लोथल", "मोहनजोदड़ो", "कालीबंगा"], answer: "लोथल", solution: "लोथल गुजरात में स्थित एक महत्वपूर्ण प्राचीन बंदरगाह था।"},
-{q: "‘लावणी’ किस राज्य का लोकप्रिय नृत्य है?", options: ["कर्नाटक", "महाराष्ट्र", "गोवा", "केरल"], answer: "महाराष्ट्र", solution: "लावणी महाराष्ट्र की संगीत और नृत्य की एक प्रसिद्ध विधा है।"},
-{q: "बिहार उड़ीसा से कब अलग हुआ था?", options: ["1912", "1936", "1947", "1956"], answer: "1936", solution: "1 अप्रैल 1936 को बिहार और उड़ीसा अलग-अलग राज्य बने।"},
-{q: "उत्तराखंड की ग्रीष्मकालीन राजधानी (Summer Capital) कौन सी है?", options: ["देहरादून", "गैरसैंण", "नैनीताल", "ऋषिकेश"], answer: "गैरसैंण", solution: "देहरादून मुख्य राजधानी है, जबकि गैरसैंण को ग्रीष्मकालीन राजधानी बनाया गया है।"},
-{q: "1857 के विद्रोह के दौरान बिहार में क्रांतिकारियों के नेता कौन थे?", options: ["नाना साहब", "तात्या टोपे", "कुंवर सिंह", "बिरसा मुंडा"], answer: "कुंवर सिंह", solution: "जगदीशपुर के जमींदार बाबू कुंवर सिंह ने 80 वर्ष की उम्र में बिहार से 1857 की क्रांति का नेतृत्व किया था।"},
-{q: "मेघालय की राजधानी कहाँ है?", options: ["ईटानगर", "शिलॉन्ग", "इम्फाल", "आइजोल"], answer: "शिलॉन्ग", solution: "शिलॉन्ग मेघालय की राजधानी है।"},
-{q: "मौर्य वंश का संस्थापक कौन था?", options: ["बिन्दुसार", "अशोक", "चंद्रगुप्त मौर्य", "बृहद्रथ"], answer: "चंद्रगुप्त मौर्य", solution: "चाणक्य की सहायता से चंद्रगुप्त मौर्य ने घनानंद को हराकर मौर्य वंश की स्थापना की।"},
-{q: "‘कालबेलिया’ नृत्य का संबंध किस राज्य से है?", options: ["मध्य प्रदेश", "राजस्थान", "गुजरात", "उत्तर प्रदेश"], answer: "राजस्थान", solution: "कालबेलिया राजस्थान की एक सपेरा जनजाति का प्रसिद्ध नृत्य है।"},
-{q: "प्राचीन भारत में 'मगध' साम्राज्य की प्रथम राजधानी कौन सी थी?", options: ["पाटलिपुत्र", "राजगृह (गिरिव्रज)", "वैशाली", "चम्पा"], answer: "राजगृह (गिरिव्रज)", solution: "मगध की सबसे पहली राजधानी राजगृह थी, जिसे बाद में उदायिन ने पाटलिपुत्र स्थानांतरित किया था।"},
-{q: "छत्तीसगढ़ की राजधानी का नाम क्या है?", options: ["बिलासपुर", "रायपुर", "भिलाई", "जगदलपुर"], answer: "रायपुर", solution: "रायपुर छत्तीसगढ़ की राजधानी है।"},
-{q: "हर्षवर्धन के शासनकाल में कौन सा चीनी यात्री भारत आया था?", options: ["फाह्यान", "ह्वेनसांग", "इत्सिंग", "मेगास्थनीज"], answer: "ह्वेनसांग", solution: "ह्वेनसांग ने नालंदा विश्वविद्यालय में पढ़ाई भी की थी।"},
-{q: "‘ओडिसी’ नृत्य की उत्पत्ति किस राज्य में हुई?", options: ["बिहार", "ओडिशा", "झारखंड", "छत्तीसगढ़"], answer: "ओडिशा", solution: "ओडिसी ओडिशा का एक प्राचीन शास्त्रीय नृत्य है।"},
-{q: "चंपारण सत्याग्रह (1917) के दौरान गांधीजी को बिहार आने का निमंत्रण किसने दिया था?", options: ["डॉ. राजेंद्र प्रसाद", "राज कुमार शुक्ल", "मजहरुल हक", "जे.बी. कृपलानी"], answer: "राज कुमार शुक्ल", solution: "राज कुमार शुक्ल के आग्रह पर ही गांधीजी नील की खेती करने वाले किसानों की समस्या देखने चंपारण आए थे।"},
-{q: "हिमाचल प्रदेश की दूसरी राजधानी (Winter Capital) कौन सी है?", options: ["शिमला", "मनाली", "धर्मशाला", "सोलन"], answer: "धर्मशाला", solution: "हिमाचल की मुख्य राजधानी शिमला है और सर्दियों में धर्मशाला होती है।"},
-{q: "भारत का नेपोलियन' किसे कहा जाता है?", options: ["चंद्रगुप्त प्रथम", "समुद्रगुप्त", "स्कंदगुप्त", "कुमारगुप्त"], answer: "समुद्रगुप्त", solution: "उनकी विजयों के कारण इतिहासकार वी.ए. स्मिथ ने उन्हें यह नाम दिया।"},
-{q: "‘राऊफ’ (Rouf) किस केंद्र शासित प्रदेश का प्रसिद्ध लोक नृत्य है?", options: ["लद्दाख", "जम्मू-कश्मीर", "पुडुचेरी", "अंडमान"], answer: "जम्मू-कश्मीर", solution: "राऊफ जम्मू-कश्मीर की महिलाओं द्वारा किया जाने वाला एक पारंपरिक नृत्य है।"},
-{q: "पानीपत का प्रथम युद्ध (1526) किसके बीच लड़ा गया था?", options: ["बाबर और इब्राहिम लोदी", "अकबर और हेमू", "हुमायूं और शेरशाह", "मराठा और अहमद शाह"], answer: "बाबर और इब्राहिम लोदी", solution: "इस युद्ध के बाद भारत में मुगल साम्राज्य की नींव पड़ी।"},
-{q: "झारखंड की राजधानी कौन सी है?", options: ["जमशेदपुर", "रांची", "धनबाद", "दुमका"], answer: "रांची", solution: "बिहार से अलग होने के बाद झारखंड की राजधानी रांची बनी।"},
-{q: "गौतम बुद्ध को ज्ञान की प्राप्ति कहाँ हुई थी?", options: ["सारनाथ", "बोधगया", "कुशीनगर", "लुम्बिनी"], answer: "बोधगया", solution: "बोधगया में निरंजना नदी के तट पर एक पीपल वृक्ष के नीचे बुद्ध को ज्ञान प्राप्त हुआ था।"},
-{q: "‘डांडिया रास’ किस राज्य का मुख्य लोक नृत्य है?", options: ["गुजरात", "मराठा", "गोवा", "राजस्थान"], answer: "गुजरात", solution: "डांडिया रास मुख्य रूप से गुजरात में नवरात्रि के दौरान किया जाता है।"},
-{q: "असहयोग आंदोलन के दौरान बिहार में 'सदाकत आश्रम' की स्थापना किसने की थी?", options: ["राजेंद्र प्रसाद", "मजहरुल हक", "ब्रजकिशोर प्रसाद", "अनुग्रह नारायण सिंह"], answer: "मजहरुल हक", solution: "मजहरुल हक ने पटना में सदाकत आश्रम बनाया जो बाद में राजनीति का केंद्र बना।"},
-{q: "मणिपुर की राजधानी कहाँ स्थित है?", options: ["आइजोल", "इम्फाल", "अगरतला", "गंगटोक"], answer: "इम्फाल", solution: "इम्फाल मणिपुर की राजधानी है।"},
-{q: "प्रसिद्ध 'विक्रमशिला विश्वविद्यालय' की स्थापना किस पाल राजा ने की थी?", options: ["गोपाल", "धर्मपाल", "देवपाल", "महिपाल"], answer: "धर्मपाल", solution: "धर्मपाल ने भागलपुर जिले में विक्रमशिला विश्वविद्यालय की स्थापना की थी।"},
-{q: "‘चिराव’ (Cheraw) या बांस नृत्य किस राज्य का है?", options: ["मिजोरम", "नागालैंड", "मेघालय", "त्रिपुरा"], answer: "मिजोरम", solution: "मिजोरम में बांस की मदद से किए जाने वाले इस नृत्य को बांस नृत्य भी कहते हैं।"},
-{q: "सत्यार्थ प्रकाश' पुस्तक के लेखक कौन थे?", options: ["स्वामी विवेकानंद", "स्वामी दयानंद सरस्वती", "राजा राममोहन राय", "ईश्वर चंद्र विद्यासागर"], answer: "स्वामी दयानंद सरस्वती", solution: "आर्य समाज के संस्थापक स्वामी दयानंद सरस्वती ने इसकी रचना की थी।"},
-{q: "विदेशी यात्री 'मेगास्थनीज' किसके दरबार में आया था?", options: ["अशोक", "हर्षवर्धन", "चंद्रगुप्त मौर्य", "समुद्रगुप्त"], answer: "चंद्रगुप्त मौर्य", solution: "मेगास्थनीज यूनानी राजदूत था जिसने 'इंडिका' नामक पुस्तक लिखी।"},
-{q: "स्वराज मेरा जन्मसिद्ध अधिकार है' का नारा किसने दिया था?", options: ["लाला लाजपत राय", "बाल गंगाधर तिलक", "विपिन चंद्र पाल", "सुभाष चंद्र बोस"], answer: "बाल गंगाधर तिलक", solution: "तिलक जी ने यह प्रसिद्ध नारा दिया था।"},
-{q: "अंकोरवाट का मंदिर कहाँ स्थित है?", options: ["वियतनाम", "थाईलैंड", "कंबोडिया", "इंडोनेशिया"], answer: "कंबोडिया", solution: "यह दुनिया का सबसे बड़ा धार्मिक स्मारक है।"},
-{q: "गया में कांग्रेस का अधिवेशन किस वर्ष हुआ था?", options: ["1912", "1922", "1925", "1930"], answer: "1922", solution: "1922 के गया अधिवेशन की अध्यक्षता चितरंजन दास ने की थी।"},
-{q: "दांडी मार्च की शुरुआत गांधीजी ने कहाँ से की थी?", options: ["दांडी", "साबरमती आश्रम", "अहमदाबाद", "खेड़ा"], answer: "साबरमती आश्रम", solution: "12 मार्च 1930 को साबरमती से नमक सत्याग्रह शुरू हुआ था।"},
-{q: "दीन-ए-इलाही' धर्म की शुरुआत किसने की थी?", options: ["बाबर", "हुमायूं", "अकबर", "शाहजहाँ"], answer: "अकबर", solution: "सभी धर्मों के मूल तत्वों को मिलाकर अकबर ने इसकी शुरुआत की थी।"},
-{q: "भारतीय राष्ट्रीय कांग्रेस की स्थापना कब हुई थी?", options: ["1880", "1885", "1890", "1905"], answer: "1885", solution: "ए.ओ. ह्यूम द्वारा बम्बई में इसकी स्थापना की गई थी।"},
-{q: "जलियांवाला बाग हत्याकांड किस शहर में हुआ था?", options: ["लाहौर", "अमृतसर", "दिल्ली", "चंडीगढ़"], answer: "अमृतसर", solution: "13 अप्रैल 1919 को अमृतसर में यह दुखद घटना हुई थी।"},
-{q: "मौर्य काल में शिक्षा का सर्वाधिक प्रसिद्ध केंद्र कौन सा था?", options: ["नालंदा", "तक्षशिला", "विक्रमशिला", "उज्जैन"], answer: "तक्षशिला", solution: "मौर्य काल में तक्षशिला विश्व प्रसिद्ध शिक्षा केंद्र था।"},
-{q: "अमीर-ए-कोही' (कृषि विभाग) की स्थापना किसने की थी?", options: ["अलाउद्दीन खिलजी", "फिरोज तुगलक", "मोहम्मद बिन तुगलक", "इल्तुतमिश"], answer: "मोहम्मद बिन तुगलक", solution: "खेती के सुधार के लिए उन्होंने यह नया विभाग बनाया था।"},
-{q: "बिहार के किस स्थान पर भारतीय राष्ट्रीय कांग्रेस का 1912 का अधिवेशन हुआ था?", options: ["बांकीपुर (पटना)", "गया", "रामगढ़", "हरिपुरा"], answer: "बांकीपुर (पटना)", solution: "यह बिहार में कांग्रेस का पहला अधिवेशन था।"},
-{q: "आजाद दस्ता' का गठन बिहार में भारत छोड़ो आंदोलन के दौरान किसने किया था?", options: ["राम मनोहर लोहिया", "जयप्रकाश नारायण", "राजेंद्र प्रसाद", "योगेंद्र शुक्ल"], answer: "जयप्रकाश नारायण", solution: "हजारीबाग जेल से भागने के बाद उन्होंने नेपाल की तराई में इसका गठन किया था।"},
-{q: "गुरु गोविंद सिंह का जन्म कहाँ हुआ था?", options: ["अमृतसर", "आनंदपुर", "पटना साहिब", "नांदेड़"], answer: "पटना साहिब", solution: "सिखों के 10वें गुरु का जन्म 1666 में पटना में हुआ था।"},
-{q: "कुतुब मीनार का निर्माण किसने पूर्ण करवाया था?", options: ["कुतुबुद्दीन ऐबक", "इल्तुतमिश", "रजिया", "बलबन"], answer: "इल्तुतमिश", solution: "ऐबक ने शुरुआत की थी लेकिन इसे पूरा इल्तुतमिश ने करवाया।"},
-{q: "अंतिम मुगल सम्राट कौन था?", options: ["औरंगजेब", "बहादुर शाह जफर", "शाह आलम", "जहांदार शाह"], answer: "बहादुर शाह जफर", solution: "1857 की क्रांति के बाद इन्हें रंगून निर्वासित कर दिया गया था।"}
+{q: "बिहार की राजधानी क्या है?", options: ["गया", "पटना", "भागलपुर", "मुजफ्फरपुर"], answer: "पटना", solution: "पटना बिहार की प्रशासनिक और राजनीतिक राजधानी है।"},
+{q: "भारत के प्रथम राष्ट्रपति कौन थे?", options: ["जवाहरलाल नेहरू", "महात्मा गांधी", "डॉ. राजेंद्र प्रसाद", "सरदार पटेल"], answer: "डॉ. राजेंद्र प्रसाद", solution: "डॉ. राजेंद्र प्रसाद बिहार से थे और भारत के पहले राष्ट्रपति बने।"},
+{q: "सफेद क्रांति (White Revolution) का संबंध किससे है?", options: ["मछली", "दूध", "अंडा", "गेहूं"], answer: "दूध", solution: "वर्गीज कुरियन को भारत में सफेद क्रांति का जनक माना जाता है।"},
+{q: "सौरमंडल का सबसे बड़ा ग्रह कौन सा है?", options: ["मंगल", "शनि", "बृहस्पति", "पृथ्वी"], answer: "बृहस्पति", solution: "बृहस्पति (Jupiter) हमारे सौरमंडल का सबसे विशाल ग्रह है।"},
+{q: "बिहार का राजकीय फूल क्या है?", options: ["गुलाब", "गेंदा", "कमल", "सूरजमुखी"], answer: "गेंदा", solution: "गेंदा बिहार का आधिकारिक राजकीय पुष्प है।"},
+{q: "ताजमहल भारत के किस शहर में स्थित है?", options: ["दिल्ली", "जयपुर", "आगरा", "लखनऊ"], answer: "आगरा", solution: "शाहजहाँ ने आगरा में यमुना नदी के तट पर ताजमहल बनवाया था।"},
+{q: "स्वतंत्र भारत के पहले प्रधानमंत्री कौन थे?", options: ["लाल बहादुर शास्त्री", "जवाहरलाल नेहरू", "इंदिरा गांधी", "मोरारजी देसाई"], answer: "जवाहरलाल नेहरू", solution: "पंडित नेहरू 1947 से 1964 तक प्रधानमंत्री रहे।"},
+{q: "किस ग्रह को 'लाल ग्रह' कहा जाता है?", options: ["शुक्र", "बुध", "मंगल", "शनि"], answer: "मंगल", solution: "आयरन ऑक्साइड की उपस्थिति के कारण मंगल लाल दिखता है।"},
+{q: "भारत का राष्ट्रीय पक्षी क्या है?", options: ["तोता", "मोर", "कबूतर", "बाज"], answer: "मोर", solution: "भारतीय मोर (Pavo cristatus) भारत का राष्ट्रीय पक्षी है।"},
+{q: "मानव शरीर में कुल कितनी हड्डियां होती हैं?", options: ["200", "206", "210", "215"], answer: "206", solution: "एक वयस्क मानव शरीर में 206 हड्डियां होती हैं।"},
+{q: "छठ पूजा में किस देवता की पूजा की जाती है?", options: ["शिव", "विष्णु", "सूर्य", "इंद्र"], answer: "सूर्य", solution: "छठ महापर्व में भगवान सूर्य और छठी मैया की आराधना होती है।"},
+{q: "विश्व का सबसे ऊँचा पर्वत शिखर कौन सा है?", options: ["कंचनजंगा", "माउंट एवरेस्ट", "K2", "अन्नापूर्णा"], answer: "माउंट एवरेस्ट", solution: "इसकी ऊंचाई 8848.86 मीटर है।"},
+{q: "क्षेत्रफल की दृष्टि से भारत का सबसे बड़ा राज्य?", options: ["उत्तर प्रदेश", "महाराष्ट्र", "राजस्थान", "मध्य प्रदेश"], answer: "राजस्थान", solution: "राजस्थान भारत का सबसे बड़ा राज्य (क्षेत्रफल में) है।"},
+{q: "बिहार दिवस कब मनाया जाता है?", options: ["20 मार्च", "22 मार्च", "25 मार्च", "1 अप्रैल"], answer: "22 मार्च", solution: "1912 में इसी दिन बिहार को बंगाल से अलग किया गया था।"},
+{q: "कंप्यूटर का जनक किसे माना जाता है?", options: ["बिल गेट्स", "मार्क जुकरबर्ग", "चार्ल्स बैबेज", "स्टीव जॉब्स"], answer: "चार्ल्स बैबेज", solution: "चार्ल्स बैबेज ने पहले मैकेनिकल कंप्यूटर का आविष्कार किया था।"},
+{q: "महात्मा गांधी का जन्म कब हुआ था?", options: ["2 अक्टूबर 1869", "2 अक्टूबर 1879", "2 अक्टूबर 1859", "2 अक्टूबर 1889"], answer: "2 अक्टूबर 1869", solution: "उनका जन्म गुजरात के पोरबंदर में हुआ था।"},
+{q: "भारत की सबसे लंबी नदी कौन सी है?", options: ["यमुना", "ब्रह्मपुत्र", "गंगा", "गोदावरी"], answer: "गंगा", solution: "गंगा भारत की सबसे पवित्र और लंबी नदी है।"},
+{q: "मिसाइल मैन ऑफ इंडिया किसे कहा जाता है?", options: ["सी.वी. रमन", "ए.पी.जे. अब्दुल कलाम", "विक्रम साराभाई", "होमी भाभा"], answer: "ए.पी.जे. अब्दुल कलाम", solution: "डॉ. कलाम ने भारत के मिसाइल कार्यक्रम में मुख्य भूमिका निभाई।"},
+{q: "बिहार में लोकसभा सीटों की कुल संख्या कितनी है?", options: ["35", "40", "42", "45"], answer: "40", solution: "बिहार से 40 सांसद लोकसभा के लिए चुने जाते हैं।"},
+{q: "गायत्री मंत्र किस वेद से लिया गया है?", options: ["सामवेद", "यजुर्वेद", "ऋग्वेद", "अथर्ववेद"], answer: "ऋग्वेद", solution: "यह ऋग्वेद के तीसरे मंडल से लिया गया है।"},
+{q: "विटामिन 'ए' की कमी से कौन सा रोग होता है?", options: ["स्कर्वी", "रतौंधी", "बेरी-बेरी", "रिकेट्स"], answer: "रतौंधी", solution: "विटामिन A आंखों के लिए जरूरी है, इसकी कमी से रात में कम दिखता है।"},
+{q: "पटना उच्च न्यायालय की स्थापना कब हुई थी?", options: ["1912", "1916", "1920", "1925"], answer: "1916", solution: "पटना हाईकोर्ट की स्थापना 3 फरवरी 1916 को हुई थी।"},
+{q: "सिखों के दसवें गुरु, गुरु गोविंद सिंह का जन्म कहाँ हुआ था?", options: ["अमृतसर", "आनंदपुर", "पटना साहिब", "दिल्ली"], answer: "पटना साहिब", solution: "गुरु गोविंद सिंह जी का जन्म 1666 में पटना में हुआ था।"},
+{q: "दुनिया का सबसे बड़ा लोकतांत्रिक देश कौन सा है?", options: ["अमेरिका", "भारत", "चीन", "रूस"], answer: "भारत", solution: "भारत जनसंख्या और संविधान के आधार पर सबसे बड़ा लोकतंत्र है।"},
+{q: "आर्य समाज की स्थापना किसने की थी?", options: ["स्वामी विवेकानंद", "स्वामी दयानंद सरस्वती", "राजा राममोहन राय", "केशव चंद्र सेन"], answer: "स्वामी दयानंद सरस्वती", solution: "उन्होंने 1875 में मुंबई में इसकी स्थापना की।"},
+{q: "भारत के किस राज्य को 'चीनी का कटोरा' कहा जाता है?", options: ["बिहार", "पंजाब", "उत्तर प्रदेश", "हरियाणा"], answer: "उत्तर प्रदेश", solution: "गन्ने के अत्यधिक उत्पादन के कारण इसे चीनी का कटोरा कहते हैं।"},
+{q: "पृथ्वी का जुड़वां ग्रह (Twin Planet) किसे कहा जाता है?", options: ["मंगल", "शुक्र", "बुध", "शनि"], answer: "शुक्र", solution: "आकार और संरचना में समानता के कारण शुक्र को पृथ्वी की जुड़वां बहन कहते हैं।"},
+{q: "बिहार का राजकीय पशु कौन सा है?", options: ["हाथी", "बैल", "शेर", "बाघ"], answer: "बैल", solution: "बैल (Gaur) बिहार का राजकीय पशु है।"},
+{q: "शिक्षक दिवस किसकी याद में मनाया जाता है?", options: ["महात्मा गांधी", "डॉ. सर्वपल्ली राधाकृष्णन", "जवाहरलाल नेहरू", "भगत सिंह"], answer: "डॉ. सर्वपल्ली राधाकृष्णन", solution: "वे भारत के पहले उपराष्ट्रपति और दूसरे राष्ट्रपति थे।"},
+{q: "वायुमंडल में ऑक्सीजन का प्रतिशत कितना है?", options: ["78%", "21%", "0.03%", "1%"], answer: "21", solution: "हवा में लगभग 21% ऑक्सीजन और 78% नाइट्रोजन होती है।"},
+{q: "वाल्मीकि राष्ट्रीय उद्यान बिहार के किस जिले में है?", options: ["गया", "पश्चिमी चंपारण", "पूर्वी चंपारण", "रोहतास"], answer: "पश्चिमी चंपारण", solution: "यह बिहार का एकमात्र नेशनल पार्क और टाइगर रिजर्व है।"},
+{q: "भारत का राष्ट्रीय खेल क्या है?", options: ["क्रिकेट", "फुटबॉल", "हॉकी", "कबड्डी"], answer: "हॉकी", solution: "हॉकी भारत का पारंपरिक राष्ट्रीय खेल माना जाता है।"},
+{q: "भगवान बुद्ध को ज्ञान की प्राप्ति कहाँ हुई थी?", options: ["लुम्बिनी", "सारनाथ", "बोधगया", "कुशीनगर"], answer: "बोधगया", solution: "उन्हें बोधि वृक्ष के नीचे ज्ञान (निर्वाण) प्राप्त हुआ था।"},
+{q: "पेनिसिलिन की खोज किसने की थी?", options: ["एडवर्ड जेनर", "अलेक्जेंडर फ्लेमिंग", "लुई पाश्चर", "मैडम क्यूरी"], answer: "अलेक्जेंडर फ्लेमिंग", solution: "1928 में उन्होंने दुनिया की पहली एंटीबायोटिक खोजी थी।"},
+{q: "बिहार के प्रथम मुख्यमंत्री कौन थे?", options: ["डॉ. श्री कृष्ण सिंह", "अनुग्रह नारायण सिंह", "कर्पूरी ठाकुर", "लालू प्रसाद यादव"], answer: "डॉ. श्री कृष्ण सिंह", solution: "उन्हें 'बिहार केसरी' के नाम से भी जाना जाता है।"}
 
-  
-];
+ ],
+medium: [
 
-let currentIndex=0,answers={},visited={};
-let totalSeconds=0,timerInterval,startTime;
+{q: "भारतीय संविधान के किस अनुच्छेद के तहत 'शिक्षा का अधिकार' (RTE) मौलिक अधिकार बना?", options: ["अनुच्छेद 21", "अनुच्छेद 21A", "अनुच्छेद 45", "अनुच्छेद 51A"], answer: "अनुच्छेद 21A", solution: "86वें संविधान संशोधन (2002) द्वारा इसे जोड़ा गया।"},
+{q: "बिहार में 1857 के विद्रोह का नेतृत्व किसने किया था?", options: ["मंगल पांडे", "कुंवर सिंह", "तात्या टोपे", "नाना साहेब"], answer: "कुंवर सिंह", solution: "जगदीशपुर के जमींदार बाबू कुंवर सिंह ने 80 वर्ष की आयु में नेतृत्व किया था।"},
+{q: "राज्यसभा का पदेन अध्यक्ष (Ex-officio Chairman) कौन होता है?", options: ["राष्ट्रपति", "प्रधानमंत्री", "उपराष्ट्रपति", "लोकसभा अध्यक्ष"], answer: "उपराष्ट्रपति", solution: "भारत का उपराष्ट्रपति ही राज्यसभा का सभापति होता है।"},
+{q: "विश्व की सबसे गहरी झील कौन सी है?", options: ["सुपीरियर झील", "कैस्पियन सागर", "बैकाल झील", "विक्टोरिया झील"], answer: "बैकाल झील", solution: "रूस में स्थित बैकाल झील दुनिया की सबसे गहरी ताजे पानी की झील है।"},
+{q: "बिहार के किस जिले में काकोलत जलप्रपात (Waterfall) स्थित है?", options: ["गया", "नवादा", "रोहतास", "मुंगेर"], answer: "नवादा", solution: "काकोलत जलप्रपात नवादा जिले में स्थित एक प्रसिद्ध पर्यटन स्थल है।"},
+{q: "प्रकाश वर्ष (Light Year) किसका मात्रक है?", options: ["समय", "दूरी", "प्रकाश की तीव्रता", "चाल"], answer: "दूरी", solution: "एक वर्ष में प्रकाश द्वारा तय की गई दूरी को प्रकाश वर्ष कहते हैं।"},
+{q: "भारतीय राष्ट्रीय कांग्रेस की प्रथम महिला अध्यक्ष कौन थीं?", options: ["सरोजिनी नायडू", "एनी बेसेंट", "सुचेता कृपलानी", "इंदिरा गांधी"], answer: "एनी बेसेंट", solution: "1917 के कलकत्ता अधिवेशन में एनी बेसेंट पहली महिला अध्यक्ष बनी थीं।"},
+{q: "गांधीजी ने चंपारण सत्याग्रह किस वर्ष शुरू किया था?", options: ["1915", "1917", "1919", "1921"], answer: "1917", solution: "नील की खेती (तिनकठिया प्रणाली) के विरुद्ध यह भारत में उनका पहला सत्याग्रह था।"},
+{q: "योजना आयोग (Planning Commission) के स्थान पर किस संस्था का गठन किया गया?", options: ["नीति आयोग", "वित्त आयोग", "चुनाव आयोग", "सतर्कता आयोग"], answer: "नीति आयोग", solution: "1 जनवरी 2015 को नीति आयोग (NITI Aayog) बनाया गया।"},
+{q: "भूमध्य रेखा (Equator) को दो बार काटने वाली नदी कौन सी है?", options: ["नील नदी", "अमेज़न नदी", "कांगो (जायरे) नदी", "नाइजर नदी"], answer: "कांगो (जायरे) नदी", solution: "अफ्रीका की कांगो नदी भूमध्य रेखा को दो बार पार करती है।"},
+{q: "विटामिन 'D' की कमी से बच्चों में कौन सा रोग होता है?", options: ["बेरी-बेरी", "स्कर्वी", "रिकेट्स", "घेंघा"], answer: "रिकेट्स", solution: "इसमें हड्डियां कमजोर और टेढ़ी हो जाती हैं।"},
+{q: "पाटलिपुत्र नगर की स्थापना किसने की थी?", options: ["बिम्बिसार", "अजातशत्रु", "उदयन", "अशोक"], answer: "उदयन", solution: "अजातशत्रु के पुत्र उदयन ने गंगा और सोन के संगम पर इसे बसाया था।"},
+{q: "भारत में पंचायती राज व्यवस्था का जनक किसे कहा जाता है?", options: ["बलवंत राय मेहता", "अशोक मेहता", "महात्मा गांधी", "जवाहरलाल नेहरू"], answer: "बलवंत राय मेहता", solution: "इन्हीं की सिफारिश पर त्रि-स्तरीय पंचायती राज लागू हुआ।"},
+{q: "रक्त का थक्का (Blood Clotting) बनने में कौन सा विटामिन सहायक है?", options: ["विटामिन A", "विटामिन D", "विटामिन E", "विटामिन K"], answer: "विटामिन K", solution: "विटामिन K की कमी से चोट लगने पर खून बहना बंद नहीं होता।"},
+{q: "महात्मा गांधी के राजनीतिक गुरु कौन थे?", options: ["बाल गंगाधर तिलक", "गोपाल कृष्ण गोखले", "लाला लाजपत राय", "दादाभाई नौरोजी"], answer: "गोपाल कृष्ण गोखले", solution: "गोखले के सुझाव पर ही गांधीजी ने भारत भ्रमण किया था।"},
+{q: "बिहार का राजकीय वृक्ष कौन सा है?", options: ["आम", "पीपल", "बरगद", "नीम"], answer: "पीपल", solution: "पीपल (Ficus religiosa) बिहार का राजकीय वृक्ष है।"},
+{q: "संविधान के किस संशोधन को 'लघु संविधान' (Mini Constitution) कहा जाता है?", options: ["42वां संशोधन", "44वां संशोधन", "52वां संशोधन", "73वां संशोधन"], answer: "42वां संशोधन", solution: "1976 में हुए इस संशोधन द्वारा संविधान में व्यापक बदलाव किए गए थे।"},
+{q: "नालंदा विश्वविद्यालय को किसने नष्ट किया था?", options: ["अलाउद्दीन खिलजी", "बख्तियार खिलजी", "मोहम्मद गोरी", "औरंगजेब"], answer: "बख्तियार खिलजी", solution: "1193 में कुतुबुद्दीन ऐबक के सेनापति बख्तियार खिलजी ने इसे जला दिया था।"},
+{q: "वायुदाब (Atmospheric Pressure) मापने के लिए किस यंत्र का प्रयोग किया जाता है?", options: ["थर्मामीटर", "हाइग्रोमीटर", "बैरोमीटर", "सीस्मोमीटर"], answer: "बैरोमीटर", solution: "बैरोमीटर का गिरना तूफान का संकेत होता है।"},
+{q: "भारत का 'सिलिकॉन वैली' किसे कहा जाता है?", options: ["हैदराबाद", "पुणे", "बेंगलुरु", "चेन्नई"], answer: "बेंगलुरु", solution: "IT हब होने के कारण इसे सिलिकॉन वैली कहा जाता है।"},
+{q: "अर्थशास्त्र का जनक (Father of Economics) किसे माना जाता है?", options: ["कार्ल मार्क्स", "एडम स्मिथ", "अमर्त्य सेन", "चाणक्य"], answer: "एडम स्मिथ", solution: "उनकी पुस्तक 'The Wealth of Nations' प्रसिद्ध है।"},
+{q: "गौतम बुद्ध ने अपना प्रथम उपदेश कहाँ दिया था?", options: ["बोधगया", "सारनाथ", "वैशाली", "लुम्बिनी"], answer: "सारनाथ", solution: "इसे 'धर्मचक्रप्रवर्तन' कहा जाता है।"},
+{q: "मानव शरीर की सबसे बड़ी ग्रंथि (Largest Gland) कौन सी है?", options: ["थायरॉइड", "पीयूष ग्रंथि", "यकृत (Liver)", "अग्न्याशय"], answer: "यकृत (Liver)", solution: "लिवर मानव शरीर की सबसे बड़ी और महत्वपूर्ण ग्रंथि है।"},
+{q: "बिहार के किस शहर को 'सिल्क सिटी' के नाम से जाना जाता है?", options: ["भागलपुर", "पूर्णिया", "कटिहार", "मधुबनी"], answer: "भागलपुर", solution: "तसर रेशम के उत्पादन के लिए भागलपुर प्रसिद्ध है।"},
+{q: "मौर्य वंश का संस्थापक कौन था?", options: ["बिम्बिसार", "चंद्रगुप्त मौर्य", "अशोक", "बिन्दुसार"], answer: "चंद्रगुप्त मौर्य", solution: "चाणक्य की सहायता से घनानंद को हराकर मौर्य साम्राज्य की नींव रखी।"},
+{q: "INSAT-1B का प्रक्षेपण कब किया गया था?", options: ["1980", "1983", "1985", "1990"], answer: "1983", solution: "यह भारत का एक सफल संचार उपग्रह था।"},
+{q: "हंसाने वाली गैस (Laughing Gas) का रासायनिक नाम क्या है?", options: ["नाइट्रिक ऑक्साइड", "नाइट्रस ऑक्साइड", "नाइट्रोजन डाइऑक्साइड", "अमोनिया"], answer: "नाइट्रस ऑक्साइड", solution: "इसका रासायनिक सूत्र N2O है।"},
+{q: "रविंद्रनाथ टैगोर ने 'नाइटहुड' की उपाधि क्यों लौटा दी थी?", options: ["चौरी-चौरा कांड", "जलियांवाला बाग हत्याकांड", "स्वदेशी आंदोलन", "खिलाफत आंदोलन"], answer: "जलियांवाला बाग हत्याकांड", solution: "1919 के नरसंहार के विरोध में उन्होंने अपनी उपाधि त्याग दी थी।"},
+{q: "भारत के किस राज्य में सर्वाधिक साक्षरता दर है?", options: ["बिहार", "केरल", "मिजोरम", "तमिलनाडु"], answer: "केरल", solution: "केरल में साक्षरता दर 94% से अधिक है।"},
+{q: "मधुबनी पेंटिंग का संबंध किस राज्य से है?", options: ["उत्तर प्रदेश", "बिहार", "पश्चिम बंगाल", "ओडिशा"], answer: "बिहार", solution: "यह बिहार के मिथिलांचल क्षेत्र की प्रसिद्ध लोक कला है।"},
+{q: "सार्क (SAARC) का मुख्यालय कहाँ स्थित है?", options: ["नई दिल्ली", "ढाका", "काठमांडू", "कोलंबो"], answer: "काठमांडू", solution: "SAARC की स्थापना 1985 में हुई थी।"},
+{q: "किस मौलिक अधिकार को डॉ. अंबेडकर ने 'संविधान का हृदय और आत्मा' कहा?", options: ["समानता का अधिकार", "स्वतंत्रता का अधिकार", "संवैधानिक उपचारों का अधिकार", "धार्मिक स्वतंत्रता का अधिकार"], answer: "संवैधानिक उपचारों का अधिकार", solution: "अनुच्छेद 32 को अंबेडकर जी ने सबसे महत्वपूर्ण माना।"},
+{q: "बिहार में लोकसभा के बाद राज्यसभा की कितनी सीटें हैं?", options: ["12", "16", "22", "25"], answer: "16", solution: "बिहार में राज्यसभा की 16 सीटें निर्धारित हैं।"},
+{q: "दूध की शुद्धता किस यंत्र से मापी जाती है?", options: ["लैक्टोमीटर", "हाइड्रोमीटर", "हाइग्रोमीटर", "ओडोमीटर"], answer: "लैक्टोमीटर", solution: "यह दूध के घनत्व के आधार पर शुद्धता बताता है।"},
+{q: "स्वराज मेरा जन्मसिद्ध अधिकार है और मैं इसे लेकर रहूँगा—किसने कहा?", options: ["भगत सिंह", "बाल गंगाधर तिलक", "सुभाष चंद्र बोस", "गांधीजी"], answer: "बाल गंगाधर तिलक", solution: "उन्होंने यह नारा होमरूल आंदोलन के दौरान दिया था।"}			
 
-function startTest(){
-  if(!candidateName.value || !testTime.value) {
-    alert("Please enter Name and Time"); return;
-  }
-  displayName.textContent=candidateName.value;
-  startScreen.style.display="none";
-  topBar.style.display="flex";
-  palette.style.display="flex"; 
-  navBtns.style.display="flex";
-  submitBtn.style.display="block";
-  totalSeconds=testTime.value*60;
-  startTime=Date.now();
-  saveProgress();
-  startTimer();
-  renderQuestion();
-}
+],
+hard: [
 
-function startTimer(){
-  timerInterval=setInterval(()=>{
-    totalSeconds--;
-    updateTimer();
-    saveProgress();
-    if(totalSeconds<=0)submitQuiz();
-  },1000);
-}
+{q: "बिहार आर्थिक सर्वेक्षण 2024-25 के अनुसार, बिहार की अर्थव्यवस्था में तृतीयक क्षेत्र (Tertiary Sector) का योगदान कितना है?", options: ["60.2%", "55.8%", "45.0%", "38.5%"], answer: "60.2%", solution: "बिहार की जीडीपी में सेवा क्षेत्र का योगदान सबसे अधिक है और यह लगातार बढ़ रहा है।"},
+{q: "अनुच्छेद 371-J के तहत किस राज्य के क्षेत्र को विशेष दर्जा दिया गया है?", options: ["असम", "आंध्र प्रदेश", "कर्नाटक", "नागालैंड"], answer: "कर्नाटक", solution: "यह हैदराबाद-कर्नाटक क्षेत्र के विकास के लिए विशेष प्रावधान करता है।"},
+{q: "बिहार के किस जिले में देश का पहला 'गेंडा संरक्षण एवं प्रजनन केंद्र' स्थापित किया गया है?", options: ["वाल्मीकि नगर", "संजय गांधी जैविक उद्यान (पटना)", "गया", "बेगूसराय"], answer: "संजय गांधी जैविक उद्यान (पटना)", solution: "पटना का जू गेंडा प्रजनन के मामले में विश्व में दूसरे स्थान पर है।"},
+{q: "बिहार में 'तिनकटिया' प्रथा के तहत कितनी भूमि पर नील की खेती करना अनिवार्य था?", options: ["3/10", "3/20", "3/25", "3/30"], answer: "3/20", solution: "हर 20 कट्ठा में 3 कट्ठा नील की खेती अनिवार्य थी, जिसके विरुद्ध चंपारण सत्याग्रह हुआ।"},
+{q: "प्रसिद्ध 'विक्रमशिला विश्वविद्यालय' की स्थापना किस पाल शासक ने की थी?", options: ["गोपाल", "धर्मपाल", "देवपाल", "महिपाल"], answer: "धर्मपाल", solution: "8वीं शताब्दी में भागलपुर में इसकी स्थापना धर्मपाल ने की थी।"},
+{q: "संविधान के किस अनुच्छेद के तहत 'राज्यपाल' को अध्यादेश (Ordinance) जारी करने की शक्ति प्राप्त है?", options: ["अनुच्छेद 123", "अनुच्छेद 213", "अनुच्छेद 226", "अनुच्छेद 161"], answer: "अनुच्छेद 213", solution: "राष्ट्रपति को अनुच्छेद 123 और राज्यपाल को 213 के तहत यह शक्ति है।"},
+{q: "स्वर्ण सिंह समिति की सिफारिश पर संविधान में क्या जोड़ा गया था?", options: ["नीति निर्देशक तत्व", "मौलिक कर्तव्य", "प्रस्तावना में समाजवादी शब्द", "पंचायती राज"], answer: "मौलिक कर्तव्य", solution: "42वें संशोधन 1976 द्वारा मौलिक कर्तव्यों को भाग IV-A में जोड़ा गया।"},
+{q: "बिहार के किस जिले में 'उदयपुर वन्यजीव अभयारण्य' स्थित है?", options: ["पश्चिमी चंपारण", "पूर्वी चंपारण", "गया", "मुंगेर"], answer: "पश्चिमी चंपारण", solution: "नाम से राजस्थान का लगता है लेकिन यह बिहार के बेतिया (पश्चिमी चंपारण) में है।"},
+{q: "इंसुलिन हार्मोन का स्राव (Secretion) अग्न्याशय की किन कोशिकाओं से होता है?", options: ["अल्फा कोशिका", "बीटा कोशिका", "गामा कोशिका", "डेल्टा कोशिका"], answer: "बीटा कोशिका", solution: "Islets of Langerhans की बीटा कोशिकाओं से इंसुलिन निकलता है।"},
+{q: "भारत में 'रेगुलेटिंग एक्ट' किस वर्ष पारित किया गया था?", options: ["1773", "1784", "1793", "1813"], answer: "1773", solution: "ब्रिटिश संसद द्वारा भारत में ईस्ट इंडिया कंपनी के कार्यों को नियंत्रित करने का यह पहला कदम था।"},
+{q: "बिहार का एकमात्र जिला जहाँ से 'गंगा' नदी सबसे लंबी दूरी तय करती है?", options: ["भागलपुर", "पटना", "बेगूसराय", "मुंगेर"], answer: "पटना", solution: "पटना जिले में गंगा की लंबाई लगभग 99 किमी है, जो किसी भी अन्य जिले से अधिक है।"},
+{q: "किस काल को 'भारतीय इतिहास का स्वर्ण युग' कहा जाता है?", options: ["मौर्य काल", "गुप्त काल", "मुगल काल", "कुषाण काल"], answer: "गुप्त काल", solution: "कला, साहित्य और विज्ञान की उन्नति के कारण इसे स्वर्ण युग कहते हैं।"},
+{q: "भारत के किस राज्य में 'समान नागरिक संहिता' (UCC) लागू है?", options: ["सिक्किम", "मिजोरम", "गोवा", "केरल"], answer: "गोवा", solution: "गोवा में पुर्तगाली काल से ही समान नागरिक संहिता लागू है।"},
+{q: "जीरो डिग्री देशांतर (Prime Meridian) कहाँ से गुजरती है?", options: ["पेरिस", "ग्रीनविच (लंदन)", "न्यूयॉर्क", "दिल्ली"], answer: "ग्रीनविच (लंदन)", solution: "यहीं से विश्व का मानक समय (GMT) निर्धारित होता है।"},
+{q: "बिहार की पहली मैथिली फिल्म कौन सी है?", options: ["कन्यादान", "ममता गावे गीत", "सस्ता दिन", "लागी नहीं छूटे राम"], answer: "कन्यादान", solution: "यह मैथिली भाषा की पहली व्यावसायिक फिल्म थी।"},
+{q: "कोशिका के किस अंग को 'आत्मघाती थैली' (Suicide Bag) कहा जाता है?", options: ["राइबोसोम", "माइटोकॉन्ड्रिया", "लाइसोसोम", "गॉल्जीकाय"], answer: "लाइसोसोम", solution: "इसमें पाचक एंजाइम होते हैं जो कोशिका के खराब होने पर उसे ही पचा देते हैं।"},
+{q: "बिहार विधान परिषद (Legislative Council) की कुल सीटों की संख्या कितनी है?", options: ["75", "243", "40", "16"], answer: "75", solution: "विधानसभा में 243 और विधान परिषद में 75 सीटें हैं।"},
+{q: "अकबर ने बिहार को मुगल साम्राज्य में किस वर्ष मिलाया था?", options: ["1570", "1574", "1576", "1580"], answer: "1576", solution: "दाऊद खान कर्रानी को हराकर बिहार पर मुगल कब्जा हुआ।"},
+{q: "भारतीय संविधान का 'अनुच्छेद 44' किससे संबंधित है?", options: ["ग्राम पंचायत", "समान नागरिक संहिता", "कार्यपालिका का पृथक्करण", "शिक्षा का अधिकार"], answer: "समान नागरिक संहिता", solution: "UCC (Uniform Civil Code) का वर्णन नीति निर्देशक तत्वों में है।"},
+{q: "स्वतंत्र भारत के प्रथम कानून मंत्री कौन थे?", options: ["जवाहरलाल नेहरू", "वल्लभभाई पटेल", "बी.आर. अंबेडकर", "मौलाना आजाद"], answer: "बी.आर. अंबेडकर", solution: "अंबेडकर जी भारत के पहले विधि एवं न्याय मंत्री थे।"},
+{q: "बिहार के किस जिले को 'वर्मी कंपोस्ट' का जनक कहा जाता है?", options: ["नालंदा", "बेगूसराय", "सहरसा", "मधुबनी"], answer: "बेगूसराय", solution: "बेगूसराय के खोदावंदपुर को वर्मी कंपोस्ट का केंद्र माना जाता है।"},
+{q: "भारतीय रिजर्व बैंक (RBI) का राष्ट्रीयकरण कब हुआ था?", options: ["1935", "1947", "1949", "1950"], answer: "1949", solution: "स्थापना 1935 में हुई थी, लेकिन राष्ट्रीयकरण 1 जनवरी 1949 को हुआ।"},
+{q: "बिहार में सर्वाधिक वर्षा वाला जिला कौन सा है?", options: ["पूर्णिया", "किशनगंज", "कटिहार", "अररिया"], answer: "किशनगंज", solution: "बंगाल की खाड़ी के निकट होने के कारण किशनगंज में सबसे ज्यादा बारिश होती है।"},
+{q: "मानव रक्त का pH मान कितना होता है?", options: ["6.4", "7.0", "7.4", "8.0"], answer: "7.4", solution: "रक्त थोड़ा क्षारीय (Slightly Alkaline) होता है।"},
+{q: "शेरशाह सूरी का मकबरा कहाँ स्थित है?", options: ["दिल्ली", "सासाराम", "पटना", "लाहौर"], answer: "सासाराम", solution: "यह मकबरा एक तालाब के बीच में अष्टकोणीय बना हुआ है।"},
+{q: "सत्यार्थ प्रकाश पुस्तक के लेखक कौन थे?", options: ["स्वामी विवेकानंद", "दयानंद सरस्वती", "राजा राममोहन राय", "ज्योतिबा फुले"], answer: "दयानंद सरस्वती", solution: "यह आर्य समाज का मुख्य ग्रंथ है।"},
+{q: "असहयोग आंदोलन (Non-Cooperation Movement) को किस घटना के बाद स्थगित कर दिया गया?", options: ["जलियांवाला बाग", "चौरी-चौरा कांड", "गांधी-इरविन समझौता", "पुना पैक्ट"], answer: "चौरी-चौरा कांड", solution: "फरवरी 1922 में हुई हिंसक घटना के कारण गांधीजी ने आंदोलन वापस ले लिया।"},
+{q: "संविधान के किस भाग में 'नगरपालिकाओं' का वर्णन है?", options: ["भाग IX", "भाग IX-A", "भाग X", "भाग XI"], answer: "भाग IX-A", solution: "74वें संविधान संशोधन द्वारा इसे जोड़ा गया था।"},
+{q: "बिहार के किस नृत्य को 'गुजरात के गरबा' के रूप में जाना जाता है?", options: ["जट-जटिन", "झिझिया", "बिदेसिया", "कजरी"], answer: "झिझिया", solution: "महिलाएं सिर पर घड़ा रखकर यह नृत्य करती हैं, जो गरबा से मिलता-जुलता है।"},
+{q: "दूध का सफेद रंग किसकी उपस्थिति के कारण होता है?", options: ["कैरोटीन", "केसीन", "लैक्टोज", "एल्ब्यूमिन"], answer: "केसीन", solution: "केसीन एक प्रोटीन है जो दूध को सफेद रंग प्रदान करता है।"},
+{q: "भारत के किस राज्य में 'नंदा देवी' पर्वत चोटी स्थित है?", options: ["सिक्किम", "उत्तराखंड", "हिमाचल प्रदेश", "अरुणाचल प्रदेश"], answer: "उत्तराखंड", solution: "यह उत्तराखंड के चमोली जिले में स्थित है।"},
+{q: "बिहार में 'किसान सभा' का गठन किसने किया था?", options: ["राजेंद्र प्रसाद", "स्वामी सहजानंद सरस्वती", "अनुग्रह नारायण सिंह", "जयप्रकाश नारायण"], answer: "स्वामी सहजानंद सरस्वती", solution: "1929 में सोनपुर मेले के अवसर पर इसकी स्थापना हुई थी।"},
+{q: "अंडमान और निकोबार द्वीप समूह का सर्वोच्च शिखर 'सैंडल पीक' कहाँ स्थित है?", options: ["ग्रेट निकोबार", "मध्य अंडमान", "उत्तरी अंडमान", "लिटिल अंडमान"], answer: "उत्तरी अंडमान", solution: "सैंडल पीक उत्तरी अंडमान में स्थित है।"},
+{q: "अम्लीय वर्षा (Acid Rain) किन गैसों के कारण होती है?", options: ["CO2 और CO", "SO2 और NO2", "Methane", "Ozone"], answer: "SO2 और NO2", solution: "सल्फर डाइऑक्साइड और नाइट्रोजन ऑक्साइड पानी के साथ मिलकर अम्ल बनाते हैं।"},
+{q: "किस वर्ष 'बिहार' और 'ओडिशा' अलग हुए थे?", options: ["1912", "1936", "1947", "1956"], answer: "1936", solution: "1 अप्रैल 1936 को बिहार और ओडिशा को अलग-अलग प्रांत बनाया गया।"}
 
-function updateTimer(){
-  timer.textContent=
-    String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+
-    String(totalSeconds%60).padStart(2,'0');
-}
+  ]
+    };
 
-function renderQuestion(){
-  visited[currentIndex]=true;
-  const q=questions[currentIndex];
-  quizArea.innerHTML=`
-    <div class="quiz-card">
-      <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-      <div class="options">
-        ${q.options.map(o=>`
-          <label>
-            <input type="radio" name="opt"
-              ${answers[currentIndex]==o?'checked':''}
-              onchange="selectAnswer('${o}')">
-            ${o}
-          </label>
-        `).join("")}
-      </div>
-    </div>`;
-  renderPalette();
-  saveProgress();
-}
+    let questions = [];
+    let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
+    let totalSeconds=0, timerInterval, startTime;
 
-function selectAnswer(val){
-  answers[currentIndex]=val;
-  saveProgress();
-  renderPalette();
-}
+    function syncCountAndTime() {
+        const level = document.getElementById("difficultyLevel").value;
+        const count = allQuestionsBank[level].length;
+        document.getElementById("totalQDisplay").textContent = count;
+        document.getElementById("testTime").value = count;
+    }
 
-function renderPalette(){
-  palette.innerHTML="";
-  questions.forEach((_,i)=>{
-    const s=document.createElement("span");
-    s.textContent=i+1;
-    if(visited[i])s.classList.add("visited");
-    if(answers[i])s.classList.add("attempted");
-    s.onclick=()=>{currentIndex=i;renderQuestion()};
-    palette.appendChild(s);
-  });
-}
+    function startTest(){
+        const level = document.getElementById("difficultyLevel").value;
+        questions = allQuestionsBank[level];
+        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+        displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
+        startScreen.style.display="none";
+        topBar.style.display="flex";
+        palette.style.display="flex";
+        navBtns.style.display="flex";
+        submitBtn.style.display="block";
+        totalSeconds=testTime.value*60;
+        startTime=Date.now();
+        saveProgress(level);
+        startTimer();
+        renderQuestion();
+    }
 
-function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
-function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
+    function startTimer(){
+        timerInterval=setInterval(()=>{
+            totalSeconds--;
+            updateTimerDisplay();
+            saveProgress();
+            if(totalSeconds<=0) submitQuiz();
+        },1000);
+    }
 
-function saveProgress(){
-  localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
-    name:displayName.textContent,
-    answers,visited,currentIndex,totalSeconds,startTime
-  }));
-}
+    function updateTimerDisplay(){
+        timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+ String(totalSeconds%60).padStart(2,'0');
+    }
 
-function submitQuiz(){
-  if(!confirm("Are you sure you want to submit?")) return;
-  clearInterval(timerInterval);
-  localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-  
-  let correct=0, attempted=0;
-  let detailHtml="<h2>Detailed Analysis</h2>";
-  
-  questions.forEach((q,i)=>{
-    if(answers[i]) attempted++;
-    if(answers[i] == q.answer) correct++;
-    
-    detailHtml+=`
-      <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
-        <p><b>Q${i+1}.</b> ${q.q}</p>
-        <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
-        <div class="sol-box">
-          <b>Logic:</b> ${q.solution}
-        </div>
-      </div>`;
-  });
+    function renderQuestion(){
+        visited[currentIndex]=true;
+        const q=questions[currentIndex];
+        quizArea.innerHTML=`
+            <div class="quiz-card">
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+                </div>
+                <div class="options">
+                    ${q.options.map(o=>`
+                        <label>
+                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
+                        </label>
+                    `).join("")}
+                </div>
+                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+            </div>`;
+        renderPalette();
+    }
 
-  const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-  const accuracy = attempted ? Math.round((correct / attempted) * 100) : 0;
+    function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
+    function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
+    function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
+    function challengeQuestion(){
+        if(answers[currentIndex]){ alert("Already answered!"); return; }
+        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
+    }
 
-  localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}`, "true");
-  localStorage.setItem(`score_${MY_TEST_ID}`, `${correct} / ${questions.length}`);
+    function renderPalette(){
+        palette.innerHTML="";
+        questions.forEach((_,i)=>{
+            const s=document.createElement("span");
+            s.textContent=i+1;
+            if(visited[i]) s.classList.add("visited");
+            if(answers[i]) s.classList.add("attempted");
+            if(reviewMarks[i]) s.classList.add("marked-review");
+            if(challenges[i]) s.classList.add("challenged");
+            s.onclick=()=>{currentIndex=i;renderQuestion()};
+            palette.appendChild(s);
+        });
+    }
 
-  const summaryBox = `
-    <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Performance Report</h3>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b style="font-size:18px; color:#4ade80;">${accuracy}%</b></div>
-        <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-      </div>
-      <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
-    </div>
-  `;
+    function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
+    function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-  const finalHtml = summaryBox + detailHtml;
-  localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+    function saveProgress(lvl){
+        const level = lvl || JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}`) || '{"level":"easy"}').level;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
+            name:displayName.textContent.split(' (')[0],
+            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+        }));
+    }
 
-  emailjs.send("service_wq5yoyp", "template_doegpcp", {
-    candidate_name: displayName.textContent,
-    subject: MY_SUBJECT,
-    score: correct,
-    total: questions.length,
-    attempted: attempted,
-    accuracy: accuracy + "%",
-    time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-    test_date: new Date().toLocaleString("en-IN")
-  });
+    function submitQuiz(){
+        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
+        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
+        if(!confirm("Are you sure you want to submit?")) return;
+        
+        clearInterval(timerInterval);
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+        
+        let correct=0, attempted=0, challCount=0;
+        let detailHtml="<h2>Detailed Analysis</h2>";
+        
+        questions.forEach((q,i)=>{
+            let isCorrect = false;
+            let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
 
-  quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
-  submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
-  clearBtn.style.display="block"; window.scrollTo(0,0);
-}
+            if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
+            else if(answers[i] === q.answer) { isCorrect = true; }
+            
+            if(answers[i]) attempted++;
+            if(isCorrect) correct++;
 
-window.onload=function(){
-  document.getElementById("totalQDisplay").textContent = questions.length;
-  document.getElementById("testTime").value = questions.length;
+            detailHtml+=`
+                <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                    <p><b>Q${i+1}.</b> ${q.q}</p>
+                    <p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                    <div class="sol-box"><b>Logic:</b> ${q.solution}</div>
+                </div>`;
+        });
 
-  const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
-  const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
-  
-  if(final){
-    const d=JSON.parse(final);
-    startScreen.style.display="none"; topBar.style.display="flex";
-    displayName.textContent=d.name; result.style.display="block"; result.innerHTML=d.html;
-    clearBtn.style.display="block";
-  } else if(progress){
-    const p=JSON.parse(progress);
-    displayName.textContent=p.name; answers=p.answers||{}; visited=p.visited||{};
-    currentIndex=p.currentIndex||0; totalSeconds=p.totalSeconds||0; startTime=p.startTime||Date.now();
-    startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex";
-    navBtns.style.display="flex"; submitBtn.style.display="block"; startTimer(); renderQuestion();
-  }
-};
+        // Dashboard Storage logic
+        const currentLvl = document.getElementById("difficultyLevel").value.toUpperCase();
+        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
 
-function clearResult(){
-  if(confirm("Start new test? Previous results for this subject will be cleared.")){ 
-    localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
-    localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
-    location.reload(); 
-  }
-}
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
+        
+        const summaryBox = `
+            <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+                <h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div>
+                    <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                </div>
+                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button>
+            </div>`;
+
+        const finalHtml = summaryBox + detailHtml;
+        result.style.display="block";
+        result.innerHTML = finalHtml;
+        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
+        clearBtn.style.display="block"; window.scrollTo(0,0);
+        
+        localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
+
+        emailjs.send("service_wq5yoyp", "template_doegpcp", {
+            candidate_name: displayName.textContent,
+            subject: MY_SUBJECT,
+            score: correct,
+            total: questions.length,
+            attempted: attempted,
+            accuracy: accuracy + "%",
+            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
+            test_date: new Date().toLocaleString("en-IN")
+        });
+    }
+
+    window.onload=function(){
+        syncCountAndTime();
+        const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
+        const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
+        if(final){
+            const d=JSON.parse(final);
+            result.style.display="block"; result.innerHTML=d.html; clearBtn.style.display="block";
+            startScreen.style.display="none";
+        } else if(progress){
+            const p=JSON.parse(progress);
+            questions = allQuestionsBank[p.level];
+            displayName.textContent=p.name + ` (${p.level.toUpperCase()})`;
+            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime; reviewMarks=p.reviewMarks; challenges=p.challenges;
+            startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex"; navBtns.style.display="flex"; submitBtn.style.display="block";
+            startTimer(); renderQuestion();
+        }
+    };
+
+    function clearResult(){ if(confirm("Clear result?")) { localStorage.clear(); location.reload(); } }
 </script>
 </body>
 </html>
-
-
-
