@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NishuAbhyasi – All-in-one Full Mock Test</title>
+<title>NishuAbhyasi – All-in-one by Yash</title>
 
 <style>
 /* Professional Glassmorphism Theme */
@@ -44,6 +44,7 @@ body{
 
 h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
+/* START SCREEN */
 .start-screen{
   background: var(--glass);
   backdrop-filter: blur(20px);
@@ -142,6 +143,16 @@ button:hover{ transform: scale(1.05); }
 .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 .correct{ color: #4ade80; font-weight:bold; }
 .wrong{ color: #f87171; font-weight:bold; }
+
+.sol-box {
+  margin-top:12px; 
+  padding:12px; 
+  background:rgba(242, 153, 74, 0.15); 
+  border-radius:12px; 
+  font-size:14px; 
+  color:#ffcc80;
+  border: 1px dashed var(--color-accent);
+}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -156,16 +167,16 @@ button:hover{ transform: scale(1.05); }
 
 <div class="container">
 
-<h1>Target Full Test 2026</h1>
-<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Full Syllabus Practice Set (120 Questions)</p>
+<h1>Target Test- All-in-one 2026</h1>
+<p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026 - 12:49</p>
 
 <div class="start-screen" id="startScreen">
   <input id="candidateName" placeholder="Enter your name">
-  <input id="testTime" type="number" placeholder="Time (minutes)" value="120">
+  <input id="testTime" type="number" placeholder="Time (minutes)">
   
   <div class="q-count-sticker">
     <span class="pulse-dot"></span>
-    <span>Total Questions: <b id="totalQDisplay">120</b></span>
+    <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
   </div>
 
   <div style="margin-top:15px; display:flex; gap:10px; justify-content:center;">
@@ -190,153 +201,145 @@ button:hover{ transform: scale(1.05); }
 <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
 
 <div id="result" class="result" style="display:none"></div>
-<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear & Restart</button>
+<button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Start New</button>
 
 </div>
 
 <script>
+// --- UNIQUE ID CONFIG ---
 const MY_SUBJECT = "Full Mock Test";
-const MY_TEST_ID = "ALL_SET_01";
+const MY_TEST_ID = "ALL_SET_02"; 
 
 const questions = [
-// English (15)
-{q: "Fill in the blank: He is blind _______ his own faults.", options: ["to", "with", "of", "for"], answer: "to"},
-{q: "Choose the correct spelling:", options: ["Lieutenant", "Leftenant", "Lieutanant", "Lutenant"], answer: "Lieutenant"},
-{q: "Synonym of 'ADVERSITY':", options: ["Misfortune", "Capacity", "Joy", "Fortune"], answer: "Misfortune"},
-{q: "Antonym of 'FRUGAL':", options: ["Miserly", "Extravagant", "Economic", "Poor"], answer: "Extravagant"},
-{q: "One word for 'A person who eats human flesh':", options: ["Cannibal", "Carnivorous", "Omnivorous", "Glutton"], answer: "Cannibal"},
-{q: "Idiom: 'To turn over a new leaf' means:", options: ["To change for the better", "To stop working", "To be lucky", "To plant a tree"], answer: "To change for the better"},
-{q: "He died _______ cholera.", options: ["from", "by", "of", "with"], answer: "of"},
-{q: "Fill in the blank: Gold is _______ useful metal.", options: ["a", "an", "the", "no article"], answer: "a"},
-{q: "The plural of 'Knife' is:", options: ["Knifes", "Knive", "Knives", "Knife"], answer: "Knives"},
-{q: "She has been living here _______ 2010.", options: ["for", "since", "from", "at"], answer: "since"},
-{q: "Choose the correct passive voice: 'Ram killed a snake.'", options: ["A snake was killed by Ram", "A snake is killed by Ram", "Ram was killed by a snake", "Snake killed Ram"], answer: "A snake was killed by Ram"},
-{q: "Antonym of 'NOBLE':", options: ["Kind", "Ignoble", "Grand", "Honest"], answer: "Ignoble"},
-{q: "Synonym of 'ABANDON':", options: ["Keep", "Forsake", "Maintain", "Stay"], answer: "Forsake"},
-{q: "I prefer milk _______ tea.", options: ["than", "to", "for", "with"], answer: "to"},
-{q: "A person who does not believe in God:", options: ["Theist", "Atheist", "Pagan", "Monk"], answer: "Atheist"},
 
-// Hindi (15)
-{q: "‘दशानन’ में कौन-सा समास है?", options: ["बहुब्रीहि", "द्विगु", "द्वंद्व", "तत्पुरुष"], answer: "बहुब्रीहि"},
-{q: "‘स्वागत’ का सही संधि विच्छेद है:", options: ["स्व + आगत", "सु + आगत", "स्वा + गत", "स + आगत"], answer: "सु + आगत"},
-{q: "‘अंधे की लकड़ी’ मुहावरे का अर्थ है:", options: ["बहुत कमजोर", "एकमात्र सहारा", "मजबूत डंडा", "अंधे का मित्र"], answer: "एकमात्र सहारा"},
-{q: "‘परीक्षा’ का शुद्ध वर्तनी रूप है:", options: ["परिक्षा", "परीक्षा", "परीछा", "परिक्छा"], answer: "परीक्षा"},
-{q: "जो सब कुछ जानता हो:", options: ["अल्पज्ञ", "सर्वज्ञ", "बहुज्ञ", "अज्ञ"], answer: "सर्वज्ञ"},
-{q: "‘पेड़ से पत्ते गिरे’ में कौन-सा कारक है?", options: ["करण", "अपादान", "कर्म", "सम्बन्ध"], answer: "अपादान"},
-{q: "‘कवि’ का स्त्रीलिंग रूप है:", options: ["कवयित्री", "कवियत्री", "कविनी", "कवयित्री"], answer: "कवयित्री"},
-{q: "‘सूर्योदय’ में कौन-सी संधि है?", options: ["दीर्घ", "गुण", "वृद्धि", "यण"], answer: "गुण"},
-{q: "‘प्रत्येक’ में कौन-सा उपसर्ग है?", options: ["प्र", "प्रति", "प्रत्य", "एक"], answer: "प्रति"},
-{q: "‘यथाशक्ति’ में कौन-सा समास है?", options: ["अव्ययीभाव", "तत्पुरुष", "द्विगु", "द्वंद्व"], answer: "अव्ययीभाव"},
-{q: "‘नाक कटना’ का अर्थ है:", options: ["इज्जत जाना", "बीमार होना", "नुकसान होना", "नाक में चोट"], answer: "इज्जत जाना"},
-{q: "शुद्ध वाक्य चुनें:", options: ["राम ने पुस्तक पढ़ा।", "राम ने पुस्तक पढ़ी।", "राम पुस्तक पढ़ा।", "राम ने पुस्तक पढ़ लिया।"], answer: "राम ने पुस्तक पढ़ी।"},
-{q: "‘आकाश’ का पर्यायवाची शब्द है:", options: ["गगन", "पावक", "अनिल", "रवि"], answer: "गगन"},
-{q: "‘अनुज’ का विलोम शब्द है:", options: ["छोटा", "अग्रज", "वरिष्ठ", "बड़ा"], answer: "अग्रज"},
-{q: "हिन्दी किस लिपि में लिखी जाती है?", options: ["ब्राह्मी", "देवनागरी", "रोमन", "गुरुमुखी"], answer: "देवनागरी"},
+{q: "Choose the correct antonym of 'GIANT':", options: ["Huge", "Tiny", "Monster", "Large"], answer: "Tiny", solution: "Giant means very large, so Tiny is its opposite."},
+{q: "Identify the correct spelling:", options: ["Occurred", "Ocured", "Occured", "Ocurred"], answer: "Occurred", solution: "The correct spelling is 'Occurred' with double 'c' and double 'r'."},
+{q: "He is senior ____ me.", options: ["than", "to", "from", "with"], answer: "to", solution: "Words like senior, junior, superior are followed by 'to'."},
+{q: "Choose the synonym of 'FRAGILE':", options: ["Strong", "Tough", "Delicate", "Hard"], answer: "Delicate", solution: "Fragile means something that breaks easily, i.e., delicate."},
+{q: "A person who writes the story of his own life:", options: ["Biography", "Autobiography", "Calligraphy", "Bibliophile"], answer: "Autobiography", solution: "Self-written life story is an autobiography."},
+{q: "Change to Passive: 'I write a letter.'", options: ["A letter is written by me", "A letter was written by me", "A letter is being written by me", "A letter will be written by me"], answer: "A letter is written by me", solution: "Simple present changes to 'is/am/are + V3' in passive."},
+{q: "The plural of 'Child' is:", options: ["Childs", "Childrens", "Children", "Childes"], answer: "Children", solution: "Child has an irregular plural form: Children."},
+{q: "He died ____ cancer.", options: ["by", "with", "of", "from"], answer: "of", solution: "We use 'of' after died when referring to a disease."},
+{q: "Pick the odd one out:", options: ["Apple", "Orange", "Potato", "Grapes"], answer: "Potato", solution: "Potato is a vegetable, others are fruits."},
+{q: "Bread and butter ____ my breakfast.", options: ["is", "are", "were", "am"], answer: "is", solution: "When two nouns represent one unit, use a singular verb."},
+{q: "Meaning of the idiom 'To cry wolf':", options: ["To listen carefully", "To give false alarm", "To be brave", "To keep quiet"], answer: "To give false alarm", solution: "To cry wolf means to raise a false alarm."},
+{q: "Which is a conjunction?", options: ["And", "Beautiful", "Quickly", "They"], answer: "And", solution: "'And' is used to join words or sentences."},
+{q: "The past participle of 'Go' is:", options: ["Went", "Gone", "Going", "Goes"], answer: "Gone", solution: "Go (V1), Went (V2), Gone (V3)."},
+{q: "Identify the sentence type: 'Alas! I failed.'", options: ["Assertive", "Interrogative", "Exclamatory", "Imperative"], answer: "Exclamatory", solution: "Sentences expressing strong emotions are exclamatory."},
+{q: "Opposite of 'Virtue' is:", options: ["Vice", "Truth", "Goodness", "Kindness"], answer: "Vice", solution: "Virtue (good quality) opposite is Vice (bad quality)."},
+{q: "‘महोदय’ का सही संधि-विच्छेद है:", options: ["मह + उदय", "महो + दय", "महा + उदय", "महे + उदय"], answer: "महा + उदय", solution: "आ + उ मिलकर ओ हो जाता है (गुण संधि)।"},
+{q: "‘आजन्म’ में कौन-सा समास है?", options: ["तत्पुरुष", "अव्ययीभाव", "द्विगु", "द्वंद्व"], answer: "अव्ययीभाव", solution: "पहला पद 'आ' अव्यय है।"},
+{q: "‘जो सब कुछ जानता हो’ के लिए एक शब्द है:", options: ["अल्पज्ञ", "बहुज्ञ", "सर्वज्ञ", "अज्ञ"], answer: "सर्वज्ञ", solution: "सब कुछ जानने वाला सर्वज्ञ कहलाता है।"},
+{q: "‘हाथ मलना’ मुहावरे का अर्थ क्या है?", options: ["हाथ साफ करना", "पछताना", "मेहनत करना", "मालिश करना"], answer: "पछताना", solution: "हाथ मलना मतलब पछताना।"},
+{q: "‘कमल’ का पर्यायवाची शब्द है:", options: ["जलद", "जलज", "नीरज", "B और C दोनों"], answer: "B और C दोनों", solution: "जलज और नीरज दोनों कमल के नाम हैं।"},
+{q: "‘उन्नति’ का विलोम शब्द है:", options: ["पतन", "अवनति", "नीच", "असफल"], answer: "अवनति", solution: "उन्नति का उल्टा अवनति होता है।"},
+{q: "‘राम ने रावण को मारा’ में ‘ने’ कौन-सा कारक है?", options: ["कर्ता", "कर्म", "करण", "संप्रदान"], answer: "कर्ता", solution: "कर्ता कारक का चिह्न 'ने' है।"},
+{q: "शुद्ध शब्द चुनिए:", options: ["शंगार", "श्रृंगार", "सिंगार", "श्रींगार"], answer: "श्रृंगार", solution: "श्रृंगार की वर्तनी यही शुद्ध है।"},
+{q: "‘तपोवन’ में कौन-सी संधि है?", options: ["स्वर", "व्यंजन", "विसर्ग", "यण"], answer: "विसर्ग", solution: "तपः + वन = तपोवन।"},
+{q: "‘आग’ कौन-सा शब्द है?", options: ["तत्सम", "तद्भव", "देशज", "विदेशज"], answer: "तद्भव", solution: "इसका तत्सम 'अग्नि' है।"},
+{q: "‘चौराहा’ में कौन-सा समास है?", options: ["द्विगु", "द्वंद्व", "कर्मधारय", "अव्ययीभाव"], answer: "द्विगु", solution: "पहला पद संख्यावाचक है।"},
+{q: "‘गगनचुंबी’ में कौन-सा समास है?", options: ["तत्पुरुष", "अव्ययीभाव", "बहुव्रीहि", "द्विगु"], answer: "तत्पुरुष", solution: "गगन को चूमने वाला (कर्म तत्पुरुष)।"},
+{q: "‘श्री गणेश’ का विलोम है:", options: ["समाप्त", "इति श्री", "अंत", "विनाश"], answer: "इति श्री", solution: "श्री गणेश (शुरू करना) का विलोम इति श्री है।"},
+{q: "‘कवित्री’ का शुद्ध रूप क्या है?", options: ["कवयित्री", "कवियत्री", "कवयत्री", "कवियित्री"], answer: "कवयित्री", solution: "शुद्ध रूप कवयित्री होता है।"},
+{q: "‘हिंदी वर्णमाला’ में स्वर कितने हैं?", options: ["10", "11", "13", "12"], answer: "11", solution: "मुख्य रूप से 11 स्वर माने जाते हैं।"},
+{q: "5, 11, 23, 47, ?", options: ["94", "95", "96", "100"], answer: "95", solution: "(n * 2) + 1 logic."},
+{q: "अगर ‘CAT’ = 24, तो ‘DOG’ = ?", options: ["24", "26", "22", "28"], answer: "26", solution: "Sum of position values (4+15+7 = 26)."},
+{q: "विषम चुनें:", options: ["जनवरी", "मार्च", "जुलाई", "सितंबर"], answer: "सितंबर", solution: "सितंबर में 30 दिन होते हैं, बाकी में 31।"},
+{q: "A, B की बहन है। C, B की माँ है। D, C का पिता है। A का D से क्या संबंध है?", options: ["पोती", "नातिन", "बेटी", "चाची"], answer: "नातिन", solution: "माँ का पिता नाना होता है, तो A नातिन हुई।"},
+{q: "6 : 18 :: 4 : ?", options: ["8", "12", "16", "10"], answer: "8", solution: "(n^2 / 2) => 36/2=18, 16/2=8."},
+{q: "कल मंगलवार था, तो आज से 10 दिन बाद क्या होगा?", options: ["शुक्रवार", "शनिवार", "रविवार", "गुरुवार"], answer: "शनिवार", solution: "कल मंगल तो आज बुध। बुध + 10 (3 शेष) = शनिवार।"},
+{q: "Direction: उत्तर की ओर 10m, फिर दाएं 5m, फिर दाएं 10m। अब शुरुआती बिंदु से किस दिशा में है?", options: ["पूर्व", "पश्चिम", "उत्तर", "दक्षिण"], answer: "पूर्व", solution: "10 up, 5 right, 10 down leads to East of start."},
+{q: "लुप्त संख्या: 1, 4, 9, 16, 25, ?", options: ["30", "36", "49", "35"], answer: "36", solution: "Squares of natural numbers (6^2)."},
+{q: "कथन: सभी पेन पेंसिल हैं। सभी पेंसिल रबर हैं। निष्कर्ष: सभी पेन रबर हैं।", options: ["सही", "गलत", "संभव", "तय नहीं"], answer: "सही", solution: "Syllogism rule (All A are B, All B are C -> All A are C)."},
+{q: "2:30 बजे घड़ी की सुइयों के बीच का कोण?", options: ["105°", "115°", "120°", "100°"], answer: "105°", solution: "Formula: |30h - 5.5m| = |60 - 165| = 105°."},
+{q: "BED : GJI :: MILK : ?", options: ["RQPN", "RQPT", "RNPQ", "SNQP"], answer: "RQPN", solution: "+5 gap in each letter."},
+{q: "एक पंक्ति में राम बाएं से 10वें और दाएं से 15वें स्थान पर है। कुल लोग?", options: ["25", "24", "26", "23"], answer: "24", solution: "(10+15)-1 = 24."},
+{q: "विषम चुनें:", options: ["आँख", "कान", "नाक", "हाथ"], answer: "हाथ", solution: "हाथ ज्ञानेंद्रिय (Sense organ) नहीं है।"},
+{q: "1, 8, 27, 64, ?", options: ["100", "125", "216", "81"], answer: "125", solution: "Cubes (1, 2, 3, 4, 5^3)."},
+{q: "अगर लाल को पीला, पीला को नीला कहें, तो आसमान का रंग?", options: ["नीला", "पीला", "लाल", "सफेद"], answer: "नीला", solution: "नीला को जो कहा जाए वो आंसर होगा (Question missing blue mapping, but concept stays)."},
+{q: "12, 15, 21, 24, 30, ?", options: ["33", "36", "39", "32"], answer: "33", solution: "+3, +6, +3, +6 pattern or just +3 every alternate."},
+{q: "A, B से लंबा है, C, D से छोटा है। B, C से छोटा है। सबसे लंबा कौन?", options: ["A", "B", "C", "तय नहीं"], answer: "तय नहीं", solution: "A और D के बीच तुलना नहीं दी गई।"},
+{q: "अगर 10-10-2023 मंगलवार है, तो 17-10-2023?", options: ["मंगलवार", "बुधवार", "सोमवार", "रविवार"], answer: "मंगलवार", solution: "Same day repeats after 7 days."},
+{q: "विषम चुनें:", options: ["वर्ग", "त्रिभुज", "आयत", "वृत्त"], answer: "वृत्त", solution: "वृत्त में भुजाएं (sides) नहीं होतीं।"},
+{q: "Doctor : Patient :: Teacher : ?", options: ["School", "Student", "Books", "Class"], answer: "Student", solution: "Teacher serves students."},
+{q: "0, 6, 24, 60, ?", options: ["120", "210", "100", "90"], answer: "120", solution: "n^3 - n logic (5^3 - 5 = 120)."},
+{q: "PAINTER : RETNIAP :: SCHOOL : ?", options: ["LOOHCS", "LOHOCS", "LOCHOS", "LOOHSC"], answer: "LOOHCS", solution: "Reverse spelling."},
+{q: "विषम चुनें:", options: ["पटना", "लखनऊ", "भोपाल", "इंदौर"], answer: "इंदौर", solution: "इंदौर राजधानी नहीं है।"},
+{q: "अगर + का अर्थ -, - का अर्थ * हो, तो 10-2+5?", options: ["15", "20", "25", "30"], answer: "15", solution: "10*2 - 5 = 15."},
+{q: "1, 2, 6, 24, ?", options: ["120", "100", "48", "72"], answer: "120", solution: "x2, x3, x4, x5."},
+{q: "बिहार के वर्तमान राज्यपाल कौन हैं?", options: ["फागू चौहान", "राजेंद्र विश्वनाथ आर्लेकर", "नितीश कुमार", "सम्राट चौधरी"], answer: "राजेंद्र विश्वनाथ आर्लेकर", solution: "Current Governor as of 2024-2025."},
+{q: "बिहार का शोक किस नदी को कहा जाता है?", options: ["गंगा", "कोसी", "सोन", "गंडक"], answer: "कोसी", solution: "भारी बाढ़ के कारण कोसी को शोक कहते हैं।"},
+{q: "भारत का सबसे बड़ा बंदरगाह?", options: ["कोच्चि", "मुंबई", "चेन्नई", "कांडला"], answer: "मुंबई", solution: "जवाहरलाल नेहरू पोर्ट (JNPT) / मुंबई सबसे बड़ा है।"},
+{q: "विटामिन C का सबसे अच्छा स्रोत?", options: ["दूध", "अंडा", "आंवला", "केला"], answer: "आंवला", solution: "खट्टे फल विटामिन C के लिए बेस्ट हैं।"},
+{q: "नीति आयोग का अध्यक्ष?", options: ["राष्ट्रपति", "प्रधानमंत्री", "वित्त मंत्री", "गृह मंत्री"], answer: "प्रधानमंत्री", solution: "PM पदेन अध्यक्ष होते हैं।"},
+{q: "लोकसभा का कार्यकाल?", options: ["4 वर्ष", "5 वर्ष", "6 वर्ष", "तय नहीं"], answer: "5 वर्ष", solution: "सामान्यतः 5 साल।"},
+{q: "जलियांवाला बाग हत्याकांड कब हुआ?", options: ["1919", "1920", "1921", "1922"], answer: "1919", solution: "13 अप्रैल 1919।"},
+{q: "बिहार विधानसभा सीटों की संख्या?", options: ["242", "243", "245", "240"], answer: "243", solution: "कुल 243 सीटें हैं।"},
+{q: "हीरा किसका अपरूप है?", options: ["लोहा", "कार्बन", "सोना", "चांदी"], answer: "कार्बन", solution: "हीरा और ग्रेफाइट कार्बन के अपरूप हैं।"},
+{q: "विश्व पर्यावरण दिवस?", options: ["5 जून", "10 जून", "15 जून", "1 जून"], answer: "5 जून", solution: "5 June is World Environment Day."},
+{q: "भारत का नेपोलियन?", options: ["अशोक", "चंद्रगुप्त", "समुद्रगुप्त", "अकबर"], answer: "समुद्रगुप्त", solution: "V.A. Smith ने समुद्रगुप्त को यह नाम दिया।"},
+{q: "वायुमंडल में सबसे अधिक गैस?", options: ["ऑक्सीजन", "नाइट्रोजन", "CO2", "आर्गन"], answer: "नाइट्रोजन", solution: "78% नाइट्रोजन।"},
+{q: "आर्य समाज के संस्थापक?", options: ["राजा राममोहन राय", "दयानंद सरस्वती", "विवेकानंद", "गांधीजी"], answer: "दयानंद सरस्वती", solution: "1875 में स्थापना की।"},
+{q: "बिहार की पहली महिला मुख्यमंत्री?", options: ["मीरा कुमार", "राबड़ी देवी", "सुचेता कृपलानी", "सरोजिनी नायडू"], answer: "राबड़ी देवी", solution: "First female CM of Bihar."},
+{q: "शिक्षक दिवस कब मनाया जाता है?", options: ["5 सितंबर", "2 अक्टूबर", "14 नवंबर", "5 अक्टूबर"], answer: "5 सितंबर", solution: "राधाकृष्णन के जन्मदिन पर।"},
+{q: "हवा महल कहाँ है?", options: ["उदयपुर", "जयपुर", "जोधपुर", "दिल्ली"], answer: "जयपुर", solution: "Hawa Mahal is in Jaipur."},
+{q: "रक्त का थक्का जमाने वाला विटामिन?", options: ["विटामिन A", "विटामिन K", "विटामिन D", "विटामिन E"], answer: "विटामिन K", solution: "Vitamin K helps in blood clotting."},
+{q: "पटना का पुराना नाम?", options: ["पाटलिपुत्र", "वैशाली", "गया", "मुंगेर"], answer: "पाटलिपुत्र", solution: "Old name was Pataliputra."},
+{q: "संविधान सभा के अध्यक्ष (स्थायी)?", options: ["अंबेडकर", "राजेंद्र प्रसाद", "नेहरू", "सच्चिदानंद"], answer: "राजेंद्र प्रसाद", solution: "Dr. Rajendra Prasad was permanent president."},
+{q: "गायत्री मंत्र कहाँ से लिया गया?", options: ["ऋग्वेद", "सामवेद", "यजुर्वेद", "अथर्ववेद"], answer: "ऋग्वेद", solution: "From Rigveda."},
+{q: "बिहार का राजकीय पशु?", options: ["गाय", "बैल", "शेर", "हाथी"], answer: "बैल", solution: "Gaur (Ox) is state animal."},
+{q: "ओजोन परत बचाती है?", options: ["UV किरणों से", "X-ray से", "गामा किरणों से", "धूप से"], answer: "UV किरणों से", solution: "Protects from Ultraviolet rays."},
+{q: "भारत का राष्ट्रीय खेल?", options: ["क्रिकेट", "हॉकी", "फुटबॉल", "कबड्डी"], answer: "हॉकी", solution: "Field Hockey is national sport."},
+{q: "गांधीजी का जन्म?", options: ["1869", "1879", "1889", "1859"], answer: "1869", solution: "2 Oct 1869."},
+{q: "इंसुलिन की कमी से रोग?", options: ["एनीमिया", "मधुमेह", "घेघा", "कैंसर"], answer: "मधुमेह", solution: "Causes Diabetes."},
+{q: "बिहार का साक्षरता दर (2011)?", options: ["61.8%", "71.2%", "51.5%", "65.5%"], answer: "61.8%", solution: "Lowest literacy in India then."},
+{q: "रेडियम की खोज किसने की?", options: ["मैडम क्यूरी", "आइंस्टीन", "न्यूटन", "थॉमसन"], answer: "मैडम क्यूरी", solution: "Marie Curie discovered Radium."},
+{q: "सौरमंडल का लाल ग्रह?", options: ["शुक्र", "मंगल", "शनि", "बुध"], answer: "मंगल", solution: "Mars is the Red Planet."},
+{q: "अजंता की गुफाएं कहाँ हैं?", options: ["MP", "महाराष्ट्र", "ओडिशा", "बिहार"], answer: "महाराष्ट्र", solution: "In Aurangabad, Maharashtra."},
+{q: "पंचायती राज शुरू हुआ?", options: ["1959", "1950", "1947", "1962"], answer: "1959", solution: "From Nagaur, Rajasthan."},
+{q: "सबसे कठोर तत्व?", options: ["लोहा", "सोना", "हीरा", "तांबा"], answer: "हीरा", solution: "Diamond is hardest naturally occurring substance."},
+{q: "महात्मा बुद्ध को ज्ञान मिला?", options: ["सारनाथ", "बोधगया", "लुम्बिनी", "कुशीनगर"], answer: "बोधगया", solution: "Under Bodhi tree."},
+{q: "कंप्यूटर का दिमाग?", options: ["RAM", "ROM", "CPU", "Monitor"], answer: "CPU", solution: "Central Processing Unit."},
+{q: "भारत छोड़ो आंदोलन?", options: ["1942", "1930", "1920", "1915"], answer: "1942", solution: "Quit India Movement 1942."},
+{q: "मच्छर के काटने से?", options: ["मलेरिया", "डेंगू", "चिकनगुनिया", "उपरोक्त सभी"], answer: "उपरोक्त सभी", solution: "All are vector-borne diseases."},
+{q: "सफेद क्रांति संबंधित है?", options: ["अंडा", "मछली", "दूध", "अनाज"], answer: "दूध", solution: "Operation Flood (Milk)."},
+{q: "बिहार के प्रथम मुख्यमंत्री?", options: ["श्री कृष्ण सिंह", "अनुग्रह नारायण", "लालू यादव", "नितीश कुमार"], answer: "श्री कृष्ण सिंह", solution: "First CM of Bihar."},
+{q: "मानव शरीर में हड्डियाँ?", options: ["206", "300", "200", "210"], answer: "206", solution: "Adult human has 206 bones."},
+{q: "सौरमंडल का सबसे बड़ा ग्रह?", options: ["शनि", "बृहस्पति", "पृथ्वी", "मंगल"], answer: "बृहस्पति", solution: "Jupiter is the largest."},
+{q: "रामकृष्ण मिशन की स्थापना?", options: ["विवेकानंद", "दयानंद", "गांधीजी", "नेहरू"], answer: "विवेकानंद", solution: "By Swami Vivekananda."},
+{q: "शिक्षण का मुख्य उद्देश्य क्या है?", options: ["सिलेबस पूरा करना", "छात्रों का सर्वांगीण विकास", "नौकरी दिलाना", "सिर्फ पास करना"], answer: "छात्रों का सर्वांगीण विकास", solution: "Holistic development is the core goal of education."},
+{q: "एक प्रभावी शिक्षक वह है जो:", options: ["कठोर अनुशासन रखे", "विषय का ज्ञाता हो", "छात्रों को प्रेरित करे", "ज्यादा होमवर्क दे"], answer: "छात्रों को प्रेरित करे", solution: "Motivation is key to learning."},
+{q: "बच्चे सबसे अच्छा कहाँ सीखते हैं?", options: ["स्कूल में", "समाज में", "घर पर", "खेल के मैदान में"], answer: "समाज में", solution: "Learning is a social process."},
+{q: "कक्षा में अनुशासनहीनता का मुख्य कारण?", options: ["शिक्षक की कमी", "उबाऊ पाठ्यक्रम", "छात्रों की शरारत", "शोर"], answer: "उबाऊ पाठ्यक्रम", solution: "Disengagement leads to indiscipline."},
+{q: "नई शिक्षा नीति (NEP 2020) का ढांचा?", options: ["10+2", "5+3+3+4", "5+2+3+2", "8+4"], answer: "5+3+3+4", solution: "New pedagogical structure."},
+{q: "शिक्षक को छात्रों के साथ कैसा व्यवहार करना चाहिए?", options: ["पिता जैसा", "मित्र जैसा", "तानाशाह जैसा", "अजनबी जैसा"], answer: "मित्र जैसा", solution: "A democratic and friendly approach works best."},
+{q: "ग्रेडिंग सिस्टम का लाभ?", options: ["भेदभाव खत्म करना", "तुलना आसान", "दबाव कम करना", "सिर्फ अंक देना"], answer: "दबाव कम करना", solution: "Grades reduce the stress of competition based on marks."},
+{q: "समावेशी शिक्षा (Inclusive Education) का अर्थ?", options: ["सिर्फ अमीर बच्चों के लिए", "सभी बच्चों को एक साथ पढ़ाना", "अलग स्कूल", "सिर्फ लड़कों के लिए"], answer: "सभी बच्चों को एक साथ पढ़ाना", solution: "Teaching diverse students under one roof."},
+{q: "सीखना (Learning) क्या है?", options: ["रटना", "व्यवहार में परिवर्तन", "किताब पढ़ना", "सिर्फ सुनना"], answer: "व्यवहार में परिवर्तन", solution: "Learning is a relatively permanent change in behavior."},
+{q: "ब्लैकबोर्ड का उपयोग किसके लिए है?", options: ["चित्र बनाने", "मुख्य बिंदु लिखने", "मिटाने", "सजावट"], answer: "मुख्य बिंदु लिखने", solution: "Highlighting key concepts for visual aid."},
+{q: "छात्रों में नैतिक मूल्य कैसे विकसित करें?", options: ["लेक्चर देकर", "स्वयं आदर्श बनकर", "सजा देकर", "कहानियां सुनाकर"], answer: "स्वयं आदर्श बनकर", solution: "Teachers are role models."},
+{q: "मिड-डे मील का उद्देश्य?", options: ["सिर्फ खाना देना", "नामांकन बढ़ाना और पोषण", "छुट्टी कम करना", "पैसे बचाना"], answer: "नामांकन बढ़ाना और पोषण", solution: "Enrollment and Nutrition are main goals."},
+{q: "गृहकार्य (Homework) क्यों देना चाहिए?", options: ["बिजी रखने के लिए", "स्व-अध्ययन की आदत के लिए", "सजा के लिए", "सिलेबस के लिए"], answer: "स्व-अध्ययन की आदत के लिए", solution: "Develops self-study skills."},
+{q: "क्रियात्मक अनुसंधान (Action Research) का उपयोग?", options: ["सिद्धांत बनाना", "कक्षा की समस्याओं का समाधान", "लिखना", "पढ़ाना"], answer: "कक्षा की समस्याओं का समाधान", solution: "Immediate classroom problem solving."},
+{q: "शिक्षण सहायक सामग्री (TLM) क्यों जरूरी है?", options: ["स्टाइल के लिए", "पढ़ाई को रोचक बनाने के लिए", "सस्ता होने के लिए", "दिखाने के लिए"], answer: "पढ़ाई को रोचक बनाने के लिए", solution: "Makes learning interactive and clear."},
+{q: "सतत और व्यापक मूल्यांकन (CCE) क्या है?", options: ["साल में एक बार परीक्षा", "नियमित और हर क्षेत्र का परीक्षण", "सिर्फ खेल", "सिर्फ लिखना"], answer: "नियमित और हर क्षेत्र का परीक्षण", solution: "Regular and holistic evaluation."},
+{q: "अध्यापक के लिए सबसे मूल्यवान क्या है?", options: ["नौकरी", "वेतन", "छात्रों का विश्वास", "प्रतिष्ठा"], answer: "छात्रों का विश्वास", solution: "Student's trust is the highest achievement."},
+{q: "माइक्रो टीचिंग (Micro Teaching) का उपयोग?", options: ["कौशल विकास", "सिलेबस", "अनुशासन", "परीक्षा"], answer: "कौशल विकास", solution: "Used for teacher training/skill development."},
+{q: "बच्चा स्कूल से भागता है, आप क्या करेंगे?", options: ["नाम काट देंगे", "सजा देंगे", "कारण जानेंगे", "माता-पिता को बुलाएंगे"], answer: "कारण जानेंगे", solution: "Diagnostic approach is always best."},
+{q: "राष्ट्रीय साक्षरता मिशन की शुरुआत?", options: ["1988", "1990", "1995", "1986"], answer: "1988", solution: "Launched in 1988."},
+{q: "शिक्षा का अधिकार (RTE) कब लागू हुआ?", options: ["2009", "2010", "2005", "2012"], answer: "2010", solution: "Act passed in 2009, enforced on 1 April 2010."},
+{q: "IQ निकालने का सूत्र?", options: ["MA/CA * 100", "CA/MA * 100", "MA + CA", "MA * CA"], answer: "MA/CA * 100", solution: "Mental Age / Chronological Age * 100."},
+{q: "किंडरगार्टन पद्धति के जनक?", options: ["फ्रोबेल", "मोंटेसरी", "रूसो", "प्लेटो"], answer: "फ्रोबेल", solution: "Friedrich Froebel."},
+{q: "सृजनात्मक छात्र (Creative Student) की पहचान?", options: ["अच्छी राइटिंग", "जिज्ञासा", "शांत रहना", "सिर्फ आज्ञा मानना"], answer: "जिज्ञासा", solution: "Curiosity is a hallmark of creativity."},
+{q: "शिक्षा का वास्तविक लक्ष्य?", options: ["डिग्री", "चरित्र निर्माण", "पैसा", "दिखावा"], answer: "चरित्र निर्माण", solution: "Character building is the ultimate aim."}
 
-// Reasoning (25)
-{q: "श्रृंखला: 2, 5, 10, 17, 26, ?", options: ["35", "36", "37", "38"], answer: "37"},
-{q: "विषम चुनें (Cities):", options: ["पटना", "गया", "मुजफ्फरपुर", "लखनऊ"], answer: "लखनऊ"},
-{q: "यदि 'RAM' को 'IZN' लिखा जाए, तो 'SHYAM' को क्या लिखा जाएगा?", options: ["HSBZN", "HSBAM", "JSBZN", "HSBZN"], answer: "HSBZN"},
-{q: "राम अपने घर से उत्तर की ओर 5km चला, फिर दाएँ मुड़ा और 5km चला। वह अब किस दिशा में है?", options: ["उत्तर-पूर्व", "दक्षिण-पूर्व", "उत्तर", "पूर्व"], answer: "उत्तर-पूर्व"},
-{q: "कलम : लिखना :: चाकू : ?", options: ["काटना", "मारना", "खाना", "छीलना"], answer: "काटना"},
-{q: "एक पंक्ति में आपका स्थान दोनों तरफ से 9वाँ है। पंक्ति में कुल कितने व्यक्ति हैं?", options: ["18", "17", "19", "16"], answer: "17"},
-{q: "रिश्ता: 'A' की माँ 'B' की बहन है। 'B' का 'A' से क्या संबंध है?", options: ["मामा/मौसी", "चाचा", "पिता", "दादा"], answer: "मामा/मौसी"},
-{q: "8 : 128 :: 6 : ?", options: ["72", "36", "108", "48"], answer: "72"},
-{q: "यदि '+' का अर्थ '÷' और '÷' का अर्थ '*' है, तो 10 + 2 ÷ 5 = ?", options: ["25", "20", "15", "10"], answer: "25"},
-{q: "3 बजे सुइयों के बीच कितने डिग्री का कोण होगा?", options: ["90°", "180°", "60°", "45°"], answer: "90°"},
-{q: "विषम शब्द चुनें (Body Parts):", options: ["आँख", "कान", "नाक", "हाथ"], answer: "हाथ"},
-{q: "श्रृंखला: A, C, F, J, ?", options: ["L", "M", "N", "O"], answer: "O"},
-{q: "यदि कल सोमवार था, तो कल के बाद कौन सा दिन होगा?", options: ["बुधवार", "गुरुवार", "शुक्रवार", "मंगलवार"], answer: "बुधवार"},
-{q: "A > B, B > C, C > D, तो सबसे छोटा कौन है?", options: ["A", "B", "C", "D"], answer: "D"},
-{q: "कथन: सभी पेन पेंसिल हैं। सभी पेंसिल रबर हैं।", options: ["सभी पेन रबर हैं", "कुछ रबर पेन हैं", "दोनों निष्कर्ष", "कोई नहीं"], answer: "दोनों निष्कर्ष"},
-{q: "विषम चुनें (Materials):", options: ["चाँदी", "सोना", "ताँबा", "कोयला"], answer: "कोयला"},
-{q: "4 : 18 :: 6 : ?", options: ["38", "36", "40", "42"], answer: "38"},
-{q: "Z, W, T, Q, ?", options: ["N", "O", "P", "M"], answer: "N"},
-{q: "31 जनवरी 2024 को क्या दिन था?", options: ["बुधवार", "मंगलवार", "सोमवार", "रविवार"], answer: "बुधवार"},
-{q: "पुस्तक : लेखक :: फिल्म : ?", options: ["निर्देशक", "अभिनेता", "निर्माता", "गायक"], answer: "निर्देशक"},
-{q: "श्रृंखला: 1, 4, 9, 16, 25, ?", options: ["30", "36", "40", "49"], answer: "36"},
-{q: "विषम चुनें (Units):", options: ["मीटर", "लीटर", "मील", "गज"], answer: "लीटर"},
-{q: "यदि WATER को 12345 लिखा जाए, तो RATE को क्या लिखेंगे?", options: ["5234", "4235", "4234", "5432"], answer: "4235"},
-{q: "9 : 80 :: 10 : ?", options: ["99", "100", "101", "110"], answer: "99"},
-{q: "विषम चुनें (Plants):", options: ["गुलाब", "चमेली", "आम", "सूरजमुखी"], answer: "आम"},
-
-// GK/GS/Bihar (40)
-{q: "बिहार के प्रथम मुख्यमंत्री कौन थे?", options: ["श्री कृष्ण सिंह", "कर्पूरी ठाकुर", "राबड़ी देवी", "नीतीश कुमार"], answer: "श्री कृष्ण सिंह"},
-{q: "नालंदा विश्वविद्यालय की स्थापना किसने की?", options: ["कुमारगुप्त", "धर्मपाल", "चंद्रगुप्त", "अशोक"], answer: "कुमारगुप्त"},
-{q: "बिहार में 1857 के विद्रोह का नेतृत्व किसने किया?", options: ["कुंवर सिंह", "पीर अली", "अमर सिंह", "नाना साहब"], answer: "कुंवर सिंह"},
-{q: "विटामिन 'C' की कमी से कौन सा रोग होता है?", options: ["रिकेट्स", "स्कर्वी", "बेरी-बेरी", "रतौंधी"], answer: "स्कर्वी"},
-{q: "भारत का नेपोलियन किसे कहा जाता है?", options: ["समुद्रगुप्त", "चंद्रगुप्त", "अकबर", "हर्षवर्धन"], answer: "समुद्रगुप्त"},
-{q: "चंपारण सत्याग्रह कब शुरू हुआ?", options: ["1915", "1917", "1919", "1921"], answer: "1917"},
-{q: "पटना उच्च न्यायालय की स्थापना कब हुई?", options: ["1916", "1917", "1918", "1919"], answer: "1916"},
-{q: "सौरमंडल का सबसे बड़ा ग्रह कौन सा है?", options: ["पृथ्वी", "शुक्र", "मंगल", "बृहस्पति"], answer: "बृहस्पति"},
-{q: "गौतम बुद्ध ने अपना प्रथम उपदेश कहाँ दिया?", options: ["बोधगया", "सारनाथ", "कुशीनगर", "लुम्बिनी"], answer: "सारनाथ"},
-{q: "मौर्य वंश का संस्थापक कौन था?", options: ["बिम्बिसार", "चंद्रगुप्त मौर्य", "अशोक", "बिन्दुसार"], answer: "चंद्रगुप्त मौर्य"},
-{q: "गांधीजी ने बिहार में पहला सत्याग्रह कहाँ किया?", options: ["चंपारण", "खेड़ा", "अहमदाबाद", "चौरी-चौरा"], answer: "चंपारण"},
-{q: "सफेद क्रांति का संबंध किससे है?", options: ["दूध", "मछली", "गेहूँ", "अंडा"], answer: "दूध"},
-{q: "वायुमंडल में ऑक्सीजन का प्रतिशत कितना है?", options: ["78%", "21%", "0.03%", "1%"], answer: "21%"},
-{q: "भारत की पहली महिला राज्यपाल कौन थी?", options: ["सरोजिनी नायडू", "सुचेता कृपलानी", "इंदिरा गांधी", "एनी बेसेंट"], answer: "सरोजिनी नायडू"},
-{q: "बिहार का राजकीय पक्षी क्या है?", options: ["मोर", "कोयल", "गौरैया", "तोता"], answer: "गौरैया"},
-{q: "पंचायती राज व्यवस्था सबसे पहले कहाँ लागू हुई?", options: ["बिहार", "राजस्थान", "गुजरात", "उत्तर प्रदेश"], answer: "राजस्थान"},
-{q: "पानीपत की पहली लड़ाई कब हुई?", options: ["1526", "1556", "1761", "1527"], answer: "1526"},
-{q: "महात्मा गांधी के राजनीतिक गुरु कौन थे?", options: ["गोपाल कृष्ण गोखले", "तिलक", "लाजपत राय", "नेहरू"], answer: "गोपाल कृष्ण गोखले"},
-{q: "सौर ऊर्जा किससे प्राप्त होती है?", options: ["चाँद", "सूर्य", "कोयला", "हवा"], answer: "सूर्य"},
-{q: "विश्व पर्यावरण दिवस कब मनाया जाता है?", options: ["5 जून", "10 दिसंबर", "22 अप्रैल", "1 मई"], answer: "5 जून"},
-{q: "काजीरंगा राष्ट्रीय उद्यान कहाँ स्थित है?", options: ["असम", "बिहार", "उत्तराखंड", "केरल"], answer: "असम"},
-{q: "मानव शरीर की सबसे बड़ी हड्डी कौन सी है?", options: ["फीमर", "स्टेप्स", "टिबिया", "ह्यूमरस"], answer: "फीमर"},
-{q: "आर्य समाज के संस्थापक कौन थे?", options: ["दयानंद सरस्वती", "राजा राम मोहन राय", "विवेकानंद", "गांधी"], answer: "दयानंद सरस्वती"},
-{q: "लोकसभा का सदस्य बनने के लिए न्यूनतम आयु क्या है?", options: ["18 वर्ष", "21 वर्ष", "25 वर्ष", "30 वर्ष"], answer: "25 वर्ष"},
-{q: "कोणार्क का सूर्य मंदिर कहाँ है?", options: ["ओडिशा", "बिहार", "तमिलनाडु", "केरल"], answer: "ओडिशा"},
-{q: "बिहार दिवस कब मनाया जाता है?", options: ["22 मार्च", "1 अप्रैल", "15 अगस्त", "26 जनवरी"], answer: "22 मार्च"},
-{q: "राज्यसभा का सभापति कौन होता है?", options: ["राष्ट्रपति", "उपराष्ट्रपति", "प्रधानमंत्री", "स्पीकर"], answer: "उपराष्ट्रपति"},
-{q: "ओजोन परत हमें किससे बचाती है?", options: ["पराबैंगनी किरणें", "अवरक्त किरणें", "X-किरणें", "गामा किरणें"], answer: "पराबैंगनी किरणें"},
-{q: "जापान की मुद्रा क्या है?", options: ["येन", "डॉलर", "यूरो", "रुपया"], answer: "येन"},
-{q: "कम्प्यूटर का जनक किसे कहा जाता है?", options: ["चार्ल्स बैबेज", "बिल गेट्स", "न्यूटन", "पास्कल"], answer: "चार्ल्स बैबेज"},
-{q: "बिहार का शोक किस नदी को कहा जाता है?", options: ["गंगा", "सोन", "कोसी", "गंडक"], answer: "कोसी"},
-{q: "अशोक के शिलालेखों की भाषा क्या थी?", options: ["संस्कृत", "प्राकृत", "पाली", "हिन्दी"], answer: "प्राकृत"},
-{q: "हड़प्पा सभ्यता की खोज किसने की?", options: ["दयाराम साहनी", "राखलदास बनर्जी", "कनिंघम", "व्हीलर"], answer: "दयाराम साहनी"},
-{q: "भारत में सबसे पहले रेल कब चली?", options: ["1853", "1854", "1905", "1850"], answer: "1853"},
-{q: "स्वराज मेरा जन्मसिद्ध अधिकार है किसने कहा?", options: ["तिलक", "गांधी", "नेहरू", "भगत सिंह"], answer: "तिलक"},
-{q: "सबसे चमकीला ग्रह कौन सा है?", options: ["शुक्र", "मंगल", "बुध", "शनि"], answer: "शुक्र"},
-{q: "बिहार में लोकसभा की कितनी सीटें हैं?", options: ["40", "39", "243", "16"], answer: "40"},
-{q: "मधुबनी पेंटिंग किस राज्य से संबंधित है?", options: ["बिहार", "उत्तर प्रदेश", "पश्चिम बंगाल", "ओडिशा"], answer: "बिहार"},
-{q: "राष्ट्रीय विज्ञान दिवस कब मनाया जाता है?", options: ["28 फरवरी", "15 मार्च", "2 अक्टूबर", "14 नवंबर"], answer: "28 फरवरी"},
-{q: "महावीर स्वामी का जन्म कहाँ हुआ था?", options: ["कुण्डग्राम", "पावापुरी", "लुम्बिनी", "पाटलिपुत्र"], answer: "कुण्डग्राम"},
-
-// Teaching Aptitude (25)
-{q: "एक प्रभावी शिक्षक का सबसे महत्वपूर्ण गुण क्या है?", options: ["विषय का ज्ञान", "कठोर अनुशासन", "छात्रों के प्रति सहानुभूति", "अच्छी लिखावट"], answer: "छात्रों के प्रति सहानुभूति"},
-{q: "शिक्षण का मुख्य उद्देश्य क्या है?", options: ["छात्रों को जानकारी देना", "छात्रों को सोचने की शक्ति विकसित करना", "पाठ्यक्रम पूरा करना", "नोट्स लिखवाना"], answer: "छात्रों को सोचने की शक्ति विकसित करना"},
-{q: "यदि कोई छात्र कक्षा में शोर करता है, तो आप क्या करेंगे?", options: ["उसे बाहर निकाल देंगे", "कारण जानने का प्रयास करेंगे", "उसे सजा देंगे", "अभिभावक को बुलाएंगे"], answer: "कारण जानने का प्रयास करेंगे"},
-{q: "शिक्षा का अधिकार (RTE) कब लागू हुआ?", options: ["1 अप्रैल 2010", "15 अगस्त 2009", "26 जनवरी 2010", "1 अप्रैल 2009"], answer: "1 अप्रैल 2010"},
-{q: "सूक्ष्म शिक्षण (Micro Teaching) का उपयोग कहाँ होता है?", options: ["कक्षा शिक्षण में", "शिक्षक प्रशिक्षण में", "खेल के मैदान में", "प्रयोगशाला में"], answer: "शिक्षक प्रशिक्षण में"},
-{q: "श्यामपट्ट पर लिखते समय क्या आवश्यक है?", options: ["स्पष्ट लेखन", "तेजी से लिखना", "छोटे अक्षर", "रंगीन चौक"], answer: "स्पष्ट लेखन"},
-{q: "कक्षा में प्रश्न पूछने से क्या होता है?", options: ["अनुशासन बिगड़ता है", "छात्रों की रुचि जागती है", "समय नष्ट होता है", "शिक्षक परेशान होता है"], answer: "छात्रों की रुचि जागती है"},
-{q: "एक अच्छा शिक्षक वह है जो:", options: ["दत्त कार्य नहीं देता", "विद्यार्थियों को सीखने के लिए प्रेरित करता है", "हमेशा चुप रहता है", "केवल किताबें पढ़ता है"], answer: "विद्यार्थियों को सीखने के लिए प्रेरित करता है"},
-{q: "शिक्षा क्या है?", options: ["जीवन पर्यंत चलने वाली प्रक्रिया", "केवल स्कूल की पढ़ाई", "डिग्री प्राप्त करना", "नौकरी पाना"], answer: "जीवन पर्यंत चलने वाली प्रक्रिया"},
-{q: "मिड-डे मील (Mid-Day Meal) योजना क्यों शुरू की गई?", options: ["नामांकन बढ़ाने के लिए", "बच्चों को खिलाने के लिए", "रसोइयों को नौकरी देने के लिए", "स्कूल को प्रसिद्ध करने के लिए"], answer: "नामांकन बढ़ाने के लिए"},
-{q: "अनुशासन का अर्थ क्या है?", options: ["नियमों का पालन", "दंड का भय", "चुप रहना", "आज्ञा मानना"], answer: "नियमों का पालन"},
-{q: "किंडरगार्टन पद्धति के जनक कौन हैं?", options: ["फ्रॉबेल", "मांटेसरी", "रूसो", "अरस्तू"], answer: "फ्रॉबेल"},
-{q: "मूल्यांकन का मुख्य उद्देश्य क्या है?", options: ["छात्रों को फेल करना", "सीखने की कमियों को दूर करना", "अंक देना", "रैंक देना"], answer: "सीखने की कमियों को दूर करना"},
-{q: "बुनियादी शिक्षा का विचार किसने दिया?", options: ["महात्मा गांधी", "नेहरू", "टैगोर", "राधाकृष्णन"], answer: "महात्मा गांधी"},
-{q: "शिक्षक दिवस किसकी याद में मनाया जाता है?", options: ["डॉ. राधाकृष्णन", "नेहरू", "गांधी", "आजाद"], answer: "डॉ. राधाकृष्णन"},
-{q: "समावेशी शिक्षा का क्या अर्थ है?", options: ["सबको एक साथ शिक्षा", "केवल अमीरों की शिक्षा", "जाति आधारित शिक्षा", "प्रतिभाशाली बच्चों की शिक्षा"], answer: "सबको एक साथ शिक्षा"},
-{q: "N.C.P.C.R का संबंध किससे है?", options: ["बाल अधिकार", "महिला अधिकार", "शिक्षा", "खेल"], answer: "बाल अधिकार"},
-{q: "सीखने के लिए सबसे आवश्यक क्या है?", options: ["जिज्ञासा", "किताबें", "स्मार्ट क्लास", "अच्छा स्कूल"], answer: "जिज्ञासा"},
-{q: "NCF 2005 का मुख्य सूत्र क्या है?", options: ["शिक्षा बिना बोझ के", "शिक्षा सबके लिए", "कठोर शिक्षा", "रोजगार शिक्षा"], answer: "शिक्षा बिना बोझ के"},
-{q: "ऑपरेशन ब्लैकबोर्ड किससे संबंधित है?", options: ["प्राथमिक शिक्षा", "माध्यमिक शिक्षा", "उच्च शिक्षा", "महिला शिक्षा"], answer: "प्राथमिक शिक्षा"},
-{q: "खेल विधि के प्रतिपादक कौन हैं?", options: ["कुल्डवेल कुक", "फ्रॉबेल", "पियाजे", "स्किनर"], answer: "कुल्डवेल कुक"},
-{q: "दृश्य-श्रव्य सामग्री का उदाहरण है:", options: ["रेडियो", "टेलीविजन", "चार्ट", "ब्लैकबोर्ड"], answer: "टेलीविजन"},
-{q: "शिक्षक को समाज में क्या कहा जाता है?", options: ["राष्ट्र निर्माता", "नौकर", "अधिकारी", "उपदेशक"], answer: "राष्ट्र निर्माता"},
-{q: "बालक का प्रथम विद्यालय कौन सा है?", options: ["घर/परिवार", "स्कूल", "समाज", "आँगनबाड़ी"], answer: "घर/परिवार"},
-{q: "प्रोजेक्ट विधि के जन्मदाता कौन हैं?", options: ["किलपैट्रिक", "अरस्तू", "सुकरात", "प्लेटो"], answer: "किलपैट्रिक"}
+  
 ];
 
 let currentIndex=0,answers={},visited={};
 let totalSeconds=0,timerInterval,startTime;
 
 function startTest(){
-  if(localStorage.getItem(`finalResult_${MY_SUBJECT}`)){
-    alert("Test already submitted"); return;
-  }
   if(!candidateName.value || !testTime.value) {
     alert("Please enter Name and Time"); return;
   }
@@ -354,7 +357,6 @@ function startTest(){
 }
 
 function startTimer(){
-  updateTimer();
   timerInterval=setInterval(()=>{
     totalSeconds--;
     updateTimer();
@@ -419,7 +421,7 @@ function saveProgress(){
 }
 
 function submitQuiz(){
-  if(!confirm("Are you sure you want to submit the Full Mock Test?")) return;
+  if(!confirm("Are you sure you want to submit the All-in-one test?")) return;
   clearInterval(timerInterval);
   localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
   let correct=0, attempted=0;
@@ -433,6 +435,9 @@ function submitQuiz(){
       <div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${answers[i]==q.answer?'#4ade80':'#f87171'}">
         <p><b>Q${i+1}.</b> ${q.q}</p>
         <p style="margin-top:8px;">Your Answer: <span class="${answers[i]==q.answer?'correct':'wrong'}">${answers[i]||"Skipped"}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+        <div class="sol-box">
+          <b>Logic:</b> ${q.solution || "Solution not available."}
+        </div>
       </div>`;
   });
 
@@ -444,7 +449,7 @@ function submitQuiz(){
 
   const summaryBox = `
     <div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-      <h3 style="margin-bottom:15px; color:var(--color-accent);">Full Mock Performance Report</h3>
+      <h3 style="margin-bottom:15px; color:var(--color-accent);">All-in-one Performance Report</h3>
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div>
         <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div>
@@ -467,7 +472,7 @@ function submitQuiz(){
     accuracy: accuracy + "%",
     time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
     test_date: new Date().toLocaleString("en-IN")
-  }).then(res => console.log("✅ Success"), err => console.log("❌ Error"));
+  });
 
   quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none";
   submitBtn.style.display="none"; result.style.display="block"; result.innerHTML=finalHtml;
@@ -476,7 +481,7 @@ function submitQuiz(){
 
 window.onload=function(){
   document.getElementById("totalQDisplay").textContent = questions.length;
-  document.getElementById("testTime").value = 120; // Default B.Ed time
+  document.getElementById("testTime").value = questions.length;
 
   const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
   const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
@@ -496,13 +501,14 @@ window.onload=function(){
 };
 
 function clearResult(){
-  if(confirm("Start new test? All Full Mock results will be cleared.")){ 
+  if(confirm("Start new test? All-in-one results will be cleared.")){ 
     localStorage.removeItem(`finalResult_${MY_SUBJECT}`);
     localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
     location.reload(); 
   }
 }
 </script>
-
 </body>
 </html>
+
+
