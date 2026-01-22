@@ -236,24 +236,40 @@
         }
 
         function updateDashboard() {
-            Object.keys(TEST_CONFIG).forEach(sub => {
-                const badge = document.getElementById(`badge-${sub}`);
-                const scoreLabel = document.getElementById(`score-${sub}`);
-                if(!badge) return;
-                const currentID = TEST_CONFIG[sub];
-                const isDone = localStorage.getItem(`done_${sub}_${currentID}`);
-                const savedScore = localStorage.getItem(`score_${currentID}`);
-                if (isDone === "true") {
-                    badge.innerText = "COMPLETED ✅";
-                    badge.className = "badge badge-done";
-                    if(savedScore) scoreLabel.innerText = "Last Score: " + savedScore;
-                } else {
-                    badge.innerText = "UPDATED 🔥";
-                    badge.className = "badge badge-new";
-                }
-                badge.style.display = "inline-block";
-            });
+    Object.keys(TEST_CONFIG).forEach(sub => {
+        const badge = document.getElementById(`badge-${sub}`);
+        const scoreLabel = document.getElementById(`score-${sub}`);
+        if (!badge) return;
+
+        const currentID = TEST_CONFIG[sub];
+        const levels = ['EASY', 'MEDIUM', 'HARD'];
+        let completedLevels = [];
+        let scoreDetails = [];
+
+        // Har level ke liye check karega
+        levels.forEach(lvl => {
+            const isDone = localStorage.getItem(`done_${sub}_${currentID}_${lvl}`);
+            const score = localStorage.getItem(`score_${currentID}_${lvl}`);
+            if (isDone === "true") {
+                completedLevels.push(lvl);
+                scoreDetails.push(`${lvl}: ${score}`);
+            }
+        });
+
+        if (completedLevels.length > 0) {
+            // Agar saare levels ho gaye toh GREEN badge, warna Orange "In Progress"
+            badge.innerText = completedLevels.length === 3 ? "ALL LEVELS DONE ✅" : "IN PROGRESS ⏳";
+            badge.className = "badge badge-done";
+            scoreLabel.innerHTML = scoreDetails.join(" | ");
+        } else {
+            // Agar abhi tak ek bhi level nahi kiya
+            badge.innerText = "UPDATED 🔥";
+            badge.className = "badge badge-new";
+            scoreLabel.innerText = "";
         }
+        badge.style.display = "inline-block";
+    });
+}
 
         /* --- SMOOTH SCROLL REVEAL SCRIPT --- */
         const revealCards = () => {
@@ -286,6 +302,7 @@
     </script>
 </body>
 </html>
+
 
 
 
