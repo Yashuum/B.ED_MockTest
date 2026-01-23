@@ -384,13 +384,16 @@ hard: [
 
         // TODO: Replace with your actual InfinityFree domain
         fetch('https://nishuabhyasi.rf.gd/save_score.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dataToSend)
-        })
-        .then(res => res.json())
-        .then(data => console.log("Database Status:", data))
-        .catch(err => console.error("Database Error:", err));
+    method: 'POST',
+    mode: 'cors', // CORS mode ensure karein
+    headers: {
+        'Content-Type': 'text/plain' // Kabhi-kabhi JSON block hota hai, text/plain bypass kar deta hai
+    },
+    body: JSON.stringify(dataToSend)
+})
+.then(res => res.json())
+.then(data => console.log("Success:", data))
+.catch(err => console.log("Abhi bhi error hai:", err));
         // --- END DATABASE SECTION ---
 
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
@@ -432,5 +435,6 @@ hard: [
 </script>
 </body>
 </html>
+
 
 
