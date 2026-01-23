@@ -367,8 +367,8 @@ hard: [
         });
 
         const currentLvl = level.toUpperCase();
-        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
-        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
+localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
+localStorage.setItem(`done_Teaching_${MY_TEST_ID}_${currentLvl}`, "true");
 
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
@@ -409,4 +409,5 @@ hard: [
 </script>
 </body>
 </html>
+
 
