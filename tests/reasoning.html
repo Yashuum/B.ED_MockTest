@@ -44,7 +44,9 @@
         .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
         
         button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        button:hover{ transform: scale(1.05); }
+        button:hover:not(:disabled){ transform: scale(1.05); }
+        button:disabled{ opacity: 0.5; cursor: not-allowed; }
+
         .btn-secondary { background: rgba(255,255,255,0.15); }
         .btn-review { background: var(--review); }
         .btn-challenge { background: var(--challenge); }
@@ -76,27 +78,24 @@
 <body>
 <div class="container">
     <h1>Target Test- Reasoning 2026</h1>
-    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026- 09:36 PM</p>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Questions Set: <span id="lastUpdated">Syncing...</span></p>
     
     <div class="start-screen" id="startScreen">
         <div class="input-row">
             <input id="candidateName" placeholder="Enter your name">
             <input id="testTime" type="number" placeholder="Minutes">
         </div>
-        
         <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
             <option value="easy">Level: Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
         </select>
-
         <div class="q-count-sticker">
             <span class="pulse-dot"></span>
             <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
         </div>
-
         <div style="display:flex; gap:10px;">
-            <button onclick="startTest()">Start Test</button>
+            <button id="mainStartBtn" onclick="startTest()">Start Test</button>
             <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
         </div>
     </div>
@@ -110,10 +109,13 @@
     <div id="quizArea"></div>
 
     <div class="nav" id="navBtns">
-        <button class="btn-secondary" onclick="prevQ()">← Prev</button>
+        <button class="btn-secondary" onclick="prevQ()" id="prevBtn">← Prev</button>
         <button class="btn-review" onclick="markForReview()">Review</button>
         <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
-        <button onclick="nextQ()">Next →</button>
+        <div style="display:flex; flex-direction:column; align-items:center;">
+            <button onclick="nextQ()" id="nextBtn">Next →</button>
+            <span id="lastQMsg" style="font-size:10px; color:var(--color-accent); margin-top:5px; display:none;">Last question, submit test now</span>
+        </div>
     </div>
 
     <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
@@ -122,119 +124,39 @@
 </div>
 
 <script>
-const MY_SUBJECT = "Reasoning";
-const MY_TEST_ID = "REASONING_SET_04";
+    const MY_SUBJECT = "Reasoning";
+    const MY_TEST_ID = "REASONING_SET_04";
+    const GIST_API_URL = "https://api.github.com/gists/75ef01c2eb972d2b695938445c08df60";
 
-    const allQuestionsBank = {
-easy: [
-
-{q:"मैट्रिक्स: [5,4,20] | [8,3,24] | [9,4,?]",options:["32","36","40","45"],answer:"36",solution:"तर्क: पहली संख्या x दूसरी संख्या = तीसरी संख्या (9x4=36)"},
-{q:"मैट्रिक्स: [10,15,25] | [20,25,45] | [30,10,?]",options:["40","50","60","35"],answer:"40",solution:"तर्क: पहली संख्या + दूसरी संख्या = तीसरी संख्या (30+10=40)"},
-{q:"यदि 1+4=5, 2+5=12, 3+6=21 तो 8+11=?",options:["40","96","52","19"],answer:"96",solution:"तर्क: a + b का मतलब है a + (axb)। तो 8 + (8x11) = 96"},
-{q:"मैट्रिक्स: [2,4,16] | [3,9,81] | [4,16,?]",options:["256","100","200","64"],answer:"256",solution:"तर्क: पहली का वर्ग दूसरी, दूसरी का वर्ग तीसरी। (16x16=256)"},
-{q:"शृंखला: 1, 4, 9, 16, 25, ?",options:["30","36","49","64"],answer:"36",solution:"तर्क: क्रमागत संख्याओं का वर्ग (6x6=36)"},
-{q:"मैट्रिक्स: [7,5,2] | [15,10,5] | [20,12,?]",options:["8","10","12","6"],answer:"8",solution:"तर्क: पहली संख्या - दूसरी संख्या = तीसरी संख्या (20-12=8)"},
-{q:"यदि 'राम' का कोड 32 है, तो 'श्याम' का कोड क्या होगा?",options:["66","70","60","50"],answer:"66",solution:"तर्क: अक्षरों के स्थान के अंकों का योग"},
-{q:"मैट्रिक्स: [3,6,12] | [5,10,20] | [8,16,?]",options:["24","32","40","48"],answer:"32",solution:"तर्क: संख्या को दोगुना किया गया है (16x2=32)"},
-{q:"विषम शब्द चुनें: गाय, शेर, हाथी, कुत्ता",options:["गाय","शेर","हाथी","कुत्ता"],answer:"शेर",solution:"तर्क: शेर मांसाहारी है, बाकी शाकाहारी/सर्वाहारी हैं"},
-{q:"मैट्रिक्स: [1,2,3] | [1,4,9] | [1,8,?]",options:["16","24","27","12"],answer:"27",solution:"तर्क: पहली रो की घात (3 की घात 3 = 27)"},
-{q:"एक तस्वीर की ओर इशारा करते हुए मोहन ने कहा, 'वह मेरे पिता के इकलौते बेटे की माँ है'। वह कौन है?",options:["बहन","माँ","पत्नी","चाची"],answer:"माँ",solution:"तर्क: पिता का इकलौता बेटा खुद मोहन है, और उसकी माँ मोहन की माँ हुई"},
-{q:"मैट्रिक्स: [100,10,110] | [64,8,72] | [25,5,?]",options:["30","35","20","40"],answer:"30",solution:"तर्क: पहली संख्या का वर्गमूल + दूसरी संख्या = तीसरी संख्या (5+25=30)"},
-{q:"यदि घड़ी में 3:00 बज रहे हैं, तो दोनों सुइयों के बीच कितने डिग्री का कोण होगा?",options:["45","90","180","60"],answer:"90",solution:"तर्क: हर घंटे में 30 डिग्री का फर्क होता है (3x30=90)"},
-{q:"मैट्रिक्स: [4,16,20] | [5,25,30] | [6,36,?]",options:["40","42","44","46"],answer:"42",solution:"तर्क: संख्या + उसका वर्ग = तीसरी संख्या (6+36=42)"},
-{q:"शृंखला: Z, X, V, T, ?",options:["S","R","Q","P"],answer:"R",solution:"तर्क: एक अक्षर छोड़कर पीछे की ओर"},
-{q:"मैट्रिक्स: [11,121,11] | [12,144,12] | [13,?,13]",options:["156","169","144","130"],answer:"169",solution:"तर्क: बीच वाली संख्या पहली का वर्ग है"},
-{q:"यदि कल सोमवार था, तो आज से 3 दिन बाद क्या होगा?",options:["गुरुवार","शुक्रवार","शनिवार","बुधवार"],answer:"शुक्रवार",solution:"तर्क: कल सोमवार तो आज मंगलवार, मंगलवार + 3 दिन = शुक्रवार"},
-{q:"विषम चुनें: जनवरी, मार्च, जुलाई, सितंबर",options:["जनवरी","मार्च","जुलाई","सितंबर"],answer:"सितंबर",solution:"तर्क: सितंबर में 30 दिन होते हैं, बाकी में 31"},
-{q:"मैट्रिक्स: [9,3,27] | [16,4,64] | [25,5,?]",options:["100","125","150","75"],answer:"125",solution:"तर्क: वर्गमूल x संख्या का वर्ग? नहीं, (दूसरी का क्यूब = तीसरी संख्या)"},
-{q:"उत्तर की ओर मुख किए हुए एक व्यक्ति 90 डिग्री दाहिने मुड़ता है, अब उसका मुख किधर है?",options:["पूर्व","पश्चिम","उत्तर","दक्षिण"],answer:"पूर्व",solution:"तर्क: उत्तर से 90 डिग्री दायां पूर्व होता है"},
-{q:"मैट्रिक्स: [2,3,5] | [7,11,13] | [17,19,?]",options:["21","23","25","27"],answer:"23",solution:"तर्क: अभाज्य संख्याओं (Prime Numbers) की शृंखला"},
-{q:"यदि '+' का अर्थ 'गुणा' और '-' का अर्थ 'भाग' है, तो 10 + 2 - 5 = ?",options:["4","10","5","2"],answer:"4",solution:"तर्क: 10 x 2 / 5 = 4"},
-{q:"मैट्रिक्स: [5,10,20] | [15,30,60] | [25,50,?]",options:["75","100","125","150"],answer:"100",solution:"तर्क: संख्या का दोगुना पैटर्न"},
-{q:"संबंध: कलम : लिखना :: चाकू : ?",options:["सब्जी","तेज","काटना","पकड़ना"],answer:"काटना",solution:"तर्क: वस्तु और उसका मुख्य कार्य"},
-{q:"मैट्रिक्स: [81,9,0] | [64,8,0] | [49,7,?]",options:["7","0","42","1"],answer:"0",solution:"तर्क: पहली का वर्गमूल - दूसरी = 0"},
-{q:"शृंखला: 10, 20, 40, 70, ?",options:["100","110","120","130"],answer:"110",solution:"तर्क: अंतर +10, +20, +30, +40 का है"},
-{q:"मैट्रिक्स: [1,2,3] | [4,5,6] | [?,8,9]",options:["7","6","10","0"],answer:"7",solution:"तर्क: सामान्य गिनती का क्रम"},
-{q:"यदि दर्पण में समय 9:30 दिख रहा है, तो वास्तविक समय क्या है?",options:["2:30","3:30","12:30","1:30"],answer:"2:30",solution:"तर्क: 11:60 में से घटाने पर"},
-{q:"मैट्रिक्स: [4,2,8] | [10,2,20] | [15,3,?]",options:["30","45","18","50"],answer:"45",solution:"तर्क: पहली x दूसरी = तीसरी"},
-{q:"विषम चुनें: पटना, लखनऊ, रांची, इंदौर",options:["पटना","लखनऊ","रांची","इंदौर"],answer:"इंदौर",solution:"तर्क: बाकी सब राजधानियां हैं, इंदौर नहीं"}
-
- ],
-medium: [
-
-{q:"मैट्रिक्स: [4,9,2] | [3,5,7] | [8,1,?]",options:["6","9","5","4"],answer:"6",solution:"तर्क: प्रत्येक पंक्ति (Row) का योग 15 है। (8+1+6=15)"},
-{q:"मैट्रिक्स: [2,3,4] | [8,27,64] | [5,?,125]",options:["25","10","50","100"],answer:"25",solution:"तर्क: पहली संख्या का घन (Cube) नीचे दिया गया है। (5 का क्यूब 125, वर्ग 25)"},
-{q:"यदि 5x4=15, 7x8=49, 6x5=24 तो 8x4=?",options:["24","28","32","30"],answer:"24",solution:"तर्क: (पहली संख्या - 2) x दूसरी संख्या। (8-2)x4 = 24"},
-{q:"मैट्रिक्स: [12,6,2] | [20,5,4] | [50,10,?]",options:["5","10","40","60"],answer:"5",solution:"तर्क: पहली संख्या / दूसरी संख्या = तीसरी संख्या। (50/10=5)"},
-{q:"शृंखला: 3, 6, 11, 18, 27, ?",options:["38","36","40","42"],answer:"38",solution:"तर्क: अंतर +3, +5, +7, +9, +11 का है।"},
-{q:"मैट्रिक्स: [7,8,56] | [9,4,36] | [2,?,20]",options:["10","8","12","5"],answer:"10",solution:"तर्क: पहली x दूसरी = तीसरी संख्या। (2x10=20)"},
-{q:"यदि 'SCHOOL' का कोड '72' है, तो 'CLASS' का कोड क्या होगा?",options:["45","50","55","60"],answer:"55",solution:"तर्क: अक्षरों के स्थान के अंकों का योग।"},
-{q:"मैट्रिक्स: [1,4,7] | [2,5,8] | [3,6,?]",options:["9","10","11","12"],answer:"9",solution:"तर्क: कॉलम में +1 का पैटर्न है।"},
-{q:"विषम शब्द चुनें: कान, नाक, आँख, गला",options:["कान","नाक","आँख","गला"],answer:"गला",solution:"तर्क: बाकी तीनों ज्ञानेंद्रियाँ (Sense Organs) हैं।"},
-{q:"मैट्रिक्स: [13,12,5] | [17,15,8] | [25,24,?]",options:["7","9","10","12"],answer:"7",solution:"तर्क: पाइथागोरस त्रिक (13² - 12² = 5²)।"},
-{q:"A, B का भाई है। C, A की माता है। D, C का पिता है। B का D से क्या संबंध है?",options:["पोता","नतीनी","नाती","डेटा अधूरा"],answer:"डेटा अधूरा",solution:"तर्क: B का लिंग (Gender) स्पष्ट नहीं है।"},
-{q:"मैट्रिक्स: [10,20,30] | [5,10,15] | [2,4,?]",options:["6","8","10","5"],answer:"6",solution:"तर्क: पहली + दूसरी = तीसरी संख्या।"},
-{q:"घड़ी में 4:30 बज रहे हैं, यदि मिनट की सुई पूर्व में है, तो घंटे की सुई किधर होगी?",options:["उत्तर-पूर्व","दक्षिण-पूर्व","उत्तर-पश्चिम","दक्षिण"],answer:"उत्तर-पूर्व",solution:"तर्क: दिशा परिवर्तन का तर्क।"},
-{q:"मैट्रिक्स: [11,13,17] | [19,23,29] | [31,37,?]",options:["41","43","39","45"],answer:"41",solution:"तर्क: अभाज्य संख्याओं (Prime Numbers) का क्रम।"},
-{q:"शृंखला: 100, 81, 64, 49, ?",options:["36","25","40","30"],answer:"36",solution:"तर्क: 10, 9, 8, 7, 6 का वर्ग।"},
-{q:"मैट्रिक्स: [8,4,2] | [100,10,10] | [36,6,?]",options:["6","12","1","0"],answer:"6",solution:"तर्क: पहली संख्या / दूसरी = तीसरी। (36/6=6)"},
-{q:"यदि कूट भाषा में 'WATER' को 'YCVGT' लिखा जाए, तो 'HINDI' को क्या लिखेंगे?",options:["JKPFL","JKPFJ","IKPFJ","JKPFK"],answer:"JKPFJ",solution:"तर्क: हर अक्षर में +2 किया गया है।"},
-{q:"विषम चुनें: वर्ग, आयत, त्रिभुज, गोला",options:["वर्ग","आयत","त्रिभुज","गोला"],answer:"गोला",solution:"तर्क: गोला 3D आकृति है, बाकी 2D हैं।"},
-{q:"मैट्रिक्स: [3,4,5] | [9,16,25] | [27,64,?]",options:["125","100","81","225"],answer:"125",solution:"तर्क: संख्या, उसका वर्ग, उसका घन (Cube)।"},
-{q:"एक आदमी 5 किमी दक्षिण जाता है, फिर दाहिने मुड़कर 3 किमी चलता है, फिर बाएं मुड़कर 5 किमी चलता है। अब वह किस दिशा में है?",options:["उत्तर","दक्षिण","पूर्व","पश्चिम"],answer:"दक्षिण",solution:"तर्क: दिशा आरेख के अनुसार।"},
-{q:"मैट्रिक्स: [1,2,3] | [4,5,6] | [7,8,?]",options:["9","10","11","12"],answer:"9",solution:"तर्क: क्रमिक संख्याएं।"},
-{q:"यदि 123=6 और 456=15 हो, तो 789=?",options:["24","21","22","20"],answer:"24",solution:"तर्क: अंकों का योग (7+8+9=24)।"},
-{q:"मैट्रिक्स: [16,4,4] | [81,9,9] | [100,10,?]",options:["10","20","5","100"],answer:"10",solution:"तर्क: पहली संख्या का वर्गमूल।"},
-{q:"संबंध: सेना : सैनिक :: विद्यालय : ?",options:["चपरासी","प्रिंसिपल","विद्यार्थी","इमारत"],answer:"विद्यार्थी",solution:"तर्क: समूह और उसकी इकाई।"},
-{q:"मैट्रिक्स: [2,5,7] | [4,7,11] | [?,9,15]",options:["6","5","8","10"],answer:"6",solution:"तर्क: पहली + दूसरी = तीसरी संख्या। (6+9=15)"},
-{q:"शृंखला: 2, 6, 12, 20, 30, ?",options:["40","42","44","46"],answer:"42",solution:"तर्क: अंतर +4, +6, +8, +10, +12 का है।"},
-{q:"मैट्रिक्स: [5,10,15] | [2,4,6] | [3,?,9]",options:["6","5","4","8"],answer:"6",solution:"तर्क: पहली + दूसरी = तीसरी संख्या।"},
-{q:"यदि दर्पण में समय 3:15 है, तो वास्तविक समय क्या होगा?",options:["8:45","9:45","7:45","8:15"],answer:"8:45",solution:"तर्क: 11:60 - 3:15 = 8:45।"},
-{q:"मैट्रिक्स: [8,2,16] | [9,3,27] | [10,4,?]",options:["40","30","20","50"],answer:"40",solution:"तर्क: पहली x दूसरी = तीसरी संख्या।"},
-{q:"विषम चुनें: गिटार, सितार, हारमोनियम, वीणा",options:["गिटार","सितार","हारमोनियम","वीणा"],answer:"हारमोनियम",solution:"तर्क: बाकी सब तार (String) वाले वाद्ययंत्र हैं।"}
-
-],
-hard: [
-
-{q:"मैट्रिक्स: [2,3,13] | [4,5,41] | [6,7,?]",options:["85","75","95","65"],answer:"85",solution:"तर्क: पहली का वर्ग + दूसरी का वर्ग = तीसरी। (36+49=85)"},
-{q:"मैट्रिक्स: [5,2,100] | [4,3,144] | [3,4,?]",options:["144","100","121","169"],answer:"144",solution:"तर्क: (पहली x दूसरी)^2 = तीसरी। (3x4)^2 = 144"},
-{q:"यदि 3,4=25 और 5,12=169 है, तो 8,15=?",options:["225","289","189","325"],answer:"289",solution:"तर्क: पाइथागोरस प्रमेय (8^2 + 15^2 = 289)"},
-{q:"मैट्रिक्स: [7,2,51] | [6,3,39] | [5,4,?]",options:["25","41","30","45"],answer:"41",solution:"तर्क: (पहली^2 + दूसरी^2) = तीसरी। (25+16=41)"},
-{q:"शृंखला: 2, 10, 30, 68, 130, ?",options:["210","222","250","230"],answer:"222",solution:"तर्क: n^3 + n का पैटर्न। (6^3 + 6 = 222)"},
-{q:"यदि CLOCK का कोड 44 और TIME का 47 है, तो WATCH क्या होगा?",options:["60","65","50","45"],answer:"60",solution:"तर्क: अक्षरों के वर्णानुक्रम स्थान का कुल योग।"},
-{q:"मैट्रिक्स: [1,8,27] | [64,125,216] | [343,512,?]",options:["625","729","1000","800"],answer:"729",solution:"तर्क: क्रमागत संख्याओं का घन (9 का क्यूब 729)"},
-{q:"घड़ी में 3:40 बजे दोनों सुइयों के बीच का कोण क्या होगा?",options:["130","140","150","160"],answer:"130",solution:"तर्क: सूत्र |30h - 5.5m| = |90 - 220| = 130"},
-{q:"यदि 1 जनवरी 2005 को सोमवार था, तो 1 जनवरी 2006 को क्या होगा?",options:["मंगलवार","बुधवार","रविवार","सोमवार"],answer:"मंगलवार",solution:"तर्क: साधारण वर्ष में 1 दिन आगे बढ़ता है।"},
-{q:"मैट्रिक्स: [11,12,132] | [9,10,90] | [8,7,?]",options:["56","15","64","49"],answer:"56",solution:"तर्क: पहली संख्या x दूसरी संख्या = तीसरी।"},
-{q:"विषम चुनें: 121, 144, 169, 196, 221",options:["121","196","221","169"],answer:"221",solution:"तर्क: 221 को छोड़कर बाकी सभी पूर्ण वर्ग हैं।"},
-{q:"यदि RAIN का कोड 181914 है, तो SNOW का कोड क्या होगा?",options:["19141523","18141523","19151423","19141522"],answer:"19141523",solution:"तर्क: प्रत्येक अक्षर का वर्णमाला क्रमांक।"},
-{q:"मैट्रिक्स: [1,4,9] | [1,2,3] | [2,4,6] | [?,8,12]",options:["4","3","5","6"],answer:"4",solution:"तर्क: दूसरी रो का चार गुना आखिरी रो है।"},
-{q:"मैट्रिक्स: [3,4,7] | [5,6,11] | [8,9,?]",options:["15","16","17","18"],answer:"17",solution:"तर्क: पहली दो संख्याओं का योग तीसरी है।"},
-{q:"एक पंक्ति में A बाएं से 10वां और B दाएं से 15वां है। आपस में स्थान बदलने पर A बाएं से 15वां हो जाता है। कुल लोग?",options:["29","30","25","24"],answer:"29",solution:"तर्क: (A का नया स्थान + B का पुराना स्थान) - 1।"},
-{q:"विषम जोड़ा: (3,10), (5,26), (7,50), (9,82), (11,120)",options:["(3,10)","(7,50)","(11,120)","(9,82)"],answer:"(11,120)",solution:"तर्क: n^2 + 1 का लॉजिक (11^2+1=122 होता है)।"},
-{q:"यदि दक्षिण-पश्चिम उत्तर बन जाए, तो उत्तर-पूर्व क्या बनेगा?",options:["दक्षिण","पूर्व","पश्चिम","उत्तर-पश्चिम"],answer:"दक्षिण",solution:"तर्क: 135 डिग्री दक्षिणावर्त घुमाव।"},
-{q:"मैट्रिक्स: [15,3,5] | [20,4,5] | [36,6,?]",options:["5","6","7","4"],answer:"6",solution:"तर्क: पहली संख्या / दूसरी = तीसरी।"},
-{q:"यदि '+' का अर्थ 'x', '-' का '+', 'x' का '/' और '/' का '-' है, तो 15x3+4-2/3=?",options:["20","19","15","22"],answer:"19",solution:"तर्क: बोडमास (15/3)x4+2-3 = 19।"},
-{q:"लुप्त संख्या: 6, 12, 21, 33, ?",options:["45","48","51","54"],answer:"48",solution:"तर्क: अंतर +6, +9, +12, +15 का है।"},
-{q:"मैट्रिक्स: [2,4,8] | [3,9,27] | [5,25,?]",options:["100","125","150","75"],answer:"125",solution:"तर्क: संख्या, उसका वर्ग और उसका घन।"},
-{q:"A, B की पुत्री है। B, C की माता है। D, C का भाई है। D का A से क्या संबंध है?",options:["पिता","भाई","पुत्र","चचेरा भाई"],answer:"भाई",solution:"तर्क: माँ की सभी संतानें आपस में भाई-बहन हैं।"},
-{q:"मैट्रिक्स: [14,28,42] | [12,24,36] | [10,20,?]",options:["30","25","40","35"],answer:"30",solution:"तर्क: पहली संख्या का पहाड़ा (10, 20, 30)।"},
-{q:"यदि 532 = 1510 और 924 = 1836, तो 724 = ?",options:["1428","1421","1412","1432"],answer:"1428",solution:"तर्क: (7x2=14) और (7x4=28)।"},
-{q:"विषम चुनें: फेफड़े, हृदय, गुर्दा, आँख",options:["फेफड़े","हृदय","गुर्दा","आँख"],answer:"आँख",solution:"तर्क: आँख बाहरी अंग है, बाकी आंतरिक हैं।"},
-{q:"दर्पण में समय 6:30 है, वास्तविक समय क्या होगा?",options:["5:30","6:30","11:30","12:30"],answer:"5:30",solution:"तर्क: 11:60 - 6:30 = 5:30।"},
-{q:"मैट्रिक्स: [8,7,15] | [3,4,7] | [?,2,8]",options:["6","5","4","7"],answer:"6",solution:"तर्क: कॉलम 1 + कॉलम 2 = कॉलम 3।"},
-{q:"यदि GARDEN का कोड 325764 और WATER का 92165 है, तो WARD क्या होगा?",options:["9257","9258","9267","9217"],answer:"9257",solution:"तर्क: अक्षरों का सीधा कूट (Direct Coding)।"},
-{q:"लुप्त संख्या: 1, 4, 10, 22, 46, ?",options:["94","92","86","76"],answer:"94",solution:"तर्क: (n x 2) + 2 का पैटर्न।"},
-{q:"मैट्रिक्स: [10,20,30] | [40,50,60] | [70,80,?]",options:["90","100","110","120"],answer:"90",solution:"तर्क: +10 का समानांतर अंतर।"}
- 
-  ]
-    };
-
+    let allQuestionsBank = null;
     let questions = [];
     let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
     let totalSeconds=0, timerInterval, startTime;
 
+    async function loadData() {
+        try {
+            const response = await fetch(GIST_API_URL);
+            const data = await response.json();
+            const fileName = Object.keys(data.files)[0];
+            allQuestionsBank = JSON.parse(data.files[fileName].content);
+            
+            syncCountAndTime();
+            document.getElementById('lastUpdated').innerText = new Date(data.updated_at).toLocaleString('en-IN');
+
+            const currentLevel = document.getElementById("difficultyLevel").value;
+            if(localStorage.getItem(`finalResult_${MY_SUBJECT}_${currentLevel}`)) {
+                showFinalReport(currentLevel);
+            } else if(localStorage.getItem(`inProgress_${MY_SUBJECT}_${currentLevel}`)) {
+                const p = JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}_${currentLevel}`));
+                candidateName.value = p.name || "";
+                testTime.value = Math.ceil(p.totalSeconds / 60);
+                startTest(); 
+            }
+        } catch (e) { console.error("Load failed", e); }
+    }
+
     function syncCountAndTime() {
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
         const count = allQuestionsBank[level].length;
         document.getElementById("totalQDisplay").textContent = count;
@@ -242,23 +164,34 @@ hard: [
     }
 
     function startTest(){
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
         questions = allQuestionsBank[level];
-        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
+        if(!candidateName.value || !testTime.value) { alert("Enter Name/Time"); return; }
+
         displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
         startScreen.style.display="none";
         topBar.style.display="flex";
         palette.style.display="flex";
         navBtns.style.display="flex";
         submitBtn.style.display="block";
-        totalSeconds=testTime.value*60;
-        startTime=Date.now();
-        saveProgress(level);
+
+        const progress = localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`);
+        if(progress) {
+            const p = JSON.parse(progress);
+            answers=p.answers || {}; visited=p.visited || {}; currentIndex=p.currentIndex || 0; 
+            totalSeconds=p.totalSeconds; startTime=p.startTime; 
+            reviewMarks=p.reviewMarks || {}; challenges=p.challenges || {};
+        } else {
+            answers={}; visited={}; currentIndex=0; reviewMarks={}; challenges={};
+            totalSeconds=testTime.value*60; startTime=Date.now();
+        }
         startTimer();
         renderQuestion();
     }
 
     function startTimer(){
+        if(timerInterval) clearInterval(timerInterval);
         timerInterval=setInterval(()=>{
             totalSeconds--;
             updateTimerDisplay();
@@ -274,37 +207,31 @@ hard: [
     function renderQuestion(){
         visited[currentIndex]=true;
         const q=questions[currentIndex];
-        quizArea.innerHTML=`
-            <div class="quiz-card">
-                <div style="display:flex; justify-content:space-between; align-items:start;">
-                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
-                </div>
-                <div class="options">
-                    ${q.options.map(o=>`
-                        <label>
-                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
-                        </label>
-                    `).join("")}
-                </div>
-                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
-            </div>`;
+        quizArea.innerHTML=`<div class="quiz-card">
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+                <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+            </div>
+            <div class="options">
+                ${q.options.map(o=>`<label><input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}</label>`).join("")}
+            </div>
+            ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+        </div>`;
+        document.getElementById("nextBtn").disabled = (currentIndex === questions.length - 1);
+        document.getElementById("prevBtn").disabled = (currentIndex === 0);
+        document.getElementById("lastQMsg").style.display = (currentIndex === questions.length - 1) ? "block" : "none";
         renderPalette();
     }
 
     function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
     function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
     function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
-    function challengeQuestion(){
-        if(answers[currentIndex]){ alert("Already answered!"); return; }
-        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
-    }
+    function challengeQuestion(){ if(!answers[currentIndex] && confirm("Challenge?")) { challenges[currentIndex] = true; renderPalette(); } }
 
     function renderPalette(){
         palette.innerHTML="";
         questions.forEach((_,i)=>{
-            const s=document.createElement("span");
-            s.textContent=i+1;
+            const s=document.createElement("span"); s.textContent=i+1;
             if(visited[i]) s.classList.add("visited");
             if(answers[i]) s.classList.add("attempted");
             if(reviewMarks[i]) s.classList.add("marked-review");
@@ -317,81 +244,78 @@ hard: [
     function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
     function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-    function saveProgress(lvl){
-        const level = lvl || JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}`) || '{"level":"easy"}').level;
-        localStorage.setItem(`inProgress_${MY_SUBJECT}`,JSON.stringify({
-            name:displayName.textContent.split(' (')[0],
-            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+    function saveProgress(){
+        const level = document.getElementById("difficultyLevel").value;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}_${level}`,JSON.stringify({
+            name:candidateName.value, level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
         }));
     }
 
     function submitQuiz(){
-        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
-        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
-        if(!confirm("Are you sure you want to submit?")) return;
-        
+        if(!confirm("Submit Test?")) return;
         clearInterval(timerInterval);
-        localStorage.removeItem(`inProgress_${MY_SUBJECT}`);
+        const level = document.getElementById("difficultyLevel").value;
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
         
         let correct=0, attempted=0, challCount=0;
         let detailHtml="<h2>Detailed Analysis</h2>";
-        
         questions.forEach((q,i)=>{
             let isCorrect = false;
             let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
             if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
             else if(answers[i] === q.answer) { isCorrect = true; }
-            if(answers[i]) attempted++;
-            if(isCorrect) correct++;
-            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}"><p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p><div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
+            if(answers[i]) attempted++; if(isCorrect) correct++;
+            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                <p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                <div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
         });
-
-        const currentLvl = document.getElementById("difficultyLevel").value.toUpperCase();
-        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
-        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
 
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
         
-        const summaryBox = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);"><h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;"><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div></div><button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button></div>`;
+        const summary = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+            <h3 style="color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px; margin-top:15px;">
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b>${accuracy}%</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
+            </div>
+            <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; width:100%; background:var(--success);">Dashboard</button></div>`;
 
-        result.style.display="block"; result.innerHTML = summaryBox + detailHtml;
-        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
-        clearBtn.style.display="block"; window.scrollTo(0,0);
+        const finalHtml = summary + detailHtml;
+        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ name: displayName.textContent, html: finalHtml }));
         
-        localStorage.setItem(`finalResult_${MY_SUBJECT}`, JSON.stringify({ name:displayName.textContent, html: summaryBox + detailHtml }));
-
-        emailjs.send("service_wq5yoyp", "template_doegpcp", {
-            candidate_name: displayName.textContent,
-            subject: MY_SUBJECT,
-            score: correct,
-            total: questions.length,
-            attempted: attempted,
-            accuracy: accuracy + "%",
-            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-            test_date: new Date().toLocaleString("en-IN")
+        result.style.display="block"; result.innerHTML = finalHtml;
+        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
+        startScreen.style.display="none"; topBar.style.display="none"; clearBtn.style.display="block";
+        window.scrollTo(0,0);
+        
+        emailjs.send("service_wq5yoyp", "template_doegpcp", { 
+            candidate_name: displayName.textContent, subject: MY_SUBJECT, score: correct, total: questions.length, 
+            accuracy: accuracy + "%", time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s` 
         });
     }
 
-    window.onload=function(){
-        syncCountAndTime();
-        const progress=localStorage.getItem(`inProgress_${MY_SUBJECT}`);
-        const final=localStorage.getItem(`finalResult_${MY_SUBJECT}`);
-        if(final){
-            const d=JSON.parse(final);
-            result.style.display="block"; result.innerHTML=d.html; clearBtn.style.display="block";
-            startScreen.style.display="none";
-        } else if(progress){
-            const p=JSON.parse(progress);
-            questions = allQuestionsBank[p.level];
-            displayName.textContent=p.name + ` (${p.level.toUpperCase()})`;
-            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; totalSeconds=p.totalSeconds; startTime=p.startTime; reviewMarks=p.reviewMarks; challenges=p.challenges;
-            startScreen.style.display="none"; topBar.style.display="flex"; palette.style.display="flex"; navBtns.style.display="flex"; submitBtn.style.display="block";
-            startTimer(); renderQuestion();
+    function showFinalReport(level) {
+        const data = JSON.parse(localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`));
+        if(data) {
+            result.style.display="block"; result.innerHTML = data.html;
+            startScreen.style.display="none"; palette.style.display="none"; 
+            navBtns.style.display="none"; submitBtn.style.display="none"; clearBtn.style.display="block";
         }
-    };
+    }
 
-    function clearResult(){ if(confirm("Clear result?")) { localStorage.clear(); location.reload(); } }
+    window.onload = loadData;
+
+    function clearResult(){ 
+        const level = document.getElementById("difficultyLevel").value;
+        if(confirm("Clear this result?")) {
+            localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
+            localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
+            location.reload(); 
+        }
+    }
 </script>
 </body>
 </html>
