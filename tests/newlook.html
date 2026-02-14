@@ -127,9 +127,10 @@
 </div>
 
 <script>
-    const MY_SUBJECT = "Awareness";
-	const MY_TEST_ID = "GKA_SET_09";
-    const GIST_RAW_URL = "https://gist.githubusercontent.com/Yashuum/e0372b12ad15ed3c2643059cc1e88cc0/raw/general_awareness.json";
+   const MY_SUBJECT = "Awareness";
+    const MY_TEST_ID = "GKA_SET_09";
+    // Added ?v= + Date.now() to bypass browser cache
+    const GIST_RAW_URL = "https://gist.githubusercontent.com/Yashuum/e0372b12ad15ed3c2643059cc1e88cc0/raw/general_awareness.json?v=" + Date.now();
     const GIST_API_URL = "https://api.github.com/gists/e0372b12ad15ed3c2643059cc1e88cc0";
 
     let allQuestionsBank = null;
@@ -137,33 +138,46 @@
     let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
     let totalSeconds=0, timerInterval, startTime;
 
-    // Fetch questions and update time on load
     async function loadData() {
         try {
-            // 1. Get Questions
+            console.log("Fetching questions from Gist...");
             const response = await fetch(GIST_RAW_URL);
+            
+            if (!response.ok) throw new Error('Network response was not ok');
+            
             allQuestionsBank = await response.json();
+            console.log("Data loaded successfully:", allQuestionsBank);
+
+            // Update UI after data is ready
             syncCountAndTime();
 
-            // 2. Get Last Updated Date from GitHub API
+            // Fetch update time
             const apiResponse = await fetch(GIST_API_URL);
             const apiData = await apiResponse.json();
             const updatedDate = new Date(apiData.updated_at).toLocaleString('en-IN', {
                 day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
             });
             document.getElementById('lastUpdated').innerText = updatedDate;
+
         } catch (e) {
-            console.error("Data load failed", e);
-            document.getElementById('lastUpdated').innerText = "Update info unavailable";
+            console.error("Critical Error:", e);
+            document.getElementById('lastUpdated').innerText = "Offline Mode";
+            alert("Error loading questions! Please check your internet connection.");
         }
     }
 
     function syncCountAndTime() {
-        if(!allQuestionsBank) return;
+        // Adding check to prevent "0" display if data isn't ready
+        if(!allQuestionsBank) {
+            console.log("Waiting for allQuestionsBank...");
+            return;
+        }
         const level = document.getElementById("difficultyLevel").value;
-        const count = allQuestionsBank[level].length;
-        document.getElementById("totalQDisplay").textContent = count;
-        document.getElementById("testTime").value = count;
+        if (allQuestionsBank[level]) {
+            const count = allQuestionsBank[level].length;
+            document.getElementById("totalQDisplay").textContent = count;
+            document.getElementById("testTime").value = count;
+        }
     }
 
     async function startTest(){
@@ -349,4 +363,5 @@
     }
 </script>
 </body>
+
 </html>
