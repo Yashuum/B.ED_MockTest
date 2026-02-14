@@ -78,27 +78,24 @@
 <body>
 <div class="container">
     <h1>Target Test- All in one 2026</h1>
-    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 22 Jan, 2026 - 09:24 PM</p>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Questions Set: <span id="lastUpdated">Syncing...</span></p>
     
     <div class="start-screen" id="startScreen">
         <div class="input-row">
             <input id="candidateName" placeholder="Enter your name">
             <input id="testTime" type="number" placeholder="Minutes">
         </div>
-        
         <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
             <option value="easy">Level: Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
         </select>
-
         <div class="q-count-sticker">
             <span class="pulse-dot"></span>
             <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
         </div>
-
         <div style="display:flex; gap:10px;">
-            <button onclick="startTest()">Start Test</button>
+            <button id="mainStartBtn" onclick="startTest()">Start Test</button>
             <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
         </div>
     </div>
@@ -127,384 +124,39 @@
 </div>
 
 <script>
-const MY_SUBJECT = "Full Mock Test";
-const MY_TEST_ID = "AIO_SET_04"; 
+    const MY_SUBJECT = "Full Mock Test";
+    const MY_TEST_ID = "AIO_SET_04";
+    const GIST_API_URL = "https://api.github.com/gists/2fb7cd87290c262fc490896192d21dd2";
 
-    const allQuestionsBank = {
-easy: [
-
-{q:"Choose the correct article: 'He is ___ honest man.'",options:["a","an","the","no article"],answer:"an",subject:"English"},
-{q:"Antonym of 'RISE':",options:["Up","Fall","High","Sky"],answer:"Fall",subject:"English"},
-{q:"Synonym of 'ANGRY':",options:["Happy","Mad","Calm","Sad"],answer:"Mad",subject:"English"},
-{q:"Plural of 'Leaf' is:",options:["Leafs","Leaves","Leafes","Leaf"],answer:"Leaves",subject:"English"},
-{q:"Identify the Verb: 'Rohan runs very fast.'",options:["Rohan","Runs","Fast","Very"],answer:"Runs",subject:"English"},
-{q:"Opposite of 'BRIGHT':",options:["Shiny","Dull","Light","Sun"],answer:"Dull",subject:"English"},
-{q:"A person who flies an airplane:",options:["Driver","Captain","Pilot","Sailor"],answer:"Pilot",subject:"English"},
-{q:"She ___ a song now.",options:["sing","sings","is singing","sang"],answer:"is singing",subject:"English"},
-{q:"Correct spelling:",options:["Received","Recieved","Receeved","Recived"],answer:"Received",subject:"English"},
-{q:"'To cry over spilt milk' means:",options:["To drink milk","To regret uselessly","To wash the floor","To be happy"],answer:"To regret uselessly",subject:"English"},
-{q:"I have ___ pen in my pocket.",options:["a","an","the","any"],answer:"a",subject:"English"},
-{q:"Gender of 'Horse':",options:["Mare","Cow","Bitch","Hen"],answer:"Mare",subject:"English"},
-{q:"Past tense of 'GO':",options:["Goes","Gone","Went","Going"],answer:"Went",subject:"English"},
-{q:"Which is an Adjective?",options:["Sleep","Small","Run","Quickly"],answer:"Small",subject:"English"},
-{q:"They ___ playing football yesterday.",options:["is","am","are","were"],answer:"were",subject:"English"},
-{q:"'आम' कौन-सी संज्ञा है?",options:["व्यक्तिवाचक","जातिवाचक","भाववाचक","समूहवाचक"],answer:"जातिवाचक",subject:"Hindi"},
-{q:"'माता-पिता' में कौन-सा समास है?",options:["द्विगु","द्वंद्व","तत्पुरुष","बहुव्रीहि"],answer:"द्वंद्व",subject:"Hindi"},
-{q:"'दिन' का विलोम शब्द क्या है?",options:["सुबह","शाम","रात","दोपहर"],answer:"रात",subject:"Hindi"},
-{q:"'हिमालय' का संधि-विच्छेद है:",options:["हिम+लय","हिमा+लय","हिम+आलय","हि+आलय"],answer:"हिम+आलय",subject:"Hindi"},
-{q:"'आँख का तारा' मुहावरे का अर्थ:",options:["बहुत प्यारा","अंधा होना","दुश्मन होना","कम दिखना"],answer:"बहुत प्यारा",subject:"Hindi"},
-{q:"शुद्ध वर्तनी चुनिए:",options:["परिक्षा","परीक्षा","परिक्सा","परिक्शा"],answer:"परीक्षा",subject:"Hindi"},
-{q:"संज्ञा के स्थान पर प्रयोग होने वाले शब्द:",options:["विशेषण","सर्वनाम","क्रिया","अव्यय"],answer:"सर्वनाम",subject:"Hindi"},
-{q:"'कमल' का पर्यायवाची शब्द है:",options:["जलद","वारिज","अम्बुद","बादल"],answer:"वारिज",subject:"Hindi"},
-{q:"'लिखना' कैसी क्रिया है?",options:["सकर्मक","अकर्मक","दोनों","कोई नहीं"],answer:"सकर्मक",subject:"Hindi"},
-{q:"वर्णों के समूह को क्या कहते हैं?",options:["शब्द","वाक्य","वर्णमाला","पद"],answer:"वर्णमाला",subject:"Hindi"},
-{q:"'विद्यार्थी' में कौन-सी संधि है?",options:["दीर्घ","गुण","वृद्धि","यण"],answer:"दीर्घ",subject:"Hindi"},
-{q:"'हाथ साफ़ करना' का अर्थ है:",options:["सफाई करना","हाथ धोना","चोरी करना","मेहनत करना"],answer:"चोरी करना",subject:"Hindi"},
-{q:"'कवि' का स्त्रीलिंग रूप है:",options:["कविनी","कवयित्री","कवियत्री","कवियित्री"],answer:"कवयित्री",subject:"Hindi"},
-{q:"'अ' कैसा स्वर है?",options:["ह्रस्व","दीर्घ","प्लुत","संयुक्त"],answer:"ह्रस्व",subject:"Hindi"},
-{q:"'नौ दो ग्यारह होना' का अर्थ:",options:["गिनती करना","भाग जाना","शादी करना","लड़ना"],answer:"भाग जाना",subject:"Hindi"},
-{q:"Series: 5, 10, 15, 20, ?",options:["22","25","30","35"],answer:"25",subject:"Reasoning"},
-{q:"ABC : DEF :: GHI : ?",options:["JKL","MNO","PQR","STU"],answer:"JKL",subject:"Reasoning"},
-{q:"If BALL=4, then DOLL=?",options:["4","5","6","7"],answer:"4",subject:"Reasoning"},
-{q:"Odd one out:",options:["Apple","Mango","Potato","Banana"],answer:"Potato",subject:"Reasoning"},
-{q:"Father : Son :: Mother : ?",options:["Sister","Brother","Daughter","Aunt"],answer:"Daughter",subject:"Reasoning"},
-{q:"If red is blue, and blue is green, what color is clear sky?",options:["Red","Blue","Green","White"],answer:"Green",subject:"Reasoning"},
-{q:"Next letter: A, C, E, G, ?",options:["H","I","J","K"],answer:"I",subject:"Reasoning"},
-{q:"10, 20, 30, 40, ?",options:["45","50","60","70"],answer:"50",subject:"Reasoning"},
-{q:"Pen : Write :: Knife : ?",options:["Shoot","Cut","Eat","Run"],answer:"Cut",subject:"Reasoning"},
-{q:"If 1=2, 2=4, 3=6, then 4=?",options:["7","8","9","10"],answer:"8",subject:"Reasoning"},
-{q:"Odd one out:",options:["Car","Bus","Train","Bird"],answer:"Bird",subject:"Reasoning"},
-{q:"Ram is taller than Shyam. Shyam is taller than Mohan. Who is tallest?",options:["Ram","Shyam","Mohan","Both"],answer:"Ram",subject:"Reasoning"},
-{q:"Series: 2, 4, 8, 16, ?",options:["20","24","32","64"],answer:"32",subject:"Reasoning"},
-{q:"Sun : Day :: Moon : ?",options:["Star","Light","Night","Sky"],answer:"Night",subject:"Reasoning"},
-{q:"Cat : Kitten :: Dog : ?",options:["Cub","Puppy","Calf","Foal"],answer:"Puppy",subject:"Reasoning"},
-{q:"If BOY is CPZ, then GIRL is:",options:["HJSM","HISM","HJSN","HISM"],answer:"HJSM",subject:"Reasoning"},
-{q:"Odd number:",options:["2","4","6","9"],answer:"9",subject:"Reasoning"},
-{q:"Series: 11, 22, 33, 44, ?",options:["50","55","60","66"],answer:"55",subject:"Reasoning"},
-{q:"Doctor : Hospital :: Teacher : ?",options:["Office","Garden","School","Farm"],answer:"School",subject:"Reasoning"},
-{q:"3, 6, 9, 12, ?",options:["14","15","16","18"],answer:"15",subject:"Reasoning"},
-{q:"If + is -, then 10 + 5 = ?",options:["15","5","50","2"],answer:"5",subject:"Reasoning"},
-{q:"Identify the relation: Your father's brother?",options:["Uncle","Grandfather","Father","Cousin"],answer:"Uncle",subject:"Reasoning"},
-{q:"Series: Z, Y, X, W, ?",options:["U","V","T","S"],answer:"V",subject:"Reasoning"},
-{q:"Odd one:",options:["Sunday","Monday","Friday","Holiday"],answer:"Holiday",subject:"Reasoning"},
-{q:"Square has 4 sides, Triangle has?",options:["2","3","4","5"],answer:"3",subject:"Reasoning"},
-{q:"बिहार दिवस कब मनाया जाता है?",options:["22 मार्च","26 जनवरी","15 अगस्त","1 मई"],answer:"22 मार्च",subject:"GK"},
-{q:"भारत की राजधानी क्या है?",options:["पटना","मुंबई","दिल्ली","कोलकाता"],answer:"दिल्ली",subject:"GK"},
-{q:"बिहार के प्रथम मुख्यमंत्री कौन थे?",options:["लालू यादव","नीतीश कुमार","डॉ. श्रीकृष्ण सिंह","भोला पासवान"],answer:"डॉ. श्रीकृष्ण सिंह",subject:"GK"},
-{q:"सौरमंडल का सबसे छोटा ग्रह:",options:["बुध","शुक्र","पृथ्वी","मंगल"],answer:"बुध",subject:"GK"},
-{q:"क्षेत्रफल में भारत का सबसे बड़ा राज्य:",options:["उत्तर प्रदेश","राजस्थान","बिहार","गोवा"],answer:"राजस्थान",subject:"GK"},
-{q:"बिहार का राजकीय पशु क्या है?",options:["शेर","बैल","बाघ","गाय"],answer:"बैल",subject:"GK"},
-{q:"पानी का सूत्र क्या है?",options:["H2O","CO2","NaCl","O2"],answer:"H2O",subject:"GK"},
-{q:"महात्मा बुद्ध को ज्ञान कहाँ मिला?",options:["लुम्बिनी","सारनाथ","बोधगया","कुशीनगर"],answer:"बोधगया",subject:"GK"},
-{q:"वर्तमान में बिहार में कितने जिले हैं?",options:["35","38","40","42"],answer:"38",subject:"GK"},
-{q:"इंसान के शरीर में कितनी हड्डियाँ हैं?",options:["200","206","210","300"],answer:"206",subject:"GK"},
-{q:"भारत की सबसे लंबी नदी:",options:["यमुना","गंगा","कावेरी","नर्मदा"],answer:"गंगा",subject:"GK"},
-{q:"विटामिन सी का स्रोत क्या है?",options:["आंवला","केला","सेब","दूध"],answer:"आंवला",subject:"GK"},
-{q:"जापान की राजधानी क्या है?",options:["टोक्यो","बीजिंग","सियोल","बैंकॉक"],answer:"टोक्यो",subject:"GK"},
-{q:"कंप्यूटर का जनक किसे कहते हैं?",options:["न्यूटन","चार्ल्स बैबेज","आइंस्टीन","बिल गेट्स"],answer:"चार्ल्स बैबेज",subject:"GK"},
-{q:"बिहार का राजकीय पक्षी:",options:["मोर","तोता","गौरैया","हंस"],answer:"गौरैया",subject:"GK"},
-{q:"विश्व का सबसे ऊँचा पर्वत:",options:["के-2","कंचनजंगा","एवरेस्ट","नंदा देवी"],answer:"एवरेस्ट",subject:"GK"},
-{q:"प्रकाश संश्लेषण के लिए क्या चाहिए?",options:["O2","CO2","N2","He"],answer:"CO2",subject:"GK"},
-{q:"बिहार में लीची का शहर किसे कहते हैं?",options:["गया","पटना","मुजफ्फरपुर","हाजीपुर"],answer:"मुजफ्फरपुर",subject:"GK"},
-{q:"इंकलाब जिंदाबाद का नारा किसने दिया?",options:["गांधी","भगत सिंह","नेहरू","आजाद"],answer:"भगत सिंह",subject:"GK"},
-{q:"ताजमहल कहाँ स्थित है?",options:["दिल्ली","जयपुर","आगरा","लखनऊ"],answer:"आगरा",subject:"GK"},
-{q:"भारत का राष्ट्रीय खेल क्या है?",options:["क्रिकेट","हॉकी","फुटबॉल","कबड्डी"],answer:"हॉकी",subject:"GK"},
-{q:"सफेद हाथी किस देश में पाए जाते हैं?",options:["भारत","थाईलैंड","अफ्रीका","चीन"],answer:"थाईलैंड",subject:"GK"},
-{q:"बिहार की द्वितीय राजकीय भाषा:",options:["मगही","मैथिली","उर्दू","भोजपुरी"],answer:"उर्दू",subject:"GK"},
-{q:"सूर्य के सबसे नजदीक ग्रह:",options:["शुक्र","बुध","पृथ्वी","मंगल"],answer:"बुध",subject:"GK"},
-{q:"विश्व पर्यावरण दिवस कब है?",options:["5 जून","10 जून","15 अगस्त","1 जनवरी"],answer:"5 जून",subject:"GK"},
-{q:"बिहार का राजकीय फूल क्या है?",options:["गुलाब","कमल","गेंदा","सूरजमुखी"],answer:"गेंदा",subject:"GK"},
-{q:"टेलीफोन का आविष्कार किसने किया?",options:["एडिसन","बेल","मार्कोनी","न्यूटन"],answer:"बेल",subject:"GK"},
-{q:"पटना किस नदी के किनारे बसा है?",options:["यमुना","गंगा","सोन","गंडक"],answer:"गंगा",subject:"GK"},
-{q:"भारत के तिरंगे में कितने रंग हैं?",options:["2","3","4","5"],answer:"3",subject:"GK"},
-{q:"सबसे बड़ा महासागर कौन-सा है?",options:["हिंद","प्रशांत","अटलांटिक","आर्कटिक"],answer:"प्रशांत",subject:"GK"},
-{q:"शिक्षक दिवस कब मनाया जाता है?",options:["14 नवंबर","5 सितंबर","2 अक्टूबर","26 जनवरी"],answer:"5 सितंबर",subject:"GK"},
-{q:"विटामिन ए की कमी से रोग होता है:",options:["रतौंधी","स्कर्वी","घेघा","एनीमिया"],answer:"रतौंधी",subject:"GK"},
-{q:"भारत का राष्ट्रीय गान किसने लिखा?",options:["टैगोर","चटर्जी","गांधी","नेहरू"],answer:"टैगोर",subject:"GK"},
-{q:"आयरन की कमी से कौन-सा रोग होता है?",options:["एनीमिया","शुगर","कैंसर","बुखार"],answer:"एनीमिया",subject:"GK"},
-{q:"बिहार का सबसे बड़ा जिला (क्षेत्रफल):",options:["गया","पटना","पश्चिम चंपारण","रोहतास"],answer:"पश्चिम चंपारण",subject:"GK"},
-{q:"शून्य (Zero) का आविष्कार किसने किया?",options:["भास्कर","आर्यभट्ट","वराहमिहिर","चाणक्य"],answer:"आर्यभट्ट",subject:"GK"},
-{q:"सौरमंडल में कितने ग्रह हैं?",options:["7","8","9","10"],answer:"8",subject:"GK"},
-{q:"स्वर्ण मंदिर कहाँ स्थित है?",options:["पटना","अमृतसर","दिल्ली","मुंबई"],answer:"अमृतसर",subject:"GK"},
-{q:"रेडियो का आविष्कार किसने किया?",options:["बेल","मार्कोनी","एडिसन","वॉट"],answer:"मार्कोनी",subject:"GK"},
-{q:"बिहार का राजकीय वृक्ष क्या है?",options:["आम","नीम","पीपल","बरगद"],answer:"पीपल",subject:"GK"},
-{q:"शिक्षण क्या है?",options:["एक कौशल","एक कला","एक तपस्या","A और B दोनों"],answer:"A और B दोनों",subject:"Teaching"},
-{q:"कक्षा में अनुशासन कैसे बनाएंगे?",options:["डांटकर","सजा देकर","रोचक पढ़ाकर","चुप कराकर"],answer:"रोचक पढ़ाकर",subject:"Teaching"},
-{q:"बच्चों का प्रथम शिक्षक कौन है?",options:["माता-पिता","अध्यापक","समाज","मित्र"],answer:"माता-पिता",subject:"Teaching"},
-{q:"होमवर्क देने का मुख्य उद्देश्य क्या है?",options:["व्यस्त रखना","अभ्यास कराना","अंक देना","सजा देना"],answer:"अभ्यास कराना",subject:"Teaching"},
-{q:"शिक्षक का सबसे महत्वपूर्ण गुण क्या है?",options:["ज्ञान","धैर्य","क्रोध","ऊँची आवाज़"],answer:"धैर्य",subject:"Teaching"},
-{q:"यदि बच्चा देरी से आए तो क्या करेंगे?",options:["निकाल देंगे","कारण पूछेंगे","मारेंगे","खड़ा रखेंगे"],answer:"कारण पूछेंगे",subject:"Teaching"},
-{q:"शिक्षा का मुख्य लक्ष्य क्या है?",options:["नौकरी","चरित्र निर्माण","सिर्फ पास होना","डिग्री"],answer:"चरित्र निर्माण",subject:"Teaching"},
-{q:"श्यामपट्ट पर कैसे लिखना चाहिए?",options:["तेज","स्पष्ट","छोटा","रंगीन"],answer:"स्पष्ट",subject:"Teaching"},
-{q:"एक अच्छा छात्र वह है जो:",options:["चुप रहे","प्रश्न पूछे","नकल करे","देरी से आए"],answer:"प्रश्न पूछे",subject:"Teaching"},
-{q:"खेल विधि के जनक कौन हैं?",options:["रूसो","फ्रॉबेल","गांधी","नेहरू"],answer:"फ्रॉबेल",subject:"Teaching"},
-{q:"शिक्षक दिवस किसके लिए मनाते हैं?",options:["गांधी","नेहरू","राधाकृष्णन","आजाद"],answer:"राधाकृष्णन",subject:"Teaching"},
-{q:"पढ़ाने से पहले क्या जरूरी है?",options:["किताब पढ़ना","योजना बनाना","सजा देना","हाजिरी"],answer:"योजना बनाना",subject:"Teaching"},
-{q:"छात्रों को कैसे प्रेरित करें?",options:["पुरस्कार देकर","डांटकर","डराकर","उपेक्षा करके"],answer:"पुरस्कार देकर",subject:"Teaching"},
-{q:"कक्षा में शोर क्यों होता है?",options:["बच्चे खराब हैं","पाठ अरुचिकर है","पंखा चल रहा है","कोई नहीं"],answer:"पाठ अरुचिकर है",subject:"Teaching"},
-{q:"प्राथमिक शिक्षा किस भाषा में हो?",options:["अंग्रेजी","मातृभाषा","संस्कृत","उर्दू"],answer:"मातृभाषा",subject:"Teaching"},
-{q:"स्कूल में अनुशासन जरूरी है क्योंकि:",options:["टीचर खुश रहे","सीखना आसान हो","बच्चे डरे रहें","फीस मिले"],answer:"सीखना आसान हो",subject:"Teaching"},
-{q:"शिक्षण सामग्री (Aids) का लाभ क्या है?",options:["मजा आता है","समझ बढ़ती है","समय कटता है","कोई नहीं"],answer:"समझ बढ़ती है",subject:"Teaching"},
-{q:"बालक का विकास कहाँ होता है?",options:["घर","स्कूल","समाज","तीनों जगह"],answer:"तीनों जगह",subject:"Teaching"},
-{q:"बच्चा नकल करता है क्योंकि वह:",options:["सीखना चाहता है","बुरा है","आलसी है","कोई नहीं"],answer:"सीखना चाहता है",subject:"Teaching"},
-{q:"शिक्षक को क्या होना चाहिए?",options:["आदर्शवादी","कठोर","उदासीन","लालची"],answer:"आदर्शवादी",subject:"Teaching"},
-{q:"नकल रोकने का उपाय क्या है?",options:["मारना","परीक्षा पद्धति सुधारना","जेल भेजना","किताब बंद करना"],answer:"परीक्षा पद्धति सुधारना",subject:"Teaching"},
-{q:"बच्चे जिज्ञासु होते हैं, यह किसने कहा?",options:["पियाजे","स्किनर","पावलोव","रूसो"],answer:"पियाजे",subject:"Teaching"},
-{q:"सह-शिक्षा का क्या लाभ है?",options:["कम खर्चा","आपसी समझ","शोर","कोई नहीं"],answer:"आपसी समझ",subject:"Teaching"},
-{q:"किंडरगार्टन का मतलब क्या है?",options:["बच्चों का घर","बच्चों का बगीचा","बच्चों का जेल","खेल का मैदान"],answer:"बच्चों का बगीचा",subject:"Teaching"},
-{q:"शिक्षक समाज का दर्पण है, इसका अर्थ:",options:["टीचर चेहरा देखता है","टीचर समाज को दिशा देता है","टीचर शीशा बेचता है","कोई नहीं"],answer:"टीचर समाज को दिशा देता है",subject:"Teaching"}
-	
- ],
-medium: [
-
-{q:"He is junior ___ me in age.",options:["than","to","of","with"],answer:"to",subject:"English"},
-{q:"Choose the correct spelling:",options:["Occurrence","Occurence","Ocurence","Occurrance"],answer:"Occurrence",subject:"English"},
-{q:"Passive Voice: 'The boy killed the snake.'",options:["The snake was killed by the boy.","The snake is killed by the boy.","The snake killed by boy.","Snake was kill."],answer:"The snake was killed by the boy.",subject:"English"},
-{q:"Synonym of 'ABANDON':",options:["Keep","Forsake","Adopt","Hold"],answer:"Forsake",subject:"English"},
-{q:"Antonym of 'FRAGILE':",options:["Weak","Strong","Soft","Brittle"],answer:"Strong",subject:"English"},
-{q:"Meaning of 'At the eleventh hour':",options:["Early morning","At the last moment","Exactly 11 AM","Very late"],answer:"At the last moment",subject:"English"},
-{q:"He has been ill ___ Monday.",options:["for","since","from","to"],answer:"since",subject:"English"},
-{q:"A person who looks at the bright side:",options:["Pessimist","Optimist","Atheist","Theist"],answer:"Optimist",subject:"English"},
-{q:"If I ___ a bird, I would fly.",options:["am","was","were","had"],answer:"were",subject:"English"},
-{q:"Correct spelling:",options:["Committee","Comittee","Commitee","Committe"],answer:"Committee",subject:"English"},
-{q:"Bread and butter ___ my breakfast.",options:["are","is","were","have"],answer:"is",subject:"English"},
-{q:"Neither of the boys ___ present.",options:["are","is","were","have"],answer:"is",subject:"English"},
-{q:"The ship ___ in the ocean.",options:["drowned","sank","sunk","was drown"],answer:"sank",subject:"English"},
-{q:"One who treats skin diseases:",options:["Cardiologist","Dermatologist","Neurologist","Oculist"],answer:"Dermatologist",subject:"English"},
-{q:"Scarcely had he left ___ it rained.",options:["than","then","when","while"],answer:"when",subject:"English"},
-{q:"‘पवन’ का सही संधि-विच्छेद क्या है?",options:["प+वन","पो+अन","पौ+अन","पव+न"],answer:"पो+अन",subject:"Hindi"},
-{q:"‘यथाशक्ति’ में कौन-सा समास है?",options:["तत्पुरुष","बहुव्रीहि","अव्ययीभाव","द्विगु"],answer:"अव्ययीभाव",subject:"Hindi"},
-{q:"‘जंगम’ का विलोम शब्द क्या है?",options:["स्थावर","स्थिर","चंचल","दुर्गम"],answer:"स्थावर",subject:"Hindi"},
-{q:"‘मयूरा’ का तद्भव रूप क्या होगा?",options:["मोर","मैना","मुर्गा","हंस"],answer:"मोर",subject:"Hindi"},
-{q:"‘कनक कनक ते सौ गुनी’ में अलंकार है:",options:["अनुप्रास","यमक","श्लेष","उपमा"],answer:"यमक",subject:"Hindi"},
-{q:"‘तरणि’ और ‘तरणी’ का सही अर्थ युग्म:",options:["सूर्य-नाव","नाव-सूर्य","नदी-नाव","नाव-नदी"],answer:"सूर्य-नाव",subject:"Hindi"},
-{q:"‘राम ने रावण को मारा’ में वाच्य है:",options:["कर्तृवाच्य","कर्मवाच्य","भाववाच्य","कोई नहीं"],answer:"कर्तृवाच्य",subject:"Hindi"},
-{q:"‘अपादान तत्पुरुष’ का उदाहरण है:",options:["राजपुत्र","देशभक्ति","पथभ्रष्ट","यज्ञशाला"],answer:"पथभ्रष्ट",subject:"Hindi"},
-{q:"‘सावधानी’ शब्द में प्रत्यय है:",options:["नी","धानी","ई","आनी"],answer:"ई",subject:"Hindi"},
-{q:"‘अत्यधिक’ का संधि-विच्छेद है:",options:["अत्य+अधिक","अति+अधिक","अत+अधिक","अत्य+धिक"],answer:"अति+अधिक",subject:"Hindi"},
-{q:"‘जो कम बोलता हो’ के लिए शब्द:",options:["वाचाल","मितभाषी","मृदुभाषी","अभाषी"],answer:"मितभाषी",subject:"Hindi"},
-{q:"‘उज्ज्वल’ की शुद्ध वर्तनी है:",options:["उज्वल","उज्ज्वल","उजवल","उज्जवल"],answer:"उज्ज्वल",subject:"Hindi"},
-{q:"‘नीलकमल’ में कौन-सा समास है?",options:["बहुव्रीहि","कर्मधारय","तत्पुरुष","द्विगु"],answer:"कर्मधारय",subject:"Hindi"},
-{q:"‘हाथी’ का तत्सम शब्द है:",options:["गयन्द","हस्ती","हाथ","कुंजर"],answer:"हस्ती",subject:"Hindi"},
-{q:"‘अनुनासिक’ का संबंध होता है:",options:["नाक से","मुँह से","नाक और मुँह दोनों से","गले से"],answer:"नाक और मुँह दोनों से",subject:"Hindi"},
-{q:"Series: 1, 4, 9, 16, 25, ?",options:["30","36","49","64"],answer:"36",subject:"Reasoning"},
-{q:"If CAT=24, then DOG=?",options:["24","26","22","20"],answer:"26",subject:"Reasoning"},
-{q:"Pointing to a man, a lady says 'He is the only son of my father'.",options:["Father","Brother","Son","Husband"],answer:"Brother",subject:"Reasoning"},
-{q:"Odd one out:",options:["January","March","July","September"],answer:"September",subject:"Reasoning"},
-{q:"Angle at 3:00 between hands?",options:["45°","90°","180°","60°"],answer:"90°",subject:"Reasoning"},
-{q:"If RED is EDR, then BLUE is:",options:["EULB","LUBE","ELUB","BLUE"],answer:"EULB",subject:"Reasoning"},
-{q:"A is B's sister. C is B's mother. D is C's father. How is A related to D?",options:["Granddaughter","Daughter","Aunt","Mother"],answer:"Granddaughter",subject:"Reasoning"},
-{q:"Man goes 5km North, then 3km East, then 5km South. Distance from start?",options:["3km","5km","8km","13km"],answer:"3km",subject:"Reasoning"},
-{q:"Series: Z, X, V, T, ?",options:["S","R","Q","P"],answer:"R",subject:"Reasoning"},
-{q:"Book : Author :: Statue : ?",options:["Mason","Sculptor","Painter","Architect"],answer:"Sculptor",subject:"Reasoning"},
-{q:"If '+' means 'x' and 'x' means '-', then 5 + 4 x 10 = ?",options:["10","20","30","0"],answer:"10",subject:"Reasoning"},
-{q:"How many triangles in a square with both diagonals?",options:["4","6","8","10"],answer:"8",subject:"Reasoning"},
-{q:"If yesterday was Friday, what day is 3 days after tomorrow?",options:["Tuesday","Wednesday","Thursday","Monday"],answer:"Wednesday",subject:"Reasoning"},
-{q:"Choose odd pair:",options:["Hard:Soft","Sweet:Sour","Pointed:Blunt","Long:High"],answer:"Long:High",subject:"Reasoning"},
-{q:"Series: 2, 6, 12, 20, ?",options:["28","30","32","34"],answer:"30",subject:"Reasoning"},
-{q:"In a row, Ram is 7th from left and 9th from right. Total?",options:["16","15","14","17"],answer:"15",subject:"Reasoning"},
-{q:"Doctor : Patient :: Lawyer : ?",options:["Customer","Client","Criminal","Judge"],answer:"Client",subject:"Reasoning"},
-{q:"If 123 = 6, 234 = 9, then 345 = ?",options:["12","15","10","14"],answer:"12",subject:"Reasoning"},
-{q:"Odd one:",options:["Patna","Lucknow","Mumbai","Indore"],answer:"Indore",subject:"Reasoning"},
-{q:"Series: A, C, F, J, ?",options:["L","M","O","P"],answer:"O",subject:"Reasoning"},
-{q:"If PAPER is coded as QBQFS, then GLASS is:",options:["HMBTT","HMZTT","HKBTT","HMBST"],answer:"HMBTT",subject:"Reasoning"},
-{q:"Sun : Star :: Moon : ?",options:["Planet","Satellite","Comet","Galaxy"],answer:"Satellite",subject:"Reasoning"},
-{q:"Series: 100, 81, 64, 49, ?",options:["36","25","40","30"],answer:"36",subject:"Reasoning"},
-{q:"Relationship: Mother, Female, Doctor.",options:["All overlap","Doctor overlaps both","Mother inside Female","Separate"],answer:"Mother inside Female",subject:"Reasoning"},
-{q:"If South becomes North-East, what does North become?",options:["South-West","North-West","South-East","East"],answer:"South-West",subject:"Reasoning"},
-{q:"अनुच्छेद 17 किससे संबंधित है?",options:["शिक्षा","अस्पृश्यता का अंत","समानता","प्रेस"],answer:"अस्पृश्यता का अंत",subject:"GK"},
-{q:"बिहार का राजकीय पक्षी है:",options:["कोयल","गौरैया","मोर","हंस"],answer:"गौरैया",subject:"GK"},
-{q:"चंपारण सत्याग्रह कब शुरू हुआ?",options:["1915","1917","1919","1920"],answer:"1917",subject:"GK"},
-{q:"सबसे गर्म ग्रह कौन-सा है?",options:["बुध","शुक्र","मंगल","बृहस्पति"],answer:"शुक्र",subject:"GK"},
-{q:"इंसुलिन की कमी से रोग होता है:",options:["घेघा","मधुमेह","एनीमिया","रिकेट्स"],answer:"मधुमेह",subject:"GK"},
-{q:"जयप्रकाश नारायण का उपनाम है:",options:["लोकमान्य","लोकनायक","देशरत्न","दीनबंधु"],answer:"लोकनायक",subject:"GK"},
-{q:"ओजोन परत कहाँ पाई जाती है?",options:["क्षोभमंडल","समतापमंडल","मध्यमंडल","बाह्यमंडल"],answer:"समतापमंडल",subject:"GK"},
-{q:"बिहार विधानसभा सीटें कितनी हैं?",options:["243","75","40","16"],answer:"243",subject:"GK"},
-{q:"विटामिन सी का स्रोत है:",options:["दूध","आंवला","केला","सेब"],answer:"आंवला",subject:"GK"},
-{q:"पटना उच्च न्यायालय की स्थापना:",options:["1912","1916","1917","1920"],answer:"1916",subject:"GK"},
-{q:"मौर्य वंश का संस्थापक कौन था?",options:["अशोक","चंद्रगुप्त मौर्य","बिंबिसार","पुष्यमित्र"],answer:"चंद्रगुप्त मौर्य",subject:"GK"},
-{q:"हवा की गति मापी जाती है:",options:["बैरोमीटर","एनीमोमीटर","हाइग्रोमीटर","थर्मामीटर"],answer:"एनीमोमीटर",subject:"GK"},
-{q:"बिहार का सबसे साक्षर जिला:",options:["पटना","रोहतास","गया","मुंगेर"],answer:"रोहतास",subject:"GK"},
-{q:"संविधान सभा के अध्यक्ष कौन थे?",options:["अम्बेडकर","राजेंद्र प्रसाद","नेहरू","पटेल"],answer:"राजेंद्र प्रसाद",subject:"GK"},
-{q:"पंचायती राज शुरू हुआ:",options:["बिहार","राजस्थान","गुजरात","केरल"],answer:"राजस्थान",subject:"GK"},
-{q:"भारत का नेपोलियन किसे कहते हैं?",options:["चंद्रगुप्त","समुद्रगुप्त","अकबर","शिवाजी"],answer:"समुद्रगुप्त",subject:"GK"},
-{q:"सफेद रक्त कण (WBC) का कार्य है:",options:["ऑक्सीजन ले जाना","रोग प्रतिरोधक क्षमता","भोजन पचाना","रक्त जमाना"],answer:"रोग प्रतिरोधक क्षमता",subject:"GK"},
-{q:"बिहार में तेल शोधक कारखाना कहाँ है?",options:["पटना","बरौनी","गया","मुंगेर"],answer:"बरौनी",subject:"GK"},
-{q:"लोकसभा का कार्यकाल होता है:",options:["4 वर्ष","5 वर्ष","6 वर्ष","अनिश्चित"],answer:"5 वर्ष",subject:"GK"},
-{q:"गौतम बुद्ध का जन्म कहाँ हुआ?",options:["बोधगया","सारनाथ","लुम्बिनी","कुशीनगर"],answer:"लुम्बिनी",subject:"GK"},
-{q:"राज्यसभा का सभापति कौन होता है?",options:["राष्ट्रपति","उपराष्ट्रपति","प्रधानमंत्री","अध्यक्ष"],answer:"उपराष्ट्रपति",subject:"GK"},
-{q:"रक्त का थक्का जमने में सहायक विटामिन:",options:["A","B","C","K"],answer:"K",subject:"GK"},
-{q:"भारत की सिलिकॉन वैली है:",options:["मुंबई","बंगलुरु","हैदराबाद","पुणे"],answer:"बंगलुरु",subject:"GK"},
-{q:"कौटिल्य किसके प्रधानमंत्री थे?",options:["अशोक","चंद्रगुप्त मौर्य","हर्षवर्धन","अकबर"],answer:"चंद्रगुप्त मौर्य",subject:"GK"},
-{q:"बिहार का शोक किस नदी को कहते हैं?",options:["गंगा","कोसी","सोन","गंडक"],answer:"कोसी",subject:"GK"},
-{q:"जहांगीर का मकबरा कहाँ है?",options:["आगरा","दिल्ली","लाहौर","श्रीनगर"],answer:"लाहौर",subject:"GK"},
-{q:"सौरमंडल का सबसे छोटा ग्रह:",options:["बुध","शुक्र","मंगल","पृथ्वी"],answer:"बुध",subject:"GK"},
-{q:"गांधी जी का भारत में पहला सत्याग्रह:",options:["खेड़ा","चंपारण","अहमदाबाद","असहयोग"],answer:"चंपारण",subject:"GK"},
-{q:"मानव शरीर की सबसे बड़ी ग्रंथि:",options:["थायराइड","यकृत (Liver)","पीयूष","अग्न्याशय"],answer:"यकृत (Liver)",subject:"GK"},
-{q:"बिहार में कुल कितने प्रमंडल हैं?",options:["7","8","9","10"],answer:"9",subject:"GK"},
-{q:"स्वतंत्र भारत के प्रथम शिक्षा मंत्री:",options:["नेहरू","आजाद","प्रसाद","पटेल"],answer:"आजाद",subject:"GK"},
-{q:"ध्वनि की तीव्रता मापते हैं:",options:["हर्ट्ज़","डेसिबल","मीटर","वाट"],answer:"डेसिबल",subject:"GK"},
-{q:"नालंदा विश्वविद्यालय किसने बनवाया?",options:["धर्मपाल","कुमारगुप्त I","हर्षवर्धन","अशोक"],answer:"कुमारगुप्त I",subject:"GK"},
-{q:"सूर्य की ऊर्जा का स्रोत है:",options:["विखंडन","संलयन","दहन","कोई नहीं"],answer:"संलयन",subject:"GK"},
-{q:"बिहार के प्रथम मुख्यमंत्री थे:",options:["श्रीकृष्ण सिंह","कर्पूरी ठाकुर","राबड़ी देवी","नीतीश कुमार"],answer:"श्रीकृष्ण सिंह",subject:"GK"},
-{q:"रेबीज के टीके की खोज की:",options:["जेनर","लुई पाश्चर","कोच","फ्लेमिंग"],answer:"लुई पाश्चर",subject:"GK"},
-{q:"अमरकंटक से कौन सी नदी निकलती है?",options:["गंगा","नर्मदा","यमुना","गोदावरी"],answer:"नर्मदा",subject:"GK"},
-{q:"बिहार की प्रमुख फसल क्या है?",options:["गेहूँ","चावल","मक्का","गन्ना"],answer:"चावल",subject:"GK"},
-{q:"मौद्रिक नीति कौन बनाता है?",options:["वित्त मंत्रालय","RBI","SEBI","SBI"],answer:"RBI",subject:"GK"},
-{q:"विश्व का सबसे बड़ा डेल्टा:",options:["नील","सुंदरवन","अमेजन","मिसिसिपी"],answer:"सुंदरवन",subject:"GK"},
-{q:"समावेशी शिक्षा का अर्थ है:",options:["अलग स्कूल","सबके लिए एक स्कूल","सिर्फ दिव्यांग","सिर्फ मेधावी"],answer:"सबके लिए एक स्कूल",subject:"Teaching"},
-{q:"शिक्षण की 'प्ले-वे' विधि दी थी:",options:["कुक","फ्रॉबेल","मोंटेसरी","डीवी"],answer:"फ्रॉबेल",subject:"Teaching"},
-{q:"NCF 2005 में शिक्षक की भूमिका:",options:["अधिनायक","सुविधादाता","नेता","उपदेशक"],answer:"सुविधादाता",subject:"Teaching"},
-{q:"निदानात्मक परीक्षण क्यों होता है?",options:["अंक देने के लिए","कमियां जानने के लिए","पास करने के लिए","रैंक के लिए"],answer:"कमियां जानने के लिए",subject:"Teaching"},
-{q:"सूक्ष्म शिक्षण का चक्र समय है:",options:["30 min","36 min","45 min","60 min"],answer:"36 min",subject:"Teaching"},
-{q:"डिस्लेक्सिया संबंधित है:",options:["लेखन","पठन","गणित","व्यवहार"],answer:"पठन",subject:"Teaching"},
-{q:"करके सीखना (Learning by doing) है:",options:["प्रकृतिवाद","प्रयोजनवाद","आदर्शवाद","यथार्थवाद"],answer:"प्रयोजनवाद",subject:"Teaching"},
-{q:"कक्षा में शोर होने पर क्या करें?",options:["डांटे","शिक्षण रोचक बनाएं","बाहर जाएं","सजा दें"],answer:"शिक्षण रोचक बनाएं",subject:"Teaching"},
-{q:"ब्लूम के अनुसार ज्ञान का स्तर है:",options:["सबसे ऊँचा","सबसे नीचा","मध्यम","कोई नहीं"],answer:"सबसे नीचा",subject:"Teaching"},
-{q:"RTE एक्ट लागू हुआ:",options:["2009","2010","2005","2012"],answer:"2010",subject:"Teaching"},
-{q:"किशोरावस्था को कहते हैं:",options:["स्वर्ण काल","तनाव-तूफान काल","खेल काल","गैंग काल"],answer:"तनाव-तूफान काल",subject:"Teaching"},
-{q:"शिक्षण सहायक सामग्री का लाभ:",options:["सजावट","रोचकता","टीचर का आराम","कोई नहीं"],answer:"रोचकता",subject:"Teaching"},
-{q:"प्रोजेक्ट विधि के जनक:",options:["किलपैट्रिक","फ्रॉबेल","रूसो","थार्नडाइक"],answer:"किलपैट्रिक",subject:"Teaching"},
-{q:"बुद्धि लब्धि (IQ) का सूत्र किसने पूरा किया?",options:["बिने","स्टर्न","टर्मन","गार्डनर"],answer:"टर्मन",subject:"Teaching"},
-{q:"समाजीकरण की पहली संस्था:",options:["स्कूल","परिवार","मीडिया","धर्म"],answer:"परिवार",subject:"Teaching"},
-{q:"क्रियात्मक अनुसंधान कौन करता है?",options:["वैज्ञानिक","शिक्षक","नेता","जनता"],answer:"शिक्षक",subject:"Teaching"},
-{q:"आगमन विधि चलती है:",options:["नियम-उदाहरण","उदाहरण-नियम","अमूर्त-मूर्त","अज्ञात-ज्ञात"],answer:"उदाहरण-नियम",subject:"Teaching"},
-{q:"नैतिक विकास का सिद्धांत दिया:",options:["पियाजे","कोहलबर्ग","स्किनर","वॉटसन"],answer:"कोहलबर्ग",subject:"Teaching"},
-{q:"स्किनर ने प्रयोग किया था:",options:["कुत्ते पर","बिल्ली पर","चूहे पर","बन्दर पर"],answer:"चूहे पर",subject:"Teaching"},
-{q:"बाल केंद्रित शिक्षा में प्रमुख है:",options:["शिक्षक","पाठ्यक्रम","बालक","स्कूल"],answer:"बालक",subject:"Teaching"},
-{q:"श्यामपट्ट कैसा होना चाहिए?",options:["चमकदार","स्पष्ट","धुंधला","छोटा"],answer:"स्पष्ट",subject:"Teaching"},
-{q:"पुनर्बलन कितने प्रकार का है?",options:["1","2","3","4"],answer:"2",subject:"Teaching"},
-{q:"शिक्षण एक प्रक्रिया है:",options:["एकमुखी","द्विमुखी","त्रिमुखी","कोई नहीं"],answer:"त्रिमुखी",subject:"Teaching"},
-{q:"अनुशासन का आधार होना चाहिए:",options:["डर","सजा","प्रेम और सहानुभूति","कठोरता"],answer:"प्रेम और सहानुभूति",subject:"Teaching"},
-{q:"बच्चे जिज्ञासु होते हैं, यह किसने कहा?",options:["पियाजे","स्किनर","पावलोव","थार्नडाइक"],answer:"पियाजे",subject:"Teaching"}
-
-],
-hard: [
-
-{q:"Choose the correct sentence:",options:["He as well as I am going.","He as well as I are going.","He as well as I is going.","He as well as I were going."],answer:"He as well as I is going.",subject:"English"},
-{q:"What is the synonym of 'PRAGMATIC'?",options:["Idealistic","Practical","Arrogant","Playful"],answer:"Practical",subject:"English"},
-{q:"Antonym of 'EPHEMERAL':",options:["Short-lived","Eternal","Fast","Transparent"],answer:"Eternal",subject:"English"},
-{q:"Identify the figure of speech: 'The stars danced in the sky.'",options:["Simile","Metaphor","Personification","Oxymoron"],answer:"Personification",subject:"English"},
-{q:"Meaning of the idiom 'To leave someone in the lurch':",options:["To help someone","To leave in difficulty","To scold someone","To reward someone"],answer:"To leave in difficulty",subject:"English"},
-{q:"One who hates mankind is a:",options:["Misanthrope","Misogynist","Philanthropist","Optimist"],answer:"Misanthrope",subject:"English"},
-{q:"Identify the correct spelling:",options:["Manoeuvre","Maneuver","Manouvre","Both A and B"],answer:"Both A and B",subject:"English"},
-{q:"He died ___ cancer.",options:["from","of","with","by"],answer:"of",subject:"English"},
-{q:"Change to Indirect: He said, 'I am busy.'",options:["He said that he is busy.","He said that he was busy.","He says he was busy.","He said he busy."],answer:"He said that he was busy.",subject:"English"},
-{q:"Which is a Gerund?",options:["Running is good.","He is running.","He will run.","Run fast."],answer:"Running is good.",subject:"English"},
-{q:"The study of ancient societies is:",options:["History","Anthropology","Archaeology","Etymology"],answer:"Archaeology",subject:"English"},
-{q:"He is ___ European.",options:["a","an","the","no article"],answer:"a",subject:"English"},
-{q:"'In spite of' is a:",options:["Conjunction","Prepositional Phrase","Interjection","Verb"],answer:"Prepositional Phrase",subject:"English"},
-{q:"Plural of 'Criterion' is:",options:["Criterions","Criteria","Criterias","Criterion"],answer:"Criteria",subject:"English"},
-{q:"Choose the correct spelling:",options:["Questionnaire","Questionaire","Questionnare","Questionere"],answer:"Questionnaire",subject:"English"},
-{q:"'उद्धरण' का सही संधि-विच्छेद क्या है?",options:["उत्+धरण","उत्+हरण","उद्+धरण","उद्+हरण"],answer:"उत्+हरण",subject:"Hindi"},
-{q:"'मृगनयनी' में कौन-सा समास है?",options:["अव्ययीभाव","कर्मधारय","तत्पुरुष","द्विगु"],answer:"कर्मधारय",subject:"Hindi"},
-{q:"'विवत्स' रस का स्थायी भाव क्या है?",options:["भय","विस्मय","जुगुप्सा","शोक"],answer:"जुगुप्सा",subject:"Hindi"},
-{q:"'खड़ी बोली' हिन्दी का प्रथम महाकाव्य कौन-सा है?",options:["कामायनी","साकेत","प्रियप्रवास","पद्मावत"],answer:"प्रियप्रवास",subject:"Hindi"},
-{q:"'पावक' में कौन-सी संधि है?",options:["गुण","वृद्धि","यण","अयादि"],answer:"अयादि",subject:"Hindi"},
-{q:"'दोहा' के प्रथम और तृतीय चरण में कितनी मात्राएँ होती हैं?",options:["11-11","13-13","16-16","24-24"],answer:"13-13",subject:"Hindi"},
-{q:"'अष्टछाप' की स्थापना किसने की थी?",options:["वल्लभाचार्य","विट्ठलनाथ","सूरदास","तुलसीदास"],answer:"विट्ठलनाथ",subject:"Hindi"},
-{q:"'उन्मुख' का विलोम शब्द क्या है?",options:["प्रमुख","विमुख","सन्मुख","अधोमुख"],answer:"विमुख",subject:"Hindi"},
-{q:"'कलम का सिपाही' किसकी जीवनी है?",options:["प्रेमचंद","निराला","शरद चंद्र","अज्ञेय"],answer:"प्रेमचंद",subject:"Hindi"},
-{q:"'चिन्मय' का संधि विच्छेद है:",options:["चित्+मय","चिन+मय","चित+मय","चि+मय"],answer:"चित्+मय",subject:"Hindi"},
-{q:"'अधम' का विलोम शब्द क्या है?",options:["उत्तम","नीच","बुरा","नरक"],answer:"उत्तम",subject:"Hindi"},
-{q:"'चरण कमल बंदौ हरिराई' में अलंकार है:",options:["उपमा","रूपक","उत्प्रेक्षा","यमक"],answer:"रूपक",subject:"Hindi"},
-{q:"'यथासाध्य' में कौन-सा समास है?",options:["अव्ययीभाव","तत्पुरुष","बहुव्रीहि","द्वंद्व"],answer:"अव्ययीभाव",subject:"Hindi"},
-{q:"हिन्दी साहित्य के 'आदिकाल' को 'वीरगाथा काल' किसने कहा?",options:["हजारी प्रसाद","रामचंद्र शुक्ल","राहुल सांकृत्यायन","मिश्र बंधु"],answer:"रामचंद्र शुक्ल",subject:"Hindi"},
-{q:"'चौपाई' के प्रत्येक चरण में कितनी मात्राएँ होती हैं?",options:["11","13","16","24"],answer:"16",subject:"Hindi"},
-{q:"Find next: 2, 10, 30, 68, ?",options:["120","130","150","100"],answer:"130",subject:"Reasoning"},
-{q:"If 'PRISON' = '65', what is 'FREEDOM'?",options:["60","66","62","64"],answer:"66",subject:"Reasoning"},
-{q:"Missing number: 7, 26, 63, 124, ?",options:["215","216","125","214"],answer:"215",subject:"Reasoning"},
-{q:"Angle at 10:10 between hands?",options:["245°","115°","120°","100°"],answer:"115°",subject:"Reasoning"},
-{q:"If 'LEAD' is '12514', then 'DEAF' is?",options:["4516","4511","4512","4518"],answer:"4516",subject:"Reasoning"},
-{q:"Syllogism: All A are B. No B is C. Conclusion?",options:["No A is C","Some A are C","All C are A","No C is B"],answer:"No A is C",subject:"Reasoning"},
-{q:"If South-East becomes North, what does West become?",options:["North-East","South-East","North-West","South-West"],answer:"South-East",subject:"Reasoning"},
-{q:"Find the odd one: 27, 64, 125, 144",options:["27","64","125","144"],answer:"144",subject:"Reasoning"},
-{q:"6 : 222 :: 7 : ?",options:["343","350","336","210"],answer:"350",subject:"Reasoning"},
-{q:"Day on 15 Aug 1947 was?",options:["Friday","Saturday","Sunday","Monday"],answer:"Friday",subject:"Reasoning"},
-{q:"Statements: Some dogs are cats. Some cats are rats. Conclusion?",options:["Some dogs are rats","No dog is rat","Both","Neither"],answer:"Neither",subject:"Reasoning"},
-{q:"If 5*3=16, 10*5=75, then 8*2=?",options:["60","30","24","40"],answer:"60",subject:"Reasoning"},
-{q:"Next letter: Z, W, S, N, ?",options:["I","H","G","F"],answer:"H",subject:"Reasoning"},
-{q:"A is B's mother, B is C's sister, C is D's father. A to D?",options:["Mother","Grandmother","Aunt","Sister"],answer:"Grandmother",subject:"Reasoning"},
-{q:"Missing value: 121, 144, 169, 196, ?",options:["210","225","256","289"],answer:"225",subject:"Reasoning"},
-{q:"Odd word:",options:["Square","Circle","Rectangle","Triangle"],answer:"Circle",subject:"Reasoning"},
-{q:"If 'WATER' is 'XBVFS', 'EARTH' is?",options:["FBSUI","FZSUI","FBTUI","FBSHI"],answer:"FBSUI",subject:"Reasoning"},
-{q:"1, 2, 6, 24, ?",options:["100","120","144","150"],answer:"120",subject:"Reasoning"},
-{q:"If 'MAN' is 13-1-14, 'KEY' is?",options:["11-5-25","10-5-25","11-4-25","11-6-25"],answer:"11-5-25",subject:"Reasoning"},
-{q:"Clock mirror image of 8:20 is?",options:["4:40","3:40","2:40","5:40"],answer:"3:40",subject:"Reasoning"},
-{q:"How many 7s are there preceded by 6 but not followed by 8?",options:["1","2","3","4"],answer:"3",subject:"Reasoning"},
-{q:"Venn: Hospital, Nurse, Patient.",options:["Disjoint","Patient/Nurse inside Hospital","Overlapping","Chain"],answer:"Patient/Nurse inside Hospital",subject:"Reasoning"},
-{q:"Next term: 2, 3, 5, 7, 11, ?",options:["12","13","14","15"],answer:"13",subject:"Reasoning"},
-{q:"Odd pair:",options:["4:16","5:25","6:36","7:48"],answer:"7:48",subject:"Reasoning"},
-{q:"Dice: Opposite of 1 in standard dice?",options:["2","4","5","6"],answer:"6",subject:"Reasoning"},
-{q:"अनुच्छेद 360 का संबंध किससे है?",options:["राष्ट्रीय आपात","राष्ट्रपति शासन","वित्तीय आपात","संशोधन"],answer:"वित्तीय आपात",subject:"GK"},
-{q:"विक्रमशिला विश्वविद्यालय के संस्थापक:",options:["धर्मपाल","देवपाल","गोपाल","महिपाल"],answer:"धर्मपाल",subject:"GK"},
-{q:"पटना उच्च न्यायालय की स्थापना कब हुई?",options:["1911","1912","1916","1917"],answer:"1916",subject:"GK"},
-{q:"'पायरिया' किस अंग को प्रभावित करता है?",options:["आँख","कान","मसूड़े","फेफड़े"],answer:"मसूड़े",subject:"GK"},
-{q:"बिहार में 'स्वराज दल' के अध्यक्ष कौन थे?",options:["श्रीकृष्ण सिंह","राजेंद्र प्रसाद","मजहरुल हक","नारायण सिंह"],answer:"श्रीकृष्ण सिंह",subject:"GK"},
-{q:"रेपो रेट कौन तय करता है?",options:["वित्त मंत्रालय","RBI","SEBI","SBI"],answer:"RBI",subject:"GK"},
-{q:"मगध की प्रारंभिक राजधानी क्या थी?",options:["पाटलिपुत्र","वैशाली","राजगृह","चंपा"],answer:"राजगृह",subject:"GK"},
-{q:"प्रकाश की गति निर्वात में कितनी है?",options:["3x10^8 m/s","3x10^6 m/s","2x10^8 m/s","3x10^10 m/s"],answer:"3x10^8 m/s",subject:"GK"},
-{q:"शेरशाह सूरी का मकबरा कहाँ है?",options:["दिल्ली","सासाराम","पटना","गया"],answer:"सासाराम",subject:"GK"},
-{q:"ग्रीन हाउस गैस नहीं है:",options:["मीथेन","CO2","नाइट्रोजन","जलवाष्प"],answer:"नाइट्रोजन",subject:"GK"},
-{q:"1857 के विद्रोह के नेता कुंवर सिंह कहाँ के थे?",options:["आरा","जगदीशपुर","बक्सर","पटना"],answer:"जगदीशपुर",subject:"GK"},
-{q:"'मैग्नाकार्टा' संविधान के किस भाग को कहते हैं?",options:["भाग 2","भाग 3","भाग 4","भाग 5"],answer:"भाग 3",subject:"GK"},
-{q:"बिहार में पहली बार राष्ट्रपति शासन लगा:",options:["1967","1968","1972","1980"],answer:"1968",subject:"GK"},
-{q:"भारी जल (Heavy Water) का सूत्र है:",options:["H2O","D2O","T2O","CO2"],answer:"D2O",subject:"GK"},
-{q:"DPSP किस देश से लिया गया है?",options:["अमेरिका","कनाडा","आयरलैंड","ब्रिटेन"],answer:"आयरलैंड",subject:"GK"},
-{q:"बिहार का सबसे गर्म जिला कौन सा है?",options:["पटना","गया","मुजफ्फरपुर","भागलपुर"],answer:"गया",subject:"GK"},
-{q:"भारतीय रिजर्व बैंक की स्थापना कब हुई?",options:["1935","1947","1950","1969"],answer:"1935",subject:"GK"},
-{q:"पंचायती राज नागौर में कब शुरू हुआ?",options:["1952","1959","1961","1973"],answer:"1959",subject:"GK"},
-{q:"हीरा किसका अपररूप है?",options:["सोना","कार्बन","लोहा","तांबा"],answer:"कार्बन",subject:"GK"},
-{q:"बिहार में 1857 की क्रांति कहाँ से शुरू हुई?",options:["पटना","देवघर (रोहिणी)","आरा","गया"],answer:"देवघर (रोहिणी)",subject:"GK"},
-{q:"ओजोन परत की मोटाई मापते हैं:",options:["डेसिबल","डॉबसन","मीटर","हर्ट्ज़"],answer:"डॉबसन",subject:"GK"},
-{q:"हर्षवर्धन के समय कौन सा चीनी यात्री आया?",options:["फाह्यान","ह्वेनसांग","इत्सिंग","मेगास्थनीज"],answer:"ह्वेनसांग",subject:"GK"},
-{q:"संवैधानिक उपचारों का अधिकार है:",options:["अनुच्छेद 14","अनुच्छेद 19","अनुच्छेद 21","अनुच्छेद 32"],answer:"अनुच्छेद 32",subject:"GK"},
-{q:"कोबाल्ट-60 का प्रयोग किसमें होता है?",options:["कैंसर","घेघा","बुखार","एनीमिया"],answer:"कैंसर",subject:"GK"},
-{q:"बिहार में 'किसान सभा' की स्थापना कब हुई?",options:["1922","1929","1934","1936"],answer:"1929",subject:"GK"},
-{q:"किस विटामिन में कोबाल्ट पाया जाता है?",options:["B1","B2","B6","B12"],answer:"B12",subject:"GK"},
-{q:"सत्यार्थ प्रकाश के लेखक कौन हैं?",options:["विवेकानंद","दयानंद सरस्वती","राममोहन राय","गांधी"],answer:"दयानंद सरस्वती",subject:"GK"},
-{q:"दूध का घनत्व मापते हैं:",options:["बैरोमीटर","लैक्टोमीटर","हाइग्रोमीटर","एनीमोमीटर"],answer:"लैक्टोमीटर",subject:"GK"},
-{q:"बिहार का क्षेत्रफल भारत का कितना % है?",options:["2.86%","3.15%","5.28%","1.50%"],answer:"2.86%",subject:"GK"},
-{q:"भारत में जनगणना की शुरुआत किसके समय हुई?",options:["मेयो","रिपन","कर्जन","डलहौजी"],answer:"मेयो",subject:"GK"},
-{q:"राज्यसभा का पदेन सभापति कौन होता है?",options:["राष्ट्रपति","उपराष्ट्रपति","प्रधानमंत्री","अध्यक्ष"],answer:"उपराष्ट्रपति",subject:"GK"},
-{q:"हवा की आर्द्रता (Humidity) मापते हैं:",options:["हाइग्रोमीटर","हाइड्रोमीटर","एनीमोमीटर","बैरोमीटर"],answer:"हाइग्रोमीटर",subject:"GK"},
-{q:"'संपूर्ण क्रांति' का नारा किसने दिया?",options:["गांधी","नेहरू","जेपी नारायण","लोहिया"],answer:"जेपी नारायण",subject:"GK"},
-{q:"रक्त का pH मान कितना होता है?",options:["6.4","7.4","8.4","5.4"],answer:"7.4",subject:"GK"},
-{q:"पियाजे के अनुसार 'अमूर्त तर्क' किस स्तर पर है?",options:["S-M","Pre-op","Concrete","Formal"],answer:"Formal",subject:"Teaching"},
-{q:"वाइगोत्सकी के ZPD का पूरा नाम:",options:["Zone of Proximal Dev","Zone of Primary Dev","Zone of Personal Dev","Zero Dev"],answer:"Zone of Proximal Dev",subject:"Teaching"},
-{q:"RTE एक्ट किस वर्ष लागू हुआ?",options:["2009","2010","2012","2005"],answer:"2010",subject:"Teaching"},
-{q:"कोहलबर्ग के नैतिक विकास के कितने स्तर हैं?",options:["3","4","5","6"],answer:"3",subject:"Teaching"},
-{q:"'स्कैफोल्डिंग' शब्द किसने दिया?",options:["वाइगोत्सकी","पियाजे","ब्रूनर","स्किनर"],answer:"ब्रूनर",subject:"Teaching"},
-{q:"NEP 2020 का स्ट्रक्चर क्या है?",options:["10+2","5+3+3+4","5+4+3+3","10+2+3"],answer:"5+3+3+4",subject:"Teaching"},
-{q:"'प्रयत्न एवं भूल' का सिद्धांत किसका है?",options:["पावलोव","स्किनर","थार्नडाइक","कोहलर"],answer:"थार्नडाइक",subject:"Teaching"},
-{q:"बहु-बुद्धि सिद्धांत के जनक:",options:["बिने","गार्डनर","टर्मन","गिल्फोर्ड"],answer:"गार्डनर",subject:"Teaching"},
-{q:"सूक्ष्म शिक्षण (भारतीय मॉडल) का समय:",options:["30 min","36 min","45 min","50 min"],answer:"36 min",subject:"Teaching"},
-{q:"मनोसामाजिक सिद्धांत किसने दिया?",options:["फ्रायड","इरिक्सन","बांडुरा","वॉटसन"],answer:"इरिक्सन",subject:"Teaching"},
-{q:"शिक्षण का स्मृति स्तर किसने दिया?",options:["हर्बर्ट","मॉरिसन","हंट","डेवी"],answer:"हर्बर्ट",subject:"Teaching"},
-{q:"IQ का सही सूत्र (टर्मन) क्या है?",options:["MA/CA","CA/MA","MA/CA*100","CA/MA*100"],answer:"MA/CA*100",subject:"Teaching"},
-{q:"ऑपरेंट कंडीशनिंग किसने दी?",options:["पावलोव","स्किनर","वॉटसन","पियाजे"],answer:"स्किनर",subject:"Teaching"},
-{q:"NCF 2005 का मुख्य सूत्र है:",options:["शिक्षा बोझ के बिना","शिक्षा सबके लिए","खेल शिक्षा","कठोर अनुशासन"],answer:"शिक्षा बोझ के बिना",subject:"Teaching"},
-{q:"'डिस्ग्राफिया' अक्षमता है:",options:["पठन","लेखन","गणित","बोलना"],answer:"लेखन",subject:"Teaching"},
-{q:"नकारात्मक शिक्षा का समर्थन किसने किया?",options:["प्लेटो","रूसो","गांधी","नेहरू"],answer:"रूसो",subject:"Teaching"},
-{q:"शास्त्रीय अनुबंधन में कुत्ता लार टपकाता है:",options:["UCR","CR","UCS","CS"],answer:"UCR",subject:"Teaching"},
-{q:"किंडरगार्टन के जनक कौन हैं?",options:["मोंटेसरी","फ्रॉबेल","रूसो","डीवी"],answer:"फ्रॉबेल",subject:"Teaching"},
-{q:"ऑपरेशन ब्लैकबोर्ड कब आया?",options:["1986","1987-88","1992","2000"],answer:"1987-88",subject:"Teaching"},
-{q:"बुद्धि का 'द्वि-कारक' सिद्धांत किसका है?",options:["बिने","गार्डनर","स्पीयरमैन","थर्स्टन"],answer:"स्पीयरमैन",subject:"Teaching"},
-{q:"इंद्रिय जनित गामक अवस्था की आयु है:",options:["0-2","2-7","7-11","11-15"],answer:"0-2",subject:"Teaching"},
-{q:"क्रियात्मक अनुसंधान का मूल उद्देश्य:",options:["ज्ञान","समस्या समाधान","सिद्धांत","खोज"],answer:"सम समस्या समाधान",subject:"Teaching"},
-{q:"आगमन विधि चलती है:",options:["नियम-उदाहरण","उदाहरण-नियम","सामान्य-विशिष्ट","अमूर्त-मूर्त"],answer:"उदाहरण-नियम",subject:"Teaching"},
-{q:"शिक्षण एक प्रक्रिया है:",options:["एकमुखी","द्विमुखी","त्रिमुखी","चतुर्मुखी"],answer:"त्रिमुखी",subject:"Teaching"},
-{q:"प्रोजेक्ट विधि के जनक कौन हैं?",options:["किलपैट्रिक","डीवी","हर्बर्ट","मॉरिसन"],answer:"किलपैट्रिक",subject:"Teaching"},
-{q:"राष्ट्रीय ज्ञान आयोग के अध्यक्ष कौन थे?",options:["यशपाल","सैम पित्रोदा","कस्तूरीरंगन","कोठारी"],answer:"सैम पित्रोदा",subject:"Teaching"}
-  
-  ]
-    };
-
+    let allQuestionsBank = null;
     let questions = [];
     let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
     let totalSeconds=0, timerInterval, startTime;
 
+    async function loadData() {
+        try {
+            const response = await fetch(GIST_API_URL);
+            const data = await response.json();
+            const fileName = Object.keys(data.files)[0];
+            allQuestionsBank = JSON.parse(data.files[fileName].content);
+            
+            syncCountAndTime();
+            document.getElementById('lastUpdated').innerText = new Date(data.updated_at).toLocaleString('en-IN');
+
+            const currentLevel = document.getElementById("difficultyLevel").value;
+            if(localStorage.getItem(`finalResult_${MY_SUBJECT}_${currentLevel}`)) {
+                showFinalReport(currentLevel);
+            } else if(localStorage.getItem(`inProgress_${MY_SUBJECT}_${currentLevel}`)) {
+                const p = JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}_${currentLevel}`));
+                candidateName.value = p.name || "";
+                testTime.value = Math.ceil(p.totalSeconds / 60);
+                startTest(); 
+            }
+        } catch (e) { console.error("Load failed", e); }
+    }
+
     function syncCountAndTime() {
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
         const count = allQuestionsBank[level].length;
         document.getElementById("totalQDisplay").textContent = count;
@@ -512,15 +164,10 @@ hard: [
     }
 
     function startTest(){
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
         questions = allQuestionsBank[level];
-        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
-        
-        const existingResult = localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`);
-        if(existingResult) {
-            if(!confirm("You have already completed the " + level.toUpperCase() + " level. Re-attempt?")) return;
-            else localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
-        }
+        if(!candidateName.value || !testTime.value) { alert("Enter Name/Time"); return; }
 
         displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
         startScreen.style.display="none";
@@ -532,20 +179,19 @@ hard: [
         const progress = localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`);
         if(progress) {
             const p = JSON.parse(progress);
-            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; 
+            answers=p.answers || {}; visited=p.visited || {}; currentIndex=p.currentIndex || 0; 
             totalSeconds=p.totalSeconds; startTime=p.startTime; 
-            reviewMarks=p.reviewMarks; challenges=p.challenges;
+            reviewMarks=p.reviewMarks || {}; challenges=p.challenges || {};
         } else {
             answers={}; visited={}; currentIndex=0; reviewMarks={}; challenges={};
-            totalSeconds=testTime.value*60;
-            startTime=Date.now();
+            totalSeconds=testTime.value*60; startTime=Date.now();
         }
-        
         startTimer();
         renderQuestion();
     }
 
     function startTimer(){
+        if(timerInterval) clearInterval(timerInterval);
         timerInterval=setInterval(()=>{
             totalSeconds--;
             updateTimerDisplay();
@@ -561,49 +207,31 @@ hard: [
     function renderQuestion(){
         visited[currentIndex]=true;
         const q=questions[currentIndex];
-        quizArea.innerHTML=`
-            <div class="quiz-card">
-                <div style="display:flex; justify-content:space-between; align-items:start;">
-                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
-                </div>
-                <div class="options">
-                    ${q.options.map(o=>`
-                        <label>
-                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
-                        </label>
-                    `).join("")}
-                </div>
-                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
-            </div>`;
-
-        const nextBtn = document.getElementById("nextBtn");
-        const lastQMsg = document.getElementById("lastQMsg");
-        if(currentIndex === questions.length - 1) {
-            nextBtn.disabled = true;
-            lastQMsg.style.display = "block";
-        } else {
-            nextBtn.disabled = false;
-            lastQMsg.style.display = "none";
-        }
+        quizArea.innerHTML=`<div class="quiz-card">
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+                <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+            </div>
+            <div class="options">
+                ${q.options.map(o=>`<label><input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}</label>`).join("")}
+            </div>
+            ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+        </div>`;
+        document.getElementById("nextBtn").disabled = (currentIndex === questions.length - 1);
         document.getElementById("prevBtn").disabled = (currentIndex === 0);
-
+        document.getElementById("lastQMsg").style.display = (currentIndex === questions.length - 1) ? "block" : "none";
         renderPalette();
     }
 
     function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
     function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
     function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
-    function challengeQuestion(){
-        if(answers[currentIndex]){ alert("Already answered!"); return; }
-        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
-    }
+    function challengeQuestion(){ if(!answers[currentIndex] && confirm("Challenge?")) { challenges[currentIndex] = true; renderPalette(); } }
 
     function renderPalette(){
         palette.innerHTML="";
         questions.forEach((_,i)=>{
-            const s=document.createElement("span");
-            s.textContent=i+1;
+            const s=document.createElement("span"); s.textContent=i+1;
             if(visited[i]) s.classList.add("visited");
             if(answers[i]) s.classList.add("attempted");
             if(reviewMarks[i]) s.classList.add("marked-review");
@@ -616,71 +244,77 @@ hard: [
     function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
     function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-    function saveProgress(lvl){
-        const level = lvl || document.getElementById("difficultyLevel").value;
+    function saveProgress(){
+        const level = document.getElementById("difficultyLevel").value;
         localStorage.setItem(`inProgress_${MY_SUBJECT}_${level}`,JSON.stringify({
-            name:candidateName.value,
-            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+            name:candidateName.value, level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
         }));
     }
 
     function submitQuiz(){
-        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
-        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
-        if(!confirm("Are you sure you want to submit?")) return;
-        
+        if(!confirm("Submit Test?")) return;
         clearInterval(timerInterval);
         const level = document.getElementById("difficultyLevel").value;
         localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
         
         let correct=0, attempted=0, challCount=0;
         let detailHtml="<h2>Detailed Analysis</h2>";
-        
         questions.forEach((q,i)=>{
             let isCorrect = false;
             let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
             if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
             else if(answers[i] === q.answer) { isCorrect = true; }
-            if(answers[i]) attempted++;
-            if(isCorrect) correct++;
-            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}"><p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p><div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
+            if(answers[i]) attempted++; if(isCorrect) correct++;
+            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                <p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                <div class="sol-box"><b>Logic:</b> ${q.solution || 'Common Sense / Fact based'}</div></div>`;
         });
-
-        localStorage.setItem(`score_${MY_TEST_ID}_${level.toUpperCase()}`, `${correct}/${questions.length}`);
-        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${level.toUpperCase()}`, "true");
 
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
         
-        const summaryBox = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);"><h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;"><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div></div><button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button></div>`;
+        const summary = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+            <h3 style="color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px; margin-top:15px;">
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b>${accuracy}%</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
+            </div>
+            <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; width:100%; background:var(--success);">Dashboard</button></div>`;
 
-        result.style.display="block"; result.innerHTML = summaryBox + detailHtml;
-        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
-        clearBtn.style.display="block"; window.scrollTo(0,0);
+        const finalHtml = summary + detailHtml;
+        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ name: displayName.textContent, html: finalHtml }));
         
-        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ name:displayName.textContent, html: summaryBox + detailHtml }));
-
-        emailjs.send("service_wq5yoyp", "template_doegpcp", {
-            candidate_name: displayName.textContent,
-            subject: MY_SUBJECT,
-            score: correct,
-            total: questions.length,
-            attempted: attempted,
-            accuracy: accuracy + "%",
-            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-            test_date: new Date().toLocaleString("en-IN")
+        result.style.display="block"; result.innerHTML = finalHtml;
+        quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
+        startScreen.style.display="none"; topBar.style.display="none"; clearBtn.style.display="block";
+        window.scrollTo(0,0);
+        
+        emailjs.send("service_wq5yoyp", "template_doegpcp", { 
+            candidate_name: displayName.textContent, subject: MY_SUBJECT, score: correct, total: questions.length, 
+            accuracy: accuracy + "%", time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s` 
         });
     }
 
-    window.onload=function(){ syncCountAndTime(); };
+    function showFinalReport(level) {
+        const data = JSON.parse(localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`));
+        if(data) {
+            result.style.display="block"; result.innerHTML = data.html;
+            startScreen.style.display="none"; palette.style.display="none"; 
+            navBtns.style.display="none"; submitBtn.style.display="none"; clearBtn.style.display="block";
+        }
+    }
+
+    window.onload = loadData;
 
     function clearResult(){ 
         const level = document.getElementById("difficultyLevel").value;
-        if(confirm(`Clear result for ${level.toUpperCase()}?`)) { 
+        if(confirm("Clear this result?")) {
             localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
             localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
             location.reload(); 
-        } 
+        }
     }
 </script>
 </body>
