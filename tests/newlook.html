@@ -127,10 +127,10 @@
 </div>
 
 <script>
-   const MY_SUBJECT = "Awareness";
+  const MY_SUBJECT = "Awareness";
     const MY_TEST_ID = "GKA_SET_09";
-    // Added ?v= + Date.now() to bypass browser cache
-    const GIST_RAW_URL = "https://gist.githubusercontent.com/Yashuum/e0372b12ad15ed3c2643059cc1e88cc0/raw/general_awareness.json?v=" + Date.now();
+    // Using the absolute RAW URL
+    const GIST_RAW_URL = "https://gist.githubusercontent.com/Yashuum/e0372b12ad15ed3c2643059cc1e88cc0/raw/general_awareness.json";
     const GIST_API_URL = "https://api.github.com/gists/e0372b12ad15ed3c2643059cc1e88cc0";
 
     let allQuestionsBank = null;
@@ -140,45 +140,58 @@
 
     async function loadData() {
         try {
-            console.log("Fetching questions from Gist...");
-            const response = await fetch(GIST_RAW_URL);
+            console.log("Attempting to fetch data...");
+            // Added cache: 'no-store' to get fresh data every time
+            const response = await fetch(GIST_RAW_URL, { cache: "no-store" });
             
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) throw new Error('HTTP status ' + response.status);
             
-            allQuestionsBank = await response.json();
-            console.log("Data loaded successfully:", allQuestionsBank);
+            const textData = await response.text(); // Get as text first to debug
+            try {
+                allQuestionsBank = JSON.parse(textData);
+            } catch (jsonErr) {
+                console.error("JSON Syntax Error in Gist:", jsonErr);
+                alert("Bhai, Gist ke JSON mein spelling ya comma ki galti hai!");
+                return;
+            }
 
-            // Update UI after data is ready
+            console.log("Success! Data loaded.");
             syncCountAndTime();
 
-            // Fetch update time
-            const apiResponse = await fetch(GIST_API_URL);
-            const apiData = await apiResponse.json();
-            const updatedDate = new Date(apiData.updated_at).toLocaleString('en-IN', {
-                day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
-            document.getElementById('lastUpdated').innerText = updatedDate;
+            // Fetch Last Updated Info
+            fetch(GIST_API_URL)
+                .then(res => res.json())
+                .then(apiData => {
+                    const updatedDate = new Date(apiData.updated_at).toLocaleString('en-IN', {
+                        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                    });
+                    document.getElementById('lastUpdated').innerText = updatedDate;
+                }).catch(() => {
+                    document.getElementById('lastUpdated').innerText = "Live";
+                });
 
         } catch (e) {
-            console.error("Critical Error:", e);
-            document.getElementById('lastUpdated').innerText = "Offline Mode";
-            alert("Error loading questions! Please check your internet connection.");
+            console.error("Fetch Connection Error:", e);
+            alert("Connection Error: Gist load nahi ho pa raha. Internet ya URL check karein.");
         }
     }
 
     function syncCountAndTime() {
-        // Adding check to prevent "0" display if data isn't ready
-        if(!allQuestionsBank) {
-            console.log("Waiting for allQuestionsBank...");
-            return;
-        }
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
-        if (allQuestionsBank[level]) {
-            const count = allQuestionsBank[level].length;
+        const levelData = allQuestionsBank[level];
+        
+        if (levelData) {
+            const count = levelData.length;
             document.getElementById("totalQDisplay").textContent = count;
             document.getElementById("testTime").value = count;
+        } else {
+            console.error("Level not found in JSON:", level);
         }
     }
+
+    // Call loadData when window loads
+    window.onload = loadData;
 
     async function startTest(){
         if(!allQuestionsBank) {
@@ -365,3 +378,4 @@
 </body>
 
 </html>
+
