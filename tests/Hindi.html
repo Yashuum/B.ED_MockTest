@@ -78,27 +78,24 @@
 <body>
 <div class="container">
     <h1>Target Test- Hindi 2026</h1>
-    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Last Updated: 13 Feb, 2026</p>
+    <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Questions Set: <span id="lastUpdated">Syncing...</span></p>
     
     <div class="start-screen" id="startScreen">
         <div class="input-row">
             <input id="candidateName" placeholder="Enter your name">
             <input id="testTime" type="number" placeholder="Minutes">
         </div>
-        
         <select id="difficultyLevel" style="max-width: 600px;" onchange="syncCountAndTime()">
             <option value="easy">Level: Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
         </select>
-
         <div class="q-count-sticker">
             <span class="pulse-dot"></span>
             <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
         </div>
-
         <div style="display:flex; gap:10px;">
-            <button onclick="startTest()">Start Test</button>
+            <button id="mainStartBtn" onclick="startTest()">Start Test</button>
             <button type="button" class="btn-secondary" onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'">Go Back</button>
         </div>
     </div>
@@ -128,163 +125,39 @@
 
 <script>
     const MY_SUBJECT = "Hindi";
-	const MY_TEST_ID = "HIN_SET_08"; 
+    const MY_TEST_ID = "HIN_SET_08";
+    const GIST_API_URL = "https://api.github.com/gists/f53d76137dec40ded2db81e043c6337d";
 
-    const allQuestionsBank = {
-easy: [
-
-{q:"'उपकार' शब्द में कौन-सा उपसर्ग है?",options:["उप","अ","अप","उ"],answer:"उप",solution:"तर्क: 'कार' मूल शब्द में 'उप' उपसर्ग जोड़ने से उपकार बना है।"},
-{q:"'हिमालय' का सही संधि-विच्छेद क्या है?",options:["हिम + आलय","हिमा + लय","हि + आलय","हिम + लय"],answer:"हिम + आलय",solution:"तर्क: यह दीर्घ संधि का उदाहरण है (अ + आ = आ)।"},
-{q:"'रसोईघर' में कौन-सा समास है?",options:["अव्ययीभाव","तत्पुरुष","द्विगु","द्वंद्व"],answer:"तत्पुरुष",solution:"तर्क: रसोई के लिए घर (संप्रदान तत्पुरुष)।"},
-{q:"'मिठास' शब्द में कौन-सा प्रत्यय लगा है?",options:["स","ठास","आस","मीठा"],answer:"आस",solution:"तर्क: मीठा + आस = मिठास।"},
-{q:"'प्रत्येक' में किस उपसर्ग का प्रयोग हुआ है?",options:["प्र","प्रत्य","प्रति","प्रत"],answer:"प्रति",solution:"तर्क: प्रति + एक = प्रत्येक।"},
-{q:"'यथाशक्ति' में कौन-सा समास है?",options:["द्वंद्व","अव्ययीभाव","बहुव्रीहि","तत्पुरुष"],answer:"अव्ययीभाव",solution:"तर्क: जहाँ पहला पद अव्यय (यथा) हो।"},
-{q:"'भानुदय' का संधि-विच्छेद क्या होगा?",options:["भानु + उदय","भान + उदय","भानु + दय","भा + नुदय"],answer:"भानु + उदय",solution:"तर्क: उ + उ = ऊ (दीर्घ संधि)।"},
-{q:"'घबराहट' में कौन-सा प्रत्यय है?",options:["हट","आहट","राहट","घबरा"],answer:"आहट",solution:"तर्क: घबरा + आहट मिलकर भाववाचक संज्ञा बनाते हैं।"},
-{q:"'अन्याय' में कौन-सा उपसर्ग है?",options:["अन्","अ","अन्या","नय"],answer:"अ",solution:"तर्क: न्याय के आगे 'अ' उपसर्ग लगने से उसका अर्थ उल्टा हो गया।"},
-{q:"'नीलकंठ' में कौन-सा समास है?",options:["तत्पुरुष","द्विगु","बहुव्रीहि","द्वंद्व"],answer:"बहुव्रीहि",solution:"तर्क: नीला है कंठ जिसका अर्थात् शिव (तीसरा अर्थ प्रधान)।"},
-{q:"'परमेश्वर' का संधि-विच्छेद क्या है?",options:["परम + ईश्वर","परमे + श्वर","पर + ईश्वर","परम + श्वर"],answer:"परम + ईश्वर",solution:"तर्क: अ + ई = ए (गुण संधि)।"},
-{q:"'लिखावट' में कौन-सा प्रत्यय है?",options:["वट","लिखा","आवट","खवट"],answer:"आवट",solution:"तर्क: लिख + आवट = लिखावट।"},
-{q:"'प्रतिदिन' में कौन-सा समास है?",options:["अव्ययीभाव","तत्पुरुष","द्विगु","कर्मधारय"],answer:"अव्ययीभाव",solution:"तर्क: 'प्रति' उपसर्ग/अव्यय होने के कारण।"},
-{q:"'स्वागत' का संधि-विच्छेद क्या है?",options:["स्वा + गत","सु + आगत","स्व + आगत","स + आगत"],answer:"सु + आगत",solution:"तर्क: उ + आ = वा (यण संधि)।"},
-{q:"'सुपुत्र' में उपसर्ग बताइए:",options:["स","सु","सपु","पुत्र"],answer:"सु",solution:"तर्क: 'सु' का अर्थ होता है अच्छा।"},
-{q:"'चौराहा' में कौन-सा समास है?",options:["द्वंद्व","द्विगु","तत्पुरुष","बहुव्रीहि"],answer:"द्विगु",solution:"तर्क: चार राहों का समूह (संख्यावाचक)।"},
-{q:"'महोदय' का संधि-विच्छेद क्या होगा?",options:["मह + उदय","महा + उदय","महो + दय","महत + उदय"],answer:"महा + उदय",solution:"तर्क: आ + उ = ओ (गुण संधि)।"},
-{q:"'सजावट' में कौन-सा प्रत्यय है?",options:["वट","आवट","सज","जावट"],answer:"आवट",solution:"तर्क: सज + आवट = सजावट।"},
-{q:"'निर्बल' में कौन-सा उपसर्ग है?",options:["नी","निर","निः","निब"],answer:"निर",solution:"तर्क: निर + बल = निर्बल।"},
-{q:"'भाई-बहन' में कौन-सा समास है?",options:["द्विगु","द्वंद्व","तत्पुरुष","बहुव्रीहि"],answer:"द्वंद्व",solution:"तर्क: दोनों पद प्रधान हैं और बीच में योजक चिह्न है।"},
-{q:"'सदाचार' का संधि-विच्छेद क्या है?",options:["सदा + चार","सत + आचार","सद् + आचार","सदा + आचार"],answer:"सत + आचार",solution:"तर्क: व्यंजन संधि के अनुसार त् का द् हो जाता है।"},
-{q:"'भुलक्कड़' में कौन-सा प्रत्यय है?",options:["अक्कड़","कड़","भूल","अकड़"],answer:"अक्कड़",solution:"तर्क: भूल + अक्कड़ = भुलक्कड़।"},
-{q:"'अभिमान' में कौन-सा उपसर्ग है?",options:["अ","अभि","अभी","मान"],answer:"अभि",solution:"तर्क: मान मूल शब्द में 'अभि' उपसर्ग लगा है।"},
-{q:"'आजन्म' में कौन-सा समास है?",options:["तत्पुरुष","द्विगु","अव्ययीभाव","कर्मधारय"],answer:"अव्ययीभाव",solution:"तर्क: 'आ' उपसर्ग/अव्यय है।"},
-{q:"'नयन' का सही संधि-विच्छेद क्या है?",options:["न + यन","ने + अन","नै + अन","नय + न"],answer:"ने + अन",solution:"तर्क: ए + अ = अय (अयादि संधि)।"},
-{q:"'बचपन' में कौन-सा प्रत्यय है?",options:["पन","न","बच","बचप"],answer:"पन",solution:"तर्क: बच्चा + पन = बचपन।"},
-{q:"'अनुज' में कौन-सा उपसर्ग है?",options:["अ","अनु","नज","अुन"],answer:"अनु",solution:"तर्क: अनु + ज (बाद में जन्म लेने वाला)।"},
-{q:"'दशानन' में कौन-सा समास है?",options:["द्विगु","बहुव्रीहि","तत्पुरुष","द्वंद्व"],answer:"बहुव्रीहि",solution:"तर्क: दस हैं आनन (मुख) जिसके अर्थात् रावण।"},
-{q:"'पवन' का संधि-विच्छेद क्या होगा?",options:["प + वन","पो + अन","पौ + अन","पा + वन"],answer:"पो + अन",solution:"तर्क: ओ + अ = अव (अयादि संधि)।"},
-{q:"'पहाड़ी' में कौन-सा प्रत्यय है?",options:["इ","ई","ड़ी","आड़ी"],answer:"ई",solution:"तर्क: पहाड़ + ई = पहाड़ी।"},
-{q:"'अधर्म' में कौन-सा उपसर्ग है?",options:["अध","अ","म","ध"],answer:"अ",solution:"तर्क: धर्म का उल्टा करने के लिए 'अ' लगा है।"},
-{q:"'त्रिफला' में कौन-सा समास है?",options:["द्विगु","द्वंद्व","बहुव्रीहि","तत्पुरुष"],answer:"द्विगु",solution:"तर्क: तीन फलों का समूह।"},
-{q:"'विद्यालय' का संधि-विच्छेद क्या है?",options:["विद्य + आलय","विद्या + आलय","विद्या + लय","विद् + आलय"],answer:"विद्या + आलय",solution:"तर्क: आ + आ = आ (दीर्घ संधि)।"},
-{q:"'बुढ़ापा' में कौन-सा प्रत्यय है?",options:["पा","आपा","बुढ़","ढापा"],answer:"आपा",solution:"तर्क: बूढ़ा + आपा = बुढ़ापा।"},
-{q:"'विमुख' में उपसर्ग बताइए:",options:["वि","विम","मुख","विमु"],answer:"वि",solution:"तर्क: मुख के साथ 'वि' उपसर्ग लगा है।"},
-{q:"'लंबोदर' में कौन-सा समास है?",options:["द्विगु","तत्पुरुष","बहुव्रीहि","कर्मधारय"],answer:"बहुव्रीहि",solution:"तर्क: लंबा है उदर जिसका अर्थात् गणेश।"},
-{q:"'इत्यादि' का संधि-विच्छेद क्या है?",options:["इत + यदि","इति + आदि","इत्य + आदि","इत + आदि"],answer:"इति + आदि",solution:"तर्क: इ + आ = या (यण संधि)।"},
-{q:"'सुंदरता' में कौन-सा प्रत्यय है?",options:["ता","आ","सु","सुंदर"],answer:"ता",solution:"तर्क: सुंदर + ता = सुंदरता।"},
-{q:"'परिणाम' में कौन-सा उपसर्ग है?",options:["पर","परि","परा","नाम"],answer:"परि",solution:"तर्क: परि + नाम = परिणाम।"},
-{q:"'राधा-कृष्ण' में कौन-सा समास है?",options:["द्विगु","द्वंद्व","तत्पुरुष","अव्ययीभाव"],answer:"द्वंद्व",solution:"तर्क: राधा और कृष्ण।"},
-{q:"'रवीन्द्र' का संधि-विच्छेद क्या होगा?",options:["रवि + इंद्र","रवि + ईंद्र","रवी + इंद्र","रवी + ईंद्र"],answer:"रवि + इंद्र",solution:"तर्क: इ + इ = ई (दीर्घ संधि)।"},
-{q:"'झगड़ालू' में कौन-सा प्रत्यय है?",options:["लू","आलू","लु","ालू"],answer:"आलू",solution:"तर्क: झगड़ा + आलू = झगड़ालू।"},
-{q:"'नास्तिक' में कौन-सा उपसर्ग है?",options:["ना","नास","न","अस्तिक"],answer:"न",solution:"तर्क: न + आस्तिक = नास्तिक।"},
-{q:"'पीताम्बर' में कौन-सा समास है?",options:["कर्मधारय","बहुव्रीहि","द्विगु","द्वंद्व"],answer:"बहुव्रीहि",solution:"तर्क: पीले हैं वस्त्र जिसके अर्थात् कृष्ण।"},
-{q:"'देवर्षि' का संधि-विच्छेद क्या है?",options:["देव + ऋषि","देवा + ऋषि","देव + र्षि","देवो + ऋषि"],answer:"देव + ऋषि",solution:"तर्क: अ + ऋ = अर् (गुण संधि)।"}
-	
- ],
-medium: [
-
-{q:"'उन्मुख' का सही विलोम शब्द क्या है?",options:["प्रमुख","विमुख","सन्मुख","अधोमुख"],answer:"विमुख",solution:"तर्क: उन्मुख का अर्थ सामने की ओर और विमुख का अर्थ दूसरी ओर मुख करना है।"},
-{q:"'जो इंद्रियों द्वारा न जाना जा सके' वाक्यांश के लिए एक शब्द:",options:["अगोचर","अजित","अतीन्द्रिय","विकल्प 1 और 3 दोनों"],answer:"विकल्प 1 और 3 दोनों",solution:"तर्क: जिसे इंद्रियों से न जाना जा सके उसे अगोचर और अतीन्द्रिय दोनों कहते हैं।"},
-{q:"'नाक का बाल होना' मुहावरे का अर्थ क्या है?",options:["नाक में बीमारी होना","अत्यधिक प्रिय होना","शत्रु होना","कष्ट देना"],answer:"अत्यधिक प्रिय होना",solution:"तर्क: यह मुहावरा बहुत अधिक प्यारा या निकट होने के लिए प्रयुक्त होता है।"},
-{q:"'सूर्य' का पर्यायवाची शब्द इनमें से कौन-सा नहीं है?",options:["दिवाकर","रवि","हिमांशु","भास्कर"],answer:"हिमांशु",solution:"तर्क: हिमांशु चंद्रमा का पर्यायवाची है, बाकी तीनों सूर्य के हैं।"},
-{q:"'तुलसीदास' द्वारा रचित 'रामचरितमानस' की भाषा क्या है?",options:["ब्रज","मैथिली","अवधी","खड़ी बोली"],answer:"अवधी",solution:"तर्क: रामचरितमानस अवधी भाषा का सर्वश्रेष्ठ महाकाव्य माना जाता है।"},
-{q:"'जंगल में लगने वाली आग' को क्या कहते हैं?",options:["बड़वानल","जठराग्नि","दावानल","कामाग्नि"],answer:"दावानल",solution:"तर्क: पेट की आग को जठराग्नि और समुद्र की आग को बड़वानल कहते हैं।"},
-{q:"'अक्ल पर पत्थर पड़ना' मुहावरे का सही अर्थ:",options:["चोट लगना","बुद्धि भ्रष्ट होना","विद्वान होना","मूर्खता करना"],answer:"बुद्धि भ्रष्ट होना",solution:"तर्क: जब समझ काम न करे तब इस मुहावरे का प्रयोग होता है।"},
-{q:"'शाश्वत' का सही विलोम शब्द क्या होगा?",options:["नश्वर","स्थायी","अमर","अनंत"],answer:"नश्वर",solution:"तर्क: शाश्वत का अर्थ हमेशा रहने वाला और नश्वर का अर्थ नष्ट होने वाला।"},
-{q:"'अनुनासिक' वर्णों का उच्चारण कहाँ से होता है?",options:["केवल नाक से","केवल मुख से","नाक और मुख दोनों से","कंठ से"],answer:"नाक और मुख दोनों से",solution:"तर्क: जैसे- ङ, ञ, ण, न, म का उच्चारण नाक और मुख दोनों से होता है।"},
-{q:"शुद्ध वर्तनी का चयन कीजिए:",options:["कवियत्री","कवयित्री","कवयत्री","कवियित्री"],answer:"कवयित्री",solution:"तर्क: यह शब्द परीक्षाओं में सबसे अधिक बार पूछा जाता है।"},
-{q:"'कलम का जादूगर' किसे कहा जाता है?",options:["मुंशी प्रेमचंद","रामवृक्ष बेनीपुरी","महादेवी वर्मा","जयशंकर प्रसाद"],answer:"रामवृक्ष बेनीपुरी",solution:"तर्क: 'कलम का सिपाही' प्रेमचंद को और 'जादूगर' बेनीपुरी को कहा जाता है।"},
-{q:"'कान भरना' मुहावरे का अर्थ क्या है?",options:["बहरे होना","चुगली करना","दीक्षित करना","साफ करना"],answer:"चुगली करना",solution:"तर्क: किसी के विरुद्ध गुप्त रूप से शिकायत करना।"},
-{q:"'अतिथि' का पर्यायवाची शब्द है:",options:["अभ्यागत","मदन","मधुकर","नारायण"],answer:"अभ्यागत",solution:"तर्क: अभ्यागत, आगंतुक और पाहुन अतिथि के पर्यायवाची हैं।"},
-{q:"'जिसके समान कोई दूसरा न हो' वाक्यांश के लिए एक शब्द:",options:["अद्वितीय","सर्वश्रेष्ठ","अनुपम","अतुल्य"],answer:"अद्वितीय",solution:"तर्क: अ+द्वितीय (जिसका कोई दूसरा जोड़ा न हो)।"},
-{q:"'कलेजा ठंडा होना' मुहावरे का अर्थ:",options:["संतोष होना","बीमार होना","बहुत खुश होना","डर जाना"],answer:"संतोष होना",solution:"तर्क: मन को शांति या तृप्ति मिलना।"},
-{q:"'स्थावर' का सही विलोम शब्द क्या है?",options:["सचल","चंचल","जंगम","चेतन"],answer:"जंगम",solution:"तर्क: स्थावर (जो स्थिर रहे) का उल्टा जंगम (जो चल सके) होता है।"},
-{q:"'हाथ कंगन को आरसी क्या' लोकोक्ति का अर्थ है:",options:["हाथ में कंगन पहनना","प्रत्यक्ष को प्रमाण की आवश्यकता नहीं","अहंकार करना","सुंदरता का बखान"],answer:"प्रत्यक्ष को प्रमाण की आवश्यकता नहीं",solution:"तर्क: सामने दिख रही चीज़ के लिए सबूत की ज़रूरत नहीं होती।"},
-{q:"'पृथ्वी' का पर्यायवाची शब्द नहीं है:",options:["रत्नगर्भा","वसुंधरा","इला","तरणि"],answer:"तरणि",solution:"तर्क: तरणि का अर्थ सूर्य या नाव होता है।"},
-{q:"'श' वर्ण का उच्चारण स्थान क्या है?",options:["मूर्धा","तालु","दंत","कंठ"],answer:"तालु",solution:"तर्क: श, इ और च-वर्ग तालव्य वर्ण कहलाते हैं।"},
-{q:"'जो स्त्री सूर्य भी न देख सके' वाक्यांश के लिए एक शब्द:",options:["अज्ञ","असूर्यपश्या","विदुषी","शास्त्रज्ञा"],answer:"असूर्यपश्या",solution:"तर्क: यह शब्द अत्यंत कठोर पर्दा प्रथा के लिए प्रयुक्त होता है।"},
-{q:"'हवा से बातें करना' मुहावरे का अर्थ:",options:["बहुत तेज दौड़ना","हवा में उड़ना","बकवास करना","ऊँची कल्पना करना"],answer:"बहुत तेज दौड़ना",solution:"तर्क: अत्यधिक गति के संदर्भ में इसका प्रयोग होता है।"},
-{q:"'इति' का सही विलोम शब्द क्या है?",options:["अथ","अंत","पूर्ण","समाप्त"],answer:"अथ",solution:"तर्क: अथ का अर्थ शुरुआत और इति का अर्थ अंत/समाप्ति।"},
-{q:"'आँख का तारा' का अर्थ क्या है?",options:["कम दिखना","बहुत प्यारा होना","आँख की बीमारी","अंधा होना"],answer:"बहुत प्यारा होना",solution:"तर्क: जो अत्यंत प्रिय हो।"},
-{q:"'विद्वान' शब्द का स्त्रीलिंग क्या होगा?",options:["विद्वानी","विद्यावती","विदुषी","विद्यान्तरी"],answer:"विदुषी",solution:"तर्क: विद्वान पुरुष के लिए और विदुषी स्त्री के लिए प्रयुक्त होता है।"},
-{q:"'तरणि' और 'तरणी' शब्द युग्म का अर्थ क्या है?",options:["सूर्य और नाव","नाव और सूर्य","नदी और नाव","नाव और नदी"],answer:"सूर्य और नाव",solution:"तर्क: तरणि (छोटा इ) - सूर्य, तरणी (बड़ा ई) - नाव।"},
-{q:"'गागर में सागर भरना' का अर्थ क्या है?",options:["असंभव कार्य करना","कम शब्दों में बहुत कुछ कहना","घड़े से पानी भरना","मजाक करना"],answer:"कम शब्दों में बहुत कुछ कहना",solution:"तर्क: संक्षिप्त में गंभीर बात कहना।"},
-{q:"'पवन' का पर्यायवाची शब्द नहीं है:",options:["समीर","अनल","वात","अनिल"],answer:"अनल",solution:"तर्क: अनल का अर्थ आग होता है, अनिल का अर्थ हवा।"},
-{q:"'जिसके शिखर पर चंद्र हो' उसे क्या कहते हैं?",options:["चंद्रशेखर","चंद्रकांति","चंद्रचूड़","विकल्प 1 और 3 दोनों"],answer:"विकल्प 1 और 3 दोनों",solution:"तर्क: चंद्रशेखर और चंद्रचूड़ दोनों महादेव के पर्यायवाची हैं।"},
-{q:"'आँखें फेर लेना' का अर्थ क्या है?",options:["दूसरी तरफ देखना","प्रतिकूल होना/उदासीन होना","नींद आना","देखना"],answer:"प्रतिकूल होना/उदासीन होना",solution:"तर्क: व्यवहार में अचानक बदलाव या बेरुखी।"},
-{q:"'पाश्चात्य' का सही विलोम शब्द है:",options:["पूर्वी","पौरस्त्य/पौर्वात्य","प्राचीन","अर्वाचीन"],answer:"पौरस्त्य/पौर्वात्य",solution:"तर्क: पाश्चात्य (Western) का उल्टा पौरस्त्य (Eastern)।"},
-{q:"'खग जाने खग की ही भाषा' का अर्थ:",options:["पक्षी पक्षी की भाषा समझते हैं","समान प्रवृत्ति वाले एक-दूसरे को समझते हैं","अज्ञानी को ज्ञान देना","बकवास करना"],answer:"समान प्रवृत्ति वाले एक-दूसरे को समझते हैं",solution:"तर्क: समान सोच वाले लोग एक-दूसरे के संकेतों को समझते हैं।"},
-{q:"'कमल' का पर्यायवाची शब्द है:",options:["अंबर","पुंडरीक","दिनकर","वारिद"],answer:"पुंडरीक",solution:"तर्क: पुंडरीक, पंकज और जलज कमल के पर्यायवाची हैं।"},
-{q:"'आमिष' का सही विलोम शब्द क्या होगा?",options:["शाकाहार","निरामिष","मांसाहार","भोजन"],answer:"निरामिष",solution:"तर्क: आमिष का अर्थ मांस युक्त और निरामिष का मांस रहित।"},
-{q:"'चिड़िया आकाश में उड़ रही है'—यहाँ 'उड़ना' कैसी क्रिया है?",options:["सकर्मक","अकर्मक","द्विकर्मक","संयुक्त"],answer:"अकर्मक",solution:"तर्क: उड़ना क्रिया का फल कर्ता पर पड़ता है, कर्म की आवश्यकता नहीं।"},
-{q:"'नाक कटना' मुहावरे का अर्थ है:",options:["चोट लगना","प्रतिष्ठा नष्ट होना","सर्दी होना","दुखी होना"],answer:"प्रतिष्ठा नष्ट होना",solution:"तर्क: बेइज्जती होने के संदर्भ में इसका प्रयोग होता है।"},
-{q:"'तरणी' और 'तरुणी' का सही अर्थ युग्म है:",options:["नाव और युवती","युवती और नाव","नदी और नाव","नदी और युवती"],answer:"नाव और युवती",solution:"तर्क: तरणी - नाव, तरुणी - युवती।"},
-{q:"'हृदयहीन' में कौन-सा समास है?",options:["अपादान तत्पुरुष","सम्बन्ध तत्पुरुष","करण तत्पुरुष","कर्म तत्पुरुष"],answer:"अपादान तत्पुरुष",solution:"तर्क: हृदय से हीन (अलगाव/रहित)।"},
-{q:"'ज' वर्ण का उच्चारण स्थान क्या है?",options:["कंठ","तालु","मूर्धा","दंत"],answer:"तालु",solution:"तर्क: च-वर्ग (च, छ, ज, झ) तालव्य कहलाता है।"},
-{q:"'ख' कौन-सा व्यंजन है?",options:["अल्पप्राण","महाप्राण","घोष","नासिक्य"],answer:"महाप्राण",solution:"तर्क: वर्ग का दूसरा और चौथा वर्ण महाप्राण होता है।"},
-{q:"'जो युद्ध में स्थिर रहता है' उसे क्या कहते हैं?",options:["युधिष्ठिर","युद्धवीर","स्थिरचित्त","सत्याग्रही"],answer:"युधिष्ठिर",solution:"तर्क: अनेक शब्दों के लिए एक शब्द: युधिष्ठिर।"},
-{q:"'अँधे की लाठी' मुहावरे का अर्थ:",options:["मजबूत सहारा","एकमात्र सहारा","लकड़ी का टुकड़ा","अंधा होना"],answer:"एकमात्र सहारा",solution:"तर्क: असहाय व्यक्ति का एकमात्र आधार।"},
-{q:"'विराग' का विलोम शब्द क्या होगा?",options:["अनुराग","त्याग","मोह","राग"],answer:"अनुराग",solution:"तर्क: अनुराग का अर्थ प्रेम और विराग का अर्थ विरक्ति।"},
-{q:"'दूध का दूध पानी का पानी' का अर्थ:",options:["दूध बेचना","सही न्याय करना","धोखा देना","मिश्रण करना"],answer:"सही न्याय करना",solution:"तर्क: निष्पक्ष और सही फैसला करना।"},
-{q:"'आँख' का पर्यायवाची शब्द है:",options:["अक्षि","वसन","कुंजर","पावक"],answer:"अक्षि",solution:"तर्क: अक्षि, चक्षु और नयन आँख के पर्यायवाची हैं।"},
-{q:"'नीलकंठ' में कौन-सा समास है?",options:["द्विगु","बहुव्रीहि","तत्पुरुष","द्वंद्व"],answer:"बहुव्रीहि",solution:"तर्क: नीला है कंठ जिनका अर्थात् शिव (विशिष्ट अर्थ)।"}
-
-],
-hard: [
-
-{q:"'वीभत्स' रस का स्थायी भाव क्या है?",options:["भय","विस्मय","जुगुप्सा","शोक"],answer:"जुगुप्सा",solution:"तर्क: वीभत्स रस का स्थायी भाव जुगुप्सा (घृणा) होता है।"},
-{q:"'कनक कनक ते सौ गुनी मादकता अधिकाय' में कौन-सा अलंकार है?",options:["अनुप्रास","यमक","श्लेष","रूपक"],answer:"यमक",solution:"तर्क: यहाँ 'कनक' शब्द दो बार आया है और दोनों के अर्थ (सोना और धतूरा) अलग हैं।"},
-{q:"खड़ी बोली हिंदी का 'प्रथम महाकाव्य' कौन-सा माना जाता है?",options:["कामायनी","प्रियप्रवास","साकेत","पद्मावत"],answer:"प्रियप्रवास",solution:"तर्क: अयोध्या सिंह उपाध्याय 'हरिऔध' द्वारा रचित प्रियप्रवास खड़ी बोली का प्रथम महाकाव्य है।"},
-{q:"'पाश्चात्य' का सही विलोम शब्द क्या है?",options:["पूर्वी","पौरस्त्य","नवीन","प्राचीन"],answer:"पौरस्त्य",solution:"तर्क: पाश्चात्य का विलोम पौरस्त्य या पौर्वात्य होता है।"},
-{q:"'दोहा' के प्रथम और तृतीय चरण में कितनी मात्राएँ होती हैं?",options:["11-11","12-12","13-13","16-16"],answer:"13-13",solution:"तर्क: दोहा एक अर्धसम मात्रिक छंद है, जिसके विषम चरणों में 13-13 मात्राएँ होती हैं।"},
-{q:"'मृगनयनी' में कौन-सा समास प्रयुक्त है?",options:["तत्पुरुष","द्विगु","कर्मधारय","अव्ययीभाव"],answer:"कर्मधारय",solution:"तर्क: मृग के समान नयन (उपमान-उपमेय संबंध)।"},
-{q:"'जो स्त्री सूर्य भी न देख सके' वाक्यांश के लिए एक शब्द है:",options:["अज्ञ","विदुषी","असूर्यपश्या","अनूढ़ा"],answer:"असूर्यपश्या",solution:"तर्क: प्राचीन समय में कड़े पर्दे में रहने वाली स्त्रियों के लिए यह शब्द प्रयुक्त होता था।"},
-{q:"'कलम का सिपाही' किसकी जीवनी है?",options:["प्रेमचंद","निराला","अमृतराय","प्रसाद"],answer:"प्रेमचंद",solution:"तर्क: अमृतराय ने अपने पिता मुंशी प्रेमचंद की जीवनी इस नाम से लिखी है।"},
-{q:"'महोर्मि' का सही संधि-विच्छेद क्या है?",options:["मह + उर्मी","महा + ऊर्मि","महो + र्मि","महा + उर्मी"],answer:"महा + ऊर्मि",solution:"तर्क: आ + ऊ = ओ (गुण स्वर संधि)।"},
-{q:"'चिन्मय' का सही संधि-विच्छेद क्या होगा?",options:["चित् + मय","चिन + मय","चित + मय","चि + मय"],answer:"चित् + मय",solution:"तर्क: व्यंजन संधि के नियमानुसार त् का न् में परिवर्तन।"},
-{q:"'अर्वाचीन' का सही विलोम शब्द क्या है?",options:["नवीन","प्राचीन","आधुनिक","पुराना"],answer:"प्राचीन",solution:"तर्क: अर्वाचीन का अर्थ नया होता है, जिसका विलोम प्राचीन है।"},
-{q:"'अष्टछाप' के कवियों में प्रथम नियुक्त कीर्तनकार कवि कौन थे?",options:["नंददास","सूरदास","कृष्णदास","कुंभनदास"],answer:"सूरदास",solution:"तर्क: सूरदास अष्टछाप के सबसे प्रमुख और प्रथम नियुक्त कवि थे।"},
-{q:"'चरण कमल बंदौ हरिराई' में कौन-सा अलंकार है?",options:["उपमा","रूपक","उत्प्रेक्षा","अतिशयोक्ति"],answer:"रूपक",solution:"तर्क: यहाँ चरणों पर कमल का अभेद आरोप किया गया है।"},
-{q:"'अन्विति' का सही संधि-विच्छेद क्या है?",options:["अनु + इति","अन् + विति","अनु + ईति","अन + इति"],answer:"अनु + इति",solution:"तर्क: उ + इ = वि (यण स्वर संधि)।"},
-{q:"'उद्धरण' का सही संधि-विच्छेद बताइए:",options:["उत् + धरण","उद् + धरण","उत् + हरण","उद् + हरण"],answer:"उत् + हरण",solution:"तर्क: त् + ह मिलकर द्ध बनाते हैं (व्यंजन संधि)।"},
-{q:"'नीलांबर' में कौन-सा समास है?",options:["द्विगु","द्वंद्व","कर्मधारय","अव्ययीभाव"],answer:"कर्मधारय",solution:"तर्क: नीला है जो अंबर (विशेषण-विशेष्य)।"},
-{q:"'छाती पर मूँग दलना' मुहावरे का अर्थ:",options:["परेशान करना","कठिन काम करना","पास रहकर दुख देना","बदला लेना"],answer:"पास रहकर दुख देना",solution:"तर्क: अत्यंत निकट रहकर कष्ट पहुँचाने के लिए इसका प्रयोग होता है।"},
-{q:"'अभिज्ञ' का विलोम शब्द क्या है?",options:["अज्ञ","तज्ञ","प्रज्ञ","चतुर"],answer:"अज्ञ",solution:"तर्क: अभिज्ञ का अर्थ जानकार और अज्ञ का अर्थ अनजान।"},
-{q:"'चौपाई' के प्रत्येक चरण में कितनी मात्राएँ होती हैं?",options:["11","13","16","24"],answer:"16",solution:"तर्क: चौपाई एक सम मात्रिक छंद है।"},
-{q:"'यथासाध्य' में कौन-सा समास है?",options:["तत्पुरुष","बहुव्रीहि","अव्ययीभाव","द्वंद्व"],answer:"अव्ययीभाव",solution:"तर्क: 'यथा' उपसर्ग/अव्यय के कारण।"},
-{q:"'उन्मुख' का विलोम शब्द है:",options:["प्रमुख","विमुख","सन्मुख","अधोमुख"],answer:"विमुख",solution:"तर्क: उन्मुख (सामने) का उल्टा विमुख।"},
-{q:"'गागर में सागर भरना' का अर्थ क्या है?",options:["घड़ा भरना","असंभव कार्य","थोड़े में बहुत कहना","मजाक करना"],answer:"थोड़े में बहुत कहना",solution:"तर्क: बिहारी लाल के दोहों के लिए यह उक्ति प्रसिद्ध है।"},
-{q:"'जिसके शिखर पर चंद्र हो' उसे क्या कहते हैं?",options:["चंद्रशेखर","चंद्रकांति","चंद्रचूड़","विकल्प 1 और 3 दोनों"],answer:"विकल्प 1 और 3 दोनों",solution:"तर्क: चंद्रशेखर और चंद्रचूड़ दोनों महादेव के पर्यायवाची हैं।"},
-{q:"'उज्ज्वल' की शुद्ध वर्तनी है:",options:["उज्वल","उज्जवल","उज्ज्वल","उज्ववल"],answer:"उज्ज्वल",solution:"तर्क: इसमें दो आधे 'ज' का प्रयोग होता है।"},
-{q:"'मनोरथ' का संधि-विच्छेद क्या है?",options:["मनो + रथ","मनः + रथ","मन + रथ","मनु + रथ"],answer:"मनः + रथ",solution:"तर्क: यह विसर्ग संधि का उदाहरण है।"},
-{q:"'रवि' का पर्यायवाची शब्द नहीं है:",options:["दिनकर","भास्कर","शशांक","दिवाकर"],answer:"शशांक",solution:"तर्क: शशांक चंद्रमा का पर्यायवाची है।"},
-{q:"'कलेजा ठंडा होना' मुहावरे का अर्थ:",options:["संतोष होना","बीमार होना","बहुत खुश होना","डर जाना"],answer:"संतोष होना",solution:"तर्क: मन को शांति मिलना।"},
-{q:"'वागीश' का संधि-विच्छेद:",options:["वाग + ईश","वाक + ईश","वाच + ईश","वाकी + श"],answer:"वाक + ईश",solution:"तर्क: क् का ग् में परिवर्तन (व्यंजन संधि)।"},
-{q:"'दशानन' में कौन-सा समास है?",options:["द्विगु","बहुव्रीहि","कर्मधारय","तत्पुरुष"],answer:"बहुव्रीहि",solution:"तर्क: दस हैं आनन जिसके अर्थात् रावण।"},
-{q:"'अंधे की लाठी' का अर्थ क्या है?",options:["सहारा देना","एकमात्र सहारा","मजबूत लाठी","अंधा होना"],answer:"एकमात्र सहारा",solution:"तर्क: असहाय का एकलौता आधार।"},
-{q:"'स्थावर' का विलोम है:",options:["सचल","चंचल","जंगम","चेतन"],answer:"जंगम",solution:"तर्क: स्थावर (स्थिर) का उल्टा जंगम (गतिशील)।"},
-{q:"'पवन' का संधि-विच्छेद क्या होगा?",options:["प + वन","पो + अन","पौ + अन","पा + वन"],answer:"पो + अन",solution:"तर्क: अयादि स्वर संधि।"},
-{q:"'निरामिष' का विलोम शब्द क्या है?",options:["शाकाहार","आमिष","मांसाहार","भोजन"],answer:"आमिष",solution:"तर्क: निरामिष (मांस रहित) का उल्टा आमिष (मांस युक्त)।"},
-{q:"'अँधेरे का दीपक' मुहावरे का अर्थ:",options:["रोशनी करना","आशा की किरण","इकलौता पुत्र","विद्वान होना"],answer:"इकलौता पुत्र",solution:"तर्क: परिवार की एकमात्र उम्मीद या सहारा।"},
-{q:"'नरोत्तम' में समास है:",options:["अव्ययीभाव","तत्पुरुष","द्वंद्व","द्विगु"],answer:"तत्पुरुष",solution:"तर्क: नरों में उत्तम (अधिकरण तत्पुरुष)।"},
-{q:"'श' वर्ण का उच्चारण स्थान:",options:["मूर्धा","तालु","दंत","कंठ"],answer:"तालु",solution:"तर्क: इचुयशानां तालु।"},
-{q:"'इत्यादि' का संधि-विच्छेद:",options:["इत + यदि","इति + आदि","इत्य + आदि","इत + आदि"],answer:"इति + आदि",solution:"तर्क: यण स्वर संधि।"},
-{q:"'नाक कटना' का अर्थ:",options:["चोट लगना","बदनामी होना","ईर्ष्या होना","दुखी होना"],answer:"बदनामी होना",solution:"तर्क: इज्जत जाने के संदर्भ में।"},
-{q:"'हृदयहीन' में समास:",options:["अपादान तत्पुरुष","सम्बन्ध तत्पुरुष","करण तत्पुरुष","कर्म तत्पुरुष"],answer:"अपादान तत्पुरुष",solution:"तर्क: हृदय से रहित (अलगाव)।"},
-{q:"'तरणि' और 'तरणी' का अर्थ:",options:["सूर्य और नाव","नाव और सूर्य","नदी और नाव","नाव और नदी"],answer:"सूर्य और नाव",solution:"तर्क: शब्द युग्मों का विशिष्ट अर्थ।"},
-{q:"'अभिज्ञ' का विलोम:",options:["अज्ञ","तज्ञ","प्रज्ञ","चतुर"],answer:"अज्ञ",solution:"तर्क: बार-बार पूछा जाने वाला शब्द।"},
-{q:"'गाली देना' कैसी क्रिया है?",options:["सकर्मक","अकर्मक","नामधातु","प्रेरणार्थक"],answer:"नामधातु",solution:"तर्क: संज्ञा या विशेषण से बनने वाली क्रिया।"},
-{q:"'आँखें फेर लेना' का अर्थ:",options:["उदासीन होना","नाराज होना","नींद आना","देखना"],answer:"उदासीन होना",solution:"तर्क: व्यवहार बदल लेना।"},
-{q:"'विदुषी' किसका स्त्रीलिंग है?",options:["विद्वान","ज्ञानी","पंडित","शिक्षक"],answer:"विद्वान",solution:"तर्क: मानक स्त्रीलिंग रूप।"},
-{q:"'यथाशक्ति' में समास:",options:["तत्पुरुष","द्विगु","अव्ययीभाव","द्वंद्व"],answer:"अव्ययीभाव",solution:"तर्क: अव्यय पद की प्रधानता।"}
-	
-  ]
-    };
-
+    let allQuestionsBank = null;
     let questions = [];
     let currentIndex=0, answers={}, visited={}, reviewMarks={}, challenges={};
     let totalSeconds=0, timerInterval, startTime;
 
+    async function loadData() {
+        try {
+            const response = await fetch(GIST_API_URL);
+            const data = await response.json();
+            const fileName = Object.keys(data.files)[0];
+            allQuestionsBank = JSON.parse(data.files[fileName].content);
+            
+            syncCountAndTime();
+            document.getElementById('lastUpdated').innerText = new Date(data.updated_at).toLocaleString('en-IN');
+
+            // Silent Auto-Resume Logic
+            const currentLevel = document.getElementById("difficultyLevel").value;
+            if(localStorage.getItem(`finalResult_${MY_SUBJECT}_${currentLevel}`)) {
+                showFinalReport(currentLevel);
+            } else if(localStorage.getItem(`inProgress_${MY_SUBJECT}_${currentLevel}`)) {
+                const p = JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}_${currentLevel}`));
+                candidateName.value = p.name || "";
+                testTime.value = Math.ceil(p.totalSeconds / 60);
+                startTest(); 
+            }
+        } catch (e) { console.error("Load failed", e); }
+    }
+
     function syncCountAndTime() {
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
         const count = allQuestionsBank[level].length;
         document.getElementById("totalQDisplay").textContent = count;
@@ -292,15 +165,10 @@ hard: [
     }
 
     function startTest(){
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
         questions = allQuestionsBank[level];
-        if(!candidateName.value || !testTime.value) { alert("Please enter Name and Time"); return; }
-        
-        const existingResult = localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`);
-        if(existingResult) {
-            if(!confirm("You have already completed the " + level.toUpperCase() + " level. Re-attempt?")) return;
-            else localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
-        }
+        if(!candidateName.value || !testTime.value) { alert("Enter Name/Time"); return; }
 
         displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
         startScreen.style.display="none";
@@ -312,20 +180,19 @@ hard: [
         const progress = localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`);
         if(progress) {
             const p = JSON.parse(progress);
-            answers=p.answers; visited=p.visited; currentIndex=p.currentIndex; 
+            answers=p.answers || {}; visited=p.visited || {}; currentIndex=p.currentIndex || 0; 
             totalSeconds=p.totalSeconds; startTime=p.startTime; 
-            reviewMarks=p.reviewMarks; challenges=p.challenges;
+            reviewMarks=p.reviewMarks || {}; challenges=p.challenges || {};
         } else {
             answers={}; visited={}; currentIndex=0; reviewMarks={}; challenges={};
-            totalSeconds=testTime.value*60;
-            startTime=Date.now();
+            totalSeconds=testTime.value*60; startTime=Date.now();
         }
-        
         startTimer();
         renderQuestion();
     }
 
     function startTimer(){
+        if(timerInterval) clearInterval(timerInterval);
         timerInterval=setInterval(()=>{
             totalSeconds--;
             updateTimerDisplay();
@@ -341,49 +208,31 @@ hard: [
     function renderQuestion(){
         visited[currentIndex]=true;
         const q=questions[currentIndex];
-        quizArea.innerHTML=`
-            <div class="quiz-card">
-                <div style="display:flex; justify-content:space-between; align-items:start;">
-                    <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
-                    ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
-                </div>
-                <div class="options">
-                    ${q.options.map(o=>`
-                        <label>
-                            <input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}
-                        </label>
-                    `).join("")}
-                </div>
-                ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
-            </div>`;
-
-        const nextBtn = document.getElementById("nextBtn");
-        const lastQMsg = document.getElementById("lastQMsg");
-        if(currentIndex === questions.length - 1) {
-            nextBtn.disabled = true;
-            lastQMsg.style.display = "block";
-        } else {
-            nextBtn.disabled = false;
-            lastQMsg.style.display = "none";
-        }
+        quizArea.innerHTML=`<div class="quiz-card">
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+                <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+            </div>
+            <div class="options">
+                ${q.options.map(o=>`<label><input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}</label>`).join("")}
+            </div>
+            ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+        </div>`;
+        document.getElementById("nextBtn").disabled = (currentIndex === questions.length - 1);
         document.getElementById("prevBtn").disabled = (currentIndex === 0);
-
+        document.getElementById("lastQMsg").style.display = (currentIndex === questions.length - 1) ? "block" : "none";
         renderPalette();
     }
 
     function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
     function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
     function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
-    function challengeQuestion(){
-        if(answers[currentIndex]){ alert("Already answered!"); return; }
-        if(confirm("Challenge this question?")){ challenges[currentIndex] = true; renderPalette(); }
-    }
+    function challengeQuestion(){ if(!answers[currentIndex] && confirm("Challenge?")) { challenges[currentIndex] = true; renderPalette(); } }
 
     function renderPalette(){
         palette.innerHTML="";
         questions.forEach((_,i)=>{
-            const s=document.createElement("span");
-            s.textContent=i+1;
+            const s=document.createElement("span"); s.textContent=i+1;
             if(visited[i]) s.classList.add("visited");
             if(answers[i]) s.classList.add("attempted");
             if(reviewMarks[i]) s.classList.add("marked-review");
@@ -396,82 +245,78 @@ hard: [
     function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
     function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
-    function saveProgress(lvl){
-        const level = lvl || document.getElementById("difficultyLevel").value;
+    function saveProgress(){
+        const level = document.getElementById("difficultyLevel").value;
         localStorage.setItem(`inProgress_${MY_SUBJECT}_${level}`,JSON.stringify({
-            name:candidateName.value,
-            level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+            name:candidateName.value, level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
         }));
     }
 
     function submitQuiz(){
-        let reviewCount = Object.values(reviewMarks).filter(v => v).length;
-        if(reviewCount > 0 && !confirm(`You have ${reviewCount} items in review. Proceed anyway?`)) return;
-        if(!confirm("Are you sure you want to submit?")) return;
-        
+        if(!confirm("Submit Test?")) return;
         clearInterval(timerInterval);
         const level = document.getElementById("difficultyLevel").value;
         localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
         
         let correct=0, attempted=0, challCount=0;
         let detailHtml="<h2>Detailed Analysis</h2>";
-        
         questions.forEach((q,i)=>{
             let isCorrect = false;
             let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
             if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
             else if(answers[i] === q.answer) { isCorrect = true; }
-            if(answers[i]) attempted++;
-            if(isCorrect) correct++;
-            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}"><p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p><div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
+            if(answers[i]) attempted++; if(isCorrect) correct++;
+            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                <p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                <div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
         });
-
-        const currentLvl = level.toUpperCase();
-        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
-        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
 
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
         
-        const summaryBox = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);"><h3 style="margin-bottom:15px; color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;"><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Final Score: <br><b style="font-size:18px;">${correct} / ${questions.length}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b style="font-size:18px;">${attempted}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Challenged: <br><b style="font-size:18px; color:var(--challenge);">${challCount}</b></div><div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time Taken: <br><b style="font-size:18px;">${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div></div><button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; background:var(--success); width:100%;">Back to Dashboard</button></div>`;
+        const summary = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+            <h3 style="color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px; margin-top:15px;">
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b>${accuracy}%</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
+            </div>
+            <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; width:100%; background:var(--success);">Dashboard</button></div>`;
 
-        const finalHtml = summaryBox + detailHtml;
+        const finalHtml = summary + detailHtml;
+        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ name: displayName.textContent, html: finalHtml }));
+        
         result.style.display="block"; result.innerHTML = finalHtml;
         quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
-        clearBtn.style.display="block"; window.scrollTo(0,0);
+        startScreen.style.display="none"; topBar.style.display="none"; clearBtn.style.display="block";
+        window.scrollTo(0,0);
         
-        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ name:displayName.textContent, html: finalHtml }));
-
-        emailjs.send("service_wq5yoyp", "template_doegpcp", {
-            candidate_name: displayName.textContent,
-            subject: MY_SUBJECT,
-            score: correct,
-            total: questions.length,
-            attempted: attempted,
-            accuracy: accuracy + "%",
-            time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`,
-            test_date: new Date().toLocaleString("en-IN")
+        emailjs.send("service_wq5yoyp", "template_doegpcp", { 
+            candidate_name: displayName.textContent, subject: MY_SUBJECT, score: correct, total: questions.length, 
+            accuracy: accuracy + "%", time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s` 
         });
     }
 
-    window.onload=function(){
-        syncCountAndTime();
-    };
+    function showFinalReport(level) {
+        const data = JSON.parse(localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`));
+        if(data) {
+            result.style.display="block"; result.innerHTML = data.html;
+            startScreen.style.display="none"; palette.style.display="none"; 
+            navBtns.style.display="none"; submitBtn.style.display="none"; clearBtn.style.display="block";
+        }
+    }
+
+    window.onload = loadData;
 
     function clearResult(){ 
         const level = document.getElementById("difficultyLevel").value;
-        if(confirm(`Clear result for ${level.toUpperCase()}?`)) { 
+        if(confirm("Clear this result?")) {
             localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
             localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
             location.reload(); 
-        } 
+        }
     }
 </script>
 </body>
 </html>
-
-
-
-
-
-
