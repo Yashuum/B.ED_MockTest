@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NishuAbhyasi – Teaching Principles by Yash</title>
+    <title>NishuAbhyasi – General Awareness by Yash</title>
     <style>
         :root{
             --color-primary: #1a2a6c;
@@ -77,7 +77,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Target Test- Teaching Principles 2026</h1>
+    <h1>Target Test- General Awareness 2026</h1>
     <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Questions Set: <span id="lastUpdated">Syncing...</span></p>
     
     <div class="start-screen" id="startScreen">
@@ -124,9 +124,9 @@
 </div>
 
 <script>
-    const MY_SUBJECT = "Teaching_Principles";
-    const MY_TEST_ID = "TP_SET_09";
-    const GIST_API_URL = "https://api.github.com/gists/ecc0225df38396f70445c4dd702ff939";
+    const MY_SUBJECT = "Awareness";
+    const MY_TEST_ID = "GKA_SET_09";
+    const GIST_API_URL = "https://api.github.com/gists/e0372b12ad15ed3c2643059cc1e88cc0";
 
     let allQuestionsBank = null;
     let questions = [];
@@ -143,7 +143,6 @@
             syncCountAndTime();
             document.getElementById('lastUpdated').innerText = new Date(data.updated_at).toLocaleString('en-IN');
 
-            // Silent Auto-Resume Logic
             const currentLevel = document.getElementById("difficultyLevel").value;
             if(localStorage.getItem(`finalResult_${MY_SUBJECT}_${currentLevel}`)) {
                 showFinalReport(currentLevel);
@@ -271,6 +270,13 @@
                 <div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
         });
 
+        // --- NEW DATA PERSISTENCE WITH DATE AND NO ID LOCK ---
+        const currentLvl = level.toUpperCase();
+        const now = new Date().toISOString(); 
+        localStorage.setItem(`score_${MY_SUBJECT}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`score_date_${MY_SUBJECT}_${currentLvl}`, now); 
+        localStorage.setItem(`done_${MY_SUBJECT}_${currentLvl}`, "true");
+
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
         
@@ -293,7 +299,7 @@
         window.scrollTo(0,0);
         
         emailjs.send("service_wq5yoyp", "template_doegpcp", { 
-            candidate_name: displayName.textContent, subject: MY_SUBJECT.replace('_',' '), score: correct, total: questions.length, 
+            candidate_name: displayName.textContent, subject: MY_SUBJECT, score: correct, total: questions.length, 
             accuracy: accuracy + "%", time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s` 
         });
     }
@@ -314,6 +320,8 @@
         if(confirm("Clear this result?")) {
             localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
             localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
+            localStorage.removeItem(`score_date_${MY_SUBJECT}_${level.toUpperCase()}`);
+            localStorage.removeItem(`done_${MY_SUBJECT}_${level.toUpperCase()}`);
             location.reload(); 
         }
     }
