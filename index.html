@@ -36,26 +36,6 @@
         .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
         @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
 
-        @keyframes stickerFloat {
-            0%, 100% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-            50% { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,242,255,0.2); }
-        }
-
-        .rapid-sticker {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--neon-blue);
-            border-radius: 30px;
-            padding: 25px;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            animation: stickerFloat 4s infinite ease-in-out;
-            border-left: 5px solid var(--neon-blue);
-        }
-
         #pageOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px);
@@ -71,7 +51,7 @@
             z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 40px 20px; max-width: 1200px; }
+        .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 10px 20px; max-width: 1200px; }
 
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); 
@@ -142,26 +122,30 @@
         }
         .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
         
-        /* New Styles for Admin Login Capsule */
-        .admin-login-link {
-            text-align: center; margin-top: 40px; margin-bottom: -30px;
-        }
+        /* SLIM FOOTER STYLES */
+        .admin-login-link { text-align: center; margin-top: 30px; }
         .admin-pill {
             display: inline-flex; align-items: center; gap: 8px;
-            padding: 8px 25px; border-radius: 50px;
+            padding: 6px 20px; border-radius: 50px;
             background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 600;
+            color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 600;
             cursor: pointer; transition: 0.3s;
         }
-        .admin-pill:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: var(--color-accent); }
+        .admin-pill:hover { background: rgba(255,255,255,0.12); color: #fff; border-color: var(--color-accent); }
 
-        .footer { margin-top: 60px; text-align: center; color: rgba(255,255,255,0.7); padding-bottom: 30px; font-size: 14px; letter-spacing: 1px; }
+        .footer { 
+            margin-top: 15px; 
+            text-align: center; 
+            color: rgba(255,255,255,0.4); 
+            padding-bottom: 15px; 
+            font-size: 12px; 
+            letter-spacing: 0.5px; 
+        }
 
         @media(max-width:900px){ 
             .welcome { flex-direction: column; text-align: center; gap: 10px; padding: 30px 20px; }
             .welcome .brand { font-size: 48px; }
             .dashboard { grid-template-columns: 1fr; } 
-            .rapid-sticker { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -186,17 +170,6 @@
             </div>
         </div>
 
-        <div class="rapid-sticker">
-            <div style="text-align: left;">
-                <h4 style="color: var(--neon-blue); font-size: 22px; margin-bottom: 5px;">🚀 New Official Instant Quiz App!</h4>
-                <p style="color: #fff; font-size: 14px; opacity: 0.9; max-width: 600px;">
-                    Register for FREE and start instant quizzes anytime, anywhere. 
-                    It's a quick 5-10 min practice session to sharpen your skills instantly!
-                </p>
-            </div>
-            <a href="https://nishuabhyasi.rf.gd/index.php" class="btn" style="margin-top:0; padding: 12px 30px; background: #fff; color: #1a2a6c; white-space: nowrap;">Start Instant Quiz →</a>
-        </div>
-
         <div class="dashboard">
             <div class="column">
                 <div class="card">
@@ -213,7 +186,7 @@
                 </div>
                 <div class="card">
                     <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
-                    <p>Deep dive into Pedagogy and teaching methodology.</p>
+                    <p>Pedagogy and teaching methodology sets.</p>
                     <span id="score-Teaching" class="score-text"></span>
                     <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
                 </div>
@@ -234,7 +207,7 @@
                 </div>
                 <div class="card">
                     <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
-                    <p>Ultimate Challenge! Mixed questions from all subjects.</p>
+                    <p>Mega Test! Mixed questions from all subjects.</p>
                     <span id="score-AllInOne" class="score-text"></span>
                     <a href="tests/all_in_one.html" class="btn">Start Mega Test</a>
                 </div>
@@ -272,9 +245,9 @@
     <div id="adminBox" class="help-popup" style="bottom: 50%; right: 50%; transform: translate(50%, 50%); width: 90%; max-width: 380px;">
         <h4 style="margin-bottom: 15px; font-size: 20px; color: #ff4d4d; letter-spacing: 1px;">⚠️ ACCESS RESTRICTED</h4>
         <div style="text-align: center; font-size: 14px; line-height: 1.6; margin-bottom: 25px; color: rgba(255,255,255,0.9);">
-            <p style="margin-bottom: 15px;">This area is reserved <b>only for Admins</b> to manage question sets and system configurations.</p>
+            <p style="margin-bottom: 15px;">This area is restricted and only allowed for <b>Admin(s)</b>.</p>
             <p style="font-weight: 600; color: var(--color-accent);">Are you an Admin?</p>
-            <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Candidates: Please click cancel and use the portal for tests.</p>
+            <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Candidates: Please click cancel and attempt your tests.</p>
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px;">
             <a href="admin.html" class="email-btn" style="background: var(--btn-grad); color: white; border: none;">Proceed to Login</a>
@@ -299,7 +272,6 @@
             document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         }
 
-        // Help Robot Popup
         function toggleHelp() {
             const box = document.getElementById('helpBox');
             const overlay = document.getElementById('pageOverlay');
@@ -311,7 +283,6 @@
             }
         }
 
-        // Admin Restricted Popup
         function toggleAdminPopup() {
             const box = document.getElementById('adminBox');
             const overlay = document.getElementById('pageOverlay');
