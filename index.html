@@ -260,12 +260,6 @@
             "AllInOne": "2fb7cd87290c262fc490896192d21dd2"
         };
 
-        // Static Test IDs as fallback
-        const TEST_CONFIG = {
-            "English": "ENG_SET_08", "Reasoning": "REASONING_SET_04", "Teaching": "TP_SET_09",
-            "Hindi": "HIN_SET_08", "Awareness": "GKA_SET_09", "AllInOne": "AIO_SET_04"
-        };
-
         function updateClock() {
             const now = new Date();
             document.getElementById('live-date').innerText = now.toLocaleDateString('en-GB').replace(/\//g, '-');
@@ -288,40 +282,36 @@
                 if (!badge) continue;
 
                 try {
-                    // Fetch Gist info for update date
                     const res = await fetch(`https://api.github.com/gists/${gistId}`);
                     const data = await res.json();
                     const gistUpdateTime = new Date(data.updated_at);
-                    
-                    // Logic to extract Test ID if needed, using fallback for now
-                    const currentID = TEST_CONFIG[sub]; 
 
                     const levels = ['EASY', 'MEDIUM', 'HARD'];
                     let completedCount = 0;
-                    let isAnyLevelOutdated = false;
+                    let isOutdated = false;
                     let scoreDetails = [];
 
                     levels.forEach(lvl => {
-                        const isDone = localStorage.getItem(`done_${sub}_${currentID}_${lvl}`);
-                        const scoreTimeStr = localStorage.getItem(`score_date_${currentID}_${lvl}`);
+                        const isDone = localStorage.getItem(`done_${sub}_${lvl}`);
+                        const scoreTimeStr = localStorage.getItem(`score_date_${sub}_${lvl}`);
+                        const score = localStorage.getItem(`score_${sub}_${lvl}`);
                         
                         if (isDone === "true") {
                             if (scoreTimeStr) {
                                 const scoreTime = new Date(scoreTimeStr);
                                 if (gistUpdateTime > scoreTime) {
-                                    isAnyLevelOutdated = true;
+                                    isOutdated = true;
                                 }
                             }
                             completedCount++;
-                            const score = localStorage.getItem(`score_${currentID}_${lvl}`);
-                            scoreDetails.push(`${lvl}: ${score}`);
+                            scoreDetails.push(`${lvl}: ${score || 'Done'}`);
                         }
                     });
 
-                    if (isAnyLevelOutdated) {
+                    if (isOutdated) {
                         badge.innerText = "NEW QUESTIONS 🔥";
                         badge.className = "badge badge-new";
-                        scoreLabel.innerHTML = "Updated content available!";
+                        scoreLabel.innerHTML = "Latest content available!";
                     } else if (completedCount > 0) {
                         badge.innerText = completedCount === 3 ? "ALL LEVELS DONE ✅" : `PROGRESS: ${completedCount}/3 ⏳`;
                         badge.className = "badge badge-done";
@@ -334,7 +324,6 @@
                     badge.style.display = "inline-block";
 
                 } catch (e) {
-                    console.error("Dashboard sync error", e);
                     badge.innerText = "LIVE ✅";
                     badge.className = "badge badge-new";
                     badge.style.display = "inline-block";
