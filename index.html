@@ -1,1 +1,399 @@
-Yash
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NishuAbhyasi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-primary: #1a2a6c;
+            --color-secondary: #2575fc;
+            --color-accent: #f2994a;
+            --btn-grad: linear-gradient(135deg, #ff9800, #ff5722);
+            --glass: rgba(255, 255, 255, 0.12);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --neon-blue: #00f2ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
+            background-size: 300% 300%;
+            animation: dynamicFlow 18s ease-in-out infinite;
+            display: flex; flex-direction: column; align-items: center; overflow-x: hidden; position: relative;
+        }
+
+        @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
+        @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
+
+        @keyframes stickerFloat {
+            0%, 100% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+            50% { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,242,255,0.2); }
+        }
+
+        .rapid-sticker {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--neon-blue);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            animation: stickerFloat 4s infinite ease-in-out;
+            border-left: 5px solid var(--neon-blue);
+        }
+
+        #pageOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px);
+            display: none; z-index: 1500;
+        }
+
+        .time-bar {
+            width: 98%; margin: 15px auto 0;
+            padding: 12px 30px; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
+            border-radius: 50px; display: flex; justify-content: space-between;
+            align-items: center; color: white; font-size: 14px; font-weight: 600;
+            z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 40px 20px; max-width: 1200px; }
+
+        .welcome { 
+            background: var(--glass); backdrop-filter: blur(25px); 
+            border: 1px solid var(--glass-border); border-radius: 35px; 
+            padding: 25px 60px; margin-top: 15px; margin-bottom: 30px; 
+            display: flex; flex-direction: row; 
+            align-items: center; justify-content: center;
+            gap: 45px; text-align: left;
+            min-height: auto;
+        }
+        
+        .welcome-logo {
+            height: 125px; width: auto; object-fit: contain;
+            filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.3));
+        }
+
+        .welcome-text-content { display: flex; flex-direction: column; }
+        .welcome .brand { 
+            font-family: 'Marck Script', cursive; 
+            font-size: 70px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+            line-height: 1;
+        }
+
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; width: 100%; }
+        .column { display: flex; flex-direction: column; gap: 25px; }
+
+        .card { 
+            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; 
+            padding: 30px; display: flex; flex-direction: column; 
+            justify-content: space-between; min-height: 180px; 
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
+            position: relative; opacity: 0; transform: translateX(-80px); 
+        }
+
+        .card.reveal { opacity: 1; transform: translateX(0); }
+        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.4s; }
+        .card h3 { font-size: 24px; color: #fff; margin-bottom: 12px; }
+
+        .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; display: none; }
+        .badge-new { background: #f2994a; color: #fff; animation: blink 1.5s infinite; }
+        .badge-done { background: #16a34a; color: #fff; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        .score-text { font-size: 13px; color: #4ade80; margin-top: 8px; font-weight: 700; display: block; }
+        .btn { margin-top: 20px; padding: 16px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
+
+        .floating-fab {
+            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 2000; animation: robotPulse 2s infinite ease-in-out;
+        }
+        .floating-fab img { width: 70%; height: 70%; object-fit: contain; }
+        @keyframes robotPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.1); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
+        }
+
+        .help-popup {
+            position: fixed; bottom: 110px; right: 30px; width: 300px;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 30px;
+            display: none; flex-direction: column; z-index: 2000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #fff; padding: 25px; text-align: center;
+        }
+        .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
+        
+        /* New Styles for Admin Login Capsule */
+        .admin-login-link {
+            text-align: center; margin-top: 40px; margin-bottom: -30px;
+        }
+        .admin-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 25px; border-radius: 50px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: 0.3s;
+        }
+        .admin-pill:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: var(--color-accent); }
+
+        .footer { margin-top: 60px; text-align: center; color: rgba(255,255,255,0.7); padding-bottom: 30px; font-size: 14px; letter-spacing: 1px; }
+
+        @media(max-width:900px){ 
+            .welcome { flex-direction: column; text-align: center; gap: 10px; padding: 30px 20px; }
+            .welcome .brand { font-size: 48px; }
+            .dashboard { grid-template-columns: 1fr; } 
+            .rapid-sticker { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pageOverlay" onclick="closeAllPopups()"></div>
+    <div class="bubbles-container">
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    </div>
+
+    <div class="time-bar">
+        <div><span id="live-date">...</span> | <span id="live-day">...</span></div>
+        <div id="live-clock" style="font-family: monospace; font-size: 18px;">00:00:00 AM</div>
+    </div>
+
+    <div class="wrapper">
+        <div class="welcome">
+            <img src="NishuAbhyasi.png" alt="Logo" class="welcome-logo">
+            <div class="welcome-text-content">
+                <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
+                <div class="brand">NishuAbhyasi</div>
+            </div>
+        </div>
+
+        <div class="rapid-sticker">
+            <div style="text-align: left;">
+                <h4 style="color: var(--neon-blue); font-size: 22px; margin-bottom: 5px;">🚀 New Official Instant Quiz App!</h4>
+                <p style="color: #fff; font-size: 14px; opacity: 0.9; max-width: 600px;">
+                    Register for FREE and start instant quizzes anytime, anywhere. 
+                    It's a quick 5-10 min practice session to sharpen your skills instantly!
+                </p>
+            </div>
+            <a href="https://nishuabhyasi.rf.gd/index.php" class="btn" style="margin-top:0; padding: 12px 30px; background: #fff; color: #1a2a6c; white-space: nowrap;">Start Instant Quiz →</a>
+        </div>
+
+        <div class="dashboard">
+            <div class="column">
+                <div class="card">
+                    <h3>📘 English <span id="badge-English" class="badge"></span></h3>
+                    <p>Grammar, comprehension and vocabulary practice sets.</p>
+                    <span id="score-English" class="score-text"></span>
+                    <a href="tests/English.html" class="btn">Start Test</a>
+                </div>
+                <div class="card">
+                    <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
+                    <p>Sharpen your logical reasoning and aptitude skills.</p>
+                    <span id="score-Reasoning" class="score-text"></span>
+                    <a href="tests/reasoning.html" class="btn">Start Test</a>
+                </div>
+                <div class="card">
+                    <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
+                    <p>Deep dive into Pedagogy and teaching methodology.</p>
+                    <span id="score-Teaching" class="score-text"></span>
+                    <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="card">
+                    <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
+                    <p>Complete Vyakaran and language skills for exams.</p>
+                    <span id="score-Hindi" class="score-text"></span>
+                    <a href="tests/Hindi.html" class="btn">Start Test</a>
+                </div>
+                <div class="card">
+                    <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
+                    <p>Static GK, current affairs and general basics.</p>
+                    <span id="score-Awareness" class="score-text"></span>
+                    <a href="tests/General_Awareness.html" class="btn">Start Test</a>
+                </div>
+                <div class="card">
+                    <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
+                    <p>Ultimate Challenge! Mixed questions from all subjects.</p>
+                    <span id="score-AllInOne" class="score-text"></span>
+                    <a href="tests/all_in_one.html" class="btn">Start Mega Test</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-login-link">
+            <div class="admin-pill" onclick="toggleAdminPopup()">
+                <span>🔒 Admin Terminal</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2025 NishuAbhyasi | Learning Made Modern
+        </div>
+    </div>
+
+    <div id="helpFab" class="floating-fab" onclick="toggleHelp()">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Help Robot">
+    </div>
+
+    <div id="helpBox" class="help-popup">
+        <h4 style="margin-bottom: 15px; font-size: 19px; color: var(--color-accent);">Dev Support by Yashwant</h4>
+        <div style="text-align: left; font-size: 14px; line-height: 1.6; margin-bottom: 20px; color: rgba(255,255,255,0.9);">
+            <p style="margin-bottom: 8px;">🚀 Found a <b>Bug</b>?</p>
+            <p style="margin-bottom: 8px;">💡 Have an <b>Idea</b>?</p>
+            <p>📩 Drop a mail to the developer.</p>
+        </div>
+        <div style="background: rgba(255,255,255,0.08); padding: 5px; border-radius: 20px;">
+            <a href="mailto:singhyashwant559@gmail.com" class="email-btn">Contact Yashwant</a>
+        </div>
+        <button onclick="toggleHelp()" style="margin-top: 20px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 13px;">Dismiss</button>
+    </div>
+
+    <div id="adminBox" class="help-popup" style="bottom: 50%; right: 50%; transform: translate(50%, 50%); width: 90%; max-width: 380px;">
+        <h4 style="margin-bottom: 15px; font-size: 20px; color: #ff4d4d; letter-spacing: 1px;">⚠️ ACCESS RESTRICTED</h4>
+        <div style="text-align: center; font-size: 14px; line-height: 1.6; margin-bottom: 25px; color: rgba(255,255,255,0.9);">
+            <p style="margin-bottom: 15px;">This area is reserved <b>only for Admins</b> to manage question sets and system configurations.</p>
+            <p style="font-weight: 600; color: var(--color-accent);">Are you an Admin?</p>
+            <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Candidates: Please click cancel and use the portal for tests.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="admin.html" class="email-btn" style="background: var(--btn-grad); color: white; border: none;">Proceed to Login</a>
+            <button onclick="toggleAdminPopup()" style="background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); padding: 12px; border-radius: 15px; color: white; cursor: pointer; font-weight: 700;">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const GIST_MAP = {
+            "English": "4219b480eb7d7e60c49334fce3aae1a2",
+            "Hindi": "f53d76137dec40ded2db81e043c6337d",
+            "Teaching": "ecc0225df38396f70445c4dd702ff939",
+            "Awareness": "e0372b12ad15ed3c2643059cc1e88cc0",
+            "Reasoning": "75ef01c2eb972d2b695938445c08df60",
+            "AllInOne": "2fb7cd87290c262fc490896192d21dd2"
+        };
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-date').innerText = now.toLocaleDateString('en-GB').replace(/\//g, '-');
+            document.getElementById('live-day').innerText = now.toLocaleDateString('en-US', { weekday: 'long' });
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        }
+
+        // Help Robot Popup
+        function toggleHelp() {
+            const box = document.getElementById('helpBox');
+            const overlay = document.getElementById('pageOverlay');
+            const isVisible = box.style.display === 'flex';
+            closeAllPopups();
+            if(!isVisible) {
+                box.style.display = 'flex';
+                overlay.style.display = 'block';
+            }
+        }
+
+        // Admin Restricted Popup
+        function toggleAdminPopup() {
+            const box = document.getElementById('adminBox');
+            const overlay = document.getElementById('pageOverlay');
+            const isVisible = box.style.display === 'flex';
+            closeAllPopups();
+            if(!isVisible) {
+                box.style.display = 'flex';
+                overlay.style.display = 'block';
+            }
+        }
+
+        function closeAllPopups() {
+            document.getElementById('helpBox').style.display = 'none';
+            document.getElementById('adminBox').style.display = 'none';
+            document.getElementById('pageOverlay').style.display = 'none';
+        }
+
+        async function updateDashboard() {
+            for (const [sub, gistId] of Object.entries(GIST_MAP)) {
+                const badge = document.getElementById(`badge-${sub}`);
+                const scoreLabel = document.getElementById(`score-${sub}`);
+                if (!badge) continue;
+
+                try {
+                    const res = await fetch(`https://api.github.com/gists/${gistId}`);
+                    const data = await res.json();
+                    const gistUpdateTime = new Date(data.updated_at);
+
+                    const levels = ['EASY', 'MEDIUM', 'HARD'];
+                    let completedCount = 0;
+                    let isOutdated = false;
+                    let scoreDetails = [];
+
+                    levels.forEach(lvl => {
+                        const isDone = localStorage.getItem(`done_${sub}_${lvl}`);
+                        const scoreTimeStr = localStorage.getItem(`score_date_${sub}_${lvl}`);
+                        const score = localStorage.getItem(`score_${sub}_${lvl}`);
+                        
+                        if (isDone === "true") {
+                            if (scoreTimeStr) {
+                                const scoreTime = new Date(scoreTimeStr);
+                                if (gistUpdateTime > scoreTime) {
+                                    isOutdated = true;
+                                }
+                            }
+                            completedCount++;
+                            scoreDetails.push(`${lvl}: ${score || 'Done'}`);
+                        }
+                    });
+
+                    if (isOutdated) {
+                        badge.innerText = "NEW QUESTIONS 🔥";
+                        badge.className = "badge badge-new";
+                        scoreLabel.innerHTML = "Latest content available!";
+                    } else if (completedCount > 0) {
+                        badge.innerText = completedCount === 3 ? "ALL LEVELS DONE ✅" : `PROGRESS: ${completedCount}/3 ⏳`;
+                        badge.className = "badge badge-done";
+                        scoreLabel.innerHTML = scoreDetails.join(" | ");
+                    } else {
+                        badge.innerText = "UPDATED 🔥";
+                        badge.className = "badge badge-new";
+                        scoreLabel.innerHTML = "";
+                    }
+                    badge.style.display = "inline-block";
+
+                } catch (e) {
+                    badge.innerText = "LIVE ✅";
+                    badge.className = "badge badge-new";
+                    badge.style.display = "inline-block";
+                }
+            }
+        }
+
+        window.onload = () => {
+            updateDashboard();
+            updateClock();
+            setInterval(updateClock, 1000);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('reveal'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.card').forEach(card => observer.observe(card));
+        };
+    </script>
+</body>
+</html>
