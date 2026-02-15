@@ -37,7 +37,7 @@
             width: 100%; padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); 
             background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; outline: none; 
         }
-		.start-screen input::placeholder { color: white !important; opacity: 1; }
+        .start-screen input::placeholder { color: white !important; opacity: 1; }
         .start-screen option { color: #000; }
         
         .q-count-sticker { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
@@ -143,7 +143,6 @@
             syncCountAndTime();
             document.getElementById('lastUpdated').innerText = new Date(data.updated_at).toLocaleString('en-IN');
 
-            // Silent Auto-Resume Logic
             const currentLevel = document.getElementById("difficultyLevel").value;
             if(localStorage.getItem(`finalResult_${MY_SUBJECT}_${currentLevel}`)) {
                 showFinalReport(currentLevel);
@@ -271,12 +270,12 @@
                 <div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
         });
 
-        // --- NEW DATA PERSISTENCE WITH DATE ---
+        // --- NEW DATA PERSISTENCE WITH DATE AND NO ID LOCK ---
         const currentLvl = level.toUpperCase();
         const now = new Date().toISOString(); 
-        localStorage.setItem(`score_${MY_TEST_ID}_${currentLvl}`, `${correct}/${questions.length}`);
-        localStorage.setItem(`score_date_${MY_TEST_ID}_${currentLvl}`, now); 
-        localStorage.setItem(`done_${MY_SUBJECT}_${MY_TEST_ID}_${currentLvl}`, "true");
+        localStorage.setItem(`score_${MY_SUBJECT}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`score_date_${MY_SUBJECT}_${currentLvl}`, now); 
+        localStorage.setItem(`done_${MY_SUBJECT}_${currentLvl}`, "true");
 
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
@@ -321,7 +320,8 @@
         if(confirm("Clear this result?")) {
             localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
             localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
-            localStorage.removeItem(`score_date_${MY_TEST_ID}_${level.toUpperCase()}`);
+            localStorage.removeItem(`score_date_${MY_SUBJECT}_${level.toUpperCase()}`);
+            localStorage.removeItem(`done_${MY_SUBJECT}_${level.toUpperCase()}`);
             location.reload(); 
         }
     }
