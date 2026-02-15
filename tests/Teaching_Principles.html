@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NishuAbhyasi – General Awareness by Yash</title>
+    <title>NishuAbhyasi – Teaching Principles by Yash</title>
     <style>
         :root{
             --color-primary: #1a2a6c;
@@ -77,7 +77,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Target Test- General Awareness 2026</h1>
+    <h1>Target Test- Teaching Principles 2026</h1>
     <p style="text-align:center; opacity:0.8; font-size:13px; margin-bottom:20px; color:#fff;">Questions Set: <span id="lastUpdated">Syncing...</span></p>
     
     <div class="start-screen" id="startScreen">
@@ -124,9 +124,9 @@
 </div>
 
 <script>
-    const MY_SUBJECT = "Awareness";
-    const MY_TEST_ID = "GKA_SET_09";
-    const GIST_API_URL = "https://api.github.com/gists/e0372b12ad15ed3c2643059cc1e88cc0";
+    const MY_SUBJECT = "Teaching_Principles";
+    const MY_TEST_ID = "TP_SET_09";
+    const GIST_API_URL = "https://api.github.com/gists/ecc0225df38396f70445c4dd702ff939";
 
     let allQuestionsBank = null;
     let questions = [];
@@ -270,7 +270,7 @@
                 <div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
         });
 
-        // --- NEW DATA PERSISTENCE WITH DATE AND NO ID LOCK ---
+        // --- NEW DATA PERSISTENCE WITH DATE ---
         const currentLvl = level.toUpperCase();
         const now = new Date().toISOString(); 
         localStorage.setItem(`score_${MY_SUBJECT}_${currentLvl}`, `${correct}/${questions.length}`);
@@ -281,7 +281,7 @@
         const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
         
         const summary = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
-            <h3 style="color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+            <h3 style="color:var(--color-accent);">${MY_SUBJECT.replace('_',' ')} Performance Report</h3>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px; margin-top:15px;">
                 <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
                 <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b>${accuracy}%</b></div>
@@ -299,7 +299,7 @@
         window.scrollTo(0,0);
         
         emailjs.send("service_wq5yoyp", "template_doegpcp", { 
-            candidate_name: displayName.textContent, subject: MY_SUBJECT, score: correct, total: questions.length, 
+            candidate_name: displayName.textContent, subject: MY_SUBJECT.replace('_',' '), score: correct, total: questions.length, 
             accuracy: accuracy + "%", time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s` 
         });
     }
