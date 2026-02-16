@@ -40,7 +40,6 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
 
-        /* --- SECURE LOGIN --- */
         .auth-card { text-align: center; padding: 40px 10px; }
         .auth-card h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 5px; color: white; }
         .auth-card p { opacity: 0.6; margin-bottom: 30px; font-size: 13px; letter-spacing: 1px; }
@@ -55,9 +54,9 @@
         }
         .auth-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0,242,255,0.15); }
 
-        /* --- DASHBOARD UI --- */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; }
         .header h2 { font-weight: 800; color: var(--neon-blue); font-size: 22px; }
+        .header .status-info { display: flex; flex-direction: column; gap: 2px; }
         
         .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
         .stat-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 20px; text-align: center; border: 1px solid var(--glass-border); }
@@ -74,7 +73,7 @@
         }
         
         textarea {
-            height: 400px; font-family: 'Fira Code', monospace;
+            height: 380px; font-family: 'Fira Code', monospace;
             font-size: 13px; line-height: 1.6; resize: none;
             border-left: 4px solid var(--color-accent);
         }
@@ -85,7 +84,8 @@
             cursor: pointer; font-weight: 700; text-transform: uppercase;
             transition: 0.3s; font-size: 14px;
         }
-        .btn-load { background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--glass-border); }
+        .btn-clear { background: rgba(255, 255, 255, 0.1); color: #ff4d4d; border: 1px solid var(--danger); }
+        .btn-clear:hover { background: var(--danger); color: white; }
         .btn-update { background: linear-gradient(135deg, #ff9800, #ff5722); color: white; }
         .btn-update:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 87, 34, 0.3); }
 
@@ -97,7 +97,6 @@
         @media (max-width: 650px) {
             .container { padding: 25px 15px; border-radius: 25px; }
             .btn-grid { grid-template-columns: 1fr; }
-            textarea { height: 350px; }
         }
     </style>
 </head>
@@ -105,32 +104,33 @@
 
 <div class="container">
     <div id="loginPage" class="auth-card">
-        <h1>ADMIN TERMINAL</h1>
+        <h1>🔒 ADMIN TERMINAL</h1>
         <p>ENCRYPTED SESSION LOGIN</p>
         <input type="password" id="tokenInput" class="auth-input" placeholder="Paste GitHub Token (ghp_...)">
         <input type="password" id="passInput" class="auth-input" placeholder="System Passcode" onkeypress="if(event.key==='Enter') unlock()">
         <br>
-        <button onclick="unlock()" style="background: var(--neon-blue); color: #000; width: 220px; margin-top: 15px;">Secure Connect</button>
-        <p style="margin-top: 20px; font-size: 10px; opacity: 0.4;"><b><I>Admin(s): Zero-Knowledge Session: Tokens are volatile and never persisted to cloud infrastructure.</I></b></p>
+        <button onclick="unlock()" style="background: var(--neon-blue); color: #000; width: 220px; margin-top: 15px;">🚀 Secure Connect</button>
+        <p style="margin-top: 20px; font-size: 10px; opacity: 0.4;"><b><i>Admin(s): Zero-Knowledge Session. Tokens are volatile.</i></b></p>
     </div>
 
     <div id="dashboard" style="display: none;">
         <div class="header">
-            <div>
-                <h2>Control Center</h2>
-                <span id="syncStatus" style="font-size: 10px; color: var(--success);">? SESSION ACTIVE</span>
+            <div class="status-info">
+                <h2>🎛️ Control Center</h2>
+                <span id="syncStatus" style="font-size: 10px; color: var(--success);">📡 SESSION ACTIVE</span>
+                <span id="lastUpdated" style="font-size: 10px; color: #fff; opacity: 0.7;">⏳ Last Gist Update: --:--</span>
             </div>
-            <button onclick="location.reload()" style="padding: 6px 15px; border-radius: 50px; font-size: 10px; background: rgba(255,255,255,0.1); color: white;">End Session</button>
+            <button onclick="location.reload()" style="padding: 6px 15px; border-radius: 50px; font-size: 10px; background: rgba(255,255,255,0.1); color: white;">🛑 End Session</button>
         </div>
 
         <div class="stats-bar">
-            <div class="stat-box"><small>Easy</small><b id="st-easy">0</b></div>
-            <div class="stat-box"><small>Medium</small><b id="st-medium">0</b></div>
-            <div class="stat-box"><small>Hard</small><b id="st-hard">0</b></div>
+            <div class="stat-box"><small>🟢 Easy</small><b id="st-easy">0</b></div>
+            <div class="stat-box"><small>🟡 Medium</small><b id="st-medium">0</b></div>
+            <div class="stat-box"><small>🔴 Hard</small><b id="st-hard">0</b></div>
         </div>
 
         <div class="form-group">
-            <label>TARGET SUBJECT</label>
+            <label>🎯 TARGET SUBJECT</label>
             <select id="subSelect" onchange="autoFetch()">
                 <option value="4219b480eb7d7e60c49334fce3aae1a2">English (ENG)</option>
                 <option value="f53d76137dec40ded2db81e043c6337d">Hindi (HIN)</option>
@@ -142,13 +142,13 @@
         </div>
 
         <div class="form-group">
-            <label>JSON DATA SOURCE</label>
-            <textarea id="jsonEditor" oninput="updateLiveStats(this.value)" placeholder="Data will appear here after loading..."></textarea>
+            <label>📝 JSON DATA SOURCE</label>
+            <textarea id="jsonEditor" oninput="updateLiveStats(this.value)" placeholder="Clean space for your data..."></textarea>
         </div>
 
         <div class="btn-grid">
-            <button class="btn-load" onclick="fetchData()">Refresh Source</button>
-            <button class="btn-update" onclick="pushUpdate()">Deploy Changes ??</button>
+            <button class="btn-clear" onclick="clearEditor()">🗑️ Clear Editor</button>
+            <button class="btn-update" onclick="pushUpdate()">⚡ Deploy Changes</button>
         </div>
 
         <div id="statusMsg"></div>
@@ -157,7 +157,7 @@
 
 <script>
     let SESSION_TOKEN = "";
-    const MASTER_PASS = "yash"; // Isko aap change kar sakte ho
+    const MASTER_PASS = "yash"; 
 
     function unlock() {
         const tInput = document.getElementById('tokenInput').value;
@@ -173,8 +173,21 @@
         }
     }
 
+    function clearEditor() {
+        if(confirm("Are you sure? This will clear the current editor content.")) {
+            document.getElementById('jsonEditor').value = "";
+            updateLiveStats("");
+        }
+    }
+
     function updateLiveStats(val) {
         try {
+            if(!val.trim()) {
+                document.getElementById('st-easy').innerText = 0;
+                document.getElementById('st-medium').innerText = 0;
+                document.getElementById('st-hard').innerText = 0;
+                return;
+            }
             const data = JSON.parse(val);
             document.getElementById('st-easy').innerText = data.easy ? data.easy.length : 0;
             document.getElementById('st-medium').innerText = data.medium ? data.medium.length : 0;
@@ -185,17 +198,28 @@
     async function fetchData() {
         const id = document.getElementById('subSelect').value;
         const sync = document.getElementById('syncStatus');
-        sync.innerText = "? SYNCING..."; sync.style.color = "var(--color-accent)";
+        const lastUp = document.getElementById('lastUpdated');
+        
+        sync.innerText = "📡 SYNCING..."; 
+        sync.style.color = "var(--color-accent)";
 
         try {
             const res = await fetch(`https://api.github.com/gists/${id}`);
             const data = await res.json();
+            
+            // Time logic
+            const updatedDate = new Date(data.updated_at);
+            lastUp.innerText = `⏳ Last Gist Update: ${updatedDate.toLocaleString('en-IN')}`;
+
             const content = data.files[Object.keys(data.files)[0]].content;
             document.getElementById('jsonEditor').value = content;
             updateLiveStats(content);
-            sync.innerText = "? SYSTEM SYNCED"; sync.style.color = "var(--success)";
+            
+            sync.innerText = "✅ SYSTEM SYNCED"; 
+            sync.style.color = "var(--success)";
         } catch(e) {
-            sync.innerText = "? SYNC FAILED"; sync.style.color = "var(--danger)";
+            sync.innerText = "❌ SYNC FAILED"; 
+            sync.style.color = "var(--danger)";
         }
     }
 
@@ -207,26 +231,32 @@
 
         try {
             JSON.parse(content);
-            msg.style.display = "block"; msg.style.background = "rgba(255,255,255,0.1)";
-            msg.style.color = "white"; msg.innerText = "?? TRANSMITTING DATA...";
+            msg.style.display = "block"; 
+            msg.style.background = "rgba(255,255,255,0.1)";
+            msg.style.color = "white"; 
+            msg.innerText = "🛰️ TRANSMITTING DATA...";
 
             const res = await fetch(`https://api.github.com/gists/${id}`, {
                 method: 'PATCH',
-                headers: { 'Authorization': `token ${SESSION_TOKEN}`, 'Content-Type': 'application/json' },
+                headers: { 
+                    'Authorization': `token ${SESSION_TOKEN}`, 
+                    'Content-Type': 'application/json' 
+                },
                 body: JSON.stringify({ files: { "questions.json": { content: content } } })
             });
 
             if(res.ok) {
                 msg.style.background = "rgba(0, 255, 136, 0.15)";
                 msg.style.color = "var(--success)";
-                msg.innerText = "? DEPLOYMENT SUCCESSFUL! SITE UPDATED.";
+                msg.innerText = "✨ DEPLOYMENT SUCCESSFUL! SITE UPDATED.";
+                fetchData(); // Refresh time and content
                 setTimeout(() => msg.style.display = 'none', 5000);
             } else { throw new Error(); }
         } catch(e) {
             msg.style.display = "block";
             msg.style.background = "rgba(255, 77, 77, 0.15)";
             msg.style.color = "var(--danger)";
-            msg.innerText = "? ERROR: INVALID JSON OR REVOKED TOKEN.";
+            msg.innerText = "❌ ERROR: INVALID JSON OR REVOKED TOKEN.";
         }
     }
 
