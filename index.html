@@ -36,9 +36,10 @@
         .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
         @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
 
+        /* Dim Background Overlay */
         #pageOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
             display: none; z-index: 1500;
         }
 
@@ -51,7 +52,7 @@
             z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 10px 20px; max-width: 1200px; }
+        .wrapper { width: 98%; position: relative; z-index: 2; padding: 10px 20px 10px 20px; max-width: 1200px; flex-grow: 1; }
 
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); 
@@ -60,18 +61,16 @@
             display: flex; flex-direction: row; 
             align-items: center; justify-content: center;
             gap: 45px; text-align: left;
-            min-height: auto;
         }
         
         .welcome-logo {
-            height: 125px; width: auto; object-fit: contain;
+            height: 100px; width: auto; object-fit: contain;
             filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.3));
         }
 
-        .welcome-text-content { display: flex; flex-direction: column; }
         .welcome .brand { 
             font-family: 'Marck Script', cursive; 
-            font-size: 70px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
+            font-size: 60px; color: #fff; text-shadow: 2px 2px 15px rgba(0,0,0,0.2);
             line-height: 1;
         }
 
@@ -82,47 +81,46 @@
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); 
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; 
             padding: 30px; display: flex; flex-direction: column; 
-            justify-content: space-between; min-height: 180px; 
+            justify-content: flex-start; min-height: 200px; 
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
             position: relative; opacity: 0; transform: translateX(-80px); 
         }
 
         .card.reveal { opacity: 1; transform: translateX(0); }
-        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.4s; }
-        .card h3 { font-size: 24px; color: #fff; margin-bottom: 12px; }
+        .card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.4s; }
+        .card h3 { font-size: 24px; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 10px; }
 
-        .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; display: none; }
+        .badge { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 50px; margin-left: 8px; display: none; vertical-align: middle; }
         .badge-new { background: #f2994a; color: #fff; animation: blink 1.5s infinite; }
         .badge-done { background: #16a34a; color: #fff; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
-        .score-text { font-size: 13px; color: #4ade80; margin-top: 8px; font-weight: 700; display: block; }
-        .btn { margin-top: 20px; padding: 16px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
+        .score-box { background: rgba(0,0,0,0.15); border-radius: 15px; padding: 10px; margin-top: auto; border: 1px dashed rgba(255,255,255,0.1); }
+        .score-line { font-size: 12px; color: #4ade80; font-weight: 700; display: block; margin: 2px 0; }
+
+        .btn { margin-top: 20px; padding: 14px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
 
         .floating-fab {
-            position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
             background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 2000; animation: robotPulse 2s infinite ease-in-out;
+            cursor: pointer; z-index: 1000; animation: robotPulse 2s infinite ease-in-out;
         }
-        .floating-fab img { width: 70%; height: 70%; object-fit: contain; }
-        @keyframes robotPulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.1); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.4); }
+        .floating-fab img { width: 65%; height: 65%; }
+
+        /* REAL FLOATING POPUP SYSTEM */
+        .popup-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 400px;
+            background: rgba(30, 40, 70, 0.95); backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 30px;
+            display: none; flex-direction: column; z-index: 2000;
+            padding: 30px; text-align: center; color: #fff;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .help-popup {
-            position: fixed; bottom: 110px; right: 30px; width: 300px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 30px;
-            display: none; flex-direction: column; z-index: 2000;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #fff; padding: 25px; text-align: center;
-        }
-        .email-btn { display: block; margin-top: 10px; padding: 14px; background: white; color: #1a2a6c; text-decoration: none; border-radius: 15px; font-size: 15px; font-weight: 700; }
-        
-        /* SLIM FOOTER STYLES */
         .admin-login-link { text-align: center; margin-top: 30px; }
         .admin-pill {
             display: inline-flex; align-items: center; gap: 8px;
@@ -131,20 +129,12 @@
             color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 600;
             cursor: pointer; transition: 0.3s;
         }
-        .admin-pill:hover { background: rgba(255,255,255,0.12); color: #fff; border-color: var(--color-accent); }
 
-        .footer { 
-            margin-top: 15px; 
-            text-align: center; 
-            color: rgba(255,255,255,0.4); 
-            padding-bottom: 15px; 
-            font-size: 12px; 
-            letter-spacing: 0.5px; 
-        }
+        .footer { margin-top: 20px; text-align: center; color: rgba(255,255,255,0.4); padding-bottom: 20px; font-size: 12px; }
 
         @media(max-width:900px){ 
             .welcome { flex-direction: column; text-align: center; gap: 10px; padding: 30px 20px; }
-            .welcome .brand { font-size: 48px; }
+            .welcome .brand { font-size: 45px; }
             .dashboard { grid-template-columns: 1fr; } 
         }
     </style>
@@ -165,7 +155,7 @@
         <div class="welcome">
             <img src="NishuAbhyasi.png" alt="Logo" class="welcome-logo">
             <div class="welcome-text-content">
-                <div style="color:rgba(255,255,255,0.7); font-size:16px; letter-spacing: 2px; margin-bottom:5px;">WELCOME TO</div>
+                <div style="color:rgba(255,255,255,0.7); font-size:14px; letter-spacing: 2px;">WELCOME TO</div>
                 <div class="brand">NishuAbhyasi</div>
             </div>
         </div>
@@ -174,20 +164,20 @@
             <div class="column">
                 <div class="card">
                     <h3>📘 English <span id="badge-English" class="badge"></span></h3>
-                    <p>Grammar, comprehension and vocabulary practice sets.</p>
-                    <span id="score-English" class="score-text"></span>
+                    <p>Vocabulary and Grammar sets.</p>
+                    <div id="score-English" class="score-box" style="display:none;"></div>
                     <a href="tests/English.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
-                    <p>Sharpen your logical reasoning and aptitude skills.</p>
-                    <span id="score-Reasoning" class="score-text"></span>
+                    <p>Logical Aptitude sets.</p>
+                    <div id="score-Reasoning" class="score-box" style="display:none;"></div>
                     <a href="tests/reasoning.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
-                    <p>Pedagogy and teaching methodology sets.</p>
-                    <span id="score-Teaching" class="score-text"></span>
+                    <p>Pedagogy and methodology.</p>
+                    <div id="score-Teaching" class="score-box" style="display:none;"></div>
                     <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
                 </div>
             </div>
@@ -195,20 +185,20 @@
             <div class="column">
                 <div class="card">
                     <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
-                    <p>Complete Vyakaran and language skills for exams.</p>
-                    <span id="score-Hindi" class="score-text"></span>
+                    <p>Vyakaran practice sets.</p>
+                    <div id="score-Hindi" class="score-box" style="display:none;"></div>
                     <a href="tests/Hindi.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
-                    <p>Static GK, current affairs and general basics.</p>
-                    <span id="score-Awareness" class="score-text"></span>
+                    <p>GK and Current Affairs.</p>
+                    <div id="score-Awareness" class="score-box" style="display:none;"></div>
                     <a href="tests/General_Awareness.html" class="btn">Start Test</a>
                 </div>
                 <div class="card">
                     <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
-                    <p>Mega Test! Mixed questions from all subjects.</p>
-                    <span id="score-AllInOne" class="score-text"></span>
+                    <p>Full Mock Mega Test.</p>
+                    <div id="score-AllInOne" class="score-box" style="display:none;"></div>
                     <a href="tests/all_in_one.html" class="btn">Start Mega Test</a>
                 </div>
             </div>
@@ -226,33 +216,25 @@
     </div>
 
     <div id="helpFab" class="floating-fab" onclick="toggleHelp()">
-        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Help Robot">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Robot">
     </div>
 
-    <div id="helpBox" class="help-popup">
-        <h4 style="margin-bottom: 15px; font-size: 19px; color: var(--color-accent);">Dev Support by Yashwant</h4>
-        <div style="text-align: left; font-size: 14px; line-height: 1.6; margin-bottom: 20px; color: rgba(255,255,255,0.9);">
-            <p style="margin-bottom: 8px;">🚀 Found a <b>Bug</b>?</p>
-            <p style="margin-bottom: 8px;">💡 Have an <b>Idea</b>?</p>
-            <p>📩 Drop a mail to the developer.</p>
+    <div id="adminBox" class="popup-modal">
+        <h4 style="margin-bottom: 15px; font-size: 20px; color: #ff4d4d; font-weight: 800;">⚠️ ACCESS RESTRICTED</h4>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 25px; line-height: 1.5;">
+            This area is restricted to <b>Admin(s)</b> only. Candidates, please click cancel to return.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="admin.html" class="btn" style="margin:0; text-decoration:none;">Proceed to Login</a>
+            <button onclick="closeAllPopups()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:white; padding:12px; border-radius:18px; cursor:pointer; font-weight:700;">Cancel</button>
         </div>
-        <div style="background: rgba(255,255,255,0.08); padding: 5px; border-radius: 20px;">
-            <a href="mailto:singhyashwant559@gmail.com" class="email-btn">Contact Yashwant</a>
-        </div>
-        <button onclick="toggleHelp()" style="margin-top: 20px; background: none; border: none; color: #fff; opacity: 0.6; cursor: pointer; font-size: 13px;">Dismiss</button>
     </div>
 
-    <div id="adminBox" class="help-popup" style="bottom: 50%; right: 50%; transform: translate(50%, 50%); width: 90%; max-width: 380px;">
-        <h4 style="margin-bottom: 15px; font-size: 20px; color: #ff4d4d; letter-spacing: 1px;">⚠️ ACCESS RESTRICTED</h4>
-        <div style="text-align: center; font-size: 14px; line-height: 1.6; margin-bottom: 25px; color: rgba(255,255,255,0.9);">
-            <p style="margin-bottom: 15px;">This area is restricted and only allowed for <b>Admin(s)</b>.</p>
-            <p style="font-weight: 600; color: var(--color-accent);">Are you an Admin?</p>
-            <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Candidates: Please click cancel and attempt your tests.</p>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <a href="admin.html" class="email-btn" style="background: var(--btn-grad); color: white; border: none;">Proceed to Login</a>
-            <button onclick="toggleAdminPopup()" style="background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); padding: 12px; border-radius: 15px; color: white; cursor: pointer; font-weight: 700;">Cancel</button>
-        </div>
+    <div id="helpBox" class="popup-modal">
+        <h4 style="margin-bottom: 15px; font-size: 20px; color: var(--color-accent);">Support</h4>
+        <p style="font-size: 14px; margin-bottom: 20px;">Found a bug or have an idea?</p>
+        <a href="mailto:singhyashwant559@gmail.com" class="btn" style="margin:0; text-decoration:none; background:white; color:#1a2a6c;">Email Developer</a>
+        <button onclick="closeAllPopups()" style="margin-top:15px; background:none; border:none; color:#aaa; cursor:pointer;">Dismiss</button>
     </div>
 
     <script>
@@ -272,98 +254,77 @@
             document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         }
 
-        function toggleHelp() {
-            const box = document.getElementById('helpBox');
-            const overlay = document.getElementById('pageOverlay');
-            const isVisible = box.style.display === 'flex';
+        function toggleAdminPopup() {
             closeAllPopups();
-            if(!isVisible) {
-                box.style.display = 'flex';
-                overlay.style.display = 'block';
-            }
+            document.getElementById('adminBox').style.display = 'flex';
+            document.getElementById('pageOverlay').style.display = 'block';
         }
 
-        function toggleAdminPopup() {
-            const box = document.getElementById('adminBox');
-            const overlay = document.getElementById('pageOverlay');
-            const isVisible = box.style.display === 'flex';
+        function toggleHelp() {
             closeAllPopups();
-            if(!isVisible) {
-                box.style.display = 'flex';
-                overlay.style.display = 'block';
-            }
+            document.getElementById('helpBox').style.display = 'flex';
+            document.getElementById('pageOverlay').style.display = 'block';
         }
 
         function closeAllPopups() {
-            document.getElementById('helpBox').style.display = 'none';
             document.getElementById('adminBox').style.display = 'none';
+            document.getElementById('helpBox').style.display = 'none';
             document.getElementById('pageOverlay').style.display = 'none';
         }
 
         async function updateDashboard() {
             for (const [sub, gistId] of Object.entries(GIST_MAP)) {
                 const badge = document.getElementById(`badge-${sub}`);
-                const scoreLabel = document.getElementById(`score-${sub}`);
+                const scoreBox = document.getElementById(`score-${sub}`);
                 if (!badge) continue;
 
                 try {
                     const res = await fetch(`https://api.github.com/gists/${gistId}`);
                     const data = await res.json();
-                    const gistUpdateTime = new Date(data.updated_at);
+                    const gistTime = new Date(data.updated_at);
 
                     const levels = ['EASY', 'MEDIUM', 'HARD'];
-                    let completedCount = 0;
-                    let isOutdated = false;
-                    let scoreDetails = [];
+                    let doneCount = 0;
+                    let hasNew = false;
+                    let html = "";
 
                     levels.forEach(lvl => {
-                        const isDone = localStorage.getItem(`done_${sub}_${lvl}`);
-                        const scoreTimeStr = localStorage.getItem(`score_date_${sub}_${lvl}`);
                         const score = localStorage.getItem(`score_${sub}_${lvl}`);
-                        
-                        if (isDone === "true") {
-                            if (scoreTimeStr) {
-                                const scoreTime = new Date(scoreTimeStr);
-                                if (gistUpdateTime > scoreTime) {
-                                    isOutdated = true;
-                                }
-                            }
-                            completedCount++;
-                            scoreDetails.push(`${lvl}: ${score || 'Done'}`);
+                        const done = localStorage.getItem(`done_${sub}_${lvl}`);
+                        const date = localStorage.getItem(`score_date_${sub}_${lvl}`);
+                        if (done === "true" || score) {
+                            doneCount++;
+                            if (date && new Date(date) < gistTime) hasNew = true;
+                            html += `<span class="score-line">${lvl}: ${score || 'Done'}</span>`;
                         }
                     });
 
-                    if (isOutdated) {
-                        badge.innerText = "NEW QUESTIONS 🔥";
-                        badge.className = "badge badge-new";
-                        scoreLabel.innerHTML = "Latest content available!";
-                    } else if (completedCount > 0) {
-                        badge.innerText = completedCount === 3 ? "ALL LEVELS DONE ✅" : `PROGRESS: ${completedCount}/3 ⏳`;
-                        badge.className = "badge badge-done";
-                        scoreLabel.innerHTML = scoreDetails.join(" | ");
+                    if (doneCount > 0) {
+                        scoreBox.style.display = "block";
+                        scoreBox.innerHTML = html;
+                        badge.style.display = "inline-block";
+                        if (hasNew) {
+                            badge.className = "badge badge-new";
+                            badge.innerText = "NEW UPDATE 🔥";
+                        } else {
+                            badge.className = "badge badge-done";
+                            badge.innerText = doneCount === 3 ? "COMPLETED ✅" : `${doneCount}/3 DONE ⏳`;
+                        }
                     } else {
-                        badge.innerText = "UPDATED 🔥";
+                        badge.style.display = "inline-block";
                         badge.className = "badge badge-new";
-                        scoreLabel.innerHTML = "";
+                        badge.innerText = "UPDATED 🔥";
                     }
-                    badge.style.display = "inline-block";
-
-                } catch (e) {
-                    badge.innerText = "LIVE ✅";
-                    badge.className = "badge badge-new";
-                    badge.style.display = "inline-block";
-                }
+                } catch (e) { console.error(e); }
             }
         }
 
         window.onload = () => {
-            updateDashboard();
-            updateClock();
-            setInterval(updateClock, 1000);
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('reveal'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.card').forEach(card => observer.observe(card));
+            updateDashboard(); updateClock(); setInterval(updateClock, 1000);
+            const obs = new IntersectionObserver((es) => {
+                es.forEach(e => { if (e.isIntersecting) e.target.classList.add('reveal'); });
+            });
+            document.querySelectorAll('.card').forEach(c => obs.observe(c));
         };
     </script>
 </body>
