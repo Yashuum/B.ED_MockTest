@@ -46,8 +46,8 @@
         .btn-secondary { background: rgba(255,255,255,0.15); }
         .btn-review { background: var(--review); }
         .btn-challenge { background: var(--challenge); }
-        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; display: block; width: fit-content; }
-        
+        .btn-clear-resp { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 15px; border-radius: 8px; cursor: pointer; color: #fff; }
+
         .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
         .timer{ font-weight:800; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
         
@@ -64,13 +64,22 @@
         .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
         .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 
+        /* GRAPHICAL RESULTS STYLES */
         .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
         .analytic-item { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid var(--glass-border); }
-        .analytic-item small { display: block; opacity: 0.7; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; }
+        .analytic-item small { display: block; opacity: 0.7; font-size: 11px; text-transform: uppercase; margin-bottom:5px; }
         .analytic-item b { font-size: 18px; color: var(--color-accent); }
         
-        .meter-wrap { width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 20px 0; overflow: hidden; }
-        .meter-fill { height: 100%; background: linear-gradient(90deg, var(--danger), var(--color-accent), var(--success)); transition: 1.5s cubic-bezier(0.1, 0, 0.1, 1); }
+        .pie-chart {
+            width: 120px; height: 120px; border-radius: 50%; margin: 20px auto;
+            background: conic-gradient(var(--success) var(--p), rgba(255,255,255,0.1) 0);
+            display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .pie-chart::after {
+            content: attr(data-percent); position: absolute; width: 100px; height: 100px;
+            background: #1a2a6c; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 20px;
+        }
 
         .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
 
@@ -204,18 +213,18 @@
         visited[currentIndex]=true;
         const q=questions[currentIndex];
         
-        // --- Glitch Fix: Label for attribute must match input ID ---
+        // UNIQUE IDS FIXED HERE
         quizArea.innerHTML=`<div class="quiz-card">
             <b style="display:block; margin-bottom:15px;">Q${currentIndex+1}. ${q.q} ${challenges[currentIndex] ? '<span style="color:var(--challenge)">[CHALLENGED]</span>' : ''}</b>
             <div class="options">
                 ${q.options.map((o, i) => `
                     <label>
-                        <input type="radio" name="opt" id="opt_${i}" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o.replace(/'/g, "\\'")}')"> 
+                        <input type="radio" name="opt" id="q${currentIndex}_opt${i}" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o.replace(/'/g, "\\'")}')"> 
                         ${o}
                     </label>
                 `).join("")}
             </div>
-            ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
+            ${answers[currentIndex] ? `<button class="btn-clear-resp" onclick="clearSelection()">Clear Selection</button>` : ''}
         </div>`;
         
         const nextBtn = document.getElementById("nextBtn");
@@ -257,7 +266,7 @@
         const level = document.getElementById("difficultyLevel").value;
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
         let correct=0;
-        let detailHtml=`<h2 style="margin:20px 0 10px; text-align:center;">Review Answers</h2>`;
+        let detailHtml=`<h2 style="margin:20px 0 10px; text-align:center;">Detailed Analysis</h2>`;
         
         questions.forEach((q,i)=>{
             const isCorrect = (answers[i] === q.answer) || (challenges[i] && !answers[i]);
@@ -270,10 +279,12 @@
         });
 
         const accuracy = Math.round((correct / questions.length) * 100);
+        
+        // GRAPHICAL SUMMARY
         const summary = `
             <div style="text-align:center; padding:20px; background:rgba(255,255,255,0.1); border-radius:20px; border:1px solid var(--glass-border);">
                 <h3 style="color:var(--color-accent)">${level.toUpperCase()} Result</h3>
-                <div class="meter-wrap"><div class="meter-fill" style="width:${accuracy}%"></div></div>
+                <div class="pie-chart" style="--p:${accuracy}%" data-percent="${accuracy}%"></div>
                 <div class="analytics-grid">
                     <div class="analytic-item"><small>Score</small><b>${correct}/${questions.length}</b></div>
                     <div class="analytic-item"><small>Accuracy</small><b>${accuracy}%</b></div>
