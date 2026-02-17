@@ -44,7 +44,7 @@
             display: flex; justify-content: space-between; align-items: center; color: white; font-size: 14px;
         }
 
-        .wrapper { width: 95%; position: relative; z-index: 2; padding: 10px 0 20px 0; max-width: 1200px; flex-grow: 1; }
+        .wrapper { width: 95%; position: relative; z-index: 2; padding: 10px 0 0px 0; max-width: 1200px; flex-grow: 1; }
 
         .welcome { 
             background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); 
@@ -68,14 +68,16 @@
         .badge-new { background: var(--color-accent); color: #fff; }
         .badge-done { background: #16a34a; color: #fff; }
         
-        /* SCORE LINE GAP FIX */
+        /* SCORE LINE GAP & SPACE FIX */
+        .score-box { margin: 5px 0; }
         .score-line { 
             display: flex; justify-content: space-between; align-items: center;
-            font-size: 13px; color: #4ade80; font-weight: 700; margin: 4px 0;
-            padding: 5px 12px; background: rgba(0,0,0,0.15); border-radius: 10px;
+            font-size: 13px; color: #4ade80; font-weight: 700; margin: 3px 0;
+            padding: 4px 12px; background: rgba(0,0,0,0.18); border-radius: 10px;
         }
+        .score-line span:first-child { color: rgba(255,255,255,0.8); font-size: 11px; }
 
-        .btn { margin-top: 15px; padding: 14px; border: none; border-radius: 15px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; }
+        .btn { margin-top: 10px; padding: 14px; border: none; border-radius: 15px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; }
 
         /* IPHONE STYLE DIMMING FAB */
         .floating-fab {
@@ -83,29 +85,29 @@
             background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 2000; transition: 0.5s ease;
+            cursor: pointer; z-index: 2000; transition: opacity 0.5s ease, transform 0.3s ease;
         }
         .floating-fab.dimmed { opacity: 0.3; transform: scale(0.9); }
         .floating-fab img { width: 65%; height: 65%; }
 
-        /* ADMIN BUTTON STYLE */
+        /* ADMIN BUTTON STYLE - AUTO DIM */
+        .admin-btn-wrap { text-align: center; margin: 25px 0; opacity: 0.4; transition: 0.4s; }
+        .admin-btn-wrap:hover { opacity: 1; }
         .admin-btn {
             display: inline-flex; align-items: center; gap: 10px;
-            padding: 10px 25px; border: 1px solid var(--glass-border);
+            padding: 10px 30px; border: 1px solid var(--glass-border);
             border-radius: 50px; background: var(--glass);
             color: #fff; text-decoration: none; font-size: 14px; font-weight: 600;
-            margin-bottom: 20px; transition: 0.3s;
         }
-        .admin-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
         .help-popup {
             position: fixed; bottom: 100px; right: 30px; width: 280px;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(30px);
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border); border-radius: 30px;
             display: none; flex-direction: column; z-index: 2000; padding: 25px; color: #fff;
         }
 
-        .footer { margin-bottom: 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 12px; }
+        .footer { padding-bottom: 20px; text-align: center; color: rgba(255,255,255,0.4); font-size: 11px; }
 
         @media(max-width:600px){ .welcome { gap: 15px; } .welcome .brand { font-size: 35px; } }
     </style>
@@ -114,7 +116,9 @@
 <body>
     <div id="pageOverlay" onclick="toggleHelp()"></div>
     <div class="bubbles-container">
-        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+        <div class="bubble" style="left:10%; width:60px; height:60px; animation-delay:0s;"></div>
+        <div class="bubble" style="left:40%; width:40px; height:40px; animation-delay:3s;"></div>
+        <div class="bubble" style="left:80%; width:70px; height:70px; animation-delay:6s;"></div>
     </div>
 
     <div class="time-bar">
@@ -131,54 +135,56 @@
         <div class="dashboard">
             <div class="card">
                 <h3>📘 English <span id="badge-English" class="badge"></span></h3>
-                <p style="font-size: 13px; opacity: 0.8; margin-bottom: 10px;">Grammar and Vocabulary.</p>
-                <div id="score-English"></div>
+                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Grammar and Vocabulary.</p>
+                <div id="score-English" class="score-box"></div>
                 <a href="tests/English.html" class="btn">Start Test</a>
             </div>
 
             <div class="card">
                 <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
-                <p style="font-size: 13px; opacity: 0.8; margin-bottom: 10px;">Complete Vyakaran.</p>
-                <div id="score-Hindi"></div>
+                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Complete Vyakaran.</p>
+                <div id="score-Hindi" class="score-box"></div>
                 <a href="tests/Hindi.html" class="btn">Start Test</a>
             </div>
 
             <div class="card">
                 <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
-                <p style="font-size: 13px; opacity: 0.8; margin-bottom: 10px;">Logic and Aptitude.</p>
-                <div id="score-Reasoning"></div>
+                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Logic and Aptitude.</p>
+                <div id="score-Reasoning" class="score-box"></div>
                 <a href="tests/reasoning.html" class="btn">Start Test</a>
             </div>
 
             <div class="card">
                 <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
-                <p style="font-size: 13px; opacity: 0.8; margin-bottom: 10px;">Pedagogy Principles.</p>
-                <div id="score-Teaching"></div>
+                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Pedagogy Principles.</p>
+                <div id="score-Teaching" class="score-box"></div>
                 <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
             </div>
 
             <div class="card">
                 <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
-                <p style="font-size: 13px; opacity: 0.8; margin-bottom: 10px;">Static GK and Affairs.</p>
-                <div id="score-Awareness"></div>
+                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">GK and Current Affairs.</p>
+                <div id="score-Awareness" class="score-box"></div>
                 <a href="tests/General_Awareness.html" class="btn">Start Test</a>
             </div>
 
             <div class="card">
                 <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
-                <p style="font-size: 13px; opacity: 0.8; margin-bottom: 10px;">Mixed Subjects Challenge.</p>
-                <div id="score-AllInOne"></div>
-                <a href="tests/all_in_one.html" class="btn">Start Mega Test</a>
+                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Mega Test Series.</p>
+                <div id="score-AllInOne" class="score-box"></div>
+                <a href="tests/all_in_one.html" class="btn">Mega Test</a>
             </div>
         </div>
-    </div>
 
-    <a href="admin/login.html" class="admin-btn">
-        <span>🔒</span> Admin Terminal
-    </a>
+        <div class="admin-btn-wrap">
+            <a href="https://nishuabhyasi.rf.gd/admin" class="admin-btn">
+                <span>🔒</span> Admin Terminal
+            </a>
+        </div>
 
-    <div class="footer">
-        © 2026 NishuAbhyasi | Learning Made Modern
+        <div class="footer">
+            © 2026 NishuAbhyasi | Learning Made Modern
+        </div>
     </div>
 
     <div id="helpFab" class="floating-fab" onclick="toggleHelp()">
@@ -186,9 +192,9 @@
     </div>
 
     <div id="helpBox" class="help-popup">
-        <h4 style="margin-bottom: 15px; color: var(--color-accent);">Dev Support</h4>
-        <p style="font-size: 13px; line-height: 1.6; margin-bottom: 15px;">🚀 Found a bug? Drop a mail to Yashwant.</p>
-        <a href="mailto:singhyashwant559@gmail.com" style="background:#fff; color:#1a2a6c; padding:10px; border-radius:12px; display:block; text-align:center; font-weight:700; text-decoration:none;">Email Yashwant</a>
+        <h4 style="margin-bottom: 10px; color: var(--color-accent);">Support</h4>
+        <p style="font-size: 13px; line-height: 1.6; margin-bottom: 15px;">Found a bug? Contact Yashwant.</p>
+        <a href="mailto:singhyashwant559@gmail.com" style="background:#fff; color:#1a2a6c; padding:10px; border-radius:12px; display:block; text-align:center; font-weight:700; text-decoration:none;">Email Dev</a>
     </div>
 
     <script>
@@ -207,15 +213,17 @@
             document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
         }
 
+        // iPhone Style AssistiveTouch Logic
+        const fab = document.getElementById('helpFab');
         let fabTimer;
         function resetFab() {
-            const fab = document.getElementById('helpFab');
             fab.classList.remove('dimmed');
             clearTimeout(fabTimer);
             fabTimer = setTimeout(() => { fab.classList.add('dimmed'); }, 3000);
         }
         document.addEventListener('mousemove', resetFab);
         document.addEventListener('touchstart', resetFab);
+        document.addEventListener('scroll', resetFab);
 
         function toggleHelp() {
             const box = document.getElementById('helpBox');
@@ -223,6 +231,7 @@
             const isVisible = box.style.display === 'flex';
             box.style.display = isVisible ? 'none' : 'flex';
             overlay.style.display = isVisible ? 'none' : 'block';
+            resetFab();
         }
 
         async function updateDashboard() {
@@ -254,7 +263,7 @@
                         badge.innerText = "LIVE"; badge.className = "badge badge-new"; badge.style.display = "inline";
                     }
                     scoreBox.innerHTML = scoreHtml;
-                } catch (e) { console.error(e); }
+                } catch (e) { console.error(sub + " sync error"); }
             }
         }
 
