@@ -46,6 +46,7 @@
         .btn-secondary { background: rgba(255,255,255,0.15); }
         .btn-review { background: var(--review); }
         .btn-challenge { background: var(--challenge); }
+        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; display: block; width: fit-content; }
         
         .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
         .timer{ font-weight:800; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
@@ -63,7 +64,6 @@
         .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
         .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 
-        /* SCORECARD IMPROVEMENTS */
         .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
         .analytic-item { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid var(--glass-border); }
         .analytic-item small { display: block; opacity: 0.7; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; }
@@ -78,8 +78,7 @@
             position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
             background: var(--btn-grad); color: white; border-radius: 50%;
             border: 3px solid rgba(255,255,255,0.3); display: none; align-items: center; justify-content: center;
-            font-size: 24px; cursor: pointer; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
+            font-size: 24px; cursor: pointer; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -129,7 +128,7 @@
 
     <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
     <div id="result" class="result" style="display:none"></div>
-    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear This Level & Restart</button>
 </div>
 
 <div id="scrollBtn" onclick="handleScroll()">↓</div>
@@ -204,14 +203,21 @@
     function renderQuestion(){
         visited[currentIndex]=true;
         const q=questions[currentIndex];
+        
+        // --- Glitch Fix: Label for attribute must match input ID ---
         quizArea.innerHTML=`<div class="quiz-card">
             <b style="display:block; margin-bottom:15px;">Q${currentIndex+1}. ${q.q} ${challenges[currentIndex] ? '<span style="color:var(--challenge)">[CHALLENGED]</span>' : ''}</b>
             <div class="options">
-                ${q.options.map(o=>`<label><input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}</label>`).join("")}
+                ${q.options.map((o, i) => `
+                    <label>
+                        <input type="radio" name="opt" id="opt_${i}" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o.replace(/'/g, "\\'")}')"> 
+                        ${o}
+                    </label>
+                `).join("")}
             </div>
+            ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
         </div>`;
         
-        // Button Logic Fix
         const nextBtn = document.getElementById("nextBtn");
         const lastMsg = document.getElementById("lastQMsg");
         if (currentIndex === questions.length - 1) {
@@ -225,6 +231,7 @@
     }
 
     function selectAnswer(val){ answers[currentIndex]=val; renderQuestion(); }
+    function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
     function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
     function challengeQuestion(){ challenges[currentIndex] = !challenges[currentIndex]; renderPalette(); }
 
@@ -271,7 +278,7 @@
                     <div class="analytic-item"><small>Score</small><b>${correct}/${questions.length}</b></div>
                     <div class="analytic-item"><small>Accuracy</small><b>${accuracy}%</b></div>
                     <div class="analytic-item"><small>Time Taken</small><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-                    <div class="analytic-item"><small>Avg Speed</small><b>${Math.round(timeTaken/questions.length)}s/q</b></div>
+                    <div class="analytic-item"><small>Speed</small><b>${Math.round(timeTaken/questions.length)}s/q</b></div>
                 </div>
                 <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="width:100%; background:var(--success); margin-bottom:10px;">Dashboard</button>
             </div>`;
