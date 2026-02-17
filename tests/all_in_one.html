@@ -22,9 +22,11 @@
             background: linear-gradient(-45deg, var(--color-primary), var(--color-secondary), var(--color-primary), var(--color-accent));
             background-size: 300% 300%;
             animation: dynamicFlow 18s ease-in-out infinite;
-            color: #fff; padding: 20px 10px;
+            color: #fff;
+            padding: 20px 10px;
         }
         @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
         
         .container{ max-width:900px; margin:auto; position: relative; z-index: 2; }
         h1{ text-align:center; margin-bottom:10px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -36,50 +38,39 @@
             background: rgba(255, 255, 255, 0.15); color: #fff; font-size: 16px; outline: none; 
         }
         .start-screen input::placeholder { color: white !important; opacity: 1; }
+        .start-screen option { color: #000; }
         
         .q-count-sticker { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .pulse-dot { width: 8px; height: 8px; background: #4facfe; border-radius: 50%; animation: pulse 1.5s infinite; }
         
         button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
         button:hover:not(:disabled){ transform: scale(1.05); }
+        button:disabled{ opacity: 0.5; cursor: not-allowed; }
 
         .btn-secondary { background: rgba(255,255,255,0.15); }
         .btn-review { background: var(--review); }
         .btn-challenge { background: var(--challenge); }
-        
+        .btn-clear { background: transparent; border: 1px solid #fff; padding: 6px 12px; font-size: 12px; margin-top: 10px; border-radius: 8px; cursor: pointer; color: #fff; }
+
         .top-bar{ display:none; justify-content:space-between; align-items:center; padding:15px 25px; background: var(--glass); backdrop-filter: blur(15px); border:1px solid var(--glass-border); border-radius:50px; position:sticky; top:10px; z-index:100; margin-bottom:15px; }
-        .timer{ font-weight:800; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
+        .timer{ font-weight:800; color:#fff; background: var(--danger); padding: 5px 15px; border-radius: 20px; }
         
         #palette{ display:none; flex-wrap:wrap; gap:8px; margin-bottom:20px; justify-content: center; padding: 10px; }
         .palette span{ width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); cursor:pointer; font-size: 13px; }
         .palette .visited{ border: 2px solid var(--color-secondary); }
-        .palette .attempted{ background: var(--success); }
+        .palette .attempted{ background: var(--success); box-shadow: 0 0 8px var(--success); }
         .palette .marked-review{ background: var(--review); }
         .palette .challenged{ background: var(--challenge); }
 
         .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; }
         .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s; }
+        .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
         
         .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
         .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
-
-        /* ADVANCED SCORECARD ANALYTICS */
-        .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .analytic-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid var(--glass-border); }
-        .analytic-item small { display: block; opacity: 0.7; font-size: 11px; text-transform: uppercase; }
-        .analytic-item b { font-size: 18px; color: var(--color-accent); }
-        .meter-wrap { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 10px 0; overflow: hidden; }
-        .meter-fill { height: 100%; background: linear-gradient(to right, var(--danger), var(--color-accent), var(--success)); transition: 1.5s ease-out; }
-
+        .correct{ color: #4ade80; font-weight:bold; }
+        .wrong{ color: #f87171; font-weight:bold; }
         .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
-
-        /* FLOATING NAVIGATION BUTTON */
-        #scrollBtn {
-            position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
-            background: var(--btn-grad); color: white; border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.3); display: none; align-items: center; justify-content: center;
-            font-size: 24px; cursor: pointer; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script> (function () { emailjs.init("L8kGW-X7JOiYaycH5"); })(); </script>
@@ -100,6 +91,7 @@
             <option value="hard">Hard</option>
         </select>
         <div class="q-count-sticker">
+            <span class="pulse-dot"></span>
             <span>Questions Loaded: <b id="totalQDisplay">0</b></span>
         </div>
         <div style="display:flex; gap:10px;">
@@ -120,18 +112,20 @@
         <button class="btn-secondary" onclick="prevQ()" id="prevBtn">← Prev</button>
         <button class="btn-review" onclick="markForReview()">Review</button>
         <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
-        <button onclick="nextQ()" id="nextBtn">Next →</button>
+        <div style="display:flex; flex-direction:column; align-items:center;">
+            <button onclick="nextQ()" id="nextBtn">Next →</button>
+            <span id="lastQMsg" style="font-size:10px; color:var(--color-accent); margin-top:5px; display:none;">Last question, submit test now</span>
+        </div>
     </div>
 
     <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
     <div id="result" class="result" style="display:none"></div>
-    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear This Level & Restart</button>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
 </div>
-
-<div id="scrollBtn" onclick="handleScroll()">↓</div>
 
 <script>
     const MY_SUBJECT = "AllInOne";
+    const MY_TEST_ID = "AIO_SET_04";
     const GIST_API_URL = "https://api.github.com/gists/2fb7cd87290c262fc490896192d21dd2";
 
     let allQuestionsBank = null;
@@ -145,11 +139,15 @@
             const data = await response.json();
             const fileName = Object.keys(data.files)[0];
             allQuestionsBank = JSON.parse(data.files[fileName].content);
+            
+            syncCountAndTime();
             document.getElementById('lastUpdated').innerText = new Date(data.updated_at).toLocaleString('en-IN');
-            handleLevelSwitch();
+
+            handleLevelSwitch(); // Fix: Initialize UI on load
         } catch (e) { console.error("Load failed", e); }
     }
 
+    // Fix 1: Multi-Level Independent Loading Fix
     function handleLevelSwitch() {
         if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
@@ -160,30 +158,52 @@
         result.style.display = "none";
         clearBtn.style.display = "none";
         startScreen.style.display = "flex";
-        document.getElementById('scrollBtn').style.display = 'none';
+        quizArea.innerHTML = "";
+        palette.style.display = "none";
+        navBtns.style.display = "none";
+        submitBtn.style.display = "none";
+        topBar.style.display = "none";
 
-        const savedReport = localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`);
-        if(savedReport) {
-            result.style.display = "block";
-            result.innerHTML = JSON.parse(savedReport).html;
-            clearBtn.style.display = "block";
-            startScreen.style.display = "none";
-            document.getElementById('scrollBtn').style.display = 'flex';
+        if(localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`)) {
+            showFinalReport(level);
+        } else if(localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`)) {
+            const p = JSON.parse(localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`));
+            candidateName.value = p.name || "";
+            testTime.value = Math.ceil(p.totalSeconds / 60);
         }
     }
 
+    function syncCountAndTime() {
+        if(!allQuestionsBank) return;
+        const level = document.getElementById("difficultyLevel").value;
+        const count = allQuestionsBank[level].length;
+        document.getElementById("totalQDisplay").textContent = count;
+        document.getElementById("testTime").value = count;
+    }
+
     function startTest(){
+        if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
         questions = allQuestionsBank[level];
         if(!candidateName.value || !testTime.value) { alert("Enter Name/Time"); return; }
+
         displayName.textContent = candidateName.value + ` (${level.toUpperCase()})`;
         startScreen.style.display="none";
         topBar.style.display="flex";
         palette.style.display="flex";
         navBtns.style.display="flex";
         submitBtn.style.display="block";
-        answers={}; visited={}; currentIndex=0; reviewMarks={}; challenges={};
-        totalSeconds=testTime.value*60; startTime=Date.now();
+
+        const progress = localStorage.getItem(`inProgress_${MY_SUBJECT}_${level}`);
+        if(progress) {
+            const p = JSON.parse(progress);
+            answers=p.answers || {}; visited=p.visited || {}; currentIndex=p.currentIndex || 0; 
+            totalSeconds=p.totalSeconds; startTime=p.startTime; 
+            reviewMarks=p.reviewMarks || {}; challenges=p.challenges || {};
+        } else {
+            answers={}; visited={}; currentIndex=0; reviewMarks={}; challenges={};
+            totalSeconds=testTime.value*60; startTime=Date.now();
+        }
         startTimer();
         renderQuestion();
     }
@@ -192,26 +212,39 @@
         if(timerInterval) clearInterval(timerInterval);
         timerInterval=setInterval(()=>{
             totalSeconds--;
-            timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+ String(totalSeconds%60).padStart(2,'0');
+            updateTimerDisplay();
+            saveProgress();
             if(totalSeconds<=0) submitQuiz();
         },1000);
+    }
+
+    function updateTimerDisplay(){
+        timer.textContent= String(Math.floor(totalSeconds/60)).padStart(2,'0')+":"+ String(totalSeconds%60).padStart(2,'0');
     }
 
     function renderQuestion(){
         visited[currentIndex]=true;
         const q=questions[currentIndex];
         quizArea.innerHTML=`<div class="quiz-card">
-            <b style="display:block; margin-bottom:15px;">Q${currentIndex+1}. ${q.q} ${challenges[currentIndex] ? '<span style="color:var(--challenge)">[CHALLENGED]</span>' : ''}</b>
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+                <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
+                ${challenges[currentIndex] ? '<span style="color:var(--challenge); font-weight:bold;">[CHALLENGED]</span>' : ''}
+            </div>
             <div class="options">
                 ${q.options.map(o=>`<label><input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}</label>`).join("")}
             </div>
+            ${answers[currentIndex] ? `<button class="btn-clear" onclick="clearSelection()">Clear Selection</button>` : ''}
         </div>`;
+        document.getElementById("nextBtn").disabled = (currentIndex === questions.length - 1);
+        document.getElementById("prevBtn").disabled = (currentIndex === 0);
+        document.getElementById("lastQMsg").style.display = (currentIndex === questions.length - 1) ? "block" : "none";
         renderPalette();
     }
 
-    function selectAnswer(val){ answers[currentIndex]=val; renderQuestion(); }
+    function selectAnswer(val){ answers[currentIndex]=val; if(challenges[currentIndex]) delete challenges[currentIndex]; renderQuestion(); }
+    function clearSelection(){ delete answers[currentIndex]; renderQuestion(); }
     function markForReview(){ reviewMarks[currentIndex] = !reviewMarks[currentIndex]; renderPalette(); }
-    function challengeQuestion(){ challenges[currentIndex] = !challenges[currentIndex]; renderPalette(); }
+    function challengeQuestion(){ if(!answers[currentIndex] && confirm("Challenge?")) { challenges[currentIndex] = true; renderPalette(); } }
 
     function renderPalette(){
         palette.innerHTML="";
@@ -229,82 +262,88 @@
     function nextQ(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion();}}
     function prevQ(){if(currentIndex>0){currentIndex--;renderQuestion();}}
 
+    function saveProgress(){
+        const level = document.getElementById("difficultyLevel").value;
+        localStorage.setItem(`inProgress_${MY_SUBJECT}_${level}`,JSON.stringify({
+            name:candidateName.value, level, answers, visited, currentIndex, totalSeconds, startTime, reviewMarks, challenges
+        }));
+    }
+
     function submitQuiz(){
-        if(!confirm("Submit Mega Test?")) return;
+        if(!confirm("Submit Test?")) return;
         clearInterval(timerInterval);
         const level = document.getElementById("difficultyLevel").value;
-        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-        let correct=0, attempted=0;
-        let detailHtml=`<h2 style="margin:20px 0 10px; text-align:center;">Detailed Analysis</h2>`;
+        localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
         
+        let correct=0, attempted=0, challCount=0;
+        let detailHtml="<h2>Detailed Analysis</h2>";
         questions.forEach((q,i)=>{
-            const isCorrect = (answers[i] === q.answer) || (challenges[i] && !answers[i]);
-            if(answers[i]) attempted++;
-            if(isCorrect) correct++;
-            detailHtml+=`<div style="padding:15px; margin-bottom:10px; background:rgba(255,255,255,0.05); border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}; border-radius:10px;">
-                <p><b>Q${i+1}.</b> ${q.q}</p>
-                <p style="font-size:13px;">User: <span style="color:${isCorrect?'#4ade80':'#f87171'}">${answers[i]||'Skipped'}</span> | Correct: <b style="color:#4ade80">${q.answer}</b></p>
-                <div class="sol-box">Logic: ${q.solution || 'Detailed concept explanation'}</div>
-            </div>`;
+            let isCorrect = false;
+            let userAns = answers[i] || (challenges[i] ? "CHALLENGED" : "Skipped");
+            if(challenges[i] && !answers[i]) { isCorrect = true; challCount++; }
+            else if(answers[i] === q.answer) { isCorrect = true; }
+            if(answers[i]) attempted++; if(isCorrect) correct++;
+            detailHtml+=`<div style="margin:10px 0; padding:15px; background:rgba(255,255,255,0.05); border-radius:15px; border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}">
+                <p><b>Q${i+1}.</b> ${q.q}</p><p>Your Ans: <span class="${isCorrect?'correct':'wrong'}">${userAns}</span> | Correct: <b style="color:#4ade80;">${q.answer}</b></p>
+                <div class="sol-box"><b>Logic:</b> ${q.solution || 'Common Sense / Fact based'}</div></div>`;
         });
 
-        const accuracy = Math.round((correct / questions.length) * 100);
-        const summary = `
-            <div style="text-align:center; padding:20px; background:rgba(255,255,255,0.1); border-radius:20px; border:1px solid var(--glass-border);">
-                <h3 style="color:var(--color-accent)">Mega Mock Result - ${level.toUpperCase()}</h3>
-                <div class="meter-wrap"><div class="meter-fill" style="width:${accuracy}%"></div></div>
-                <div class="analytics-grid">
-                    <div class="analytic-item"><small>Score</small><b>${correct}/${questions.length}</b></div>
-                    <div class="analytic-item"><small>Accuracy</small><b>${accuracy}%</b></div>
-                    <div class="analytic-item"><small>Total Time</small><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
-                    <div class="analytic-item"><small>Avg Speed</small><b>${Math.round(timeTaken/questions.length)}s/q</b></div>
-                </div>
-                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="width:100%; background:var(--success); margin-bottom:10px;">Return to Dashboard</button>
-            </div>`;
+        // Fix 2: Dashboard Score Sync Fix
+        const currentLvl = level.toUpperCase();
+        const now = new Date().toISOString(); 
+        localStorage.setItem(`score_${MY_SUBJECT}_${currentLvl}`, `${correct}/${questions.length}`);
+        localStorage.setItem(`score_date_${MY_SUBJECT}_${currentLvl}`, now); 
+        localStorage.setItem(`done_${MY_SUBJECT}_${currentLvl}`, "true");
+
+        const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+        const accuracy = attempted ? Math.round(((correct - challCount) / attempted) * 100) : 0;
+        
+        const summary = `<div style="text-align:center; padding:25px; background:rgba(255,255,255,0.15); border-radius:20px; margin-bottom:25px; border:1px solid var(--glass-border);">
+            <h3 style="color:var(--color-accent);">${MY_SUBJECT} Performance Report</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px; margin-top:15px;">
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Score: <br><b>${correct} / ${questions.length}</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Accuracy: <br><b>${accuracy}%</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Time: <br><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px;">Attempted: <br><b>${attempted}</b></div>
+            </div>
+            <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="margin-top:20px; width:100%; background:var(--success);">Dashboard</button></div>`;
 
         const finalHtml = summary + detailHtml;
-        localStorage.setItem(`score_${MY_SUBJECT}_${level.toUpperCase()}`, `${correct}/${questions.length}`);
-        localStorage.setItem(`score_date_${MY_SUBJECT}_${level.toUpperCase()}`, new Date().toISOString());
-        localStorage.setItem(`done_${MY_SUBJECT}_${level.toUpperCase()}`, "true");
-        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ html: finalHtml }));
-
+        localStorage.setItem(`finalResult_${MY_SUBJECT}_${level}`, JSON.stringify({ name: displayName.textContent, html: finalHtml }));
+        
         result.style.display="block"; result.innerHTML = finalHtml;
         quizArea.innerHTML=""; palette.style.display="none"; navBtns.style.display="none"; submitBtn.style.display="none";
-        topBar.style.display="none"; clearBtn.style.display="block";
-        document.getElementById('scrollBtn').style.display = 'flex';
+        startScreen.style.display="none"; topBar.style.display="none"; clearBtn.style.display="block";
         window.scrollTo(0,0);
-
+        
         emailjs.send("service_wq5yoyp", "template_doegpcp", { 
-            candidate_name: displayName.textContent, subject: "All-In-One Mega Mock", score: correct, total: questions.length, accuracy: accuracy + "%", time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s` 
+            candidate_name: displayName.textContent, subject: "All In One", score: correct, total: questions.length, 
+            accuracy: accuracy + "%", time_taken: `${Math.floor(timeTaken/60)}m ${timeTaken%60}s` 
         });
     }
 
+    function showFinalReport(level) {
+        const data = JSON.parse(localStorage.getItem(`finalResult_${MY_SUBJECT}_${level}`));
+        if(data) {
+            result.style.display="block"; result.innerHTML = data.html;
+            startScreen.style.display="none"; palette.style.display="none"; 
+            navBtns.style.display="none"; submitBtn.style.display="none"; clearBtn.style.display="block";
+        }
+    }
+
+    window.onload = loadData;
+
     function clearResult(){ 
         const level = document.getElementById("difficultyLevel").value;
-        if(confirm(`Clear Mega Mock (${level.toUpperCase()}) result?`)) {
+        if(confirm("Clear this result?")) {
             localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
+            localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
             localStorage.removeItem(`score_${MY_SUBJECT}_${level.toUpperCase()}`);
             localStorage.removeItem(`score_date_${MY_SUBJECT}_${level.toUpperCase()}`);
             localStorage.removeItem(`done_${MY_SUBJECT}_${level.toUpperCase()}`);
             location.reload(); 
         }
     }
-
-    window.onscroll = function() {
-        const btn = document.getElementById('scrollBtn');
-        if(document.getElementById('result').style.display === 'block') {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) { btn.innerHTML = "↑"; } 
-            else { btn.innerHTML = "↓"; }
-        }
-    };
-
-    function handleScroll() {
-        const btn = document.getElementById('scrollBtn');
-        if (btn.innerHTML === "↓") { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); } 
-        else { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-    }
-
-    window.onload = loadData;
 </script>
 </body>
 </html>
