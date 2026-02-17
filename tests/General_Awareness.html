@@ -41,6 +41,7 @@
         
         button{ padding: 14px 28px; border: none; border-radius: 15px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff; cursor: pointer; font-weight: 700; transition: 0.3s; }
         button:hover:not(:disabled){ transform: scale(1.05); }
+        button:disabled{ opacity: 0.4; cursor: not-allowed; }
 
         .btn-secondary { background: rgba(255,255,255,0.15); }
         .btn-review { background: var(--review); }
@@ -62,23 +63,22 @@
         .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
         .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
 
-        /* ANALYTICS SCORECARD UI */
+        /* ANALYTICS UI */
         .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .analytic-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid var(--glass-border); }
-        .analytic-item small { display: block; opacity: 0.7; font-size: 11px; text-transform: uppercase; }
+        .analytic-item { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid var(--glass-border); }
+        .analytic-item small { display: block; opacity: 0.7; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; }
         .analytic-item b { font-size: 18px; color: var(--color-accent); }
-        .meter-wrap { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 10px 0; overflow: hidden; }
-        .meter-fill { height: 100%; background: linear-gradient(to right, var(--danger), var(--color-accent), var(--success)); transition: 1.5s ease-out; }
+        
+        .meter-wrap { width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 20px 0; overflow: hidden; }
+        .meter-fill { height: 100%; background: linear-gradient(90deg, var(--danger), var(--color-accent), var(--success)); transition: 1.5s cubic-bezier(0.1, 0, 0.1, 1); }
 
         .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
 
-        /* FLOATING SCROLL BUTTON */
         #scrollBtn {
             position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px;
             background: var(--btn-grad); color: white; border-radius: 50%;
             border: 3px solid rgba(255,255,255,0.3); display: none; align-items: center; justify-content: center;
-            font-size: 24px; cursor: pointer; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: 0.3s;
+            font-size: 24px; cursor: pointer; z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -120,12 +120,15 @@
         <button class="btn-secondary" onclick="prevQ()" id="prevBtn">← Prev</button>
         <button class="btn-review" onclick="markForReview()">Review</button>
         <button class="btn-challenge" onclick="challengeQuestion()">Challenge</button>
-        <button onclick="nextQ()" id="nextBtn">Next →</button>
+        <div style="text-align: center;">
+            <button onclick="nextQ()" id="nextBtn">Next →</button>
+            <div id="lastQMsg" style="color:var(--color-accent); font-size:11px; margin-top:5px; font-weight:700; display:none;">⚠️ Already on last question</div>
+        </div>
     </div>
 
     <button id="submitBtn" style="display:none; margin: 30px auto 0; width: 100%;" onclick="submitQuiz()">Submit Test Now</button>
     <div id="result" class="result" style="display:none"></div>
-    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear This Level & Restart</button>
+    <button id="clearBtn" class="btn-secondary" style="display:none; width:100%; margin-top:20px; background:var(--danger);" onclick="clearResult()">Clear Result & Restart</button>
 </div>
 
 <div id="scrollBtn" onclick="handleScroll()">↓</div>
@@ -206,6 +209,16 @@
                 ${q.options.map(o=>`<label><input type="radio" name="opt" ${answers[currentIndex]==o?'checked':''} onchange="selectAnswer('${o}')"> ${o}</label>`).join("")}
             </div>
         </div>`;
+        
+        const nextBtn = document.getElementById("nextBtn");
+        const lastMsg = document.getElementById("lastQMsg");
+        if (currentIndex === questions.length - 1) {
+            nextBtn.disabled = true;
+            lastMsg.style.display = "block";
+        } else {
+            nextBtn.disabled = false;
+            lastMsg.style.display = "none";
+        }
         renderPalette();
     }
 
@@ -234,32 +247,31 @@
         clearInterval(timerInterval);
         const level = document.getElementById("difficultyLevel").value;
         const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-        let correct=0, attempted=0;
-        let detailHtml=`<h2 style="margin:20px 0 10px; text-align:center;">Detailed Analysis</h2>`;
+        let correct=0;
+        let detailHtml=`<h2 style="margin:20px 0 10px; text-align:center;">Review Answers</h2>`;
         
         questions.forEach((q,i)=>{
             const isCorrect = (answers[i] === q.answer) || (challenges[i] && !answers[i]);
-            if(answers[i]) attempted++;
             if(isCorrect) correct++;
             detailHtml+=`<div style="padding:15px; margin-bottom:10px; background:rgba(255,255,255,0.05); border-left:5px solid ${isCorrect?'#4ade80':'#f87171'}; border-radius:10px;">
                 <p><b>Q${i+1}.</b> ${q.q}</p>
-                <p style="font-size:13px;">User: <span style="color:${isCorrect?'#4ade80':'#f87171'}">${answers[i]||'Skipped'}</span> | Correct: <b style="color:#4ade80">${q.answer}</b></p>
-                <div class="sol-box">Logic: ${q.solution || 'General Awareness fact'}</div>
+                <p style="font-size:13px;">Your: <span style="color:${isCorrect?'#4ade80':'#f87171'}">${answers[i]||'Skipped'}</span> | Correct: <b style="color:#4ade80">${q.answer}</b></p>
+                <div class="sol-box">Logic: ${q.solution || 'Fact based answer'}</div>
             </div>`;
         });
 
         const accuracy = Math.round((correct / questions.length) * 100);
         const summary = `
             <div style="text-align:center; padding:20px; background:rgba(255,255,255,0.1); border-radius:20px; border:1px solid var(--glass-border);">
-                <h3 style="color:var(--color-accent)">${level.toUpperCase()} - Result</h3>
+                <h3 style="color:var(--color-accent)">${level.toUpperCase()} Result</h3>
                 <div class="meter-wrap"><div class="meter-fill" style="width:${accuracy}%"></div></div>
                 <div class="analytics-grid">
                     <div class="analytic-item"><small>Score</small><b>${correct}/${questions.length}</b></div>
                     <div class="analytic-item"><small>Accuracy</small><b>${accuracy}%</b></div>
-                    <div class="analytic-item"><small>Time</small><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
+                    <div class="analytic-item"><small>Time Taken</small><b>${Math.floor(timeTaken/60)}m ${timeTaken%60}s</b></div>
                     <div class="analytic-item"><small>Speed</small><b>${Math.round(timeTaken/questions.length)}s/q</b></div>
                 </div>
-                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="width:100%; background:var(--success); margin-bottom:10px;">Go to Dashboard</button>
+                <button onclick="window.location.href='https://yashuum.github.io/B.ED_MockTest/'" style="width:100%; background:var(--success); margin-bottom:10px;">Dashboard</button>
             </div>`;
 
         const finalHtml = summary + detailHtml;
