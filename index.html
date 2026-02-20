@@ -111,7 +111,17 @@
 
         .footer { padding-bottom: 30px; text-align: center; color: rgba(255,255,255,0.4); font-size: 11px; letter-spacing: 1px; }
 
-        @media(max-width:800px){ .auth-modal { grid-template-columns: 1fr; border-radius: 30px; } .auth-notice-panel { display: none; } }
+        @media(max-width:800px){ 
+            .auth-modal { grid-template-columns: 1fr; border-radius: 30px; } 
+            .auth-notice-panel { display: none; } 
+            /* Logo card mobile fix for side-by-side layout */
+            .welcome { flex-direction: row; padding: 15px; gap: 15px; border-radius: 25px; margin-top: 10px; justify-content: center; }
+            .welcome-logo { height: 50px; }
+            .welcome .brand { font-size: 28px; }
+        }
+
+
+        
     </style>
 </head>
 
@@ -338,3 +348,4 @@
     </script>
 </body>
 </html>
+
