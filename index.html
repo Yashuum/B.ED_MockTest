@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NishuAbhyasi Dashboard</title>
+    <title>NishuAbhyasi | Professional Practice Portal</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -32,279 +32,308 @@
 
         @keyframes dynamicFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
+        /* Full Screen Blur Overlay */
+        #pageOverlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); display: none; z-index: 2500; cursor: pointer; 
+        }
+
+        /* Crystal Auth Modal */
+        .auth-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(15px);
+            display: none; justify-content: center; align-items: center; z-index: 6000;
+        }
+
+        .auth-modal {
+            width: 95%; max-width: 850px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border); border-radius: 40px;
+            display: grid; grid-template-columns: 1fr 1.2fr; overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            pointer-events: auto; /* Ensures clicks inside don't propagate to overlay */
+        }
+
+        .auth-notice-panel { background: rgba(255, 255, 255, 0.08); padding: 40px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--glass-border); }
+        .auth-form-panel { padding: 40px; position: relative; background: rgba(255,255,255,0.02); min-height: 520px; }
+        .auth-handwriting { font-family: 'Marck Script', cursive; font-size: 32px; color: var(--color-accent); margin-bottom: 10px; }
+        
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 11px; color: var(--neon-blue); margin-bottom: 8px; font-weight: 600; letter-spacing: 1px; }
+        .input-group input {
+            width: 100%; padding: 14px; background: rgba(0,0,0,0.25); border: 1px solid var(--glass-border);
+            border-radius: 15px; color: white; outline: none; transition: 0.3s;
+        }
+        .input-group input:focus { border-color: var(--neon-blue); background: rgba(255,255,255,0.1); }
+        .input-group input:disabled { opacity: 0.5; cursor: not-allowed; background: rgba(255,255,255,0.05); }
+
+        /* Dashboard UI */
         .bubbles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .bubble { position: absolute; bottom: -120px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; animation: riseEffect 15s infinite ease-in; }
-        @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.4; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
+        @keyframes riseEffect { 0% { transform: translateY(0) scale(1); opacity: 0; } 100% { transform: translateY(-1300px) scale(2); opacity: 0; } }
 
-        /* OVERLAY FIX: Pointer events enabled for clicking */
-        #pageOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); display: none; z-index: 1500; cursor: pointer; }
+        .time-bar { width: 95%; margin: 15px auto 0; padding: 10px 25px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 50px; display: flex; justify-content: space-between; align-items: center; color: white; font-size: 14px; position: relative; z-index: 3000; }
+        .bar-left { display: flex; gap: 15px; align-items: center; }
+        .bar-left .separator { opacity: 0.6; font-weight: 300; }
 
-        .time-bar {
-            width: 95%; margin: 15px auto 0; padding: 12px 30px; background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 50px;
-            display: flex; justify-content: space-between; align-items: center; color: white; font-size: 14px;
+        .user-profile-wrap { position: relative; }
+        .profile-trigger { background: rgba(255,255,255,0.15); border: 1px solid var(--glass-border); padding: 6px 14px; border-radius: 50px; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+
+        .profile-dropdown {
+            position: absolute; top: 50px; right: 0; width: 220px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(40px) saturate(200%); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 12px; display: none; flex-direction: column; gap: 5px; z-index: 4000; box-shadow: 0 20px 50px rgba(0,0,0,0.4);
         }
+        .profile-dropdown.active { display: flex; }
+        .dropdown-item { color: white; text-decoration: none; font-size: 12px; padding: 10px; border-radius: 12px; transition: 0.3s; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .dropdown-item:hover { background: rgba(255,255,255,0.2); }
+        .logout-btn { color: #ff6b6b !important; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 5px; }
 
-        .wrapper { width: 95%; position: relative; z-index: 2; padding: 10px 0 0px 0; max-width: 1200px; flex-grow: 1; }
-
-        .welcome { 
-            background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); 
-            border-radius: 35px; padding: 25px; margin-top: 15px; margin-bottom: 25px; 
-            display: flex; align-items: center; justify-content: center; gap: 30px;
-        }
-        
-        .welcome-logo { height: 90px; width: auto; filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.3)); }
+        .wrapper { width: 95%; position: relative; z-index: 2; padding: 10px 0; max-width: 1200px; flex-grow: 1; }
+        .welcome { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 35px; padding: 25px; margin-top: 15px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 30px; }
+        .welcome-logo { height: 90px; filter: drop-shadow(0px 8px 15px rgba(0,0,0,0.3)); }
         .welcome .brand { font-family: 'Marck Script', cursive; font-size: 55px; color: #fff; line-height: 1; }
 
         .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; width: 100%; }
+        .card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; transition: 0.4s; }
 
-        .card { 
-            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); 
-            border-radius: 28px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between;
-            min-height: 200px; transition: 0.4s;
-        }
-
-        .card h3 { font-size: 22px; color: #fff; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .badge { font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 50px; display: none; text-transform: uppercase; }
-        .badge-new { background: var(--color-accent); color: #fff; }
         .badge-done { background: #16a34a; color: #fff; }
-        
-        .score-box { margin: 5px 0; }
-        .score-line { 
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 13px; color: #4ade80; font-weight: 700; margin: 3px 0;
-            padding: 4px 12px; background: rgba(0,0,0,0.18); border-radius: 10px;
-        }
-        .score-line span:first-child { color: rgba(255,255,255,0.8); font-size: 11px; }
+        .badge-completed { background: linear-gradient(135deg, #00f2ff, #2575fc); color: #fff; box-shadow: 0 0 10px rgba(0,242,255,0.4); }
 
-        .btn { margin-top: 10px; padding: 14px; border: none; border-radius: 15px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; }
-
-        .floating-fab {
-            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
-            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 2000; transition: opacity 0.5s ease, transform 0.3s ease;
-        }
-        .floating-fab.dimmed { opacity: 0.3; transform: scale(0.9); }
-        .floating-fab img { width: 65%; height: 65%; }
+        .btn { margin-top: 15px; padding: 14px; border: none; border-radius: 15px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; width: 100%; transition: 0.3s; }
 
         .admin-btn-wrap { text-align: center; margin: 25px 0; opacity: 0.4; transition: 0.4s; }
-        .admin-btn-wrap:hover { opacity: 1; }
-        .admin-btn {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 10px 30px; border: 1px solid var(--glass-border);
-            border-radius: 50px; background: var(--glass);
-            color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; cursor: pointer;
-        }
+        .admin-btn { display: inline-flex; align-items: center; gap: 10px; padding: 10px 30px; border: 1px solid var(--glass-border); border-radius: 50px; background: var(--glass); color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; cursor: pointer; }
 
-        /* ADMIN AUTH POPUP */
-        .auth-popup {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 320px; background: rgba(255,255,255,0.1); backdrop-filter: blur(45px);
-            border: 1px solid var(--glass-border); border-radius: 30px;
-            padding: 30px; display: none; flex-direction: column; align-items: center;
-            z-index: 2001; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #fff;
-        }
-        .auth-popup input {
-            width: 100%; padding: 12px; border-radius: 15px; border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.1); color: #fff; margin: 20px 0; text-align: center; outline: none; font-size: 16px;
-        }
-        .auth-popup input:focus { border-color: var(--neon-blue); background: rgba(255,255,255,0.2); }
+        .auth-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; background: rgba(255,255,255,0.1); backdrop-filter: blur(45px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px; display: none; flex-direction: column; align-items: center; z-index: 5500; box-shadow: 0 25px 50px rgba(0,0,0,0.5); color: #fff; }
+        .auth-popup input { width: 100%; padding: 12px; border-radius: 15px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.1); color: #fff; margin: 20px 0; text-align: center; outline: none; }
 
-        .help-popup {
-            position: fixed; bottom: 100px; right: 30px; width: 280px;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border); border-radius: 30px;
-            display: none; flex-direction: column; z-index: 2000; padding: 25px; color: #fff;
-        }
+        .help-popup { position: fixed; bottom: 100px; right: 30px; width: 280px; background: rgba(0,0,0,0.8); backdrop-filter: blur(30px); border: 1px solid var(--glass-border); border-radius: 30px; display: none; flex-direction: column; z-index: 2000; padding: 25px; color: #fff; }
 
-        .footer { padding-bottom: 20px; text-align: center; color: rgba(255,255,255,0.4); font-size: 11px; }
-        @media(max-width:600px){ .welcome { gap: 15px; } .welcome .brand { font-size: 35px; } }
+        .footer { padding-bottom: 30px; text-align: center; color: rgba(255,255,255,0.4); font-size: 11px; letter-spacing: 1px; }
+
+        @media(max-width:800px){ .auth-modal { grid-template-columns: 1fr; border-radius: 30px; } .auth-notice-panel { display: none; } }
     </style>
 </head>
 
 <body>
     <div id="pageOverlay" onclick="closeAllPopups()"></div>
     
-    <div class="bubbles-container">
-        <div class="bubble" style="left:15%;"></div><div class="bubble" style="left:45%;"></div><div class="bubble" style="left:85%;"></div>
+    <div id="authModal" class="auth-overlay" onclick="handleOverlayClick(event)">
+        <div class="auth-modal" onclick="event.stopPropagation()">
+            <div class="auth-notice-panel" id="authNoticePanel">
+                <h3 class="auth-handwriting" id="noticeTitle">Aspirant Hub</h3>
+                <p id="authNoticeText" style="color:white; font-size: 13px; opacity: 0.8; line-height: 1.6; margin-top: 10px;">
+                    "Empower your academic journey with professional-grade mock tests and real-time progress analysis."
+                </p>
+                <div style="margin-top: 30px; padding: 20px; background: rgba(255,152,0,0.1); border-radius: 20px; border: 1px dashed var(--color-accent);">
+                    <small style="color:var(--color-accent); font-weight: 800; text-transform: uppercase;">Notice Board</small><br>
+                    <p id="noticeDesc" style="color:white; opacity: 0.7; font-size: 12px; margin-top: 5px;">Aspirants are encouraged to complete all 3 levels for total evaluation.</p>
+                </div>
+            </div>
+            
+            <div class="auth-form-panel" id="authFormPanel">
+                <button onclick="closeAuthModal()" style="position:absolute; top:20px; right:20px; background:none; border:none; color:white; font-size:24px; cursor:pointer; opacity: 0.5; z-index:100;">&times;</button>
+                
+                <div id="regView" class="auth-view">
+                    <h2 class="auth-handwriting">Create Account</h2>
+                    <p style="color:white; opacity:0.6; font-size:12px; margin-bottom:25px;">Register to practice and track scores</p>
+                    <div class="input-group"><label>FULL NAME</label><input type="text" id="regName" placeholder="e.g. Yash Singh"></div>
+                    <div class="input-group"><label>EMAIL ADDRESS</label><input type="email" id="regEmail" placeholder="you@example.com"></div>
+                    <div class="input-group"><label>PASSWORD</label><input type="password" id="regPass" placeholder="Min. 8 characters"></div>
+                    <button class="btn" onclick="handleAuth('register')">CREATE ACCOUNT</button>
+                    <p style="color:white; font-size:12px; margin-top:20px; text-align:center;">Already joined? <span onclick="toggleAuthView('login')" style="color:var(--color-accent); cursor:pointer; font-weight:800;">Sign In</span></p>
+                </div>
+
+                <div id="loginView" class="auth-view" style="display:none;">
+                    <h2 class="auth-handwriting">Welcome Back</h2>
+                    <p style="color:white; opacity:0.6; font-size:12px; margin-bottom:25px;">Sign in to continue practicing</p>
+                    <div class="input-group"><label>EMAIL ADDRESS</label><input type="email" id="loginEmail" placeholder="you@example.com"></div>
+                    <div class="input-group"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="••••••••"></div>
+                    <button class="btn" onclick="handleAuth('login')">SECURE SIGN IN</button>
+                    <p style="color:white; font-size:12px; margin-top:20px; text-align:center;">New here? <span onclick="toggleAuthView('reg')" style="color:var(--color-accent); cursor:pointer; font-weight:800;">Register</span></p>
+                </div>
+
+                <div id="editProfileView" class="auth-view" style="display:none;">
+                    <h2 class="auth-handwriting">Account Settings</h2>
+                    <p style="color:white; opacity:0.6; font-size:12px; margin-bottom:20px;">Manage your display name and security</p>
+                    <div class="input-group"><label>REGISTERED EMAIL</label><input type="email" id="editEmail" disabled></div>
+                    <div class="input-group"><label>DISPLAY NAME</label><input type="text" id="editName" placeholder="Update name"></div>
+                    <div class="input-group"><label>NEW PASSWORD (Optional)</label><input type="password" id="editPass" placeholder="Leave blank to keep current"></div>
+                    <button class="btn" onclick="handleUpdateProfile()">SAVE UPDATES</button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div class="bubbles-container"><div class="bubble" style="left:15%;"></div><div class="bubble" style="left:45%;"></div><div class="bubble" style="left:85%;"></div></div>
+
     <div class="time-bar">
-        <div><span id="live-date">...</span></div>
-        <div id="live-clock">00:00:00 AM</div>
+        <div class="bar-left">
+            <span id="live-date">...</span>
+            <span class="separator">||</span>
+            <span id="live-clock">00:00:00 AM</span>
+        </div>
+        <div class="user-profile-wrap">
+            <div class="profile-trigger" onclick="toggleProfile()"><span id="user-display-name">Guest User</span><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="20"></div>
+            <div id="profileDropdown" class="profile-dropdown">
+                <div class="dropdown-item" id="editProfileBtn" style="display:none;" onclick="openEditProfile()">👤 Account Settings</div>
+                <div class="dropdown-item" id="logoutBtn" style="display:none;" onclick="logoutUser()">🚪 Logout</div>
+                <div class="dropdown-item" id="loginRedirectBtn" onclick="openAuthModal()">🔑 Practice Access</div>
+            </div>
+        </div>
     </div>
 
     <div class="wrapper">
-        <div class="welcome">
-            <img src="NishuAbhyasi.png" alt="Logo" class="welcome-logo">
-            <div class="brand">NishuAbhyasi</div>
-        </div>
-
+        <div class="welcome"><img src="NishuAbhyasi.png" alt="Logo" class="welcome-logo"><div class="brand">NishuAbhyasi</div></div>
         <div class="dashboard">
-            <div class="card">
-                <h3>📘 English <span id="badge-English" class="badge"></span></h3>
-                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Grammar and Vocabulary.</p>
-                <div id="score-English" class="score-box"></div>
-                <a href="tests/English.html" class="btn">Start Test</a>
-            </div>
-            <div class="card">
-                <h3>📝 Hindi <span id="badge-Hindi" class="badge"></span></h3>
-                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Complete Vyakaran.</p>
-                <div id="score-Hindi" class="score-box"></div>
-                <a href="tests/Hindi.html" class="btn">Start Test</a>
-            </div>
-            <div class="card">
-                <h3>🧠 Reasoning <span id="badge-Reasoning" class="badge"></span></h3>
-                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Logic and Aptitude.</p>
-                <div id="score-Reasoning" class="score-box"></div>
-                <a href="tests/reasoning.html" class="btn">Start Test</a>
-            </div>
-            <div class="card">
-                <h3>👩‍🏫 Teaching <span id="badge-Teaching" class="badge"></span></h3>
-                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Pedagogy Principles.</p>
-                <div id="score-Teaching" class="score-box"></div>
-                <a href="tests/Teaching_Principles.html" class="btn">Start Test</a>
-            </div>
-            <div class="card">
-                <h3>🌍 Awareness <span id="badge-Awareness" class="badge"></span></h3>
-                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">GK and Current Affairs.</p>
-                <div id="score-Awareness" class="score-box"></div>
-                <a href="tests/General_Awareness.html" class="btn">Start Test</a>
-            </div>
-            <div class="card">
-                <h3>🚀 All-in-One <span id="badge-AllInOne" class="badge"></span></h3>
-                <p style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Mega Test Series.</p>
-                <div id="score-AllInOne" class="score-box"></div>
-                <a href="tests/all_in_one.html" class="btn">Mega Test</a>
-            </div>
+            <div class="card"><h3>English <span id="badge-English" class="badge"></span></h3><p style="font-size:12px; opacity:0.7;">Grammar and Vocabulary.</p><button onclick="checkAccess('tests/English.html')" class="btn">Start Practice</button></div>
+            <div class="card"><h3>Hindi <span id="badge-Hindi" class="badge"></span></h3><p style="font-size:12px; opacity:0.7;">Complete Vyakaran.</p><button onclick="checkAccess('tests/Hindi.html')" class="btn">Start Practice</button></div>
+            <div class="card"><h3>Reasoning <span id="badge-Reasoning" class="badge"></span></h3><p style="font-size:12px; opacity:0.7;">Logic and Aptitude.</p><button onclick="checkAccess('tests/reasoning.html')" class="btn">Start Practice</button></div>
+            <div class="card"><h3>Teaching <span id="badge-Teaching" class="badge"></span></h3><p style="font-size:12px; opacity:0.7;">Pedagogy Principles.</p><button onclick="checkAccess('tests/Teaching_Principles.html')" class="btn">Start Practice</button></div>
+            <div class="card"><h3>Awareness <span id="badge-Awareness" class="badge"></span></h3><p style="font-size:12px; opacity:0.7;">GK and Current Affairs.</p><button onclick="checkAccess('tests/General_Awareness.html')" class="btn">Start Practice</button></div>
+            <div class="card"><h3>All-in-One <span id="badge-AllInOne" class="badge"></span></h3><p style="font-size:12px; opacity:0.7;">Mega Test Series.</p><button onclick="checkAccess('tests/all_in_one.html')" class="btn">Start Practice</button></div>
         </div>
-
-        <div class="admin-btn-wrap">
-            <div onclick="showAdminAuth()" class="admin-btn">
-                <span>🔒</span> Admin Terminal
-            </div>
-        </div>
-
-        <div class="footer">© 2026 NishuAbhyasi | Learning Made Modern</div>
+        <div class="admin-btn-wrap"><div onclick="showAdminAuth()" class="admin-btn"><span>🔒</span> Admin Terminal</div></div>
+        <div class="footer">© 2026 NishuAbhyasi | Professional Practice Experience</div>
     </div>
 
     <div id="adminPopup" class="auth-popup">
-        <h3 style="color:var(--color-accent);">Admin Access</h3>
-        <p style="font-size:12px; opacity:0.8;">Enter security key to continue</p>
-        <input type="password" id="adminPass" placeholder="••••••••" onkeypress="handleEnter(event)">
-        <button onclick="verifyAdmin()" class="btn" style="width:100%;">Verify & Enter</button>
+        <h3 style="color:var(--color-accent);">Admin Terminal</h3>
+        <p style="font-size:12px; opacity:0.8;">Enter security key</p>
+        <input type="password" id="adminPass" placeholder="••••••••" onkeypress="if(event.key==='Enter') verifyAdmin()">
+        <button onclick="verifyAdmin()" class="btn" style="width:100%;">Verify & Open</button>
         <button onclick="closeAllPopups()" style="background:none; border:none; color:#fff; margin-top:15px; font-size:12px; opacity:0.6; cursor:pointer;">Cancel</button>
     </div>
 
-    <div id="helpFab" class="floating-fab" onclick="toggleHelp()">
-        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" alt="Help">
-    </div>
-
-    <div id="helpBox" class="help-popup">
-        <h4 style="margin-bottom: 10px; color: var(--color-accent);">Support</h4>
-        <a href="mailto:singhyashwant559@gmail.com" style="background:#fff; color:#1a2a6c; padding:10px; border-radius:12px; display:block; text-align:center; font-weight:700; text-decoration:none;">Email Dev</a>
-    </div>
-
     <script>
-        const GIST_MAP = {
-            "English": "4219b480eb7d7e60c49334fce3aae1a2",
-            "Hindi": "f53d76137dec40ded2db81e043c6337d",
-            "Teaching": "ecc0225df38396f70445c4dd702ff939",
-            "Awareness": "e0372b12ad15ed3c2643059cc1e88cc0",
-            "Reasoning": "75ef01c2eb972d2b695938445c08df60",
-            "AllInOne": "2fb7cd87290c262fc490896192d21dd2"
-        };
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym7aRjIFMb1sMGDsJIfNBDQ-4A8qEziRMhLjA8Efw3Nuv9HFrTW8fLhJrBA0IGRn_XOw/exec"; 
 
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-date').innerText = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'short' });
-            document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        function setBtnLoading(btn, text, loading) {
+            btn.disabled = loading; btn.innerText = loading ? text + "..." : text; btn.style.opacity = loading ? "0.7" : "1";
         }
 
-        // iPhone Style AssistiveTouch Logic
-        const fab = document.getElementById('helpFab');
-        let fabTimer;
-        function resetFab() {
-            fab.classList.remove('dimmed');
-            clearTimeout(fabTimer);
-            fabTimer = setTimeout(() => { fab.classList.add('dimmed'); }, 3000);
-        }
-        document.addEventListener('mousemove', resetFab);
-        document.addEventListener('touchstart', resetFab);
-
-        function toggleHelp() {
-            const box = document.getElementById('helpBox');
-            const overlay = document.getElementById('pageOverlay');
-            const isVisible = box.style.display === 'flex';
-            box.style.display = isVisible ? 'none' : 'flex';
-            overlay.style.display = isVisible ? 'none' : 'block';
-        }
-
-        // ADMIN AUTH LOGIC
-        function showAdminAuth() {
-            document.getElementById('adminPopup').style.display = 'flex';
-            document.getElementById('pageOverlay').style.display = 'block';
-            document.getElementById('adminPass').focus();
-        }
-
-        // Unified Close Logic (outside click support)
-        function closeAllPopups() {
-            document.getElementById('adminPopup').style.display = 'none';
-            document.getElementById('helpBox').style.display = 'none';
-            document.getElementById('pageOverlay').style.display = 'none';
-            document.getElementById('adminPass').value = '';
-        }
-
-        function handleEnter(e) { if(e.key === 'Enter') verifyAdmin(); }
-
-        function verifyAdmin() {
-            const pass = document.getElementById('adminPass').value;
-            if(pass === "chiku") { 
-                window.location.href = 'admin.html';
+        async function handleAuth(action) {
+            const btn = event.target;
+            let payload = { action };
+            if (action === 'register') {
+                payload.name = document.getElementById('regName').value;
+                payload.email = document.getElementById('regEmail').value;
+                payload.password = document.getElementById('regPass').value;
+                if(!payload.name || !payload.email || !payload.password) return alert("Fields missing");
             } else {
-                alert("Access Denied: Incorrect Security Key");
-                document.getElementById('adminPass').value = '';
+                payload.email = document.getElementById('loginEmail').value;
+                payload.password = document.getElementById('loginPass').value;
+            }
+            setBtnLoading(btn, action === 'register' ? 'Registering' : 'Authenticating', true);
+            try {
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const result = await res.text();
+                if (result.trim() === "Valid" || result.trim() === "Success") {
+                    localStorage.setItem("isLoggedIn", "true");
+                    localStorage.setItem("userName", payload.name || payload.email.split('@')[0]);
+                    localStorage.setItem("userEmail", payload.email);
+                    location.reload();
+                } else alert("Authentication Failed");
+            } catch (e) { alert("Server Error"); }
+            finally { setBtnLoading(btn, action === 'register' ? 'CREATE ACCOUNT' : 'SECURE SIGN IN', false); }
+        }
+
+        async function handleUpdateProfile() {
+            const btn = event.target;
+            const name = document.getElementById('editName').value;
+            const password = document.getElementById('editPass').value;
+            const email = localStorage.getItem("userEmail");
+            if(!name) return alert("Name required");
+            setBtnLoading(btn, 'Updating', true);
+            let payload = { action: 'update', email, name };
+            if(password) payload.password = password;
+            try {
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const result = await res.text();
+                if (result.trim() === "Updated") { localStorage.setItem("userName", name); alert("Profile Updated!"); location.reload(); }
+                else alert("Update failed");
+            } catch (e) { alert("Network Error"); }
+            finally { setBtnLoading(btn, 'SAVE UPDATES', false); }
+        }
+
+        function openModalView(view) {
+            document.getElementById('authModal').style.display = 'flex';
+            document.getElementById('pageOverlay').style.display = 'block';
+            document.querySelectorAll('.auth-view').forEach(v => v.style.display = 'none');
+            const targetId = view === 'edit' ? 'editProfileView' : (view + 'View');
+            const target = document.getElementById(targetId);
+            if(target) target.style.display = 'block';
+            const title = document.getElementById('noticeTitle'), desc = document.getElementById('noticeDesc');
+            if(view === 'edit') { title.innerText = "Settings"; desc.innerText = "Update your profile info."; }
+            else { title.innerText = "Academic Hub"; desc.innerText = "Complete all 3 levels."; }
+        }
+
+        function checkAccess(url) { if (localStorage.getItem("isLoggedIn") === "true") window.location.href = url; else openAuthModal(); }
+        function toggleProfile() { const isActive = document.getElementById('profileDropdown').classList.toggle('active'); document.getElementById('pageOverlay').style.display = isActive ? 'block' : 'none'; }
+        function toggleAuthView(view) { openModalView(view); }
+        function openAuthModal() { openModalView('reg'); }
+        function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; document.getElementById('pageOverlay').style.display = 'none'; }
+        
+        /* Handling Overlay Clicks for Register/Login */
+        function handleOverlayClick(event) {
+            if (event.target === document.getElementById('authModal')) {
+                closeAuthModal();
             }
         }
 
+        function openEditProfile() { 
+            document.getElementById("editEmail").value = localStorage.getItem("userEmail") || ""; 
+            document.getElementById("editName").value = localStorage.getItem("userName") || ""; 
+            openModalView('edit'); 
+        }
+
+        function logoutUser() { localStorage.clear(); location.reload(); }
+        
+        /* Unified Close */
+        function closeAllPopups() { 
+            document.querySelectorAll('.auth-overlay, #adminPopup, .help-popup, #pageOverlay').forEach(el => el.style.display = 'none'); 
+            document.getElementById('profileDropdown').classList.remove('active'); 
+        }
+
+        function toggleHelp() { document.getElementById('helpBox').style.display = (document.getElementById('helpBox').style.display === 'flex') ? 'none' : 'flex'; }
+        function showAdminAuth() { document.getElementById('adminPopup').style.display = 'flex'; document.getElementById('pageOverlay').style.display = 'block'; document.getElementById('adminPass').focus(); }
+        function verifyAdmin() { if(document.getElementById('adminPass').value === "chiku") window.location.href = 'admin.html'; else alert("Denied"); }
+
+        function updateClock() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'short' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+            document.getElementById('live-date').innerText = dateStr;
+            document.getElementById('live-clock').innerText = timeStr;
+        }
+
         async function updateDashboard() {
+            const GIST_MAP = {"English": "4219b480eb7d7e60c49334fce3aae1a2", "Hindi": "f53d76137dec40ded2db81e043c6337d", "Teaching": "ecc0225df38396f70445c4dd702ff939", "Awareness": "e0372b12ad15ed3c2643059cc1e88cc0", "Reasoning": "75ef01c2eb972d2b695938445c08df60", "AllInOne": "2fb7cd87290c262fc490896192d21dd2"};
             for (const [sub, gistId] of Object.entries(GIST_MAP)) {
                 const badge = document.getElementById(`badge-${sub}`);
-                const scoreBox = document.getElementById(`score-${sub}`);
                 try {
                     const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`);
                     const data = await res.json();
                     const gistTime = new Date(data.updated_at);
-                    const levels = ['EASY', 'MEDIUM', 'HARD'];
-                    let doneCount = 0, isNew = false, scoreHtml = "";
-
-                    levels.forEach(lvl => {
+                    let doneCount = 0, isNew = false;
+                    ['EASY', 'MEDIUM', 'HARD'].forEach(lvl => {
                         const score = localStorage.getItem(`score_${sub}_${lvl}`);
                         const scoreDate = localStorage.getItem(`score_date_${sub}_${lvl}`);
-                        if (score) {
-                            doneCount++;
-                            if(scoreDate && new Date(scoreDate) < gistTime) isNew = true;
-                            scoreHtml += `<div class="score-line"><span>${lvl}:</span> <span>${score}</span></div>`;
-                        }
+                        if (score) { doneCount++; if(scoreDate && new Date(scoreDate) < gistTime) isNew = true; }
                     });
-
-                    if(isNew) {
-                        badge.innerText = "NEW 🔥"; badge.className = "badge badge-new"; badge.style.display = "inline";
-                    } else if(doneCount > 0) {
-                        badge.innerText = `${doneCount}/3 DONE`; badge.className = "badge badge-done"; badge.style.display = "inline";
-                    } else {
-                        badge.innerText = "LIVE"; badge.className = "badge badge-new"; badge.style.display = "inline";
-                    }
-                    scoreBox.innerHTML = scoreHtml;
-                } catch (e) { console.error(sub + " sync error"); }
+                    if(isNew) { badge.innerText = "NEW 🔥"; badge.className = "badge badge-new"; badge.style.display = "inline"; }
+                    else if(doneCount === 3) { badge.innerText = "COMPLETED 🔥"; badge.className = "badge badge-completed"; badge.style.display = "inline"; }
+                    else if(doneCount > 0) { badge.innerText = `${doneCount}/3 DONE`; badge.className = "badge badge-done"; badge.style.display = "inline"; }
+                } catch (e) {}
             }
         }
 
         window.onload = () => {
-            updateClock(); setInterval(updateClock, 1000);
-            updateDashboard(); resetFab();
+            updateClock(); setInterval(updateClock, 1000); updateDashboard();
+            const logged = localStorage.getItem("isLoggedIn") === "true";
+            document.getElementById("user-display-name").innerText = logged ? localStorage.getItem("userName") : "Guest User";
+            document.getElementById("logoutBtn").style.display = document.getElementById("editProfileBtn").style.display = logged ? "flex" : "none";
+            document.getElementById("loginRedirectBtn").style.display = logged ? "none" : "flex";
         };
     </script>
 </body>
