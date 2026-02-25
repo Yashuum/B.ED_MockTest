@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NishuAbhyasi | Admin Command Center</title>
+    <title>NishuAbhyasi | Admin Command Center V2.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -204,7 +204,10 @@
         sync.style.color = "var(--color-accent)";
 
         try {
-            const res = await fetch(`https://api.github.com/gists/${id}?t=${Date.now()}`);
+            // Force fetch with no-cache to avoid syncing hang
+            const res = await fetch(`https://api.github.com/gists/${id}?t=${Date.now()}`, {
+                cache: "no-store"
+            });
             const data = await res.json();
             
             const updatedDate = new Date(data.updated_at);
@@ -235,31 +238,44 @@
             msg.style.color = "white"; 
             msg.innerText = "🛰️ TRANSMITTING DATA...";
 
-            // STEP 1: Pehle check karo Gist mein asli file ka naam kya hai
-            const getRes = await fetch(`https://api.github.com/gists/${id}`);
+            // STEP 1: Get the current Gist data to identify file names
+            const getRes = await fetch(`https://api.github.com/gists/${id}?t=${Date.now()}`);
             const gistData = await getRes.json();
-            const actualFileName = Object.keys(gistData.files)[0]; // Ye asli file name uthayega (e.g. English.json)
+            
+            const fileNames = Object.keys(gistData.files);
+            const actualFileName = fileNames[0]; // Primary file
+            
+            // STEP 2: Prepare the file object for PATCH
+            // We set the primary file's content and DELETE any extra files like 'questions.json'
+            let updatePayload = { files: {} };
+            updatePayload.files[actualFileName] = { content: content };
+            
+            // Auto-cleanup: If 'questions.json' exists but isn't the primary file, delete it
+            fileNames.forEach(name => {
+                if (name !== actualFileName) {
+                    updatePayload.files[name] = null; // Setting to null deletes the file in Gist
+                }
+            });
 
-            // STEP 2: Use that actual name to PATCH
             const res = await fetch(`https://api.github.com/gists/${id}`, {
                 method: 'PATCH',
                 headers: { 
                     'Authorization': `token ${SESSION_TOKEN}`, 
                     'Content-Type': 'application/json' 
                 },
-                body: JSON.stringify({ 
-                    files: { 
-                        [actualFileName]: { content: content } 
-                    } 
-                })
+                body: JSON.stringify(updatePayload)
             });
 
             if(res.ok) {
                 msg.style.background = "rgba(0, 255, 136, 0.15)";
                 msg.style.color = "var(--success)";
                 msg.innerText = "✨ DEPLOYMENT SUCCESSFUL! SITE UPDATED.";
-                fetchData(); 
-                setTimeout(() => msg.style.display = 'none', 5000);
+                
+                // Delay fetch slightly to let GitHub finalize the update
+                setTimeout(() => {
+                    fetchData(); 
+                    msg.style.display = 'none';
+                }, 2000);
             } else { throw new Error(); }
         } catch(e) {
             msg.style.display = "block";
