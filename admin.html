@@ -204,10 +204,9 @@
         sync.style.color = "var(--color-accent)";
 
         try {
-            const res = await fetch(`https://api.github.com/gists/${id}`);
+            const res = await fetch(`https://api.github.com/gists/${id}?t=${Date.now()}`);
             const data = await res.json();
             
-            // Time logic
             const updatedDate = new Date(data.updated_at);
             lastUp.innerText = `⏳ Last Gist Update: ${updatedDate.toLocaleString('en-IN')}`;
 
@@ -236,20 +235,30 @@
             msg.style.color = "white"; 
             msg.innerText = "🛰️ TRANSMITTING DATA...";
 
+            // STEP 1: Pehle check karo Gist mein asli file ka naam kya hai
+            const getRes = await fetch(`https://api.github.com/gists/${id}`);
+            const gistData = await getRes.json();
+            const actualFileName = Object.keys(gistData.files)[0]; // Ye asli file name uthayega (e.g. English.json)
+
+            // STEP 2: Use that actual name to PATCH
             const res = await fetch(`https://api.github.com/gists/${id}`, {
                 method: 'PATCH',
                 headers: { 
                     'Authorization': `token ${SESSION_TOKEN}`, 
                     'Content-Type': 'application/json' 
                 },
-                body: JSON.stringify({ files: { "questions.json": { content: content } } })
+                body: JSON.stringify({ 
+                    files: { 
+                        [actualFileName]: { content: content } 
+                    } 
+                })
             });
 
             if(res.ok) {
                 msg.style.background = "rgba(0, 255, 136, 0.15)";
                 msg.style.color = "var(--success)";
                 msg.innerText = "✨ DEPLOYMENT SUCCESSFUL! SITE UPDATED.";
-                fetchData(); // Refresh time and content
+                fetchData(); 
                 setTimeout(() => msg.style.display = 'none', 5000);
             } else { throw new Error(); }
         } catch(e) {
@@ -268,4 +277,3 @@
 
 </body>
 </html>
-
