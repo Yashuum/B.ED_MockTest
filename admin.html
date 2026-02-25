@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NishuAbhyasi | Admin Command Center V2.1</title>
+    <title>NishuAbhyasi | Admin Command Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -79,25 +79,13 @@
         }
 
         .btn-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 15px; }
-        button {
-            padding: 16px; border-radius: 16px; border: none;
-            cursor: pointer; font-weight: 700; text-transform: uppercase;
-            transition: 0.3s; font-size: 14px;
-        }
+        button { padding: 16px; border-radius: 16px; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: 0.3s; font-size: 14px; }
         .btn-clear { background: rgba(255, 255, 255, 0.1); color: #ff4d4d; border: 1px solid var(--danger); }
-        .btn-clear:hover { background: var(--danger); color: white; }
         .btn-update { background: linear-gradient(135deg, #ff9800, #ff5722); color: white; }
-        .btn-update:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255, 87, 34, 0.3); }
 
-        #statusMsg {
-            margin-top: 20px; padding: 15px; border-radius: 15px;
-            text-align: center; display: none; font-size: 13px; font-weight: 600;
-        }
+        #statusMsg { margin-top: 20px; padding: 15px; border-radius: 15px; text-align: center; display: none; font-size: 13px; font-weight: 600; }
 
-        @media (max-width: 650px) {
-            .container { padding: 25px 15px; border-radius: 25px; }
-            .btn-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 650px) { .container { padding: 25px 15px; } .btn-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -110,7 +98,6 @@
         <input type="password" id="passInput" class="auth-input" placeholder="System Passcode" onkeypress="if(event.key==='Enter') unlock()">
         <br>
         <button onclick="unlock()" style="background: var(--neon-blue); color: #000; width: 220px; margin-top: 15px;">🚀 Secure Connect</button>
-        <p style="margin-top: 20px; font-size: 10px; opacity: 0.4;"><b><i>Admin(s): Zero-Knowledge Session. Tokens are volatile.</i></b></p>
     </div>
 
     <div id="dashboard" style="display: none;">
@@ -162,22 +149,12 @@
     function unlock() {
         const tInput = document.getElementById('tokenInput').value;
         const pInput = document.getElementById('passInput').value;
-
         if(pInput === MASTER_PASS && tInput.startsWith("ghp_")) {
             SESSION_TOKEN = tInput;
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
             fetchData();
-        } else {
-            alert("Connection Denied: Invalid Token or Passcode!");
-        }
-    }
-
-    function clearEditor() {
-        if(confirm("Are you sure? This will clear the current editor content.")) {
-            document.getElementById('jsonEditor').value = "";
-            updateLiveStats("");
-        }
+        } else { alert("Connection Denied!"); }
     }
 
     function updateLiveStats(val) {
@@ -198,98 +175,63 @@
     async function fetchData() {
         const id = document.getElementById('subSelect').value;
         const sync = document.getElementById('syncStatus');
-        const lastUp = document.getElementById('lastUpdated');
-        
-        sync.innerText = "📡 SYNCING..."; 
-        sync.style.color = "var(--color-accent)";
+        sync.innerText = "📡 SYNCING..."; sync.style.color = "var(--color-accent)";
 
         try {
-            // Force fetch with no-cache to avoid syncing hang
-            const res = await fetch(`https://api.github.com/gists/${id}?t=${Date.now()}`, {
-                cache: "no-store"
-            });
+            const res = await fetch(`https://api.github.com/gists/${id}?t=${Date.now()}`, { cache: 'no-store' });
+            if(!res.ok) throw new Error("Sync Fail");
             const data = await res.json();
-            
-            const updatedDate = new Date(data.updated_at);
-            lastUp.innerText = `⏳ Last Gist Update: ${updatedDate.toLocaleString('en-IN')}`;
-
             const content = data.files[Object.keys(data.files)[0]].content;
             document.getElementById('jsonEditor').value = content;
+            document.getElementById('lastUpdated').innerText = `⏳ Last Gist Update: ${new Date(data.updated_at).toLocaleString('en-IN')}`;
             updateLiveStats(content);
-            
-            sync.innerText = "✅ SYSTEM SYNCED"; 
-            sync.style.color = "var(--success)";
+            sync.innerText = "✅ SYSTEM SYNCED"; sync.style.color = "var(--success)";
         } catch(e) {
-            sync.innerText = "❌ SYNC FAILED"; 
-            sync.style.color = "var(--danger)";
+            sync.innerText = "❌ SYNC FAILED"; sync.style.color = "var(--danger)";
         }
     }
 
     async function pushUpdate() {
-        if(!SESSION_TOKEN) return alert("Session Expired. Please Re-login.");
+        if(!SESSION_TOKEN) return alert("Session Expired!");
         const id = document.getElementById('subSelect').value;
         const content = document.getElementById('jsonEditor').value;
         const msg = document.getElementById('statusMsg');
 
         try {
             JSON.parse(content);
-            msg.style.display = "block"; 
-            msg.style.background = "rgba(255,255,255,0.1)";
-            msg.style.color = "white"; 
+            msg.style.display = "block"; msg.style.background = "rgba(255,255,255,0.1)";
             msg.innerText = "🛰️ TRANSMITTING DATA...";
 
-            // STEP 1: Get the current Gist data to identify file names
-            const getRes = await fetch(`https://api.github.com/gists/${id}?t=${Date.now()}`);
-            const gistData = await getRes.json();
-            
+            // Find current filename to prevent duplicate creation
+            const infoRes = await fetch(`https://api.github.com/gists/${id}?nocache=${Date.now()}`);
+            const gistData = await infoRes.json();
             const fileNames = Object.keys(gistData.files);
-            const actualFileName = fileNames[0]; // Primary file
-            
-            // STEP 2: Prepare the file object for PATCH
-            // We set the primary file's content and DELETE any extra files like 'questions.json'
+            const actualFileName = fileNames[0];
+
             let updatePayload = { files: {} };
             updatePayload.files[actualFileName] = { content: content };
-            
-            // Auto-cleanup: If 'questions.json' exists but isn't the primary file, delete it
-            fileNames.forEach(name => {
-                if (name !== actualFileName) {
-                    updatePayload.files[name] = null; // Setting to null deletes the file in Gist
-                }
-            });
+            // Auto-cleanup other files
+            fileNames.forEach(name => { if(name !== actualFileName) updatePayload.files[name] = null; });
 
             const res = await fetch(`https://api.github.com/gists/${id}`, {
                 method: 'PATCH',
-                headers: { 
-                    'Authorization': `token ${SESSION_TOKEN}`, 
-                    'Content-Type': 'application/json' 
-                },
+                headers: { 'Authorization': `token ${SESSION_TOKEN}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatePayload)
             });
 
             if(res.ok) {
-                msg.style.background = "rgba(0, 255, 136, 0.15)";
-                msg.style.color = "var(--success)";
-                msg.innerText = "✨ DEPLOYMENT SUCCESSFUL! SITE UPDATED.";
-                
-                // Delay fetch slightly to let GitHub finalize the update
-                setTimeout(() => {
-                    fetchData(); 
-                    msg.style.display = 'none';
-                }, 2000);
+                msg.style.background = "rgba(0, 255, 136, 0.15)"; msg.style.color = "var(--success)";
+                msg.innerText = "✨ DEPLOYMENT SUCCESSFUL!";
+                setTimeout(() => { msg.style.display = 'none'; fetchData(); }, 2000);
             } else { throw new Error(); }
         } catch(e) {
-            msg.style.display = "block";
-            msg.style.background = "rgba(255, 77, 77, 0.15)";
-            msg.style.color = "var(--danger)";
-            msg.innerText = "❌ ERROR: INVALID JSON OR REVOKED TOKEN.";
+            msg.style.display = "block"; msg.style.background = "rgba(255, 77, 77, 0.15)";
+            msg.innerText = "❌ ERROR: INVALID JSON OR TOKEN.";
         }
     }
 
-    function autoFetch() {
-        document.getElementById('jsonEditor').value = "Loading Source Code...";
-        fetchData();
-    }
+    function autoFetch() { fetchData(); }
+    function clearEditor() { if(confirm("Clear?")) { document.getElementById('jsonEditor').value = ""; updateLiveStats(""); } }
 </script>
-
 </body>
 </html>
