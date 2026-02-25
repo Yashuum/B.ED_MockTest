@@ -101,15 +101,20 @@
         }
         .floating-fab img { width: 65%; height: 65%; }
 
+        /* FIXED & IMPROVED POPUP SYSTEM */
         .popup-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 400px;
-            background: rgba(30, 40, 70, 0.95); backdrop-filter: blur(30px);
-            border: 1px solid rgba(255,255,255,0.3); border-radius: 30px;
+            width: 90%; max-width: 420px;
+            background: rgba(20, 30, 60, 0.95); backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.25); border-radius: 35px;
             display: none; flex-direction: column; z-index: 2000;
-            padding: 30px; text-align: center; color: #fff;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            padding: 35px; text-align: center; color: #fff;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
         }
+
+        .dev-credit { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .dev-name { color: var(--color-accent); font-weight: 800; font-size: 16px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-top: 5px; text-shadow: 0 0 10px rgba(242, 153, 74, 0.3); }
 
         .footer { margin-top: 20px; text-align: center; color: rgba(255,255,255,0.4); padding-bottom: 20px; font-size: 12px; }
 
@@ -195,10 +200,20 @@
     </div>
 
     <div id="helpBox" class="popup-modal">
-        <h4 style="margin-bottom: 15px; font-size: 20px; color: var(--color-accent);">Support</h4>
-        <p style="font-size: 14px; margin-bottom: 20px;">Found a bug or have an idea?</p>
-        <a href="mailto:singhyashwant559@gmail.com" class="btn" style="margin:0; text-decoration:none; background:white; color:#1a2a6c;">Email Developer</a>
-        <button onclick="closeAllPopups()" style="margin-top:15px; background:none; border:none; color:#aaa; cursor:pointer;">Dismiss</button>
+        <div style="font-size: 45px; margin-bottom: 10px;">🛡️</div>
+        <h4 style="margin-bottom: 10px; font-size: 24px; color: var(--color-accent); font-weight: 800;">Support Center</h4>
+        <p style="font-size: 14px; margin-bottom: 25px; opacity: 0.9; line-height: 1.6;">Facing a bug or have an idea to improve this portal? Reach out to us.</p>
+        
+        <a href="mailto:singhyashwant559@gmail.com" class="btn" style="margin:0; text-decoration:none; background: #fff; color: #1a2a6c; width: 100%;">
+            📧 Email Developer
+        </a>
+
+        <div class="dev-credit">
+            <small style="opacity: 0.5; font-size: 10px; text-transform: uppercase; letter-spacing: 2px;">Developed & Maintained By</small>
+            <span class="dev-name">Yashwant Singh</span>
+        </div>
+
+        <button onclick="closeAllPopups()" style="margin-top: 20px; background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; font-size: 13px; text-decoration: underline;">Dismiss</button>
     </div>
 
     <script>
@@ -235,7 +250,6 @@
                 if (!badge) continue;
 
                 try {
-                    // Added timestamp to bypass cache
                     const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`);
                     const data = await res.json();
                     const gistTime = new Date(data.updated_at);
@@ -267,7 +281,6 @@
                             badge.innerText = `${doneCount}/3 DONE`;
                         }
                     } else {
-                        // Default badge if no score but updated on gist
                         badge.style.display = "inline-block";
                         badge.className = "badge badge-new";
                         badge.innerText = "NEW 🔥";
@@ -280,13 +293,11 @@
             updateClock(); 
             setInterval(updateClock, 1000);
             updateDashboard();
-            
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { 
                     if (entry.isIntersecting) entry.target.classList.add('reveal'); 
                 });
             }, { threshold: 0.1 });
-            
             document.querySelectorAll('.card').forEach(card => obs.observe(card));
         };
     </script>
