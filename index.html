@@ -22,7 +22,12 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-        html { scroll-behavior: smooth; }
+        /* Butter Smooth Native Scroll */
+        html { 
+            scroll-behavior: smooth; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-accent) transparent;
+        }
 
         body {
             min-height: 100vh;
@@ -75,14 +80,15 @@
             border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 28px; 
             padding: 30px; display: flex; flex-direction: column; 
             justify-content: flex-start; min-height: 200px; 
-            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.8s ease-out; 
-            position: relative; opacity: 0; transform: translateX(-80px); 
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out; 
+            position: relative; opacity: 0; transform: translateX(-50px); 
+            will-change: transform, opacity; /* Better performance */
         }
 
         .card.reveal { opacity: 1; transform: translateX(0); }
-        .card.exit { opacity: 0; transform: translateX(-80px); }
+        .card.exit { opacity: 0; transform: translateX(-50px); }
 
-        .card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.4s; }
+        .card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 40px rgba(0,0,0,0.3); transition: 0.3s; }
         .card h3 { font-size: 24px; color: #fff; margin-bottom: 8px; }
         .card p { font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 10px; }
 
@@ -242,30 +248,6 @@
             "AllInOne": "2fb7cd87290c262fc490896192d21dd2"
         };
 
-        // --- FIXED TOUCH-FRIENDLY SMOOTH SCROLL ---
-        let targetScroll = window.scrollY;
-        let currentScroll = window.scrollY;
-        const scrollSpeed = 0.08; 
-
-        window.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            targetScroll += e.deltaY;
-            targetScroll = Math.max(0, Math.min(targetScroll, document.documentElement.scrollHeight - window.innerHeight));
-        }, { passive: false });
-
-        window.addEventListener('touchstart', () => {
-            targetScroll = window.scrollY;
-        });
-
-        function animateScroll() {
-            currentScroll += (targetScroll - currentScroll) * scrollSpeed;
-            if (Math.abs(targetScroll - currentScroll) > 0.5) {
-                window.scrollTo(0, currentScroll);
-            }
-            requestAnimationFrame(animateScroll);
-        }
-        animateScroll();
-
         function updateClock() {
             const now = new Date();
             document.getElementById('live-date').innerText = now.toLocaleDateString('en-GB').replace(/\//g, '-');
@@ -334,7 +316,8 @@
             setInterval(updateClock, 1000);
             updateDashboard();
 
-            const observerOptions = { threshold: 0.15 };
+            // Native Smooth Interaction Logic (Zero Jitter)
+            const observerOptions = { threshold: 0.1 };
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { 
                     if (entry.isIntersecting) {
