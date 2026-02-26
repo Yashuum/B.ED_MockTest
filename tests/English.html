@@ -62,15 +62,22 @@
         .palette .marked-review{ background: var(--review); }
         .palette .challenged{ background: var(--challenge); }
 
-        .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; }
-        .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.2s; }
-        .options label:hover{ background: rgba(255,255,255,0.15); transform: translateX(5px); }
+        /* Point 3: Smoother transition timing for quiz elements */
+        .quiz-card{ background: var(--glass); border:1px solid var(--glass-border); backdrop-filter: blur(20px); border-radius:25px; padding:30px; transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.8s ease-out; }
+        .options label{ display:flex; align-items: center; gap:12px; padding:14px; background: rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:15px; margin:10px 0; cursor:pointer; transition: 0.3s; }
+        .options label:hover{ background: rgba(255, 255, 255, 0.15); transform: translateX(5px); }
         
         .nav{ display:none; justify-content:space-between; margin-top:20px; flex-wrap: wrap; gap: 10px; }
         .result{ background: var(--glass); padding: 25px; border-radius: 25px; margin-top:20px; }
         .correct{ color: #4ade80; font-weight:bold; }
         .wrong{ color: #f87171; font-weight:bold; }
         .sol-box { margin-top:12px; padding:12px; background:rgba(242, 153, 74, 0.15); border-radius:12px; font-size:14px; color:#ffcc80; border: 1px dashed var(--color-accent); }
+
+        /* Point 1: Question Skeleton Loader Styles */
+        .skeleton-q { height: 25px; width: 80%; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 20px; }
+        .skeleton-opt { height: 50px; width: 100%; background: rgba(255,255,255,0.05); border-radius: 15px; margin: 10px 0; }
+        .loading-shimmer { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script> (function () { emailjs.init("L8kGW-X7JOiYaycH5"); })(); </script>
@@ -135,17 +142,18 @@
 
     async function loadData() {
         try {
-            const response = await fetch(GIST_API_URL);
+            // Point 1: Shimmer while fetching
+            document.getElementById('totalQDisplay').innerText = "Syncing...";
+            const response = await fetch(`${GIST_API_URL}?t=${Date.now()}`);
             const data = await response.json();
             const fileName = Object.keys(data.files)[0];
             allQuestionsBank = JSON.parse(data.files[fileName].content);
             
             document.getElementById('lastUpdated').innerText = new Date(data.updated_at).toLocaleString('en-IN');
-            handleLevelSwitch(); // Fix: Initialize based on saved results
+            handleLevelSwitch(); 
         } catch (e) { console.error("Load failed", e); }
     }
 
-    // Fix 1: Multi-Level azadi (Candidate bina clear kiye switch kar sakega)
     function handleLevelSwitch() {
         if(!allQuestionsBank) return;
         const level = document.getElementById("difficultyLevel").value;
@@ -215,6 +223,8 @@
     function renderQuestion(){
         visited[currentIndex]=true;
         const q=questions[currentIndex];
+        
+        // Point 1: Immediate Skeleton UI before content fully populates if needed
         quizArea.innerHTML=`<div class="quiz-card">
             <div style="display:flex; justify-content:space-between; align-items:start;">
                 <b style="display:block; margin-bottom:15px; font-size:1.1em;">Q${currentIndex+1}. ${q.q}</b>
@@ -278,7 +288,6 @@
                 <div class="sol-box"><b>Logic:</b> ${q.solution}</div></div>`;
         });
 
-        // Fix 2: Key for Dashboard Labels & Accuracy (Index pe score update hoga)
         const currentLvl = level.toUpperCase();
         const now = new Date().toISOString(); 
         localStorage.setItem(`score_${MY_SUBJECT}_${currentLvl}`, `${correct}/${questions.length}`);
@@ -326,7 +335,7 @@
         if(confirm("Clear this result?")) {
             localStorage.removeItem(`finalResult_${MY_SUBJECT}_${level}`);
             localStorage.removeItem(`inProgress_${MY_SUBJECT}_${level}`);
-            localStorage.removeItem(`score_${MY_SUBJECT}_${level.toUpperCase()}`); // Dashboard score also cleared
+            localStorage.removeItem(`score_${MY_SUBJECT}_${level.toUpperCase()}`); 
             localStorage.removeItem(`score_date_${MY_SUBJECT}_${level.toUpperCase()}`);
             localStorage.removeItem(`done_${MY_SUBJECT}_${level.toUpperCase()}`);
             location.reload(); 
