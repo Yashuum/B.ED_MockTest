@@ -110,7 +110,7 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
         .score-box { background: rgba(0,0,0,0.15); border-radius: 15px; padding: 10px; margin-top: auto; border: 1px dashed rgba(255,255,255,0.1); }
-        .score-line { font-size: 11px; color: #4ade80; font-weight: 700; display: block; margin: 4px 0; }
+        .score-line { font-size: 12px; color: #4ade80; font-weight: 700; display: block; margin: 2px 0; }
 
         .btn { margin-top: 20px; padding: 14px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
 
@@ -232,6 +232,9 @@
             <small style="opacity: 0.5; font-size: 9px; text-transform: uppercase;">Developed By</small>
             <span class="dev-name">Yashwant Singh</span>
         </div>
+        <button onclick="closeAllPopups()" style="margin-top: 15px; background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 11px; text-decoration: underline;">
+            Dismiss
+        </button>
     </div>
 
     <script>
@@ -260,53 +263,71 @@
         }
 
         function closeAllPopups() {
-            document.getElementById('helpBox').style.display = 'none';
-            document.getElementById('pageOverlay').style.display = 'none';
+            const h = document.getElementById('helpBox');
+            const o = document.getElementById('pageOverlay');
+            if(h) h.style.display = 'none';
+            if(o) o.style.display = 'none';
         }
 
         async function updateDashboard() {
-            for (const [sub, gistId] of Object.entries(GIST_MAP)) {
+            // We use Promise.allSettled so that if one Gist fails, the rest still load.
+            const promises = Object.entries(GIST_MAP).map(async ([sub, gistId]) => {
                 const badge = document.getElementById(`badge-${sub}`);
                 const scoreBox = document.getElementById(`score-${sub}`);
-                if (!badge) continue;
-
+                
                 try {
-                    const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`);
+                    // Timeout fetch to prevent "infinite syncing" hang
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                    const res = await fetch(`https://api.github.com/gists/${gistId}?t=${Date.now()}`, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+
                     const data = await res.json();
                     const gistTime = new Date(data.updated_at);
                     const levels = ['EASY', 'MEDIUM', 'HARD'];
-                    let scoreHtml = "";
-                    let globalUpdateFound = false;
+                    let doneCount = 0, hasNew = false, html = "";
 
                     levels.forEach(lvl => {
                         const score = localStorage.getItem(`score_${sub}_${lvl}`);
                         const date = localStorage.getItem(`score_date_${sub}_${lvl}`);
-                        
                         if (score) {
-                            const isOutdated = date && new Date(date) < gistTime;
-                            if(isOutdated) globalUpdateFound = true;
-                            
-                            scoreHtml += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                                <span style="font-size:10px; color:${isOutdated ? '#f2994a':'#4ade80'}; font-weight:700;">
-                                    ${lvl}: ${score} ${isOutdated ? '🔥' : '✅'}
-                                </span>
-                            </div>`;
+                            doneCount++;
+                            if (date && new Date(date) < gistTime) hasNew = true;
+                            html += `<span class="score-line">${lvl}: ${score}</span>`;
                         }
                     });
 
-                    if (scoreHtml !== "") {
-                        scoreBox.style.display = "block";
-                        scoreBox.innerHTML = scoreHtml;
-                        badge.style.display = "inline-block";
-                        badge.className = globalUpdateFound ? "badge badge-new" : "badge badge-done";
-                        badge.innerText = globalUpdateFound ? "UPDATE" : "DONE";
-                    } else {
+                    if (badge) {
+                        if (doneCount > 0) {
+                            scoreBox.style.display = "block";
+                            scoreBox.innerHTML = html;
+                            badge.style.display = "inline-block";
+                            if (hasNew) {
+                                badge.className = "badge badge-new";
+                                badge.innerText = "UPDATE 🔥";
+                            } else {
+                                badge.className = "badge badge-done";
+                                badge.innerText = `${doneCount}/3 DONE`;
+                            }
+                        } else {
+                            badge.style.display = "inline-block";
+                            badge.className = "badge badge-new";
+                            badge.innerText = "NEW 🔥";
+                        }
+                    }
+                } catch (e) {
+                    console.warn(sub + " sync skip", e);
+                    // Fallback so user isn't stuck
+                    if(badge && badge.innerText === "") {
                         badge.style.display = "inline-block";
                         badge.className = "badge badge-new";
-                        badge.innerText = "NEW";
+                        badge.innerText = "NEW 🔥";
                     }
-                } catch (e) { console.error(sub + " sync error", e); }
-            }
+                }
+            });
+
+            await Promise.allSettled(promises);
         }
 
         window.onload = () => {
