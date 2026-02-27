@@ -22,7 +22,6 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-        /* Butter Smooth Native Scroll */
         html { 
             scroll-behavior: smooth; 
             scrollbar-width: thin;
@@ -82,7 +81,7 @@
             justify-content: flex-start; min-height: 200px; 
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out; 
             position: relative; opacity: 0; transform: translateX(-50px); 
-            will-change: transform, opacity; /* Better performance */
+            will-change: transform, opacity;
         }
 
         .card.reveal { opacity: 1; transform: translateX(0); }
@@ -111,7 +110,7 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         
         .score-box { background: rgba(0,0,0,0.15); border-radius: 15px; padding: 10px; margin-top: auto; border: 1px dashed rgba(255,255,255,0.1); }
-        .score-line { font-size: 12px; color: #4ade80; font-weight: 700; display: block; margin: 2px 0; }
+        .score-line { font-size: 11px; color: #4ade80; font-weight: 700; display: block; margin: 4px 0; }
 
         .btn { margin-top: 20px; padding: 14px; border: none; border-radius: 18px; background: var(--btn-grad); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: 0.3s; }
 
@@ -233,9 +232,6 @@
             <small style="opacity: 0.5; font-size: 9px; text-transform: uppercase;">Developed By</small>
             <span class="dev-name">Yashwant Singh</span>
         </div>
-        <button onclick="closeAllPopups()" style="margin-top: 15px; background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 11px; text-decoration: underline;">
-            Dismiss
-        </button>
     </div>
 
     <script>
@@ -279,33 +275,35 @@
                     const data = await res.json();
                     const gistTime = new Date(data.updated_at);
                     const levels = ['EASY', 'MEDIUM', 'HARD'];
-                    let doneCount = 0, hasNew = false, html = "";
+                    let scoreHtml = "";
+                    let globalUpdateFound = false;
 
                     levels.forEach(lvl => {
                         const score = localStorage.getItem(`score_${sub}_${lvl}`);
                         const date = localStorage.getItem(`score_date_${sub}_${lvl}`);
+                        
                         if (score) {
-                            doneCount++;
-                            if (date && new Date(date) < gistTime) hasNew = true;
-                            html += `<span class="score-line">${lvl}: ${score}</span>`;
+                            const isOutdated = date && new Date(date) < gistTime;
+                            if(isOutdated) globalUpdateFound = true;
+                            
+                            scoreHtml += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                <span style="font-size:10px; color:${isOutdated ? '#f2994a':'#4ade80'}; font-weight:700;">
+                                    ${lvl}: ${score} ${isOutdated ? '🔥' : '✅'}
+                                </span>
+                            </div>`;
                         }
                     });
 
-                    if (doneCount > 0) {
+                    if (scoreHtml !== "") {
                         scoreBox.style.display = "block";
-                        scoreBox.innerHTML = html;
+                        scoreBox.innerHTML = scoreHtml;
                         badge.style.display = "inline-block";
-                        if (hasNew) {
-                            badge.className = "badge badge-new";
-                            badge.innerText = "UPDATE 🔥";
-                        } else {
-                            badge.className = "badge badge-done";
-                            badge.innerText = `${doneCount}/3 DONE`;
-                        }
+                        badge.className = globalUpdateFound ? "badge badge-new" : "badge badge-done";
+                        badge.innerText = globalUpdateFound ? "UPDATE" : "DONE";
                     } else {
                         badge.style.display = "inline-block";
                         badge.className = "badge badge-new";
-                        badge.innerText = "NEW 🔥";
+                        badge.innerText = "NEW";
                     }
                 } catch (e) { console.error(sub + " sync error", e); }
             }
@@ -316,7 +314,6 @@
             setInterval(updateClock, 1000);
             updateDashboard();
 
-            // Native Smooth Interaction Logic (Zero Jitter)
             const observerOptions = { threshold: 0.1 };
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { 
